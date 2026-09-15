@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trường Đua Gọi Tên - Vòng Đua Lên Bảng</title>
   
-  <!-- Google Fonts: Inter & Montserrat -->
+  <!-- Google Fonts: Inter, Montserrat & Bungee -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Bungee&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
@@ -26,20 +26,11 @@
           },
           colors: {
             brand: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
               500: '#0284c7',
-              600: '#0369a1',
-              700: '#075985',
               accent: '#f59e0b',
               danger: '#ef4444',
               success: '#10b981',
             }
-          },
-          animation: {
-            'bounce-slow': 'bounce 2s infinite',
-            'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'spin-slow': 'spin 8s linear infinite',
           }
         }
       }
@@ -59,105 +50,90 @@
       -webkit-user-select: none;
     }
     .text-shadow-sm {
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
     }
     .text-shadow-lg {
-      text-shadow: 0 4px 10px rgba(0,0,0,0.7);
+      text-shadow: 0 4px 10px rgba(0,0,0,0.8);
     }
     .game-card-hover {
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .game-card-hover:hover {
       transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 16px 30px -8px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 16px 30px -8px rgba(0, 0, 0, 0.4);
     }
-    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
+      background: #1e293b;
     }
     ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
+      background: #475569;
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-    /* Checkered flag finish line pattern */
-    .finish-line-pattern {
-      background: repeating-conic-gradient(#fff 0% 25%, #111 0% 50%) 50% / 24px 24px;
+      background: #64748b;
     }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-900 overflow-x-hidden">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-amber-400 selection:text-slate-900 overflow-x-hidden">
 
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <!-- Logo & Brand -->
+  <!-- ================= TOP MAIN HEADER ================= -->
+  <header id="mainAppHeader" class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand / Home Link -->
       <div class="flex items-center space-x-3 cursor-pointer" onclick="app.navigate('home')">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-amber-500/20 text-white font-extrabold text-xl">
           <i class="fa-solid fa-flag-checkered"></i>
         </div>
         <div>
-          <div class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-amber-400 via-rose-400 to-indigo-300 bg-clip-text text-transparent">
-            TRƯỜNG ĐUA GỌI TÊN
+          <div class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-amber-400 via-rose-400 to-cyan-300 bg-clip-text text-transparent uppercase font-display">
+            Trường Đua Gọi Tên
           </div>
-          <p class="text-[11px] text-slate-400 font-medium">Phần mềm gọi học sinh lên bảng kịch tính</p>
+          <p class="text-[10px] text-slate-400 font-medium">Gọi học sinh lên bảng siêu kịch tính</p>
         </div>
       </div>
 
-      <!-- Navigation Links (When logged in) -->
+      <!-- Navigation Tabs -->
       <nav id="navMenu" class="hidden md:flex items-center space-x-1 sm:space-x-2">
         <button onclick="app.navigate('home')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-2" data-page="home">
-          <i class="fa-solid fa-gamepad text-amber-400"></i> Sảnh Trò Chơi
+          <i class="fa-solid fa-gamepad text-amber-400"></i> Sảnh Đua
         </button>
         <button onclick="app.navigate('classes')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-2" data-page="classes">
-          <i class="fa-solid fa-users text-cyan-400"></i> Quản Lý Lớp
+          <i class="fa-solid fa-users text-cyan-400"></i> Quản Lý Lớp & Excel
         </button>
         <button onclick="app.navigate('history')" class="nav-btn px-3 py-1.5 rounded-lg text-sm font-semibold transition hover:bg-slate-800 text-slate-300 hover:text-white flex items-center gap-2" data-page="history">
-          <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Lịch Sử Gọi
+          <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Lịch Sử
         </button>
-        <!-- Admin only button -->
+        <!-- Admin Only -->
         <button id="adminTabBtn" onclick="app.navigate('admin')" class="nav-btn hidden px-3 py-1.5 rounded-lg text-sm font-bold transition bg-purple-900/40 text-purple-300 hover:bg-purple-800/60 border border-purple-500/30 flex items-center gap-2" data-page="admin">
           <i class="fa-solid fa-shield-halved text-purple-400"></i> Quản Trị Admin
         </button>
       </nav>
 
-      <!-- Right Controls: Audio, Fullscreen, User info -->
-      <div class="flex items-center space-x-2 sm:space-x-3">
-        <!-- Sound Toggle -->
+      <!-- Right Controls: Audio, Fullscreen, User Info -->
+      <div class="flex items-center space-x-2">
         <button id="soundToggleBtn" onclick="soundEngine.toggleSound()" title="Bật/Tắt Âm Thanh" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700">
           <i id="soundIcon" class="fa-solid fa-volume-high text-amber-400"></i>
         </button>
 
-        <!-- Fullscreen Toggle -->
         <button onclick="app.toggleFullscreen()" title="Toàn Màn Hình Máy Chiếu (F11)" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700">
           <i id="fullscreenIcon" class="fa-solid fa-expand text-cyan-400"></i>
         </button>
 
-        <!-- User Profile / Auth Button -->
-        <div id="userSection">
-          <!-- Populated by JS -->
-        </div>
+        <div id="userSection"></div>
       </div>
     </div>
   </header>
 
-  <!-- ================= MAIN CONTAINER ================= -->
+  <!-- ================= MAIN VIEWS ================= -->
   <main class="flex-1 flex flex-col justify-start relative w-full">
 
     <!-- ================= 1. VIEW: AUTH (LOGIN / REGISTER) ================= -->
     <section id="view-auth" class="view hidden py-8 px-4 flex-1 flex items-center justify-center">
-      <div class="max-w-md w-full bg-slate-800/90 border border-slate-700/80 rounded-2xl shadow-2xl p-6 sm:p-8 backdrop-blur-xl relative overflow-hidden">
-        <div class="absolute -top-16 -right-16 w-36 h-36 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-16 -left-16 w-36 h-36 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
-
-        <!-- Auth Tabs: Login vs Register -->
+      <div class="max-w-md w-full bg-slate-900/90 border border-slate-700 rounded-3xl shadow-2xl p-6 sm:p-8 backdrop-blur-xl relative overflow-hidden">
         <div class="flex border-b border-slate-700 mb-6 pb-2 space-x-4">
           <button id="tabBtnLogin" onclick="auth.switchTab('login')" class="font-extrabold text-lg pb-1 text-amber-400 border-b-2 border-amber-400 transition">
             <i class="fa-solid fa-right-to-bracket mr-1"></i> Đăng Nhập
@@ -169,65 +145,59 @@
 
         <!-- Form 1: LOGIN -->
         <form id="loginForm" onsubmit="auth.handleLogin(event)" class="space-y-4">
-          <div class="bg-amber-950/40 border border-amber-600/30 rounded-lg p-3 text-xs text-amber-200/90">
-            <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
+          <div class="bg-amber-950/40 border border-amber-600/30 rounded-xl p-3 text-xs text-amber-200/90">
+            <i class="fa-solid fa-crown text-amber-400 mr-1"></i>
             Tài khoản Admin quản trị: <strong>thaytuan</strong> | Mật khẩu: <strong>minhmay</strong>
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Tên đăng nhập</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-user"></i></span>
-              <input type="text" id="loginUsername" required placeholder="thaytuan hoặc tên tài khoản" class="w-full pl-10 pr-3 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-sm text-white placeholder-slate-500 outline-none" />
-            </div>
+            <input type="text" id="loginUsername" required placeholder="thaytuan hoặc tên tài khoản" class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white placeholder-slate-500 outline-none" />
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Mật khẩu</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500"><i class="fa-solid fa-lock"></i></span>
-              <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full pl-10 pr-3 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-sm text-white placeholder-slate-500 outline-none" />
-            </div>
+            <input type="password" id="loginPassword" required placeholder="••••••••" class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white placeholder-slate-500 outline-none" />
           </div>
 
           <div id="loginError" class="hidden text-rose-400 text-xs font-medium bg-rose-950/40 p-2.5 rounded-lg border border-rose-800/40"></div>
 
           <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-slate-950 font-extrabold rounded-xl shadow-lg shadow-amber-500/20 transition transform active:scale-95 flex items-center justify-center gap-2">
-            <span>ĐĂNG NHẬP NGAY</span> <i class="fa-solid fa-arrow-right"></i>
+            <span>ĐĂNG NHẬP</span> <i class="fa-solid fa-arrow-right"></i>
           </button>
         </form>
 
         <!-- Form 2: REGISTER -->
         <form id="registerForm" onsubmit="auth.handleRegister(event)" class="hidden space-y-3.5">
-          <div class="bg-indigo-950/40 border border-indigo-600/30 rounded-lg p-2.5 text-xs text-indigo-200">
+          <div class="bg-indigo-950/40 border border-indigo-600/30 rounded-xl p-2.5 text-xs text-indigo-200">
             <i class="fa-solid fa-graduation-cap text-indigo-400 mr-1"></i>
-            Tài khoản giáo viên sau khi đăng ký sẽ được lưu và Admin có thể xem được trong danh sách.
+            Giáo viên đăng ký sẽ lưu vào hệ thống và Admin sẽ thấy ngay trong bảng quản trị.
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Họ và Tên giáo viên</label>
-            <input type="text" id="regFullName" required placeholder="Thầy/Cô Nguyễn Văn A" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white outline-none" />
+            <input type="text" id="regFullName" required placeholder="Thầy/Cô Nguyễn Văn A" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white outline-none" />
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Môn dạy / Trường</label>
-              <input type="text" id="regSubject" placeholder="Toán - THPT Chuyên" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white outline-none" />
+              <input type="text" id="regSubject" placeholder="Toán - THPT Chuyên" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none" />
             </div>
             <div>
               <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Số điện thoại / Email</label>
-              <input type="text" id="regContact" placeholder="0912..." class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white outline-none" />
+              <input type="text" id="regContact" placeholder="0912..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none" />
             </div>
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Tên đăng nhập mới</label>
-            <input type="text" id="regUsername" required placeholder="covan, thaynam, ..." class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white outline-none" />
+            <input type="text" id="regUsername" required placeholder="covan, thayhung..." class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none" />
           </div>
 
           <div>
             <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Mật khẩu</label>
-            <input type="password" id="regPassword" required placeholder="Ít nhất 4 ký tự" class="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:ring-2 focus:ring-amber-400 text-sm text-white outline-none" />
+            <input type="password" id="regPassword" required placeholder="Ít nhất 4 ký tự" class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none" />
           </div>
 
           <div id="registerMsg" class="hidden text-xs font-medium p-2.5 rounded-lg border"></div>
@@ -242,21 +212,21 @@
     <!-- ================= 2. VIEW: HOME / GAME LOBBY ================= -->
     <section id="view-home" class="view hidden max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       <!-- Hero Banner -->
-      <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 border border-slate-700/60 p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-950 via-slate-900 to-purple-950 border border-slate-800 p-6 sm:p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="space-y-3 text-center md:text-left z-10">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold tracking-wide uppercase">
-            <i class="fa-solid fa-fire text-amber-400 animate-pulse"></i> Gọi tên thông minh - Không khí sôi động
+            <i class="fa-solid fa-fire text-amber-400 animate-pulse"></i> Trực quan - Nhiều bản đồ đường đua
           </div>
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-display">
-            Chọn Phương Pháp <span class="bg-gradient-to-r from-amber-400 via-rose-400 to-cyan-400 bg-clip-text text-transparent">Đua Gọi Tên</span>
+            Chọn Phương Pháp <span class="bg-gradient-to-r from-amber-400 via-rose-400 to-cyan-300 bg-clip-text text-transparent">Đua Gọi Tên</span>
           </h1>
           <p class="text-slate-300 max-w-xl text-sm sm:text-base">
-            Biến tiết học căng thẳng thành đấu trường nghẹt thở! Chọn chế độ đua, chọn lớp học và nhấn <strong class="text-amber-400">CHẠY</strong> để tìm ra ngôi sao lên bảng hôm nay.
+            Đua xe F1, đua ngựa uốn lượn bo cua hoặc đàn vịt bơi tung tăng hướng sang phải! Chọn chế độ đua và nhấn phím <strong class="text-amber-400">Space</strong> để chạy!
           </p>
         </div>
 
         <!-- Quick Launch Bar -->
-        <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 w-full md:w-96 shadow-xl backdrop-blur-md z-10 space-y-4">
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-2xl p-5 w-full md:w-96 shadow-xl backdrop-blur-md z-10 space-y-4">
           <div class="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
             <span><i class="fa-solid fa-sliders text-amber-400 mr-1.5"></i> Cài đặt nhanh</span>
             <span id="quickClassCount" class="text-amber-400 font-semibold">2 lớp có sẵn</span>
@@ -265,30 +235,29 @@
           <!-- Select Class -->
           <div>
             <label class="block text-xs text-slate-300 font-medium mb-1">1. Lớp học đang chọn:</label>
-            <select id="selectedClassSelect" onchange="gameConfig.handleClassChange(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-400 outline-none">
-              <!-- Populated by JS -->
+            <select id="selectedClassSelect" onchange="gameConfig.handleClassChange(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-400 outline-none">
             </select>
           </div>
 
-          <!-- Select Duration -->
+          <!-- Select Mode Style -->
           <div>
-            <label class="block text-xs text-slate-300 font-medium mb-1">2. Thời gian cuộc đua:</label>
+            <label class="block text-xs text-slate-300 font-medium mb-1">2. Số vòng / Thời gian đua:</label>
             <div class="grid grid-cols-4 gap-1.5" id="durationButtonGroup">
-              <button type="button" onclick="gameConfig.setDuration(5)" class="duration-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:border-amber-400" data-sec="5">5s</button>
-              <button type="button" onclick="gameConfig.setDuration(10)" class="duration-btn py-1.5 text-xs font-bold rounded-lg border border-amber-400 bg-amber-500/20 text-amber-300" data-sec="10">10s</button>
-              <button type="button" onclick="gameConfig.setDuration(15)" class="duration-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:border-amber-400" data-sec="15">15s</button>
-              <button type="button" onclick="gameConfig.setDuration(25)" class="duration-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:border-amber-400" data-sec="25">25s</button>
+              <button type="button" onclick="gameConfig.setLaps(1)" class="lap-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400" data-lap="1">1 Vòng</button>
+              <button type="button" onclick="gameConfig.setLaps(2)" class="lap-btn py-1.5 text-xs font-bold rounded-lg border border-amber-400 bg-amber-500/20 text-amber-300" data-lap="2">2 Vòng</button>
+              <button type="button" onclick="gameConfig.setLaps(3)" class="lap-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400" data-lap="3">3 Vòng</button>
+              <button type="button" onclick="gameConfig.setLaps(5)" class="lap-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400" data-lap="5">Nghẹt thở</button>
             </div>
           </div>
 
           <!-- Options -->
           <div class="flex items-center justify-between text-xs text-slate-300 pt-1">
             <label class="inline-flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" id="chkExcludeCalled" checked class="rounded bg-slate-900 border-slate-700 text-amber-500 focus:ring-amber-400 w-4 h-4">
+              <input type="checkbox" id="chkExcludeCalled" checked class="rounded bg-slate-800 border-slate-700 text-amber-500 focus:ring-amber-400 w-4 h-4">
               <span>Tránh gọi trùng học sinh đã lên</span>
             </label>
             <button onclick="app.navigate('classes')" class="text-amber-400 hover:underline text-xs">
-              + Thêm lớp mới
+              + Thêm lớp
             </button>
           </div>
         </div>
@@ -300,151 +269,151 @@
           <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-2 text-white">
             <i class="fa-solid fa-trophy text-amber-400"></i> Các Chế Độ Đua Gọi Tên
           </h2>
-          <span class="text-xs text-slate-400">Bấm vào bất kỳ trò chơi nào để bắt đầu đua ngay</span>
+          <span class="text-xs text-slate-400">Hỗ trợ nhiều cung đường đua thực tế & bơi hướng sang phải</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 
-          <!-- 1. ĐUA VỊT -->
-          <div onclick="app.selectGameAndPlay('duck')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-sky-900/60 to-slate-900 border border-sky-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-lg">
+          <!-- 1. ĐUA VỊT TRÊN SÔNG (Right-Facing) -->
+          <div onclick="app.selectGameAndPlay('duck')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-sky-950/80 to-slate-900 border border-sky-500/40 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
             <div class="absolute top-3 right-3 bg-sky-500/20 text-sky-300 border border-sky-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-              Hài Hước & Dễ Thương
+              Bơi Hướng Phải ➡️
             </div>
             <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-3xl text-amber-400 shadow-inner group-hover:scale-110 transition">
+              <div class="w-14 h-14 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
                 🦆
               </div>
               <h3 class="text-xl font-bold text-white group-hover:text-amber-300 transition flex items-center gap-2">
-                Đua Vịt Hồ Nước
+                Đua Vịt Trên Sông
               </h3>
               <p class="text-xs text-slate-300 line-clamp-2">
-                Đàn vịt vàng bơi tung tăng trên làn nước mát rượi, bọt nước tung trắng xóa và tiếng kêu quạc quạc vui nhộn.
+                Đàn vịt vàng bơi dập dềnh hướng sang phải, bọt nước tung trắng xóa, hoa sen, lá súng trôi nổi kèm bảng Top dẫn đầu.
               </p>
             </div>
             <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-sky-400">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-water"></i> Đường đua nước</span>
+              <span class="flex items-center gap-1"><i class="fa-solid fa-water"></i> 3 Bản đồ sông nước</span>
               <span class="bg-sky-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 transition font-extrabold">
-                BẮT ĐẦU <i class="fa-solid fa-play text-[10px]"></i>
+                VÀO ĐƯỜNG ĐUA <i class="fa-solid fa-play text-[10px]"></i>
               </span>
             </div>
           </div>
 
-          <!-- 2. ĐUA XE ĐẠP -->
-          <div onclick="app.selectGameAndPlay('bicycle')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-emerald-900/60 to-slate-900 border border-emerald-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-lg">
-            <div class="absolute top-3 right-3 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-              Bền Bỉ & Năng Động
-            </div>
-            <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-3xl text-emerald-400 shadow-inner group-hover:scale-110 transition">
-                🚴
-              </div>
-              <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition flex items-center gap-2">
-                Đua Xe Đạp Vòng Xung Quanh
-              </h3>
-              <p class="text-xs text-slate-300 line-clamp-2">
-                Guồng chân đạp đều tăm tắp, tiếng chuông leng keng giục giã trên cung đường rợp bóng cây xanh.
-              </p>
-            </div>
-            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-400">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-road"></i> Đường trường</span>
-              <span class="bg-emerald-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 transition font-extrabold">
-                BẮT ĐẦU <i class="fa-solid fa-play text-[10px]"></i>
-              </span>
-            </div>
-          </div>
-
-          <!-- 3. ĐUA MOTO GP -->
-          <div onclick="app.selectGameAndPlay('motogp')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-orange-900/60 to-slate-900 border border-orange-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-lg">
-            <div class="absolute top-3 right-3 bg-orange-500/20 text-orange-300 border border-orange-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-              Tốc Độ Cao
-            </div>
-            <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-3xl text-orange-400 shadow-inner group-hover:scale-110 transition">
-                🏍️
-              </div>
-              <h3 class="text-xl font-bold text-white group-hover:text-orange-300 transition flex items-center gap-2">
-                Đua Moto GP Đỉnh Cao
-              </h3>
-              <p class="text-xs text-slate-300 line-clamp-2">
-                Tiếng bô gầm rú vang trời, cú bo cua nghiêng người sát mặt đường và những màn so kè từng milimet.
-              </p>
-            </div>
-            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-orange-400">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-gauge-high"></i> 300 km/h</span>
-              <span class="bg-orange-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 transition font-extrabold">
-                BẮT ĐẦU <i class="fa-solid fa-play text-[10px]"></i>
-              </span>
-            </div>
-          </div>
-
-          <!-- 4. ĐUA NGỰA -->
-          <div onclick="app.selectGameAndPlay('horse')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-amber-950/60 to-slate-900 border border-amber-600/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-lg">
-            <div class="absolute top-3 right-3 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-              Kịch Tính Vó Ngựa
-            </div>
-            <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-3xl text-amber-400 shadow-inner group-hover:scale-110 transition">
-                🐎
-              </div>
-              <h3 class="text-xl font-bold text-white group-hover:text-amber-300 transition flex items-center gap-2">
-                Đua Ngựa Vượt Đích
-              </h3>
-              <p class="text-xs text-slate-300 line-clamp-2">
-                Tiếng vó ngựa rầm rập trên thảm cỏ xanh, bụi tung mịt mù với những chú chiến mã dũng mãnh tranh tài.
-              </p>
-            </div>
-            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-chess-knight"></i> Trường đua cỏ</span>
-              <span class="bg-amber-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-white transition font-extrabold">
-                BẮT ĐẦU <i class="fa-solid fa-play text-[10px]"></i>
-              </span>
-            </div>
-          </div>
-
-          <!-- 5. ĐUA XE F1 -->
-          <div onclick="app.selectGameAndPlay('f1')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-red-950/60 to-slate-900 border border-red-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-lg">
+          <!-- 2. GIẢI ĐUA F1 (Circuit Spa / Monza) -->
+          <div onclick="app.selectGameAndPlay('f1')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-red-950/80 to-slate-900 border border-red-500/40 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
             <div class="absolute top-3 right-3 bg-red-500/20 text-red-300 border border-red-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-              Siêu Tốc Độ F1
+              Vòng Đua Grand Prix 🏎️
             </div>
             <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-red-500/20 border border-red-400/40 flex items-center justify-center text-3xl text-red-400 shadow-inner group-hover:scale-110 transition">
+              <div class="w-14 h-14 rounded-2xl bg-red-500/20 border border-red-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
                 🏎️
               </div>
               <h3 class="text-xl font-bold text-white group-hover:text-red-300 transition flex items-center gap-2">
-                Đua Xe Công Thức 1 (F1)
+                Giải Đua Xe F1
               </h3>
               <p class="text-xs text-slate-300 line-clamp-2">
-                Đèn đỏ vụt tắt, động cơ gầm rú xé tan bầu không khí, vạch đích cờ caro đón chào tay đua xuất sắc nhất!
+                Đường đua Spa-Francorchamps, Monza và Monaco uốn lượn bo cua đỉnh cao, kerb vàng đỏ và cờ xuất phát.
               </p>
             </div>
             <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-red-400">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-flag-checkered"></i> Grand Prix</span>
+              <span class="flex items-center gap-1"><i class="fa-solid fa-flag-checkered"></i> 4 Chặng đua quốc tế</span>
               <span class="bg-red-500 text-white px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 group-hover:text-slate-950 transition font-extrabold">
-                BẮT ĐẦU <i class="fa-solid fa-play text-[10px]"></i>
+                VÀO ĐƯỜNG ĐUA <i class="fa-solid fa-play text-[10px]"></i>
               </span>
             </div>
           </div>
 
-          <!-- 6. VÒNG QUAY MAY MẮN (LUCKY WHEEL) -->
-          <div onclick="app.selectGameAndPlay('wheel')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-purple-950/60 to-slate-900 border border-purple-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-lg">
-            <div class="absolute top-3 right-3 bg-purple-500/20 text-purple-300 border border-purple-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
-              Hồi Hộp Từng Giây
+          <!-- 3. TRƯỜNG ĐUA NGỰA (Clover Ireland & Sunset Meadow) -->
+          <div onclick="app.selectGameAndPlay('horse')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-emerald-950/80 to-slate-900 border border-emerald-500/40 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
+            <div class="absolute top-3 right-3 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
+              Đường Đua Cỏ Uốn Lượn 🐎
             </div>
             <div class="space-y-3">
-              <div class="w-14 h-14 rounded-2xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center text-3xl text-purple-400 shadow-inner group-hover:scale-110 transition">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+                🐎
+              </div>
+              <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition flex items-center gap-2">
+                Trường Đua Ngựa
+              </h3>
+              <p class="text-xs text-slate-300 line-clamp-2">
+                Đường đua cỏ Cỏ May Mắn Clover (Ireland) và Sunset Meadow với vó ngựa phi nước đại rầm rập bám theo góc bo cua.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-400">
+              <span class="flex items-center gap-1"><i class="fa-solid fa-clover"></i> Clover Ireland & Sunset</span>
+              <span class="bg-emerald-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 transition font-extrabold">
+                VÀO ĐƯỜNG ĐUA <i class="fa-solid fa-play text-[10px]"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 4. ĐUA XE ĐẠP (Right-Facing & Circuit) -->
+          <div onclick="app.selectGameAndPlay('bicycle')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-teal-950/80 to-slate-900 border border-teal-500/40 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
+            <div class="absolute top-3 right-3 bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
+              Xe Đạp Hướng Phải 🚴
+            </div>
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+                🚴
+              </div>
+              <h3 class="text-xl font-bold text-white group-hover:text-teal-300 transition flex items-center gap-2">
+                Đua Xe Đạp Thể Thao
+              </h3>
+              <p class="text-xs text-slate-300 line-clamp-2">
+                Các tay đua xe đạp quay mặt về bên phải, guồng chân đạp dồn dập trên các cung đường ven hồ và đèo núi.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-teal-400">
+              <span class="flex items-center gap-1"><i class="fa-solid fa-bicycle"></i> Hồ Gươm & Đèo Hải Vân</span>
+              <span class="bg-teal-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 transition font-extrabold">
+                VÀO ĐƯỜNG ĐUA <i class="fa-solid fa-play text-[10px]"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 5. ĐUA MOTO GP -->
+          <div onclick="app.selectGameAndPlay('motogp')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-orange-950/80 to-slate-900 border border-orange-500/40 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
+            <div class="absolute top-3 right-3 bg-orange-500/20 text-orange-300 border border-orange-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
+              Tốc Độ Siêu Moto 🏍️
+            </div>
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+                🏍️
+              </div>
+              <h3 class="text-xl font-bold text-white group-hover:text-orange-300 transition flex items-center gap-2">
+                Đua Moto GP Siêu Tốc
+              </h3>
+              <p class="text-xs text-slate-300 line-clamp-2">
+                Tiếng bô gầm xé gió, nghiêng người ôm cua trên đường đua Monza Speed Ring và Red Bull Ring.
+              </p>
+            </div>
+            <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-orange-400">
+              <span class="flex items-center gap-1"><i class="fa-solid fa-gauge-high"></i> Cung đường bo cua</span>
+              <span class="bg-orange-500 text-slate-950 px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 transition font-extrabold">
+                VÀO ĐƯỜNG ĐUA <i class="fa-solid fa-play text-[10px]"></i>
+              </span>
+            </div>
+          </div>
+
+          <!-- 6. VÒNG QUAY MAY MẮN (Bonus Wheel) -->
+          <div onclick="app.selectGameAndPlay('wheel')" class="game-card-hover cursor-pointer rounded-2xl bg-gradient-to-b from-purple-950/80 to-slate-900 border border-purple-500/40 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
+            <div class="absolute top-3 right-3 bg-purple-500/20 text-purple-300 border border-purple-400/40 text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full">
+              Vòng Quay 🎡
+            </div>
+            <div class="space-y-3">
+              <div class="w-14 h-14 rounded-2xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
                 🎡
               </div>
               <h3 class="text-xl font-bold text-white group-hover:text-purple-300 transition flex items-center gap-2">
                 Vòng Quay May Mắn
               </h3>
               <p class="text-xs text-slate-300 line-clamp-2">
-                Kim quay chuyển động quay đều theo tiếng tíc tắc dồn dập, dừng lại bất ngờ ngay tại tên học sinh may mắn.
+                Bánh xe quay 360 độ âm thanh tíc tắc dồn dập, dừng lại bất ngờ ngay tên học sinh may mắn.
               </p>
             </div>
             <div class="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-purple-400">
-              <span class="flex items-center gap-1"><i class="fa-solid fa-spinner"></i> Vòng quay 360°</span>
+              <span class="flex items-center gap-1"><i class="fa-solid fa-rotate"></i> Quay thưởng ngẫu nhiên</span>
               <span class="bg-purple-500 text-white px-3 py-1.5 rounded-xl flex items-center gap-1 group-hover:bg-amber-400 group-hover:text-slate-950 transition font-extrabold">
-                BẮT ĐẦU <i class="fa-solid fa-play text-[10px]"></i>
+                VÀO ĐƯỜNG ĐUA <i class="fa-solid fa-play text-[10px]"></i>
               </span>
             </div>
           </div>
@@ -471,33 +440,31 @@
         </div>
       </div>
 
-      <!-- Class list cards -->
       <div id="classListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- Rendered by JS -->
       </div>
     </section>
 
     <!-- ================= 4. VIEW: ADMIN MANAGEMENT ================= -->
     <section id="view-admin" class="view hidden max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      <div class="bg-gradient-to-r from-purple-900/60 via-slate-900 to-slate-900 border border-purple-500/30 rounded-2xl p-6 shadow-xl">
+      <div class="bg-gradient-to-r from-purple-950 via-slate-900 to-slate-900 border border-purple-500/30 rounded-2xl p-6 shadow-xl">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-400/30 mb-2">
-              <i class="fa-solid fa-shield-halved"></i> QUYỀN HẠN TỐI CAO
+              <i class="fa-solid fa-shield-halved"></i> QUYỀN HẠN ADMIN
             </div>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-white">
               Bảng Quản Trị Hệ Thống (Admin thaytuan)
             </h2>
             <p class="text-slate-300 text-xs sm:text-sm mt-1">
-              Xem toàn bộ danh sách giáo viên đã đăng ký tài khoản, quản lý dữ liệu và giám sát hệ thống.
+              Xem toàn bộ danh sách giáo viên đã đăng ký tài khoản, quản lý dữ liệu và sao lưu hệ thống.
             </p>
           </div>
           <div class="flex items-center gap-3">
-            <div class="bg-slate-800 border border-slate-700 rounded-xl p-3 text-center min-w-[100px]">
+            <div class="bg-slate-850 border border-slate-700 rounded-xl p-3 text-center min-w-[100px]">
               <div id="adminStatTeacherCount" class="text-2xl font-black text-amber-400">0</div>
               <div class="text-[11px] text-slate-400 font-semibold">Giáo Viên</div>
             </div>
-            <div class="bg-slate-800 border border-slate-700 rounded-xl p-3 text-center min-w-[100px]">
+            <div class="bg-slate-850 border border-slate-700 rounded-xl p-3 text-center min-w-[100px]">
               <div id="adminStatClassCount" class="text-2xl font-black text-cyan-400">0</div>
               <div class="text-[11px] text-slate-400 font-semibold">Lớp Học</div>
             </div>
@@ -505,15 +472,14 @@
         </div>
       </div>
 
-      <!-- Teachers List Table -->
-      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
+      <div class="bg-slate-900/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
         <div class="p-4 border-b border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-3">
           <h3 class="font-extrabold text-base text-white flex items-center gap-2">
             <i class="fa-solid fa-chalkboard-user text-amber-400"></i> Danh Sách Giáo Viên Đăng Ký
           </h3>
           <div class="flex items-center gap-2 w-full sm:w-auto">
-            <input type="text" id="adminTeacherSearch" oninput="adminPanel.filterTeachers(this.value)" placeholder="Tìm kiếm giáo viên..." class="w-full sm:w-64 bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-purple-400" />
-            <button onclick="adminPanel.exportDataJSON()" title="Xuất dữ liệu dự phòng JSON" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold rounded-xl flex items-center gap-1">
+            <input type="text" id="adminTeacherSearch" oninput="adminPanel.filterTeachers(this.value)" placeholder="Tìm kiếm giáo viên..." class="w-full sm:w-64 bg-slate-800 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 outline-none focus:border-purple-400" />
+            <button onclick="adminPanel.exportDataJSON()" title="Xuất dữ liệu JSON" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl flex items-center gap-1 border border-slate-700">
               <i class="fa-solid fa-download"></i> Sao Lưu
             </button>
           </div>
@@ -521,7 +487,7 @@
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs sm:text-sm text-slate-300">
-            <thead class="bg-slate-900/80 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-700">
+            <thead class="bg-slate-950 text-slate-400 uppercase text-[11px] font-bold border-b border-slate-700">
               <tr>
                 <th class="px-4 py-3">STT</th>
                 <th class="px-4 py-3">Họ và Tên</th>
@@ -533,8 +499,7 @@
                 <th class="px-4 py-3 text-right">Thao Tác</th>
               </tr>
             </thead>
-            <tbody id="adminTeacherTableBody" class="divide-y divide-slate-700/60">
-              <!-- Rendered by JS -->
+            <tbody id="adminTeacherTableBody" class="divide-y divide-slate-800">
             </tbody>
           </table>
         </div>
@@ -549,92 +514,119 @@
             <i class="fa-solid fa-clock-rotate-left text-emerald-400"></i> Nhật Ký Học Sinh Đã Gọi Lên Bảng
           </h2>
           <p class="text-xs sm:text-sm text-slate-400">
-            Theo dõi danh sách các bạn đã được gọi trong tiết học hôm nay, điểm số cộng và thời gian gọi.
+            Theo dõi danh sách các bạn đã được gọi trong tiết học hôm nay, điểm số và thời gian gọi.
           </p>
         </div>
-        <button onclick="historyManager.clearHistory()" class="px-3 py-1.5 bg-rose-900/40 hover:bg-rose-800/60 text-rose-300 border border-rose-500/30 rounded-xl text-xs font-bold flex items-center gap-1.5">
+        <button onclick="historyManager.clearHistory()" class="px-3 py-1.5 bg-rose-950/60 hover:bg-rose-900/80 text-rose-300 border border-rose-500/30 rounded-xl text-xs font-bold flex items-center gap-1.5">
           <i class="fa-solid fa-trash-can"></i> Xóa Lịch Sử Buổi Học
         </button>
       </div>
 
-      <div class="bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl overflow-hidden">
-        <div id="historyList" class="divide-y divide-slate-700">
-          <!-- Rendered by JS -->
-        </div>
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+        <div id="historyList" class="divide-y divide-slate-800"></div>
       </div>
     </section>
 
     <!-- ================= 6. VIEW: RACE ARENA (THE ACTUAL GAME) ================= -->
-    <section id="view-arena" class="view hidden flex-1 flex flex-col justify-between w-full h-full min-h-[calc(100vh-4rem)] p-2 sm:p-4 bg-slate-950 relative overflow-hidden select-none">
+    <section id="view-arena" class="view hidden flex-1 flex flex-col justify-between w-full h-[calc(100vh-4rem)] bg-slate-950 relative overflow-hidden select-none">
       
-      <!-- Top Status Bar in Arena -->
-      <div class="relative z-20 flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 border border-slate-800 rounded-2xl px-4 py-2.5 shadow-xl backdrop-blur-md">
-        <div class="flex items-center space-x-3">
-          <button onclick="arena.quitRace()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
-            <i class="fa-solid fa-arrow-left"></i> Rời Đường Đua
+      <!-- TOP ARENA CONTROL BAR (EXACTLY LIKE USER'S REFERENCE SCREENSHOTS) -->
+      <div class="relative z-30 flex flex-wrap items-center justify-between gap-2 bg-slate-900/90 border-b border-slate-800 px-4 py-2.5 shadow-xl backdrop-blur-md">
+        
+        <!-- Left: Badge & Race Info -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <button onclick="arena.quitRace()" title="Quay lại sảnh" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-arrow-left"></i> Sảnh
           </button>
-          <div>
-            <div id="arenaGameTitle" class="text-sm sm:text-base font-extrabold text-amber-400 flex items-center gap-2">
-              🏎️ ĐUA XE F1
-            </div>
-            <div id="arenaClassSubtitle" class="text-[11px] text-slate-400 font-medium">
-              Lớp: 10A1 (35 học sinh tham gia)
-            </div>
+          
+          <div id="arenaGameBadge" class="px-3 py-1.5 rounded-xl bg-slate-800 text-white font-extrabold text-xs sm:text-sm flex items-center gap-2 border border-slate-700 shadow-inner">
+            🦆 ĐUA VỊT TRÊN SÔNG
+          </div>
+
+          <div id="arenaRoundBadge" class="hidden sm:inline-flex px-2.5 py-1 rounded-lg bg-rose-950/60 text-rose-300 text-xs font-bold border border-rose-800/40">
+            🔥 ĐUA GAY CẤN!
           </div>
         </div>
 
-        <!-- Live Commentary & Countdown timer -->
-        <div class="flex items-center gap-4">
-          <div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-800 border border-slate-700 rounded-xl text-xs">
-            <i class="fa-solid fa-bullhorn text-amber-400 animate-bounce"></i>
-            <span id="arenaCommentary" class="font-bold text-slate-200">Đang chuẩn bị xuất phát...</span>
+        <!-- Center: Track Map Selector & Laps & SPACE START BUTTON -->
+        <div class="flex items-center space-x-2">
+          
+          <!-- Track Selector Dropdown -->
+          <div class="relative">
+            <select id="arenaTrackSelect" onchange="arena.changeTrack(this.value)" class="appearance-none bg-slate-800 border border-slate-700 hover:border-amber-400 text-white font-bold text-xs sm:text-sm rounded-xl pl-3 pr-8 py-2 outline-none cursor-pointer">
+              <!-- Options populated by game mode -->
+            </select>
+            <span class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none text-slate-400 text-xs">
+              <i class="fa-solid fa-chevron-down"></i>
+            </span>
           </div>
 
-          <div class="flex items-center gap-2 bg-slate-950 border border-amber-500/40 px-3 py-1 rounded-xl">
-            <i class="fa-solid fa-stopwatch text-amber-400 text-xs"></i>
-            <span id="arenaTimerDisplay" class="font-race text-amber-300 text-lg sm:text-xl tracking-wider">00:15</span>
+          <!-- Laps Selector -->
+          <div class="relative hidden sm:block">
+            <select id="arenaLapsSelect" onchange="arena.changeLaps(this.value)" class="appearance-none bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-xs rounded-xl pl-3 pr-7 py-2 outline-none cursor-pointer">
+              <option value="1">🔄 1 Vòng</option>
+              <option value="2" selected>🔄 2 Vòng</option>
+              <option value="3">🔄 3 Vòng</option>
+            </select>
+            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none text-slate-400 text-[10px]">
+              <i class="fa-solid fa-chevron-down"></i>
+            </span>
           </div>
 
-          <button id="btnArenaStart" onclick="arena.startRace()" class="px-5 py-2 bg-gradient-to-r from-amber-400 to-rose-500 hover:from-amber-500 hover:to-rose-600 text-slate-950 font-black rounded-xl text-sm shadow-lg shadow-amber-500/30 flex items-center gap-2 uppercase tracking-wide transition transform active:scale-95">
-            <i class="fa-solid fa-play"></i> BẮT ĐẦU CHẠY
+          <!-- PROMINENT SPACE BUTTON -->
+          <button id="btnArenaSpaceAction" onclick="arena.triggerSpaceAction()" class="px-4 sm:px-5 py-2 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/30 flex items-center gap-2 transform active:scale-95 transition">
+            <span class="px-1.5 py-0.5 rounded bg-black/30 text-white text-[10px] font-mono font-black">Space</span>
+            <span id="btnSpaceText">Đua ngay</span>
+          </button>
+        </div>
+
+        <!-- Right: Audio, Fullscreen, Reset -->
+        <div class="flex items-center space-x-1.5">
+          <button onclick="soundEngine.toggleSound()" title="Bật/Tắt Âm Thanh" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-volume-high text-amber-400"></i> <span class="hidden md:inline">Âm thanh</span>
+          </button>
+          
+          <button onclick="app.toggleFullscreen()" title="Toàn màn hình máy chiếu" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-expand text-cyan-400"></i> <span class="hidden md:inline">Toàn màn hình</span>
+          </button>
+
+          <button onclick="arena.resetCurrentRace()" title="Đặt lại vòng đua" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold flex items-center gap-1.5 border border-slate-700">
+            <i class="fa-solid fa-rotate-left text-rose-400"></i> <span class="hidden md:inline">Đặt lại</span>
           </button>
         </div>
       </div>
 
-      <!-- Center: Dynamic Game Canvas / Stage Area -->
-      <div id="raceStageWrapper" class="flex-1 w-full my-2 relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-slate-900 flex items-center justify-center min-h-[460px]">
-        <!-- Canvas for dynamic rendering of racers -->
+      <!-- MAIN CANVAS STAGE -->
+      <div id="raceStageWrapper" class="flex-1 w-full h-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
+        <!-- Interactive 2D Dynamic Canvas -->
         <canvas id="raceCanvas" class="w-full h-full block"></canvas>
 
         <!-- Big 3-2-1-GO Countdown Overlay -->
-        <div id="countdownOverlay" class="hidden absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div id="countdownOverlay" class="hidden absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm pointer-events-none">
           <div id="countdownText" class="font-race text-7xl sm:text-9xl text-amber-400 animate-pulse text-shadow-lg scale-125 transition-transform duration-300">
             3
           </div>
         </div>
 
-        <!-- Live Leaderboard Ticker (Top 3 currently leading) -->
-        <div id="liveLeaderboard" class="absolute bottom-3 left-3 z-20 hidden bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs backdrop-blur-md shadow-lg max-w-xs">
-          <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
-            <i class="fa-solid fa-ranking-star text-amber-400"></i> Đang dẫn đầu:
+        <!-- BOTTOM-LEFT WIDGET: TOP DẪN ĐẦU (EXACTLY AS SEEN IN IMAGE 3) -->
+        <div id="topLeaderboardWidget" class="absolute bottom-4 left-4 z-20 bg-slate-900/90 border border-slate-700/90 rounded-2xl p-3 text-xs backdrop-blur-md shadow-2xl w-48 sm:w-56 pointer-events-none">
+          <div class="text-[11px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5 pb-2 border-b border-slate-800">
+            <i class="fa-solid fa-trophy"></i> TOP DẪN ĐẦU
           </div>
-          <div id="leaderboardNames" class="space-y-0.5 font-semibold text-slate-200">
-            <!-- Populated during race -->
+          <div id="topLeaderboardList" class="space-y-1.5 pt-2">
+            <!-- Rendered by live animation loop -->
           </div>
         </div>
+
       </div>
 
     </section>
 
   </main>
 
-  <!-- ================= MODAL 1: WINNER CELEBRATION MODAL ================= -->
+  <!-- ================= MODAL: WINNER CELEBRATION ================= -->
   <div id="winnerModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border-2 border-amber-400/80 rounded-3xl p-6 sm:p-8 text-center shadow-2xl relative overflow-hidden transform scale-95 animate-bounce-slow">
-      <div class="absolute -top-20 -left-20 w-44 h-44 bg-amber-500/30 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-20 -right-20 w-44 h-44 bg-rose-500/30 rounded-full blur-3xl pointer-events-none"></div>
-
-      <!-- Trophy Icon -->
+    <div class="max-w-md w-full bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950 border-2 border-amber-400/80 rounded-3xl p-6 sm:p-8 text-center shadow-2xl relative overflow-hidden transform scale-95">
       <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-amber-400 to-yellow-200 text-slate-950 flex items-center justify-center text-4xl shadow-xl shadow-amber-500/40 mb-4 animate-bounce">
         🏆
       </div>
@@ -646,20 +638,18 @@
         Học sinh được gọi lên bảng hôm nay là:
       </h3>
 
-      <!-- Student Big Name -->
       <div id="winnerName" class="text-3xl sm:text-4xl font-extrabold text-white py-3 px-4 rounded-2xl bg-amber-500/20 border border-amber-400/50 shadow-inner font-display text-shadow-sm mb-3">
         Nguyễn Văn A
       </div>
 
       <div id="winnerClassDetails" class="text-xs text-slate-400 mb-6">
-        Lớp 10A1 • Về đích ở giây thứ 14.8
+        Lớp 10A1 • Về đích đầu tiên!
       </div>
 
-      <!-- Action Buttons -->
       <div class="space-y-2.5">
         <div class="grid grid-cols-2 gap-2">
           <button onclick="arena.awardPoints(1)" class="py-2.5 px-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow">
-            <i class="fa-solid fa-star text-yellow-300"></i> Ghi nhận +1 Điểm
+            <i class="fa-solid fa-star text-yellow-300"></i> +1 Điểm Thưởng
           </button>
           <button onclick="arena.excludeCurrentWinner()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition border border-slate-700">
             <i class="fa-solid fa-user-slash text-rose-400"></i> Loại Lượt Sau
@@ -678,7 +668,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 2: CREATE / EDIT CLASS & EXCEL UPLOAD ================= -->
+  <!-- ================= MODAL: CREATE / EDIT CLASS & EXCEL ================= -->
   <div id="classModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="max-w-2xl w-full bg-slate-900 border border-slate-700 rounded-3xl p-6 shadow-2xl max-h-[90vh] flex flex-col">
       <div class="flex items-center justify-between pb-4 border-b border-slate-800">
@@ -694,13 +684,11 @@
       </div>
 
       <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
-        <!-- Class Name -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Tên Lớp Học *</label>
-          <input type="text" id="inputClassName" placeholder="Ví dụ: 10A1, 11 Chuyên Hóa, Lớp Lý Thầy Tuấn..." class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-amber-400 outline-none font-semibold" />
+          <input type="text" id="inputClassName" placeholder="Ví dụ: 10A1, 11 Chuyên Hóa, Lớp Thầy Tuấn..." class="w-full px-3 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white focus:ring-2 focus:ring-amber-400 outline-none font-semibold" />
         </div>
 
-        <!-- Excel File Upload Box -->
         <div>
           <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Tải lên file Excel (.xlsx, .xls, .csv)</label>
           <div class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer bg-slate-800/40 transition relative group" onclick="document.getElementById('excelFileInput').click()">
@@ -709,22 +697,19 @@
               <i class="fa-solid fa-file-excel"></i>
             </div>
             <div class="text-sm font-bold text-slate-200">Nhấn để chọn file Excel từ máy tính</div>
-            <p class="text-xs text-slate-400 mt-1">Hệ thống sẽ tự động quét cột "Họ và Tên", "Họ tên", "Tên" hoặc cột đầu tiên.</p>
+            <p class="text-xs text-slate-400 mt-1">Hệ thống tự động đọc cột Họ và Tên học sinh.</p>
           </div>
         </div>
 
-        <!-- Manual Paste Names Area -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="text-xs font-semibold text-slate-300 uppercase">Hoặc Dán Danh Sách Tên (Mỗi dòng 1 tên)</label>
             <span id="parsedStudentCount" class="text-xs font-bold text-amber-400">0 học sinh</span>
           </div>
           <textarea id="inputStudentList" rows="6" oninput="classManager.updateParsedCount()" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Hoàng C&#10;Phạm Minh D..." class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl text-xs sm:text-sm text-white font-mono focus:ring-2 focus:ring-amber-400 outline-none leading-relaxed"></textarea>
-          <p class="text-[11px] text-slate-500 mt-1">Có thể copy một cột họ tên từ Excel/Word rồi dán trực tiếp vào khung trên.</p>
         </div>
       </div>
 
-      <!-- Modal Footer -->
       <div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
         <button onclick="classManager.closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-sm font-semibold">
           Hủy bỏ
@@ -736,7 +721,7 @@
     </div>
   </div>
 
-  <!-- ================= MODAL 3: VIEW CLASS STUDENTS ================= -->
+  <!-- ================= MODAL: VIEW CLASS STUDENTS ================= -->
   <div id="viewStudentsModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="max-w-xl w-full bg-slate-900 border border-slate-700 rounded-3xl p-6 shadow-2xl max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -749,12 +734,10 @@
         </button>
       </div>
 
-      <div class="flex-1 overflow-y-auto py-3 space-y-2" id="viewStudentsList">
-        <!-- Rendered by JS -->
-      </div>
+      <div class="flex-1 overflow-y-auto py-3 space-y-2" id="viewStudentsList"></div>
 
       <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-        <span>Bấm vào dấu gạch chéo để loại tạm thời khỏi vòng đua</span>
+        <span>Bấm dấu gạch chéo để loại tạm thời khỏi lượt đua</span>
         <button onclick="classManager.resetExclusionsForCurrentClass()" class="text-amber-400 hover:underline font-semibold">
           Khôi phục tất cả
         </button>
@@ -766,7 +749,6 @@
   <script>
     /**
      * SOUND SYNTHESIZER ENGINE (Web Audio API)
-     * Provides rich dynamic sounds without external mp3 files
      */
     class SoundEngine {
       constructor() {
@@ -777,9 +759,7 @@
       init() {
         if (!this.ctx) {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) {
-            this.ctx = new AudioContext();
-          }
+          if (AudioContext) this.ctx = new AudioContext();
         }
         if (this.ctx && this.ctx.state === 'suspended') {
           this.ctx.resume();
@@ -806,15 +786,13 @@
           const gain = this.ctx.createGain();
           osc.type = type;
           osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-          gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start();
           osc.stop(this.ctx.currentTime + duration);
-        } catch (e) {
-          console.warn('Audio play error', e);
-        }
+        } catch (e) {}
       }
 
       playCountdownBeep(isFinal = false) {
@@ -828,7 +806,7 @@
       playVictoryFanfare() {
         if (!this.enabled) return;
         this.init();
-        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        const notes = [523.25, 659.25, 783.99, 1046.50];
         notes.forEach((freq, idx) => {
           setTimeout(() => {
             this.playBeep(freq, 0.25, 'triangle');
@@ -836,7 +814,7 @@
         });
       }
 
-      playRaceEngine() {
+      playEngineRoar() {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
@@ -844,9 +822,9 @@
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(110, this.ctx.currentTime);
-          osc.frequency.linearRampToValueAtTime(220, this.ctx.currentTime + 0.3);
-          gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+          osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(240, this.ctx.currentTime + 0.3);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
           gain.gain.linearRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
@@ -861,12 +839,11 @@
     /**
      * STORAGE & STATE MANAGER
      */
-    const STORAGE_KEY_USERS = 'GOITEN_USERS_V2';
-    const STORAGE_KEY_CLASSES = 'GOITEN_CLASSES_V2';
-    const STORAGE_KEY_HISTORY = 'GOITEN_HISTORY_V2';
-    const STORAGE_KEY_SESSION = 'GOITEN_SESSION_V2';
+    const STORAGE_KEY_USERS = 'GOITEN_USERS_V3';
+    const STORAGE_KEY_CLASSES = 'GOITEN_CLASSES_V3';
+    const STORAGE_KEY_HISTORY = 'GOITEN_HISTORY_V3';
+    const STORAGE_KEY_SESSION = 'GOITEN_SESSION_V3';
 
-    // Default Seed Data
     const DEFAULT_ADMIN = {
       id: 'admin_thaytuan',
       username: 'thaytuan',
@@ -882,14 +859,18 @@
       {
         id: 'cls_10a1',
         ownerUsername: 'thaytuan',
-        name: 'Lớp 10A1 (Toán Học)',
+        name: 'Lớp 10A1 (56 Chiến Mã)',
         createdAt: '2024-09-01',
         students: [
-          'Nguyễn Gia Bảo', 'Trần Bảo Anh', 'Lê Hoàng Long', 'Phạm Minh Châu',
-          'Vũ Phương Linh', 'Đỗ Quang Dũng', 'Hoàng Ngọc Ánh', 'Bùi Tuấn Kiệt',
-          'Đặng Thảo Vy', 'Ngô Đình Trí', 'Dương Quỳnh Nga', 'Lý Quốc Huy',
-          'Mai Trúc Lam', 'Phan Văn Đức', 'Trịnh Cẩm Tú', 'Hà Đăng Khoa',
-          'Lương Khánh Vy', 'Cao Tiến Đạt', 'Hồ Mỹ Uyên', 'Võ Hoàng Nam'
+          'Võ Ngọc Lộc', 'Võ Thị Thùy Trang', 'Lê Thừa Anh Đức', 'Lê Đức Anh',
+          'Nguyễn Gia Bảo', 'Lương Ngọc Minh', 'Nguyễn Hoàng Yến Nhi', 'Trần Hoàng Anh Thư',
+          'Đặng Thị Thảo Vy', 'Nguyễn Ngọc Thảo Quyên', 'Trần Thúy Vy', 'Đào Thị Ngọc Hân',
+          'Võ Thị Ngọc Ánh', 'Nguyễn Thị Kiều Oanh', 'Nguyễn Cẩm Hồng Ngọc', 'Nguyễn Duy Khương',
+          'Nguyễn Sỹ Tấn', 'Đỗ Vũ Văn Phúc', 'Phạm Ngọc Như Hảo', 'Nguyễn Phương Kim',
+          'Thanh Tuấn', 'Đình Tùng', 'Hoàng Vinh', 'Tuấn Vũ', 'Thảo Vy', 'Thủy Uyên',
+          'Nhân Văn', 'Khánh Linh', 'Anh Khoa', 'Bảo Khang', 'Kim Huyên', 'Như Hân',
+          'Minh Điền', 'Đức Duy', 'Hạnh Duyên', 'Ngọc Hân', 'Hoàng Khang', 'Gia Khang',
+          'Trọng Nghĩa', 'Quân Minh', 'Ngọc Minh', 'Hồng Nhung', 'Phương Thảo', 'Thanh Thủy'
         ],
         excludedStudents: []
       },
@@ -914,20 +895,17 @@
       currentUser: null,
 
       init() {
-        // Ensure Admin exists
         let users = this.getUsers();
         if (!users.some(u => u.username === 'thaytuan')) {
           users.unshift(DEFAULT_ADMIN);
           this.saveUsers(users);
         }
 
-        // Ensure sample classes exist if empty
         let classes = classManager.getAllClasses();
         if (!classes || classes.length === 0) {
           classManager.saveAllClasses(SAMPLE_CLASSES);
         }
 
-        // Check active session
         const sessionUsername = localStorage.getItem(STORAGE_KEY_SESSION);
         if (sessionUsername) {
           const user = users.find(u => u.username === sessionUsername);
@@ -937,7 +915,6 @@
           }
         }
 
-        // Default login as Admin for instant convenience or show login
         const defaultAdmin = users.find(u => u.username === 'thaytuan');
         if (defaultAdmin) {
           this.setCurrentUser(defaultAdmin);
@@ -964,9 +941,7 @@
         this.updateNavUI();
         gameConfig.populateClassDropdown();
         classManager.renderClasses();
-        if (user.role === 'admin') {
-          adminPanel.render();
-        }
+        if (user.role === 'admin') adminPanel.render();
       },
 
       logout() {
@@ -981,11 +956,8 @@
         const registerForm = document.getElementById('registerForm');
         const btnL = document.getElementById('tabBtnLogin');
         const btnR = document.getElementById('tabBtnRegister');
-        const loginErr = document.getElementById('loginError');
-        const regMsg = document.getElementById('registerMsg');
-
-        loginErr.classList.add('hidden');
-        regMsg.classList.add('hidden');
+        document.getElementById('loginError').classList.add('hidden');
+        document.getElementById('registerMsg').classList.add('hidden');
 
         if (tab === 'login') {
           loginForm.classList.remove('hidden');
@@ -1014,7 +986,7 @@
           this.setCurrentUser(found);
           app.navigate('home');
         } else {
-          errBox.textContent = 'Tên đăng nhập hoặc mật khẩu không chính xác!';
+          errBox.textContent = 'Tên đăng nhập hoặc mật khẩu không đúng!';
           errBox.classList.remove('hidden');
           soundEngine.playBeep(220, 0.3, 'sawtooth');
         }
@@ -1023,7 +995,7 @@
       handleRegister(e) {
         e.preventDefault();
         const fullName = document.getElementById('regFullName').value.trim();
-        const subject = document.getElementById('regSubject').value.trim() || 'Giáo viên bộ môn';
+        const subject = document.getElementById('regSubject').value.trim() || 'Giáo viên';
         const contact = document.getElementById('regContact').value.trim() || 'Chưa cập nhật';
         const username = document.getElementById('regUsername').value.trim().toLowerCase();
         const password = document.getElementById('regPassword').value.trim();
@@ -1031,7 +1003,7 @@
 
         if (!fullName || !username || !password) {
           msgBox.className = 'text-xs font-medium p-2.5 rounded-lg border bg-rose-950/40 text-rose-300 border-rose-800/40';
-          msgBox.textContent = 'Vui lòng điền đầy đủ các thông tin bắt buộc!';
+          msgBox.textContent = 'Vui lòng điền đầy đủ các thông tin!';
           msgBox.classList.remove('hidden');
           return;
         }
@@ -1039,7 +1011,7 @@
         const users = this.getUsers();
         if (users.some(u => u.username.toLowerCase() === username)) {
           msgBox.className = 'text-xs font-medium p-2.5 rounded-lg border bg-rose-950/40 text-rose-300 border-rose-800/40';
-          msgBox.textContent = 'Tên đăng nhập này đã tồn tại, vui lòng chọn tên khác!';
+          msgBox.textContent = 'Tên đăng nhập đã tồn tại!';
           msgBox.classList.remove('hidden');
           return;
         }
@@ -1062,9 +1034,8 @@
         this.saveUsers(users);
 
         msgBox.className = 'text-xs font-medium p-2.5 rounded-lg border bg-emerald-950/40 text-emerald-300 border-emerald-800/40';
-        msgBox.textContent = 'Đăng ký tài khoản thành công! Tự động đăng nhập...';
+        msgBox.textContent = 'Đăng ký thành công! Đang đăng nhập...';
         msgBox.classList.remove('hidden');
-
         soundEngine.playVictoryFanfare();
 
         setTimeout(() => {
@@ -1094,7 +1065,7 @@
               </div>
               <div class="hidden sm:block text-left pr-1">
                 <div class="text-xs font-extrabold text-white leading-tight">${this.escapeHTML(this.currentUser.fullName)}</div>
-                <div class="text-[10px] text-slate-400 font-medium">${this.currentUser.role === 'admin' ? 'Quản Trị Viên' : 'Giáo Viên'}</div>
+                <div class="text-[10px] text-slate-400 font-medium">${this.currentUser.role === 'admin' ? 'Admin' : 'Giáo Viên'}</div>
               </div>
               <button onclick="auth.logout()" title="Đăng xuất" class="text-slate-400 hover:text-rose-400 pl-1">
                 <i class="fa-solid fa-right-from-bracket text-xs"></i>
@@ -1137,7 +1108,6 @@
       getUserClasses() {
         const all = this.getAllClasses();
         if (!auth.currentUser) return all;
-        // Admin sees all classes, teacher sees their own + sample classes
         if (auth.currentUser.role === 'admin') return all;
         return all.filter(c => c.ownerUsername === auth.currentUser.username || c.ownerUsername === 'thaytuan');
       },
@@ -1153,7 +1123,7 @@
               <i class="fa-solid fa-folder-open text-5xl mb-3 text-slate-600"></i>
               <p class="text-base font-semibold text-slate-400">Chưa có lớp học nào được tạo.</p>
               <button onclick="classManager.openCreateModal()" class="mt-3 px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs hover:bg-emerald-400">
-                + Thêm Lớp Đầu Tiên Ngay
+                + Thêm Lớp Đầu Tiên
               </button>
             </div>
           `;
@@ -1166,7 +1136,7 @@
           const active = total - excluded;
 
           return `
-            <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-5 flex flex-col justify-between shadow-lg hover:border-slate-600 transition">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between shadow-lg hover:border-slate-700 transition">
               <div>
                 <div class="flex items-start justify-between gap-2 mb-2">
                   <h4 class="font-extrabold text-lg text-white tracking-tight flex items-center gap-2">
@@ -1176,7 +1146,7 @@
                     ${auth.escapeHTML(cls.name)}
                   </h4>
                   <div class="flex items-center gap-1">
-                    <button onclick="classManager.editClass('${cls.id}')" title="Chỉnh sửa lớp" class="w-7 h-7 rounded-lg bg-slate-700/80 hover:bg-slate-600 text-slate-300 flex items-center justify-center text-xs">
+                    <button onclick="classManager.editClass('${cls.id}')" title="Chỉnh sửa lớp" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-xs">
                       <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     <button onclick="classManager.deleteClass('${cls.id}')" title="Xóa lớp" class="w-7 h-7 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-rose-400 flex items-center justify-center text-xs">
@@ -1189,7 +1159,7 @@
                   Tạo ngày: ${cls.createdAt || 'Mới tạo'} • Tạo bởi: <strong>${auth.escapeHTML(cls.ownerUsername || 'thaytuan')}</strong>
                 </p>
 
-                <div class="grid grid-cols-2 gap-2 bg-slate-900/80 p-3 rounded-xl border border-slate-700/50 mb-4 text-center">
+                <div class="grid grid-cols-2 gap-2 bg-slate-950 p-3 rounded-xl border border-slate-800 mb-4 text-center">
                   <div>
                     <div class="text-lg font-black text-amber-400">${total}</div>
                     <div class="text-[10px] text-slate-400 font-bold uppercase">Tổng Học Sinh</div>
@@ -1201,8 +1171,8 @@
                 </div>
               </div>
 
-              <div class="flex items-center justify-between pt-3 border-t border-slate-700/60 gap-2">
-                <button onclick="classManager.viewStudentsModal('${cls.id}')" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold rounded-xl flex items-center gap-1.5">
+              <div class="flex items-center justify-between pt-3 border-t border-slate-800 gap-2">
+                <button onclick="classManager.viewStudentsModal('${cls.id}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl flex items-center gap-1.5">
                   <i class="fa-solid fa-list-ol"></i> Xem Danh Sách
                 </button>
                 <button onclick="classManager.selectForGame('${cls.id}')" class="px-3.5 py-1.5 bg-gradient-to-r from-amber-400 to-rose-500 hover:from-amber-500 hover:to-rose-600 text-slate-950 text-xs font-black rounded-xl flex items-center gap-1.5 shadow">
@@ -1260,15 +1230,13 @@
             const json = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
 
             if (!json || json.length === 0) {
-              alert('File Excel trống hoặc không đọc được dữ liệu!');
+              alert('File Excel trống hoặc không đọc được!');
               return;
             }
 
-            // Heuristic detection for student names column
             let nameColIdx = -1;
             let startRow = 0;
 
-            // Search header row
             for (let r = 0; r < Math.min(json.length, 10); r++) {
               const row = json[r];
               for (let c = 0; c < row.length; c++) {
@@ -1282,9 +1250,8 @@
               if (nameColIdx !== -1) break;
             }
 
-            // Fallback: search first column with Vietnamese word patterns
             if (nameColIdx === -1) {
-              nameColIdx = 1; // Often Column B (STT is Col A, Name is Col B)
+              nameColIdx = 1;
               if (!json[0] || json[0].length <= 1) nameColIdx = 0;
               startRow = 1;
             }
@@ -1294,7 +1261,6 @@
               const row = json[r];
               if (!row) continue;
               let name = String(row[nameColIdx] || '').trim();
-              // If name is just a number or empty, check column 0 or 2
               if (!name || /^\d+$/.test(name)) {
                 for (let alt = 0; alt < row.length; alt++) {
                   const altVal = String(row[alt] || '').trim();
@@ -1310,11 +1276,10 @@
             }
 
             if (extractedNames.length === 0) {
-              alert('Không tìm thấy tên học sinh nào trong file Excel. Bạn có thể dán thủ công danh sách vào khung bên dưới!');
+              alert('Không tìm thấy tên học sinh trong file Excel!');
               return;
             }
 
-            // Auto fill class name from file name if empty
             const fileNameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
             const currentClassName = document.getElementById('inputClassName').value.trim();
             if (!currentClassName) {
@@ -1324,11 +1289,11 @@
             document.getElementById('inputStudentList').value = extractedNames.join('\n');
             this.updateParsedCount();
             soundEngine.playVictoryFanfare();
-            alert(`Đã tải thành công ${extractedNames.length} học sinh từ file Excel!`);
+            alert(`Đã nhận ${extractedNames.length} học sinh từ file Excel!`);
 
           } catch(err) {
             console.error(err);
-            alert('Có lỗi khi đọc file Excel. Vui lòng kiểm tra lại định dạng file!');
+            alert('Có lỗi khi đọc file Excel!');
           }
         };
         reader.readAsArrayBuffer(file);
@@ -1344,7 +1309,7 @@
           return;
         }
         if (students.length === 0) {
-          alert('Vui lòng nhập ít nhất 1 học sinh!');
+          alert('Vui lòng nhập danh sách học sinh!');
           return;
         }
 
@@ -1374,22 +1339,17 @@
         this.closeModal();
         this.renderClasses();
         gameConfig.populateClassDropdown();
-        if (auth.currentUser && auth.currentUser.role === 'admin') {
-          adminPanel.render();
-        }
+        if (auth.currentUser && auth.currentUser.role === 'admin') adminPanel.render();
         soundEngine.playBeep(650, 0.15);
       },
 
       deleteClass(classId) {
-        if (!confirm('Bạn có chắc chắn muốn xóa lớp học này không?')) return;
+        if (!confirm('Bạn có chắc muốn xóa lớp học này không?')) return;
         let classes = this.getAllClasses();
         classes = classes.filter(c => c.id !== classId);
         this.saveAllClasses(classes);
         this.renderClasses();
         gameConfig.populateClassDropdown();
-        if (auth.currentUser && auth.currentUser.role === 'admin') {
-          adminPanel.render();
-        }
       },
 
       selectForGame(classId) {
@@ -1411,13 +1371,13 @@
         listDiv.innerHTML = (cls.students || []).map((name, idx) => {
           const isExcluded = (cls.excludedStudents || []).includes(name);
           return `
-            <div class="flex items-center justify-between p-2.5 rounded-xl ${isExcluded ? 'bg-slate-900/50 text-slate-500' : 'bg-slate-800 text-slate-200'} border border-slate-700/60">
+            <div class="flex items-center justify-between p-2.5 rounded-xl ${isExcluded ? 'bg-slate-950/50 text-slate-500' : 'bg-slate-800 text-slate-200'} border border-slate-700/60">
               <span class="text-xs font-semibold flex items-center gap-2">
                 <span class="text-[10px] w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center font-bold text-slate-300">${idx+1}</span>
                 <span class="${isExcluded ? 'line-through' : ''}">${auth.escapeHTML(name)}</span>
               </span>
               <button onclick="classManager.toggleStudentExclusion('${classId}', '${auth.escapeHTML(name)}')" class="text-xs px-2 py-1 rounded-lg ${isExcluded ? 'bg-emerald-900/50 text-emerald-400 hover:bg-emerald-800' : 'bg-rose-900/50 text-rose-400 hover:bg-rose-800'}">
-                ${isExcluded ? '<i class="fa-solid fa-plus"></i> Khôi phục' : '<i class="fa-solid fa-ban"></i> Loại lượt sau'}
+                ${isExcluded ? '<i class="fa-solid fa-plus"></i> Khôi phục' : '<i class="fa-solid fa-ban"></i> Loại'}
               </button>
             </div>
           `;
@@ -1457,12 +1417,12 @@
     };
 
     /**
-     * GAME CONFIGURATION & LOBBY MODULE
+     * GAME CONFIGURATION MODULE
      */
     const gameConfig = {
-      selectedGameMode: 'f1',
+      selectedGameMode: 'duck',
       selectedClassId: null,
-      raceDurationSeconds: 10,
+      laps: 2,
 
       init() {
         this.populateClassDropdown();
@@ -1498,68 +1458,130 @@
         this.selectedClassId = classId;
       },
 
-      setDuration(sec) {
-        this.raceDurationSeconds = sec;
-        const btns = document.querySelectorAll('.duration-btn');
+      setLaps(laps) {
+        this.laps = laps;
+        const btns = document.querySelectorAll('.lap-btn');
         btns.forEach(b => {
-          if (parseInt(b.getAttribute('data-sec')) === sec) {
-            b.className = 'duration-btn py-1.5 text-xs font-bold rounded-lg border border-amber-400 bg-amber-500/20 text-amber-300';
+          if (parseInt(b.getAttribute('data-lap')) === laps) {
+            b.className = 'lap-btn py-1.5 text-xs font-bold rounded-lg border border-amber-400 bg-amber-500/20 text-amber-300';
           } else {
-            b.className = 'duration-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:border-amber-400';
+            b.className = 'lap-btn py-1.5 text-xs font-bold rounded-lg border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400';
           }
         });
       }
     };
 
     /**
-     * ARENA & SIMULATION ENGINE (CANVAS RACING)
+     * ARENA & MULTI-TRACK RACING ENGINE (2D Canvas)
+     * Features:
+     * - River Straight Mode (Ducks & Bicycles facing right, swimming/riding left-to-right)
+     * - Curving Circuit Mode (Spa-Francorchamps, Clover Ireland, Monza, etc.)
+     * - Space key activation
+     * - Top Leaderboard widget
      */
     const arena = {
       canvas: null,
       ctx: null,
-      animationFrameId: null,
-      isRunning: false,
-      isCountdown: false,
+      animId: null,
+      state: 'ready', // 'ready', 'countdown', 'racing', 'finished'
       startTime: 0,
-      targetDuration: 10000,
+      raceDuration: 12000,
+      currentLaps: 2,
+      currentTrackKey: 'spa',
       racers: [],
       winner: null,
       currentClass: null,
+      lilyPads: [],
+
+      // Track Database
+      tracks: {
+        // Duck River tracks
+        duck_mekong: { type: 'river', name: '🌊 Sông Mê Kông Hùng Vĩ', theme: 'river', waterColor: '#0284c7' },
+        duck_dongthap: { type: 'river', name: '🌸 Hồ Sen Đồng Tháp', theme: 'lotus', waterColor: '#0ea5e9' },
+        duck_sakura: { type: 'river', name: '🏞️ Suối Hoa Anh Đào', theme: 'sakura', waterColor: '#0369a1' },
+
+        // F1 circuits
+        f1_spa: { type: 'circuit', name: '🇧🇪 Spa-Francorchamps', theme: 'asphalt', kerbColor: ['#ef4444', '#facc15'], circuitId: 'spa' },
+        f1_monza: { type: 'circuit', name: '🇮🇹 Monza Speed Ring', theme: 'asphalt', kerbColor: ['#ef4444', '#ffffff'], circuitId: 'monza' },
+        f1_monaco: { type: 'circuit', name: '🇲🇨 Monaco Street Circuit', theme: 'asphalt', kerbColor: ['#ef4444', '#ffffff'], circuitId: 'monaco' },
+
+        // Horse race tracks
+        horse_clover: { type: 'circuit', name: '☘️ Cỏ May Mắn Clover (Ireland)', theme: 'turf', kerbColor: ['#ffffff', '#22c55e'], circuitId: 'clover' },
+        horse_sunset: { type: 'circuit', name: '🌸 Sunset Meadow (Hoàng Hôn)', theme: 'sunset', kerbColor: ['#ffffff', '#f43f5e'], circuitId: 'sunset' },
+        horse_sahara: { type: 'circuit', name: '🏜️ Sa Mạc Derby Arena', theme: 'sand', kerbColor: ['#ffffff', '#f59e0b'], circuitId: 'monza' },
+
+        // Bicycle tracks
+        bike_river: { type: 'river', name: '🚴 Đường Ven Hồ Tây (Hướng Phải)', theme: 'road', roadColor: '#334155' },
+        bike_circuit: { type: 'circuit', name: '🏟️ Đấu Trường Velodrome', theme: 'asphalt', kerbColor: ['#3b82f6', '#ffffff'], circuitId: 'monza' },
+
+        // MotoGP tracks
+        motogp_monza: { type: 'circuit', name: '🇮🇹 Monza Grand Prix (300 km/h)', theme: 'asphalt', kerbColor: ['#ef4444', '#facc15'], circuitId: 'monza' },
+        motogp_spa: { type: 'circuit', name: '🇧🇪 Spa Chicane Extreme', theme: 'asphalt', kerbColor: ['#ef4444', '#ffffff'], circuitId: 'spa' }
+      },
 
       init() {
         this.canvas = document.getElementById('raceCanvas');
         this.ctx = this.canvas.getContext('2d');
-        window.addEventListener('resize', () => this.resizeCanvas());
+        window.addEventListener('resize', () => this.resize());
+
+        // Setup keyboard Space listener
+        window.addEventListener('keydown', (e) => {
+          if (e.code === 'Space') {
+            const arenaView = document.getElementById('view-arena');
+            if (arenaView && !arenaView.classList.contains('hidden')) {
+              // Avoid triggering if inside input or textarea
+              if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+              e.preventDefault();
+              this.triggerSpaceAction();
+            }
+          }
+        });
       },
 
-      resizeCanvas() {
+      resize() {
         if (!this.canvas) return;
         const rect = this.canvas.parentElement.getBoundingClientRect();
         this.canvas.width = rect.width;
         this.canvas.height = rect.height;
+        this.generateLilyPads();
       },
 
-      prepareRace(gameMode, classId, durationSec) {
-        this.resizeCanvas();
+      generateLilyPads() {
+        this.lilyPads = [];
+        const w = this.canvas.width || 800;
+        const h = this.canvas.height || 500;
+        for (let i = 0; i < 9; i++) {
+          this.lilyPads.push({
+            x: Math.random() * (w - 120) + 60,
+            y: Math.random() * (h - 160) + 80,
+            radius: 16 + Math.random() * 10,
+            hasFlower: Math.random() > 0.4
+          });
+        }
+      },
+
+      prepareRace(gameMode, classId, laps = 2) {
+        this.resize();
         const classes = classManager.getAllClasses();
         const cls = classes.find(c => c.id === classId) || classes[0];
         if (!cls || !cls.students || cls.students.length === 0) {
-          alert('Lớp học không có học sinh nào! Vui lòng thêm học sinh trước.');
+          alert('Lớp học không có học sinh nào! Vui lòng tạo danh sách trước.');
           app.navigate('classes');
           return false;
         }
 
         this.currentClass = cls;
         gameConfig.selectedGameMode = gameMode;
-        this.targetDuration = (durationSec || 10) * 1000;
+        this.currentLaps = laps || 2;
+        this.state = 'ready';
 
-        // Check excluded students
+        // Filter excluded students
         const excludeCheck = document.getElementById('chkExcludeCalled').checked;
         let availableStudents = [...cls.students];
         if (excludeCheck && cls.excludedStudents && cls.excludedStudents.length > 0) {
           availableStudents = availableStudents.filter(s => !cls.excludedStudents.includes(s));
           if (availableStudents.length === 0) {
-            if (confirm('Tất cả học sinh trong lớp đều đã được gọi một lượt! Bạn có muốn đặt lại danh sách để gọi tiếp không?')) {
+            if (confirm('Tất cả học sinh trong lớp đều đã được gọi! Bạn có muốn đặt lại danh sách để tiếp tục không?')) {
               cls.excludedStudents = [];
               classManager.saveAllClasses(classes);
               availableStudents = [...cls.students];
@@ -1569,79 +1591,100 @@
           }
         }
 
-        // Shuffle students and create racers
+        // Setup available tracks in Dropdown for this Game Mode
+        this.populateTrackDropdown(gameMode);
+
+        // UI Header Updates
+        const modeInfo = this.getModeDisplayInfo(gameMode);
+        document.getElementById('arenaGameBadge').innerHTML = `${modeInfo.icon} ${modeInfo.title.toUpperCase()}`;
+        document.getElementById('arenaRoundBadge').textContent = `[LỚP ${cls.name.toUpperCase()}]`;
+        document.getElementById('btnSpaceText').textContent = 'Đua ngay';
+
+        // Shuffle racers & pick winner
         const shuffled = [...availableStudents].sort(() => 0.5 - Math.random());
-        
-        // Pick one pre-determined winner randomly from available students
         const winnerIndex = Math.floor(Math.random() * shuffled.length);
 
-        const modeData = this.getModeData(gameMode);
-        document.getElementById('arenaGameTitle').innerHTML = `${modeData.icon} ${modeData.title.toUpperCase()}`;
-        document.getElementById('arenaClassSubtitle').textContent = `Lớp: ${cls.name} (${shuffled.length} học sinh tranh tài)`;
-        document.getElementById('arenaCommentary').textContent = 'Sẵn sàng! Bấm BẮT ĐẦU CHẠY để mở đường đua.';
-        document.getElementById('arenaTimerDisplay').textContent = `00:${String(durationSec).padStart(2, '0')}`;
-        document.getElementById('btnArenaStart').classList.remove('hidden');
-        document.getElementById('liveLeaderboard').classList.remove('hidden');
+        const colors = [
+          '#facc15', '#f87171', '#34d399', '#60a5fa', '#c084fc',
+          '#fb923c', '#e879f9', '#38bdf8', '#a3e635', '#f43f5e'
+        ];
 
-        // Create Racers
-        this.racers = shuffled.map((name, i) => {
-          const isTheWinner = (i === winnerIndex);
-          return {
-            name,
-            isWinner: isTheWinner,
-            progress: 0,
-            laneY: 0,
-            speedVariation: 0.8 + Math.random() * 0.4,
-            color: this.getRandomColor(i),
-            emoji: modeData.emoji,
-            avatarBg: this.getRandomBg(i),
-          };
-        });
+        this.racers = shuffled.map((name, i) => ({
+          id: i,
+          name,
+          isWinner: (i === winnerIndex),
+          progress: 0, // 0 to laps
+          laneOffset: (i / Math.max(1, shuffled.length - 1)) - 0.5, // -0.5 to 0.5
+          speedFactor: 0.88 + Math.random() * 0.24,
+          speedBurst: 0,
+          color: colors[i % colors.length],
+          currentRank: i + 1
+        }));
 
-        this.isRunning = false;
         this.winner = null;
-        this.drawStaticScene();
+        this.drawScene();
+        this.updateTopLeaderboard();
         return true;
       },
 
-      getModeData(mode) {
+      getModeDisplayInfo(mode) {
         switch(mode) {
-          case 'duck':
-            return { title: 'Đua Vịt Hồ Nước', icon: '🦆', emoji: '🦆', theme: 'water' };
-          case 'bicycle':
-            return { title: 'Đua Xe Đạp Vòng Quanh', icon: '🚴', emoji: '🚴', theme: 'road' };
-          case 'motogp':
-            return { title: 'Đua Moto GP Đỉnh Cao', icon: '🏍️', emoji: '🏍️', theme: 'tarmac' };
-          case 'horse':
-            return { title: 'Đua Ngựa Thảo Nguyên', icon: '🐎', emoji: '🐎', theme: 'turf' };
-          case 'wheel':
-            return { title: 'Vòng Quay May Mắn', icon: '🎡', emoji: '⭐', theme: 'wheel' };
-          case 'f1':
-          default:
-            return { title: 'Đua Xe Công Thức 1 (F1)', icon: '🏎️', emoji: '🏎️', theme: 'f1' };
+          case 'duck': return { title: 'ĐUA VỊT TRÊN SÔNG', icon: '🦆' };
+          case 'f1': return { title: 'GIẢI ĐUA XE F1', icon: '🏎️' };
+          case 'horse': return { title: 'TRƯỜNG ĐUA NGỰA', icon: '🐎' };
+          case 'bicycle': return { title: 'ĐUA XE ĐẠP', icon: '🚴' };
+          case 'motogp': return { title: 'ĐUA MOTO GP', icon: '🏍️' };
+          case 'wheel': default: return { title: 'VÒNG QUAY MAY MẮN', icon: '🎡' };
         }
       },
 
-      getRandomColor(idx) {
-        const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316'];
-        return colors[idx % colors.length];
-      },
+      populateTrackDropdown(gameMode) {
+        const select = document.getElementById('arenaTrackSelect');
+        select.innerHTML = '';
 
-      getRandomBg(idx) {
-        const bgs = ['#1e293b', '#334155', '#0f172a', '#1e1b4b', '#14532d'];
-        return bgs[idx % bgs.length];
-      },
+        let relevantKeys = [];
+        if (gameMode === 'duck') relevantKeys = ['duck_mekong', 'duck_dongthap', 'duck_sakura'];
+        else if (gameMode === 'f1') relevantKeys = ['f1_spa', 'f1_monza', 'f1_monaco'];
+        else if (gameMode === 'horse') relevantKeys = ['horse_clover', 'horse_sunset', 'horse_sahara'];
+        else if (gameMode === 'bicycle') relevantKeys = ['bike_river', 'bike_circuit'];
+        else if (gameMode === 'motogp') relevantKeys = ['motogp_monza', 'motogp_spa'];
+        else relevantKeys = ['f1_spa', 'duck_mekong'];
 
-      startRace() {
-        if (this.isRunning || this.isCountdown) return;
-        document.getElementById('btnArenaStart').classList.add('hidden');
-        this.runCountdown(() => {
-          this.beginRaceLoop();
+        this.currentTrackKey = relevantKeys[0];
+        relevantKeys.forEach(k => {
+          const track = this.tracks[k];
+          const opt = document.createElement('option');
+          opt.value = k;
+          opt.textContent = track.name;
+          select.appendChild(opt);
         });
       },
 
-      runCountdown(callback) {
-        this.isCountdown = true;
+      changeTrack(trackKey) {
+        this.currentTrackKey = trackKey;
+        this.drawScene();
+      },
+
+      changeLaps(laps) {
+        this.currentLaps = parseInt(laps) || 2;
+        this.drawScene();
+      },
+
+      triggerSpaceAction() {
+        if (this.state === 'ready') {
+          this.startCountdown();
+        } else if (this.state === 'racing') {
+          // Pause or speed burst
+        } else if (this.state === 'finished') {
+          this.resetCurrentRace();
+          this.startCountdown();
+        }
+      },
+
+      startCountdown() {
+        if (this.state === 'countdown' || this.state === 'racing') return;
+        this.state = 'countdown';
+
         const overlay = document.getElementById('countdownOverlay');
         const text = document.getElementById('countdownText');
         overlay.classList.remove('hidden');
@@ -1661,223 +1704,600 @@
           } else {
             clearInterval(timer);
             overlay.classList.add('hidden');
-            this.isCountdown = false;
-            callback();
+            this.beginRace();
           }
-        }, 900);
+        }, 850);
       },
 
-      beginRaceLoop() {
-        this.isRunning = true;
+      beginRace() {
+        this.state = 'racing';
         this.startTime = performance.now();
-        document.getElementById('arenaCommentary').textContent = 'Cuộc đua đã bắt đầu! Đang so kè quyết liệt!';
-
-        const engineInterval = setInterval(() => {
-          if (!this.isRunning) {
-            clearInterval(engineInterval);
-            return;
-          }
-          soundEngine.playRaceEngine();
-        }, 400);
+        // Duration scales with laps (e.g. 2 laps = 12s)
+        this.raceDuration = Math.max(8000, this.currentLaps * 6000);
+        document.getElementById('btnSpaceText').textContent = 'Đang đua...';
 
         const loop = (currentTime) => {
-          if (!this.isRunning) return;
+          if (this.state !== 'racing') return;
           const elapsed = currentTime - this.startTime;
-          const progressRatio = Math.min(elapsed / this.targetDuration, 1);
+          const progressRatio = Math.min(elapsed / this.raceDuration, 1);
 
-          const remainingSec = Math.max(0, Math.ceil((this.targetDuration - elapsed) / 1000));
-          document.getElementById('arenaTimerDisplay').textContent = `00:${String(remainingSec).padStart(2, '0')}`;
-
-          this.updatePhysics(progressRatio, elapsed);
-          this.renderFrame(progressRatio);
+          this.updateRacerPositions(progressRatio, elapsed);
+          this.drawScene();
+          this.updateTopLeaderboard();
 
           if (progressRatio >= 1) {
             this.finishRace();
           } else {
-            this.animationFrameId = requestAnimationFrame(loop);
+            this.animId = requestAnimationFrame(loop);
           }
         };
 
-        this.animationFrameId = requestAnimationFrame(loop);
+        this.animId = requestAnimationFrame(loop);
       },
 
-      updatePhysics(progressRatio, elapsed) {
+      updateRacerPositions(progressRatio, elapsed) {
+        const totalTarget = this.currentLaps;
+
         this.racers.forEach(r => {
           if (progressRatio < 0.85) {
-            const noise = (Math.sin(elapsed * 0.005 + r.speedVariation * 10) + 1) * 0.05;
-            r.progress = Math.min(progressRatio * (0.8 + r.speedVariation * 0.3) + noise, 0.88);
+            // Chaotic pack racing, frequent overtaking
+            const wave = Math.sin(elapsed * 0.006 + r.id * 1.5) * 0.05;
+            const progress = progressRatio * totalTarget * r.speedFactor + wave;
+            r.progress = Math.max(0, Math.min(progress, totalTarget * 0.90));
           } else {
-            const finalStretch = (progressRatio - 0.85) / 0.15;
+            // Final sprint to the checkered line
+            const sprintRatio = (progressRatio - 0.85) / 0.15;
             if (r.isWinner) {
-              r.progress = 0.88 + finalStretch * 0.12;
+              r.progress = totalTarget * 0.90 + sprintRatio * (totalTarget * 0.10 + 0.02);
             } else {
-              const maxCap = 0.90 + (r.speedVariation % 0.07);
-              r.progress = Math.min(0.85 + finalStretch * 0.1, maxCap);
+              const maxAllowed = totalTarget * (0.92 + (r.id % 6) * 0.012);
+              r.progress = Math.min(totalTarget * 0.90 + sprintRatio * 0.08, maxAllowed);
             }
           }
         });
 
+        // Periodic roar sound
+        if (Math.random() < 0.05) soundEngine.playEngineRoar();
+
+        // Sort for live ranking
         const sorted = [...this.racers].sort((a, b) => b.progress - a.progress);
-        const leader = sorted[0];
-        if (leader && Math.random() < 0.03) {
-          const comments = [
-            `🔥 ${leader.name} đang bứt phá dẫn đầu!`,
-            `⚡ So kè từng milimet giữa ${sorted[0].name} và ${sorted[1] ? sorted[1].name : 'nhóm sau'}!`,
-            `🚀 Cú lội ngược dòng bất ngờ trên đường đua!`,
-            `🏁 Chuẩn bị lao về vạch đích!`
-          ];
-          document.getElementById('arenaCommentary').textContent = comments[Math.floor(Math.random() * comments.length)];
-        }
+        sorted.forEach((r, idx) => {
+          r.currentRank = idx + 1;
+        });
+      },
 
+      updateTopLeaderboard() {
+        const container = document.getElementById('topLeaderboardList');
+        if (!container) return;
+
+        const sorted = [...this.racers].sort((a, b) => b.progress - a.progress);
         const top3 = sorted.slice(0, 3);
-        document.getElementById('leaderboardNames').innerHTML = top3.map((r, idx) => `
-          <div class="flex items-center justify-between text-[11px]">
-            <span class="truncate max-w-[130px] font-bold ${idx === 0 ? 'text-amber-400' : 'text-slate-300'}">
-              #${idx+1} ${auth.escapeHTML(r.name)}
-            </span>
-            <span class="text-[10px] text-slate-500 font-mono">${Math.floor(r.progress * 100)}%</span>
-          </div>
-        `).join('');
+        const totalTarget = this.currentLaps;
+
+        container.innerHTML = top3.map((r, i) => {
+          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉';
+          const percent = Math.min(100, Math.floor((r.progress / totalTarget) * 100));
+          return `
+            <div class="flex items-center justify-between text-[11px] font-bold">
+              <span class="truncate max-w-[130px] flex items-center gap-1.5 ${i === 0 ? 'text-amber-300' : 'text-slate-200'}">
+                <span>${medal}</span>
+                <span class="truncate">${auth.escapeHTML(r.name)}</span>
+              </span>
+              <span class="text-[10px] text-amber-400/90 font-mono">${percent}%</span>
+            </div>
+          `;
+        }).join('');
       },
 
-      drawStaticScene() {
-        this.renderFrame(0);
-      },
-
-      renderFrame(progressRatio) {
+      drawScene() {
         const w = this.canvas.width;
         const h = this.canvas.height;
         const ctx = this.ctx;
         if (!w || !h) return;
 
-        const mode = gameConfig.selectedGameMode;
+        const trackConfig = this.tracks[this.currentTrackKey] || this.tracks['duck_mekong'];
 
-        if (mode === 'duck') {
-          ctx.fillStyle = '#0369a1';
-          ctx.fillRect(0, 0, w, h);
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-          ctx.lineWidth = 2;
-          for (let y = 30; y < h; y += 40) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.bezierCurveTo(w * 0.3, y + Math.sin(progressRatio * 10) * 8, w * 0.7, y - Math.sin(progressRatio * 10) * 8, w, y);
-            ctx.stroke();
-          }
-        } else if (mode === 'horse') {
-          ctx.fillStyle = '#14532d';
-          ctx.fillRect(0, 0, w, h);
-          ctx.strokeStyle = 'rgba(250, 204, 21, 0.15)';
-          ctx.lineWidth = 1.5;
-          for (let y = 0; y < h; y += 45) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-            ctx.stroke();
-          }
-        } else if (mode === 'bicycle') {
-          ctx.fillStyle = '#1e293b';
-          ctx.fillRect(0, 0, w, h);
-          ctx.fillStyle = '#065f46';
-          ctx.fillRect(0, 0, w, 20);
-          ctx.fillRect(0, h - 20, w, 20);
+        if (trackConfig.type === 'river') {
+          this.drawRiverTrack(ctx, w, h, trackConfig);
         } else {
-          ctx.fillStyle = '#0f172a';
-          ctx.fillRect(0, 0, w, h);
-          const curbSize = 20;
-          for (let x = 0; x < w; x += curbSize * 2) {
-            ctx.fillStyle = '#ef4444';
-            ctx.fillRect(x, 0, curbSize, 12);
-            ctx.fillRect(x + curbSize, h - 12, curbSize, 12);
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(x + curbSize, 0, curbSize, 12);
-            ctx.fillRect(x, h - 12, curbSize, 12);
-          }
+          this.drawCircuitTrack(ctx, w, h, trackConfig);
         }
+      },
 
-        const startX = 60;
-        const finishX = w - 100;
+      // ================= RIVER / STRAIGHT TRACK DRAWING (FACING RIGHT) =================
+      drawRiverTrack(ctx, w, h, config) {
+        // Water river background
+        ctx.fillStyle = config.waterColor || '#0284c7';
+        ctx.fillRect(0, 0, w, h);
 
-        const checkH = 14;
-        for (let y = 0; y < h; y += checkH) {
-          ctx.fillStyle = (Math.floor(y / checkH) % 2 === 0) ? '#ffffff' : '#000000';
-          ctx.fillRect(finishX, y, 16, checkH);
-          ctx.fillStyle = (Math.floor(y / checkH) % 2 === 0) ? '#000000' : '#ffffff';
-          ctx.fillRect(finishX + 16, y, 16, checkH);
-        }
+        // Top & Bottom Riverbanks (Green grass with cute flower dots as in image 3)
+        const bankHeight = 36;
+        ctx.fillStyle = '#15803d'; // Green riverbank
+        ctx.fillRect(0, 0, w, bankHeight);
+        ctx.fillRect(0, h - bankHeight, w, bankHeight);
 
-        ctx.save();
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = 'bold 12px "Montserrat", sans-serif';
-        ctx.fillText('🏁 VẠCH ĐÍCH', finishX - 10, 32);
-        ctx.restore();
-
-        const totalRacers = this.racers.length;
-        const availableHeight = h - 60;
-        const laneHeight = Math.max(34, Math.min(65, availableHeight / Math.max(1, totalRacers)));
-
-        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-        ctx.lineWidth = 1;
-        for (let i = 0; i <= totalRacers; i++) {
-          const ly = 30 + i * laneHeight;
+        // Bank Flower dots & bushes
+        ctx.fillStyle = '#166534';
+        for (let x = 0; x < w; x += 30) {
           ctx.beginPath();
-          ctx.moveTo(startX, ly);
-          ctx.lineTo(w - 20, ly);
+          ctx.arc(x, bankHeight, 8, 0, Math.PI);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, h - bankHeight, 8, Math.PI, 0);
+          ctx.fill();
+        }
+
+        // Colorful little flowers on the grass
+        const flowerColors = ['#f43f5e', '#fbbf24', '#ffffff', '#a855f7', '#38bdf8'];
+        for (let x = 15; x < w; x += 40) {
+          ctx.fillStyle = flowerColors[(x % flowerColors.length)];
+          ctx.beginPath();
+          ctx.arc(x, bankHeight / 2, 3.5, 0, Math.PI * 2);
+          ctx.arc(x + 10, h - bankHeight / 2, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // River wave lines
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.lineWidth = 2;
+        for (let y = bankHeight + 25; y < h - bankHeight; y += 45) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.bezierCurveTo(w * 0.3, y + 8, w * 0.7, y - 8, w, y);
           ctx.stroke();
         }
 
-        const trackDistance = finishX - startX;
+        // Draw Floating Lily Pads (Lá sen & Hoa sen)
+        this.lilyPads.forEach(pad => {
+          ctx.fillStyle = '#166534'; // Dark green lotus leaf
+          ctx.beginPath();
+          ctx.arc(pad.x, pad.y, pad.radius, 0.2, Math.PI * 1.85);
+          ctx.lineTo(pad.x, pad.y);
+          ctx.fill();
 
-        this.racers.forEach((r, idx) => {
-          const racerY = 30 + idx * laneHeight + laneHeight / 2;
-          const racerX = startX + r.progress * trackDistance;
+          if (pad.hasFlower) {
+            ctx.fillStyle = '#f472b6'; // Pink lotus flower
+            ctx.beginPath();
+            ctx.arc(pad.x, pad.y, pad.radius * 0.38, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fde047'; // Yellow center
+            ctx.beginPath();
+            ctx.arc(pad.x, pad.y, pad.radius * 0.15, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        });
 
-          this.drawRacerObject(ctx, r, racerX, racerY, mode);
+        // Finish Line Checkered Banner at RIGHT SIDE
+        const finishX = w - 40;
+        const checkH = 14;
+        for (let y = bankHeight; y < h - bankHeight; y += checkH) {
+          ctx.fillStyle = (Math.floor(y / checkH) % 2 === 0) ? '#ffffff' : '#000000';
+          ctx.fillRect(finishX, y, 12, checkH);
+          ctx.fillStyle = (Math.floor(y / checkH) % 2 === 0) ? '#000000' : '#ffffff';
+          ctx.fillRect(finishX + 12, y, 12, checkH);
+        }
+
+        // Draw Racers (Ducks or Bicycles) FACING RIGHT
+        const startX = 50;
+        const trackLength = finishX - startX;
+        const totalTarget = this.currentLaps;
+        const riverPlayableHeight = h - bankHeight * 2 - 40;
+
+        // Sort racers from top to bottom so bottom tags render in front
+        const sortedForDraw = [...this.racers].sort((a, b) => a.laneOffset - b.laneOffset);
+
+        sortedForDraw.forEach(r => {
+          const progressRatio = Math.min(1, r.progress / totalTarget);
+          const x = startX + progressRatio * trackLength;
+          // Distribute across river vertically with natural staggered offsets
+          const y = bankHeight + 25 + (r.laneOffset + 0.5) * riverPlayableHeight;
+
+          if (gameConfig.selectedGameMode === 'bicycle') {
+            this.drawBicycleFacingRight(ctx, r, x, y);
+          } else {
+            this.drawDuckFacingRight(ctx, r, x, y);
+          }
         });
       },
 
-      drawRacerObject(ctx, racer, x, y, mode) {
+      // Draw cute yellow/colored duck FACING RIGHT with ripples trailing left
+      drawDuckFacingRight(ctx, racer, x, y) {
         ctx.save();
 
-        const name = racer.name;
-        ctx.font = 'bold 11px "Be Vietnam Pro", sans-serif';
-        const textWidth = ctx.measureText(name).width;
-        const boxW = textWidth + 16;
-        const boxH = 20;
+        // 1. Water Ripple / Wake behind duck (expanding to the left)
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(x - 14, y + 6, 12, 5, 0, 0, Math.PI * 2);
+        ctx.stroke();
 
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-        ctx.strokeStyle = racer.isWinner ? '#fbbf24' : 'rgba(255,255,255,0.2)';
-        ctx.lineWidth = racer.isWinner ? 2 : 1;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.beginPath();
+        ctx.ellipse(x - 24, y + 6, 8, 3, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // 2. Duck Body (Facing Right)
+        // Body ellipse
+        ctx.fillStyle = racer.color || '#facc15';
+        ctx.beginPath();
+        ctx.ellipse(x, y + 2, 16, 11, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tail feathers (pointing left-up)
+        ctx.beginPath();
+        ctx.moveTo(x - 14, y);
+        ctx.lineTo(x - 22, y - 6);
+        ctx.lineTo(x - 12, y + 5);
+        ctx.fill();
+
+        // Duck Head (higher and to the right)
+        ctx.beginPath();
+        ctx.arc(x + 10, y - 6, 9, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Orange Beak (Pointing firmly to the RIGHT)
+        ctx.fillStyle = '#ea580c';
+        ctx.beginPath();
+        ctx.moveTo(x + 16, y - 8);
+        ctx.lineTo(x + 25, y - 5);
+        ctx.lineTo(x + 16, y - 2);
+        ctx.closePath();
+        ctx.fill();
+
+        // Cute Duck Eye
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(x + 12, y - 8, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye glint
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x + 12.5, y - 8.5, 0.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3. Student Name Tag (Centered Above the Duck)
+        this.drawStudentNameTag(ctx, racer, x, y - 22);
+
+        ctx.restore();
+      },
+
+      // Draw bicycle FACING RIGHT
+      drawBicycleFacingRight(ctx, racer, x, y) {
+        ctx.save();
+        ctx.strokeStyle = racer.color || '#38bdf8';
+        ctx.lineWidth = 2.5;
+
+        // Wheels (left and right)
+        ctx.strokeStyle = '#94a3b8';
+        ctx.beginPath();
+        ctx.arc(x - 12, y + 6, 7, 0, Math.PI * 2); // Rear wheel
+        ctx.arc(x + 12, y + 6, 7, 0, Math.PI * 2); // Front wheel
+        ctx.stroke();
+
+        // Frame
+        ctx.strokeStyle = racer.color || '#38bdf8';
+        ctx.beginPath();
+        ctx.moveTo(x - 12, y + 6);
+        ctx.lineTo(x - 2, y + 6); // Bottom bracket
+        ctx.lineTo(x + 6, y - 4); // Handlebar base
+        ctx.lineTo(x + 12, y + 6); // Front fork
+        ctx.moveTo(x - 2, y + 6);
+        ctx.lineTo(x - 8, y - 3); // Seat post
+        ctx.lineTo(x - 12, y + 6);
+        ctx.moveTo(x - 8, y - 3);
+        ctx.lineTo(x + 6, y - 4);
+        ctx.stroke();
+
+        // Cyclist Head & Helmet (Facing right)
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath();
+        ctx.arc(x + 1, y - 10, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Name Tag
+        this.drawStudentNameTag(ctx, racer, x, y - 26);
+        ctx.restore();
+      },
+
+      // ================= CIRCUIT TRACK DRAWING (SPA / CLOVER / MONZA) =================
+      drawCircuitTrack(ctx, w, h, config) {
+        // Environment background
+        if (config.theme === 'turf') {
+          ctx.fillStyle = '#15803d'; // Clover green field
+        } else if (config.theme === 'sunset') {
+          ctx.fillStyle = '#831843'; // Sunset meadow
+        } else {
+          ctx.fillStyle = '#0f172a'; // F1 dark paddock
+        }
+        ctx.fillRect(0, 0, w, h);
+
+        // Get Path Coordinates for current circuit
+        const pathPoints = this.getCircuitPoints(config.circuitId || 'spa', w, h);
+
+        // 1. Draw Outer Grass/Runoff / Gravel Border
+        ctx.save();
+        ctx.beginPath();
+        this.renderSpline(ctx, pathPoints, true);
+        ctx.lineWidth = 58;
+        ctx.strokeStyle = '#0284c7'; // Blue track run-off border
+        ctx.stroke();
+
+        // 2. Draw Checkered / Striped Kerbs along corners
+        ctx.lineWidth = 54;
+        ctx.strokeStyle = config.kerbColor ? config.kerbColor[0] : '#ef4444';
+        ctx.stroke();
+
+        // 3. Draw Main Asphalt / Turf Track
+        ctx.lineWidth = 44;
+        ctx.strokeStyle = (config.theme === 'turf') ? '#166534' : '#1e293b';
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+
+        // 4. White / Yellow Dashed Centerlines
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.setLineDash([12, 14]);
+        ctx.stroke();
+        ctx.setLineDash([]); // Reset
+        ctx.restore();
+
+        // 5. Start / Finish Line Grid
+        const startPt = pathPoints[0];
+        const nextPt = pathPoints[1];
+        const angle = Math.atan2(nextPt.y - startPt.y, nextPt.x - startPt.x);
+        
+        ctx.save();
+        ctx.translate(startPt.x, startPt.y);
+        ctx.rotate(angle + Math.PI / 2);
+        const finishW = 44;
+        for (let i = -finishW/2; i < finishW/2; i += 8) {
+          ctx.fillStyle = (Math.floor(i / 8) % 2 === 0) ? '#ffffff' : '#000000';
+          ctx.fillRect(i, -6, 8, 6);
+          ctx.fillStyle = (Math.floor(i / 8) % 2 === 0) ? '#000000' : '#ffffff';
+          ctx.fillRect(i, 0, 8, 6);
+        }
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 9px "Montserrat", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('START / FINISH', 0, 16);
+        ctx.restore();
+
+        // 6. Move and Render Racers around the track!
+        const totalTarget = this.currentLaps;
+        this.racers.forEach(r => {
+          // Progress mapped to path perimeter (0 to 1)
+          const circuitProgress = (r.progress % 1);
+          const pos = this.getPointOnCircuit(pathPoints, circuitProgress, r.laneOffset * 22);
+
+          if (gameConfig.selectedGameMode === 'f1') {
+            this.drawF1CarOnCircuit(ctx, r, pos.x, pos.y, pos.angle);
+          } else if (gameConfig.selectedGameMode === 'horse') {
+            this.drawHorseOnCircuit(ctx, r, pos.x, pos.y, pos.angle);
+          } else {
+            this.drawMotoGPOnCircuit(ctx, r, pos.x, pos.y, pos.angle);
+          }
+        });
+      },
+
+      // F1 Car on Circuit (rotates with track tangent angle, name always upright)
+      drawF1CarOnCircuit(ctx, racer, x, y, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+
+        // F1 Body
+        ctx.fillStyle = racer.color || '#ef4444';
+        // Nose & cockpit
+        ctx.beginPath();
+        ctx.roundRect(-14, -5, 28, 10, 4);
+        ctx.fill();
+
+        // Front wing
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(10, -9, 4, 18);
+
+        // Rear wing
+        ctx.fillRect(-16, -10, 5, 20);
+
+        // Wheels
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(-10, -11, 8, 4); // Rear left
+        ctx.fillRect(-10, 7, 8, 4);  // Rear right
+        ctx.fillRect(5, -10, 7, 3.5); // Front left
+        ctx.fillRect(5, 6.5, 7, 3.5); // Front right
+
+        // Cockpit helmet
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        ctx.arc(0, 0, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+
+        // Student Name Tag (always rendered upright without rotation)
+        this.drawStudentNameTag(ctx, racer, x, y - 18);
+      },
+
+      // Horse on Circuit (rotates with track, name always upright)
+      drawHorseOnCircuit(ctx, racer, x, y, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+
+        // Horse Body
+        ctx.font = '22px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🐎', 0, 0);
+
+        ctx.restore();
+
+        // Student Name Tag
+        this.drawStudentNameTag(ctx, racer, x, y - 20);
+      },
+
+      // MotoGP on Circuit
+      drawMotoGPOnCircuit(ctx, racer, x, y, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+
+        ctx.font = '22px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🏍️', 0, 0);
+
+        ctx.restore();
+
+        this.drawStudentNameTag(ctx, racer, x, y - 20);
+      },
+
+      // Universal Student Name Tag (pill badge)
+      drawStudentNameTag(ctx, racer, x, y) {
+        ctx.save();
+        ctx.font = 'bold 11px "Be Vietnam Pro", sans-serif';
+        const textWidth = ctx.measureText(racer.name).width;
+        const boxW = textWidth + 16;
+        const boxH = 19;
+
+        // Background pill
+        ctx.fillStyle = racer.isWinner ? 'rgba(15, 23, 42, 0.95)' : 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = racer.isWinner ? '#fbbf24' : (racer.color || 'rgba(255,255,255,0.3)');
+        ctx.lineWidth = racer.isWinner ? 2 : 1.2;
 
         const tagX = x - boxW / 2;
-        const tagY = y - 24;
+        const tagY = y - boxH / 2;
         ctx.beginPath();
         ctx.roundRect(tagX, tagY, boxW, boxH, 6);
         ctx.fill();
         ctx.stroke();
 
+        // Text
         ctx.fillStyle = racer.isWinner ? '#fde047' : '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(name, x, tagY + boxH / 2);
+        ctx.fillText(racer.name, x, y);
 
-        ctx.font = '24px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        if (this.isRunning) {
-          ctx.fillStyle = mode === 'duck' ? 'rgba(255,255,255,0.4)' : 'rgba(245, 158, 11, 0.3)';
-          ctx.beginPath();
-          ctx.arc(x - 18, y + 2, 4 + Math.random() * 3, 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        ctx.fillText(racer.emoji, x, y + 4);
         ctx.restore();
       },
 
+      // Circuit geometry generator (Spa, Clover Ireland, Monza)
+      getCircuitPoints(circuitId, w, h) {
+        const cx = w / 2;
+        const cy = h / 2;
+
+        if (circuitId === 'clover') {
+          // Clover Ireland triple-lobe circuit (as in user's image 1)
+          return [
+            { x: cx, y: h - 60 },
+            { x: cx - w * 0.35, y: h - 70 },
+            { x: cx - w * 0.38, y: cy - 20 },
+            { x: cx - w * 0.25, y: cy - 90 },
+            { x: cx - w * 0.12, y: cy + 10 },
+            { x: cx - w * 0.10, y: 70 },
+            { x: cx + w * 0.10, y: 70 },
+            { x: cx + w * 0.12, y: cy + 10 },
+            { x: cx + w * 0.25, y: cy - 90 },
+            { x: cx + w * 0.38, y: cy - 20 },
+            { x: cx + w * 0.35, y: h - 70 },
+          ];
+        } else if (circuitId === 'spa') {
+          // Spa-Francorchamps style track with hairpin, chicane, long sweepers (image 2)
+          return [
+            { x: cx - w * 0.28, y: cy + 70 },
+            { x: cx - w * 0.35, y: cy - 10 },
+            { x: cx - w * 0.25, y: cy - 120 },
+            { x: cx + w * 0.15, y: 65 },
+            { x: cx + w * 0.32, y: 110 },
+            { x: cx + w * 0.05, y: cy - 20 },
+            { x: cx + w * 0.30, y: cy + 80 },
+            { x: cx + w * 0.18, y: h - 65 },
+            { x: cx - w * 0.10, y: h - 65 },
+            { x: cx - w * 0.15, y: cy + 70 },
+          ];
+        } else {
+          // Monza speed oval ring with chicanes
+          return [
+            { x: cx, y: h - 65 },
+            { x: cx - w * 0.35, y: h - 75 },
+            { x: cx - w * 0.38, y: cy },
+            { x: cx - w * 0.30, y: 80 },
+            { x: cx, y: 70 },
+            { x: cx + w * 0.30, y: 80 },
+            { x: cx + w * 0.38, y: cy },
+            { x: cx + w * 0.35, y: h - 75 },
+          ];
+        }
+      },
+
+      renderSpline(ctx, points, closed = true) {
+        const len = points.length;
+        if (len < 2) return;
+        ctx.moveTo(points[0].x, points[0].y);
+
+        for (let i = 0; i < len; i++) {
+          const p0 = points[(i - 1 + len) % len];
+          const p1 = points[i];
+          const p2 = points[(i + 1) % len];
+          const p3 = points[(i + 2) % len];
+
+          const cp1x = p1.x + (p2.x - p0.x) / 6;
+          const cp1y = p1.y + (p2.y - p0.y) / 6;
+          const cp2x = p2.x - (p3.x - p1.x) / 6;
+          const cp2y = p2.y - (p3.y - p1.y) / 6;
+
+          ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+        }
+        if (closed) ctx.closePath();
+      },
+
+      getPointOnCircuit(points, t, laneOffset = 0) {
+        const len = points.length;
+        const totalT = (t % 1 + 1) % 1;
+        const scaled = totalT * len;
+        const idx = Math.floor(scaled);
+        const subT = scaled - idx;
+
+        const p0 = points[(idx - 1 + len) % len];
+        const p1 = points[idx];
+        const p2 = points[(idx + 1) % len];
+        const p3 = points[(idx + 2) % len];
+
+        // Catmull-Rom spline interpolation
+        const cp1x = p1.x + (p2.x - p0.x) / 6;
+        const cp1y = p1.y + (p2.y - p0.y) / 6;
+        const cp2x = p2.x - (p3.x - p1.x) / 6;
+        const cp2y = p2.y - (p3.y - p1.y) / 6;
+
+        // Cubic bezier point
+        const u = 1 - subT;
+        const tt = subT * subT;
+        const uu = u * u;
+        const uuu = uu * u;
+        const ttt = tt * subT;
+
+        let x = uuu * p1.x + 3 * uu * subT * cp1x + 3 * u * tt * cp2x + ttt * p2.x;
+        let y = uuu * p1.y + 3 * uu * subT * cp1y + 3 * u * tt * cp2y + ttt * p2.y;
+
+        // Tangent derivative for angle
+        const dx = 3 * uu * (cp1x - p1.x) + 6 * u * subT * (cp2x - cp1x) + 3 * tt * (p2.x - cp2x);
+        const dy = 3 * uu * (cp1y - p1.y) + 6 * u * subT * (cp2y - cp1y) + 3 * tt * (p2.y - cp2y);
+        const angle = Math.atan2(dy, dx);
+
+        // Apply lane offset perpendicular to tangent
+        if (laneOffset !== 0) {
+          x += Math.cos(angle + Math.PI / 2) * laneOffset;
+          y += Math.sin(angle + Math.PI / 2) * laneOffset;
+        }
+
+        return { x, y, angle };
+      },
+
       finishRace() {
-        this.isRunning = false;
-        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+        this.state = 'finished';
+        if (this.animId) cancelAnimationFrame(this.animId);
 
         const winnerRacer = this.racers.find(r => r.isWinner) || this.racers[0];
         this.winner = winnerRacer;
@@ -1885,47 +2305,40 @@
         soundEngine.playVictoryFanfare();
 
         if (window.confetti) {
-          window.confetti({
-            particleCount: 120,
-            spread: 90,
-            origin: { y: 0.6 }
-          });
+          window.confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 } });
           setTimeout(() => {
-            window.confetti({
-              particleCount: 80,
-              angle: 60,
-              spread: 60,
-              origin: { x: 0 }
-            });
-            window.confetti({
-              particleCount: 80,
-              angle: 120,
-              spread: 60,
-              origin: { x: 1 }
-            });
+            window.confetti({ particleCount: 80, angle: 60, spread: 60, origin: { x: 0 } });
+            window.confetti({ particleCount: 80, angle: 120, spread: 60, origin: { x: 1 } });
           }, 400);
         }
 
-        historyManager.addRecord(this.currentClass.name, winnerRacer.name, gameConfig.selectedGameMode);
+        const modeInfo = this.getModeDisplayInfo(gameConfig.selectedGameMode);
+        historyManager.addRecord(this.currentClass.name, winnerRacer.name, modeInfo.title, modeInfo.icon);
 
         document.getElementById('winnerName').textContent = winnerRacer.name;
-        document.getElementById('winnerClassDetails').textContent = `Lớp: ${this.currentClass.name} • Hoàn thành xuất sắc đường đua!`;
+        document.getElementById('winnerClassDetails').textContent = `Lớp: ${this.currentClass.name} • Về đích đầu tiên!`;
         document.getElementById('winnerModal').classList.remove('hidden');
+        document.getElementById('btnSpaceText').textContent = 'Đua lại';
       },
 
       closeWinnerModal() {
         document.getElementById('winnerModal').classList.add('hidden');
-        document.getElementById('btnArenaStart').classList.remove('hidden');
       },
 
       playAgain() {
         this.closeWinnerModal();
-        this.prepareRace(gameConfig.selectedGameMode, this.currentClass.id, gameConfig.raceDurationSeconds);
-        this.startRace();
+        this.resetCurrentRace();
+        this.startCountdown();
+      },
+
+      resetCurrentRace() {
+        this.state = 'ready';
+        if (this.animId) cancelAnimationFrame(this.animId);
+        this.prepareRace(gameConfig.selectedGameMode, this.currentClass.id, this.currentLaps);
       },
 
       awardPoints(points = 1) {
-        alert(`Đã ghi nhận +${points} điểm cho học sinh: ${this.winner ? this.winner.name : ''}!`);
+        alert(`Đã ghi nhận +${points} điểm cho ${this.winner ? this.winner.name : ''}!`);
         historyManager.updateLastRecordScore(points);
         this.closeWinnerModal();
       },
@@ -1933,13 +2346,13 @@
       excludeCurrentWinner() {
         if (!this.winner || !this.currentClass) return;
         classManager.toggleStudentExclusion(this.currentClass.id, this.winner.name);
-        alert(`Đã tạm loại "${this.winner.name}" khỏi các lượt gọi tiếp theo của buổi học hôm nay.`);
+        alert(`Đã tạm loại "${this.winner.name}" khỏi các lượt gọi tiếp theo.`);
         this.closeWinnerModal();
       },
 
       quitRace() {
-        this.isRunning = false;
-        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+        this.state = 'ready';
+        if (this.animId) cancelAnimationFrame(this.animId);
         app.navigate('home');
       }
     };
@@ -1960,18 +2373,17 @@
         localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(records));
       },
 
-      addRecord(className, studentName, gameMode) {
+      addRecord(className, studentName, gameTitle, gameIcon) {
         const records = this.getRecords();
         const now = new Date();
         const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} - ${now.getDate()}/${now.getMonth()+1}`;
 
-        const modeData = arena.getModeData(gameMode);
         records.unshift({
           id: 'hist_' + Date.now(),
           className,
           studentName,
-          gameTitle: modeData.title,
-          gameIcon: modeData.icon,
+          gameTitle,
+          gameIcon,
           time: timeStr,
           score: 0
         });
@@ -1990,7 +2402,7 @@
       },
 
       clearHistory() {
-        if (!confirm('Bạn có chắc muốn xóa tất cả lịch sử gọi tên của buổi học này?')) return;
+        if (!confirm('Bạn có chắc muốn xóa lịch sử gọi tên buổi học này?')) return;
         localStorage.removeItem(STORAGE_KEY_HISTORY);
         this.renderHistory();
       },
@@ -2004,14 +2416,14 @@
           list.innerHTML = `
             <div class="py-12 text-center text-slate-500">
               <i class="fa-solid fa-hourglass-empty text-4xl mb-2 text-slate-600"></i>
-              <p class="text-sm font-semibold">Chưa có lượt đua nào trong buổi học hôm nay.</p>
+              <p class="text-sm font-semibold">Chưa có lượt gọi nào trong buổi học hôm nay.</p>
             </div>
           `;
           return;
         }
 
         list.innerHTML = records.map((rec, i) => `
-          <div class="p-4 flex items-center justify-between hover:bg-slate-750 transition">
+          <div class="p-4 flex items-center justify-between hover:bg-slate-850 transition">
             <div class="flex items-center space-x-3">
               <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-400 flex items-center justify-center text-xl font-bold">
                 ${rec.gameIcon || '🏆'}
@@ -2019,7 +2431,7 @@
               <div>
                 <div class="font-extrabold text-base text-white tracking-tight">${auth.escapeHTML(rec.studentName)}</div>
                 <div class="text-xs text-slate-400">
-                  Lớp: <strong class="text-slate-300">${auth.escapeHTML(rec.className)}</strong> • Phương thức: ${auth.escapeHTML(rec.gameTitle)} • ${rec.time}
+                  Lớp: <strong class="text-slate-300">${auth.escapeHTML(rec.className)}</strong> • ${auth.escapeHTML(rec.gameTitle)} • ${rec.time}
                 </div>
               </div>
             </div>
@@ -2073,7 +2485,7 @@
             <tr class="hover:bg-slate-800/60 transition">
               <td class="px-4 py-3 font-mono text-slate-400">${idx+1}</td>
               <td class="px-4 py-3 font-bold text-white flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg ${isAdmin ? 'bg-purple-900 text-purple-300' : 'bg-slate-700 text-emerald-400'} flex items-center justify-center text-xs">
+                <span class="w-7 h-7 rounded-lg ${isAdmin ? 'bg-purple-900 text-purple-300' : 'bg-slate-800 text-emerald-400'} flex items-center justify-center text-xs">
                   ${isAdmin ? '<i class="fa-solid fa-crown"></i>' : '<i class="fa-solid fa-user-graduate"></i>'}
                 </span>
                 ${auth.escapeHTML(u.fullName)}
@@ -2092,7 +2504,7 @@
                   <button onclick="adminPanel.deleteUser('${u.id}')" title="Xóa tài khoản" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs rounded-lg transition border border-rose-800/40">
                     <i class="fa-solid fa-trash-can"></i> Xóa
                   </button>
-                ` : `<span class="text-xs text-slate-500 font-italic">Mặc định</span>`}
+                ` : `<span class="text-xs text-slate-500 italic">Mặc định</span>`}
               </td>
             </tr>
           `;
@@ -2136,24 +2548,16 @@
         gameConfig.init();
         classManager.renderClasses();
         historyManager.renderHistory();
-
-        // Default to home page
         this.navigate('home');
       },
 
       navigate(pageId) {
         this.currentPage = pageId;
-
-        // Hide all views
         document.querySelectorAll('.view').forEach(el => el.classList.add('hidden'));
 
-        // Show target view
         const target = document.getElementById('view-' + pageId);
-        if (target) {
-          target.classList.remove('hidden');
-        }
+        if (target) target.classList.remove('hidden');
 
-        // Highlight active nav item
         document.querySelectorAll('.nav-btn').forEach(btn => {
           const p = btn.getAttribute('data-page');
           if (p === pageId) {
@@ -2163,27 +2567,22 @@
           }
         });
 
-        // Special page triggers
-        if (pageId === 'admin') {
-          adminPanel.render();
-        } else if (pageId === 'classes') {
-          classManager.renderClasses();
-        } else if (pageId === 'history') {
-          historyManager.renderHistory();
-        }
+        if (pageId === 'admin') adminPanel.render();
+        else if (pageId === 'classes') classManager.renderClasses();
+        else if (pageId === 'history') historyManager.renderHistory();
       },
 
       selectGameAndPlay(gameMode) {
         const classId = gameConfig.selectedClassId;
-        const duration = gameConfig.raceDurationSeconds;
+        const laps = gameConfig.laps;
 
         if (!classId) {
-          alert('Vui lòng chọn hoặc tạo ít nhất một lớp học trước khi bắt đầu!');
+          alert('Vui lòng chọn hoặc tạo ít nhất một lớp học!');
           this.navigate('classes');
           return;
         }
 
-        const success = arena.prepareRace(gameMode, classId, duration);
+        const success = arena.prepareRace(gameMode, classId, laps);
         if (success) {
           this.navigate('arena');
         }
@@ -2194,9 +2593,7 @@
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().then(() => {
             icon.className = 'fa-solid fa-compress text-amber-400';
-          }).catch(err => {
-            console.warn(err);
-          });
+          }).catch(err => console.warn(err));
         } else {
           document.exitFullscreen().then(() => {
             icon.className = 'fa-solid fa-expand text-cyan-400';
@@ -2205,7 +2602,6 @@
       }
     };
 
-    // Auto bootstrap on DOM loaded
     document.addEventListener('DOMContentLoaded', () => {
       app.init();
     });
