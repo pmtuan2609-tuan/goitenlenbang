@@ -295,9 +295,228 @@
     border-color: var(--c1) !important;
   }
 
+  /* ======================================================= */
+  /* GIAO DIỆN SÁNG CAO CẤP (LIGHT THEME MODE)               */
+  /* ======================================================= */
+  body {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+  }
+  
+  /* Header Sáng */
+  header {
+    background-color: rgba(255, 255, 255, 0.96) !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+  }
+  header nav {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+  }
+  header .tab-nav-btn {
+    color: #475569 !important;
+  }
+  header .tab-nav-btn:hover {
+    color: #0f172a !important;
+    background-color: #e2e8f0 !important;
+  }
+  header .tab-nav-active {
+    background: #ffffff !important;
+    color: #d97706 !important;
+    border-color: #f59e0b !important;
+    box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2) !important;
+  }
+  header #soundToggleBtn, 
+  header button[onclick*="toggleGlobalFullscreen"] {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+    color: #475569 !important;
+  }
+  header #soundToggleBtn:hover, 
+  header button[onclick*="toggleGlobalFullscreen"]:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+  }
+  header .font-display {
+    color: #0f172a !important;
+  }
+  header p.text-slate-400 {
+    color: #64748b !important;
+  }
+
+  /* Bộ lọc danh mục & thẻ trò chơi */
+  .home-filter-btn {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+    color: #475569 !important;
+  }
+  .home-filter-btn.bg-amber-500\/20,
+  .home-filter-btn[class*="text-amber"] {
+    background-color: #fef3c7 !important;
+    color: #b45309 !important;
+    border-color: #fcd34d !important;
+  }
+
+  /* Khung Card & Box nội dung */
+  .bg-slate-900,
+  .bg-slate-950,
+  .bg-slate-900\/90,
+  .bg-slate-950\/70,
+  .bg-slate-950\/80,
+  .bg-slate-950\/90 {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+  }
+
+  .bg-slate-800,
+  .bg-slate-800\/80,
+  .bg-slate-800\/90,
+  .bg-slate-800\/60,
+  .bg-slate-800\/40 {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #1e293b !important;
+  }
+
+  .border-slate-800,
+  .border-slate-800\/80,
+  .border-slate-800\/60,
+  .border-slate-800\/40,
+  .border-slate-700,
+  .border-slate-700\/80,
+  .border-slate-700\/70,
+  .border-slate-700\/60,
+  .border-slate-700\/50 {
+    border-color: #e2e8f0 !important;
+  }
+
+  /* Văn bản sáng rõ ràng */
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a;
+  }
+  .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *, .badge-white, #winner-modal *, .tab-nav-active *, #tab-home > div:first-child *, #header-user-area button *) {
+    color: #0f172a !important;
+  }
+  .text-slate-100, .text-slate-200, .text-slate-300 {
+    color: #334155 !important;
+  }
+  .text-slate-400, .text-slate-500 {
+    color: #64748b !important;
+  }
+
+  /* Ô Nhập Liệu Input, Select */
+  input[type="text"], input[type="password"], input[type="number"], select, textarea {
+    background-color: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #0f172a !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: #94a3b8 !important;
+  }
+  select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Bảng Dữ Liệu */
+  table thead {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+  }
+  table tbody tr {
+    border-color: #f1f5f9 !important;
+  }
+  table tbody tr:hover {
+    background-color: #f8fafc !important;
+  }
+  table td {
+    color: #1e293b !important;
+  }
+
+  /* Modals / Popups */
+  #app-settings-content, 
+  #auth-modal-content, 
+  #class-edit-content, 
+  #app-modal-content, 
+  #logout-confirm-content {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2) !important;
+  }
+  #app-settings-content h3, #auth-modal-content h3, #class-edit-content h3, #app-modal-content h3, #logout-confirm-content h3 {
+    color: #0f172a !important;
+  }
+  #app-settings-content p, #auth-modal-content p, #class-edit-content p, #app-modal-content p, #logout-confirm-content p {
+    color: #64748b !important;
+  }
+  #app-settings-content label, #auth-modal-content label, #class-edit-content label {
+    color: #334155 !important;
+  }
+  .settings-tab-btn {
+    color: #64748b !important;
+  }
+  .settings-tab-btn:hover {
+    color: #0f172a !important;
+  }
+  .settings-tab-btn.bg-amber-500\/20 {
+    background-color: #fef3c7 !important;
+    border-color: #fcd34d !important;
+    color: #b45309 !important;
+  }
+
+  /* Hero Banner giữ màu gradient chuyên nghiệp */
+  #tab-home > div:first-child {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e3a8a 100%) !important;
+    border-color: rgba(255,255,255,0.15) !important;
+    box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.25) !important;
+  }
+  #tab-home > div:first-child h1,
+  #tab-home > div:first-child p,
+  #tab-home > div:first-child span {
+    color: #ffffff !important;
+  }
+  #tab-home > div:first-child span.bg-clip-text {
+    color: transparent !important;
+  }
+  #tab-home > div:first-child div.bg-slate-800\/80 {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+  }
+
+  /* Nút bấm gradient vẫn giữ chữ trắng */
+  button[class*="bg-gradient-to-r"] *,
+  button[class*="bg-gradient-to-r"] {
+    color: #ffffff !important;
+  }
+
+  /* Nút đơn Admin 👑 Thầy Tuấn */
+  #header-user-area button {
+    box-shadow: 0 4px 6px -1px rgba(88, 28, 135, 0.2) !important;
+  }
+  #header-user-area button * {
+    color: inherit;
+  }
+  #header-user-area button .text-white {
+    color: #ffffff !important;
+  }
+
+  /* Game Canvas in Normal Mode */
+  .race-stage-card,
+  #duck-race-container:not(:fullscreen),
+  #bike-race-container:not(:fullscreen),
+  #motogp-race-container:not(:fullscreen),
+  #f1-race-container:not(:fullscreen),
+  #horse-race-container:not(:fullscreen),
+  #wheel_pie-race-container:not(:fullscreen) {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+  }
+
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-full flex flex-col font-sans selection:bg-amber-500 selection:text-white">
+<body class="bg-slate-50 text-slate-800 min-h-full flex flex-col font-sans selection:bg-amber-500 selection:text-white">
 
   <!-- ================= TOP NAVIGATION HEADER ================= -->
   <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 transition-all">
@@ -1385,11 +1604,11 @@
     // 1. SUPABASE REST API & CLOUD PERSISTENCE
     // ==========================================
     let SUPABASE_URL = "https://qwihflkmbuxetebubovi.supabase.co";
-    let SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3aWhmbGttYnV4ZXRlYnVib3ZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwODUwMzgsImV4cCI6MjA2NTY2MTAzOH0.Yf8p4eIu-gK-R7m9g7v-Z1l5f8r7g8y9y1g2e7r3t6y";
+    let SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF3aWhmbGttYnV4ZXRlYnVib3ZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5MDk5OTUsImV4cCI6MjEwMjQ4NTk5NX0.HcxdM6ifXniM66b0xVcf5pmtCZzbApEjQzIgzDhnVss";
 
     async function callSupabaseRest(method, docKey, payload = null) {
       try {
-        const url = `${SUPABASE_URL}/rest/v1/app_store?key=eq.${encodeURIComponent(docKey)}`;
+        const url = `${SUPABASE_URL}/rest/v1/classroom_data?id=eq.${encodeURIComponent(docKey)}&select=id,data`;
         const headers = {
           'apikey': SUPABASE_ANON_KEY,
           'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
@@ -1397,24 +1616,68 @@
           'Prefer': 'resolution=merge-duplicates'
         };
 
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500);
+
         if (method === 'GET') {
-          const res = await fetch(url + '&select=*', { headers });
+          const res = await fetch(url, { headers, signal: controller.signal });
+          clearTimeout(timeoutId);
           if (!res.ok) return null;
           const data = await res.json();
           return (data && data.length > 0) ? data[0] : null;
         } else if (method === 'POST') {
-          const body = JSON.stringify([{ key: docKey, data: payload, updated_at: new Date().toISOString() }]);
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/app_store`, {
+          const body = JSON.stringify({ id: docKey, data: payload, updated_at: new Date().toISOString() });
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/classroom_data`, {
             method: 'POST',
             headers,
-            body
+            body,
+            signal: controller.signal
           });
+          clearTimeout(timeoutId);
           return res.ok;
         }
       } catch (err) {
         return null;
       }
       return null;
+    }
+
+    async function syncAllTeachersFromCloud() {
+      try {
+        const url = `${SUPABASE_URL}/rest/v1/classroom_data?id=like.${encodeURIComponent('teacher_%')}&select=id,data`;
+        const headers = {
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        };
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+        const res = await fetch(url, { headers, signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!res.ok) return;
+        const rows = await res.json();
+        if (Array.isArray(rows) && rows.length > 0) {
+          const currentUsers = getAllUsers();
+          let changed = false;
+          rows.forEach(r => {
+            if (r.data && r.data.user && r.data.user.username) {
+              const u = r.data.user;
+              const idx = currentUsers.findIndex(x => x.username.toLowerCase() === u.username.toLowerCase());
+              if (idx === -1) {
+                currentUsers.push(u);
+                changed = true;
+              } else if (u.password && currentUsers[idx].password !== u.password) {
+                currentUsers[idx] = u;
+                changed = true;
+              }
+            }
+          });
+          if (changed) {
+            saveAllUsersToStorage(currentUsers);
+            if (typeof renderSettingsTeacherTable === 'function') renderSettingsTeacherTable();
+            if (typeof renderAdminTeacherTable === 'function') renderAdminTeacherTable();
+          }
+        }
+      } catch (e) {}
     }
 
     // ==========================================
@@ -1708,18 +1971,78 @@
       const submitBtn = document.getElementById('auth-login-submit-btn');
 
       if (!userVal || !passVal) return;
+      if (errEl) errEl.classList.add('hidden');
 
+      // 1. KIỂM TRA ĐẶC CÁCH ADMIN (HỖ TRỢ CẢ MINHTUAN VÀ MINHMAY)
+      if (userVal.toLowerCase() === 'thaytuan' && (passVal === 'minhtuan' || passVal === 'minhmay')) {
+        currentUser = DEFAULT_ADMIN_USER;
+        currentUserRole = 'admin';
+        localStorage.setItem('RACE_CURRENT_USER_V4', 'thaytuan');
+        const teacherClasses = getAllSavedClasses();
+        currentClassId = teacherClasses.length > 0 ? teacherClasses[0].id : '';
+        populateClassDropdowns();
+        if (currentClassId) loadClassIntoStage(currentClassId);
+        updateUserHeaderArea();
+        closeAuthModal();
+        showCloudToast('👑 Đăng nhập Quản Trị Viên Admin thành công!');
+        const passInput = document.getElementById('auth-login-password');
+        if (passInput) passInput.value = '';
+        return;
+      }
+
+      // 2. KIỂM TRA BỘ NHỚ TRÌNH DUYỆT HIỆN TẠI (0ms - VÀO NGAY TỨC THÌ)
+      const users = getAllUsers();
+      const found = users.find(u => u.username.toLowerCase() === userVal.toLowerCase() && u.password === passVal);
+
+      if (found) {
+        currentUser = found;
+        currentUserRole = found.role || 'teacher';
+        localStorage.setItem('RACE_CURRENT_USER_V4', found.username);
+
+        const teacherClasses = getAllSavedClasses();
+        currentClassId = teacherClasses.length > 0 ? teacherClasses[0].id : '';
+        populateClassDropdowns();
+        if (currentClassId) loadClassIntoStage(currentClassId);
+
+        updateUserHeaderArea();
+        closeAuthModal();
+        showCloudToast('Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username));
+
+        const passInput = document.getElementById('auth-login-password');
+        if (passInput) passInput.value = '';
+
+        // Đồng bộ ngầm không làm đơ giao diện
+        callSupabaseRest('GET', `teacher_${found.username.toLowerCase()}`).then(row => {
+          if (row && row.data && row.data.classes && Array.isArray(row.data.classes) && row.data.classes.length > 0) {
+            saveAllSavedClasses(row.data.classes);
+            populateClassDropdowns();
+            if (row.data.classes[0]) loadClassIntoStage(row.data.classes[0].id);
+          }
+        }).catch(() => {});
+
+        return;
+      }
+
+      // 3. NẾU ĐĂNG NHẬP TRÊN TRÌNH DUYỆT KHÁC HOẶC MÁY MỚI -> KẾT NỐI ĐÁM MÂY SUPABASE
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="animate-spin">🔄</span> <span>Đang kết nối Đám Mây...</span>';
       }
 
-      let cloudLoaded = false;
+      let cloudSuccess = false;
       try {
         const row = await callSupabaseRest('GET', `teacher_${userVal.toLowerCase()}`);
         if (row && row.data && row.data.user) {
           const cUser = row.data.user;
           if (cUser.password === passVal) {
+            cloudSuccess = true;
+            // Lưu vào bộ nhớ trình duyệt này để các lần sau vào ngay lập tức 0ms
+            const currentUsers = getAllUsers();
+            if (!currentUsers.some(u => u.username.toLowerCase() === cUser.username.toLowerCase())) {
+              currentUsers.push(cUser);
+              saveAllUsersToStorage(currentUsers);
+            }
+
             currentUser = cUser;
             currentUserRole = cUser.role || 'teacher';
             localStorage.setItem('RACE_CURRENT_USER_V4', cUser.username);
@@ -1728,41 +2051,27 @@
             saveAllSavedClasses(cloudClasses);
             currentClassId = cloudClasses.length > 0 ? cloudClasses[0].id : '';
             populateClassDropdowns();
-            loadClassIntoStage(currentClassId);
+            if (currentClassId) loadClassIntoStage(currentClassId);
 
-            cloudLoaded = true;
             updateUserHeaderArea();
             closeAuthModal();
-            showCloudToast('☁️ Đăng nhập đám mây thành công! Đã nạp danh sách lớp.');
+            showCloudToast('☁️ Đăng nhập đám mây thành công! Đã đồng bộ lớp học.');
+            const passInput = document.getElementById('auth-login-password');
+            if (passInput) passInput.value = '';
           }
         }
       } catch (err) {}
 
-      if (!cloudLoaded) {
-        const users = getAllUsers();
-        const found = users.find(u => u.username.toLowerCase() === userVal.toLowerCase() && u.password === passVal);
-        if (found) {
-          currentUser = found;
-          currentUserRole = found.role || 'teacher';
-          localStorage.setItem('RACE_CURRENT_USER_V4', found.username);
-          const teacherClasses = getAllSavedClasses();
-          currentClassId = teacherClasses.length > 0 ? teacherClasses[0].id : '';
-          populateClassDropdowns();
-          loadClassIntoStage(currentClassId);
-          updateUserHeaderArea();
-          closeAuthModal();
-          showCloudToast('Đăng nhập thành công!');
-        } else {
-          if (errEl) {
-            errEl.innerText = 'Tên đăng nhập hoặc mật khẩu không chính xác!';
-            errEl.classList.remove('hidden');
-          }
+      if (!cloudSuccess) {
+        if (errEl) {
+          errEl.innerText = 'Tên đăng nhập hoặc mật khẩu không chính xác!';
+          errEl.classList.remove('hidden');
         }
       }
 
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>ĐĂNG NHẬP (TỰ ĐỘNG NẠP ĐÁM MÂY)</span>';
+        submitBtn.innerHTML = '<span>ĐĂNG NHẬP</span>';
       }
     }
 
@@ -1788,11 +2097,6 @@
         return;
       }
 
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="animate-spin">🔄</span> <span>Đang lưu lên Đám Mây...</span>';
-      }
-
       const newUser = {
         username,
         password,
@@ -1803,6 +2107,7 @@
         createdAt: new Date().toISOString()
       };
 
+      // Lưu cục bộ và kích hoạt ngay lập tức
       users.push(newUser);
       saveAllUsersToStorage(users);
 
@@ -1816,17 +2121,18 @@
       loadClassIntoStage('');
       updateUserHeaderArea();
 
-      await callSupabaseRest('POST', `teacher_${username}`, {
+      closeAuthModal();
+      showCloudToast('Đăng ký thành công! Chào mừng Thầy/Cô.');
+
+      // Đồng bộ ngầm lên đám mây không chặn giao diện
+      callSupabaseRest('POST', `teacher_${username}`, {
         user: newUser,
         classes: []
-      });
-
-      closeAuthModal();
-      showCloudToast('☁️ Đăng ký thành công! Hãy tải file Excel danh sách lớp lên nhé.');
+      }).catch(() => {});
 
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>ĐĂNG KÝ (LƯU LÊN ĐÁM MÂY)</span>';
+        submitBtn.innerHTML = '<span>ĐĂNG KÝ GIÁO VIÊN</span>';
       }
     }
 
@@ -11800,6 +12106,9 @@
       if (currentClassId) {
         loadClassIntoStage(currentClassId);
       }
+
+      // 3. Tự động đồng bộ danh sách giáo viên toàn hệ thống từ đám mây Supabase
+      syncAllTeachersFromCloud();
 
       // Kích hoạt ResizeObserver để tự động thích ứng với mọi kích thước màn hình
       if (typeof setupRaceResizeObservers === 'function') {
