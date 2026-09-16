@@ -2246,20 +2246,37 @@
       if (!userVal || !passVal) return;
       if (errEl) errEl.classList.add('hidden');
 
-      // 1. KIỂM TRA ĐẶC CÁCH ADMIN (HỖ TRỢ CẢ MINHTUAN VÀ MINHMAY)
-      if (userVal.toLowerCase() === 'thaytuan' && (passVal === 'minhtuan' || passVal === 'minhmay')) {
-        currentUser = DEFAULT_ADMIN_USER;
-        currentUserRole = 'admin';
-        localStorage.setItem('RACE_CURRENT_USER_V4', 'thaytuan');
-        const teacherClasses = getAllSavedClasses();
-        currentClassId = teacherClasses.length > 0 ? teacherClasses[0].id : '';
-        populateClassDropdowns();
-        if (currentClassId) loadClassIntoStage(currentClassId);
-        updateUserHeaderArea();
+      // Helper đóng modal và cập nhật giao diện ngay lập tức
+      const finalizeLoginSuccess = (user, role, msg) => {
+        currentUser = user;
+        currentUserRole = role;
+        localStorage.setItem('RACE_CURRENT_USER_V4', user.username);
+        
+        // 1. Đóng modal ngay lập tức không chần chừ
         closeAuthModal();
-        showCloudToast('👑 Đăng nhập Quản Trị Viên Admin thành công!');
         const passInput = document.getElementById('auth-login-password');
         if (passInput) passInput.value = '';
+
+        // 2. Cập nhật header ngay lập tức
+        updateUserHeaderArea();
+
+        // 3. Hiển thị thông báo chào mừng
+        showCloudToast(msg);
+
+        // 4. Tải danh sách lớp an toàn trong try/catch
+        try {
+          const teacherClasses = getAllSavedClasses();
+          currentClassId = teacherClasses.length > 0 ? teacherClasses[0].id : '';
+          populateClassDropdowns();
+          if (currentClassId) loadClassIntoStage(currentClassId);
+        } catch (clsErr) {
+          console.error("Lỗi khởi tạo lớp học sau đăng nhập:", clsErr);
+        }
+      };
+
+      // 1. KIỂM TRA ĐẶC CÁCH ADMIN (HỖ TRỢ CẢ MINHTUAN VÀ MINHMAY)
+      if (userVal.toLowerCase() === 'thaytuan' && (passVal === 'minhtuan' || passVal === 'minhmay')) {
+        finalizeLoginSuccess(DEFAULT_ADMIN_USER, 'admin', '👑 Đăng nhập Quản Trị Viên Admin thành công!');
         return;
       }
 
@@ -2268,23 +2285,9 @@
       const found = users.find(u => u.username.toLowerCase() === userVal.toLowerCase() && u.password === passVal);
 
       if (found) {
-        currentUser = found;
-        currentUserRole = found.role || 'teacher';
-        localStorage.setItem('RACE_CURRENT_USER_V4', found.username);
+        finalizeLoginSuccess(found, found.role || 'teacher', 'Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username));
 
-        const teacherClasses = getAllSavedClasses();
-        currentClassId = teacherClasses.length > 0 ? teacherClasses[0].id : '';
-        populateClassDropdowns();
-        if (currentClassId) loadClassIntoStage(currentClassId);
-
-        updateUserHeaderArea();
-        closeAuthModal();
-        showCloudToast('Đăng nhập thành công! Chào mừng ' + (found.fullName || found.username));
-
-        const passInput = document.getElementById('auth-login-password');
-        if (passInput) passInput.value = '';
-
-        // Đồng bộ ngầm không làm đơ giao diện
+        // Đồng bộ ngầm với Supabase không làm đơ giao diện
         callSupabaseRest('GET', `teacher_${found.username.toLowerCase()}`).then(row => {
           if (row && row.data && row.data.classes && Array.isArray(row.data.classes) && row.data.classes.length > 0) {
             saveAllSavedClasses(row.data.classes);
@@ -2316,24 +2319,15 @@
               saveAllUsersToStorage(currentUsers);
             }
 
-            currentUser = cUser;
-            currentUserRole = cUser.role || 'teacher';
-            localStorage.setItem('RACE_CURRENT_USER_V4', cUser.username);
-
             const cloudClasses = (row.data.classes && Array.isArray(row.data.classes)) ? row.data.classes : [];
             saveAllSavedClasses(cloudClasses);
-            currentClassId = cloudClasses.length > 0 ? cloudClasses[0].id : '';
-            populateClassDropdowns();
-            if (currentClassId) loadClassIntoStage(currentClassId);
 
-            updateUserHeaderArea();
-            closeAuthModal();
-            showCloudToast('☁️ Đăng nhập đám mây thành công! Đã đồng bộ lớp học.');
-            const passInput = document.getElementById('auth-login-password');
-            if (passInput) passInput.value = '';
+            finalizeLoginSuccess(cUser, cUser.role || 'teacher', '☁️ Đăng nhập đám mây thành công! Đã đồng bộ lớp học.');
           }
         }
-      } catch (err) {}
+      } catch (err) {
+        console.error("Lỗi đăng nhập đám mây:", err);
+      }
 
       if (!cloudSuccess) {
         if (errEl) {
@@ -2390,12 +2384,18 @@
       saveAllSavedClasses([]);
       currentClassId = '';
       students = [];
-      populateClassDropdowns();
-      loadClassIntoStage('');
-      updateUserHeaderArea();
 
+      // Đóng modal và cập nhật header ngay lập tức
       closeAuthModal();
-      showCloudToast('Đăng ký thành công! Chào mừng Thầy/Cô.');
+      updateUserHeaderArea();
+      showCloudToast('Đăng ký thành công! Chào mừng Thầy/Cô ' + (name || username));
+
+      try {
+        populateClassDropdowns();
+        loadClassIntoStage('');
+      } catch (regErr) {
+        console.error("Lỗi khởi tạo sau đăng ký:", regErr);
+      }
 
       // Đồng bộ ngầm lên đám mây không chặn giao diện
       callSupabaseRest('POST', `teacher_${username}`, {
@@ -3373,6 +3373,16 @@
     // ==========================================
     // 10. CANVAS SIMULATION ENGINES (DUCK, F1, HORSE)
     // ==========================================
+    function getAvatarHtml(avatar) {
+      if (avatar && typeof avatar === 'string') {
+        if (avatar.startsWith('http') || avatar.startsWith('data:')) {
+          return `<img src="${avatar}" class="w-full h-full object-cover rounded-full" alt="avatar">`;
+        }
+        return avatar;
+      }
+      return '👤';
+    }
+
     function renderStage() {
       const visibleStudents = students.filter(s => !hiddenWheelIds.includes(s.id));
       const countEl = document.getElementById('wheel-student-count');
