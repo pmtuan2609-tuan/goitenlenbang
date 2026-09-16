@@ -3619,10 +3619,11 @@
         canvas.height = h;
         if (balloonList && balloonList.length > 0) {
           const count = balloonList.length;
-          const minX = 75;
-          const maxX = Math.max(minX + 100, w - 75);
+          const minX = Math.min(80, w * 0.1);
+          const maxX = Math.max(minX + 80, w - 50);
           balloonList.forEach((b, i) => {
-            b.baseX = minX + (i / (count - 1)) * (maxX - minX) + (Math.sin(i) * 15);
+            const step = count > 1 ? (maxX - minX) / (count - 1) : 0;
+            b.baseX = count > 1 ? minX + i * step + ((i % 3) - 1) * 10 : w * 0.55;
           });
         }
       }
@@ -3638,35 +3639,43 @@
       const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
       const studentPool = visible.length > 0 ? visible : Array.from({ length: 25 }, (_, i) => ({ id: 'st-' + i, name: `Học sinh ${i + 1}` }));
 
-      // Luôn duy trì khoảng 20-30 quả bóng bay (mặc định 25 quả)
-      const count = 25;
-      const colors = ['#f43f5e', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
+      // Số lượng bong bóng = chính xác số học sinh trong lớp (mỗi học sinh 1 quả bóng bí mật)
+      const count = studentPool.length;
+      const colors = ['#f43f5e', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4', '#84cc16', '#a855f7', '#14b8a6', '#e11d48'];
 
-      if (resetPositions || balloonList.length === 0) {
+      if (resetPositions || balloonList.length === 0 || balloonList.length !== count) {
         balloonList = [];
+        const minX = Math.min(80, w * 0.1);
+        const maxX = Math.max(minX + 80, w - 50);
+        const step = count > 1 ? (maxX - minX) / (count - 1) : 0;
+
         for (let i = 0; i < count; i++) {
-          const st = studentPool[i % studentPool.length];
-          const rx = 23 + (i % 4) * 2;
+          const st = studentPool[i];
+          // Kích thước bóng tự động điều chỉnh theo sĩ số lớp
+          let rx = 23 + (i % 4) * 2;
+          if (count > 45) {
+            rx = 16 + (i % 3) * 2;
+          } else if (count > 25) {
+            rx = 19 + (i % 3) * 2;
+          }
           const ry = rx * 1.25;
           const col = colors[i % colors.length];
-          const minX = 75;
-          const maxX = Math.max(minX + 100, w - 75);
-          const baseX = minX + (i / (count - 1)) * (maxX - minX) + (Math.random() - 0.5) * 22;
-          const y = h * 0.12 + Math.random() * (h * 0.72);
+          const baseX = count > 1 ? minX + i * step + ((i % 3) - 1) * 10 : w * 0.55;
+          const y = 30 + Math.random() * (h * 0.78);
 
           balloonList.push({
             id: 'balloon-obj-' + i,
             student: st,
             studentId: st.id,
             studentName: st.name,
-            baseX: Math.max(50, Math.min(w - 50, baseX)),
+            baseX: Math.max(40, Math.min(w - 40, baseX)),
             x: baseX,
             y: y,
             rx: rx,
             ry: ry,
             color: col,
             vy: 0.35 + (i % 5) * 0.08,
-            swayAmp: 10 + (i % 4) * 3,
+            swayAmp: (count > 40 ? 6 : 9) + (i % 4) * 2,
             swayFreq: 0.0015 + (i % 3) * 0.0005,
             phase: (i * 0.65) % (Math.PI * 2),
             popped: false,
@@ -3695,7 +3704,9 @@
       archerBoy.jumpY = 0;
 
       const statusEl = document.getElementById('balloon-game-status');
-      if (statusEl) statusEl.innerHTML = 'Sẵn sàng bắn bóng bay!';
+      if (statusEl) {
+        statusEl.innerHTML = `🎈 Sẵn sàng bắn bóng bay (${count} quả bóng bí mật)!`;
+      }
 
       if (!balloonGameAnimId) {
         balloonGameAnimId = requestAnimationFrame(runBalloonLoop);
@@ -3729,8 +3740,9 @@
       if (!target) {
         // Nếu chưa có, gán luôn cho một quả bóng còn nguyên vẹn ở nửa trên bầu trời
         const available = balloonList.filter(b => !b.popped && b.y > 60 && b.y < 340);
-        target = available[Math.floor(Math.random() * available.length)] || balloonList[0];
+        target = available[Math.floor(Math.random() * available.length)] || balloonList.find(b => !b.popped) || balloonList[0];
         if (target) {
+          target.popped = false;
           target.student = winnerStudent;
           target.studentId = winnerStudent.id;
           target.studentName = winnerStudent.name;
@@ -3750,7 +3762,7 @@
 
       const statusEl = document.getElementById('balloon-game-status');
       if (statusEl) {
-        statusEl.innerHTML = `🎯 Cung thủ đang ngắm bắn: <b class="text-amber-400">${winnerStudent.name}</b>...`;
+        statusEl.innerHTML = `🎯 Cung thủ đang giương cung ngắm bắn một quả bóng may mắn...`;
       }
 
       // Thời gian ngắm kéo cung ~1300ms rồi phóng tên vút đi!
@@ -3944,14 +3956,6 @@
         ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
         ctx.fill();
 
-        // BẢNG TÊN HỌC SINH RÕ NÉT (VIÊN THUỐC TRẮNG BÓNG MỜ)
-        ctx.font = '800 11px system-ui, -apple-system, sans-serif';
-        const txtW = ctx.measureText(b.studentName).width;
-        const badgeW = Math.min(105, Math.max(72, txtW + 16));
-        const badgeH = 20;
-        const badgeX = b.x - badgeW / 2;
-        const badgeY = b.y + b.ry + 6;
-
         // Nếu là bóng mục tiêu đang bị khóa: vẽ hào quang vàng nhấp nháy
         if (b.isTarget && balloonGameState === 'aiming') {
           const pulse = (Math.sin(now * 0.01) + 1) * 0.5;
@@ -3965,12 +3969,6 @@
           ctx.stroke();
           ctx.restore();
         }
-
-        drawBalloonRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 10, 'rgba(255, 255, 255, 0.96)', b.color, 1.5);
-        ctx.fillStyle = '#0f172a';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(b.studentName, b.x, badgeY + badgeH / 2, badgeW - 6);
 
         ctx.restore();
       });
