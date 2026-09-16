@@ -3040,8 +3040,20 @@
       scheduleRaceResizes();
     }
 
-    document.addEventListener('fullscreenchange', scheduleRaceResizes);
-    document.addEventListener('webkitfullscreenchange', scheduleRaceResizes);
+    function onFullscreenChangeHandler() {
+      const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+      if (!fsEl) {
+        const modal = document.getElementById('result-modal');
+        if (modal && modal.parentElement !== document.body) {
+          document.body.appendChild(modal);
+        }
+      }
+      updateAllFullscreenButtons();
+      scheduleRaceResizes();
+    }
+
+    document.addEventListener('fullscreenchange', onFullscreenChangeHandler);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChangeHandler);
 
     window.addEventListener('resize', () => {
       triggerActiveRaceResize();
@@ -3071,18 +3083,62 @@
       });
     }
 
-    // Bấm phím Space để Bắt đầu đua / Chạy tiếp, hoặc phím C để đổi cảnh F1/Đua ngựa
-    window.addEventListener('keydown', (e) => {
-      const activeEl = document.activeElement;
-      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) {
+    function isAnyRaceActive() {
+      const mode = document.getElementById('spin-mode')?.value || 'duck';
+      if (mode === 'duck') return duckRaceRunning || duckRaceState === 'racing' || duckRaceState === 'countdown';
+      if (mode === 'bike') return bikeRaceRunning || bikeRaceState === 'racing' || bikeRaceState === 'countdown';
+      if (mode === 'motogp') return motogpRaceRunning || motogpRaceState === 'racing' || motogpRaceState === 'countdown';
+      if (mode === 'f1') return f1RaceRunning || f1RaceState === 'racing' || f1RaceState === 'countdown';
+      if (mode === 'horse') return horseRaceRunning || horseRaceState === 'racing' || horseRaceState === 'countdown';
+      const spinBtn = document.getElementById('spin-btn');
+      return spinBtn ? spinBtn.disabled : false;
+    }
+
+    function triggerRaceBySpacebar() {
+      // 1. Nếu bảng kết quả người chiến thắng (result-modal) đang mở:
+      // Nhấn Space tự động đóng popup và xuất phát vòng đua tiếp theo ngay lập tức
+      const resultModal = document.getElementById('result-modal');
+      if (resultModal && !resultModal.classList.contains('hidden')) {
+        closeResultModal(false);
+        setTimeout(() => {
+          startSpin();
+        }, 250);
         return;
       }
 
-      const isWheelTab = document.getElementById('tab-wheel') && !document.getElementById('tab-wheel').classList.contains('hidden');
-      const isDuckMode = document.getElementById('spin-mode') && document.getElementById('spin-mode').value === 'duck';
+      // 2. Nếu đang mở modal cài đặt/đăng nhập/sửa lớp thì không kích hoạt
+      const blockerModal = document.querySelector('#app-modal:not(.hidden), #auth-modal:not(.hidden), #class-edit-modal:not(.hidden), #app-settings-modal:not(.hidden), #logout-confirm-modal:not(.hidden)');
+      if (blockerModal) return;
+
+      // 3. Nếu đang đua hoặc đang đếm ngược thì không kích hoạt lại
+      if (isAnyRaceActive()) return;
+
+      // 4. Nếu chưa ở tab arena (ví dụ đang ở sảnh game), tự chuyển vào arena và xuất phát
+      const isArenaTab = document.getElementById('tab-arena') && !document.getElementById('tab-arena').classList.contains('hidden');
+      if (!isArenaTab) {
+        switchAppTab('tab-arena');
+        setTimeout(() => {
+          startSpin();
+        }, 200);
+        return;
+      }
+
+      // 5. Bắt đầu cuộc đua
+      startSpin();
+    }
+
+    // Bấm phím Space để Bắt đầu đua / Chạy tiếp vòng mới (đặc biệt khi phóng to toàn màn hình)
+    window.addEventListener('keydown', (e) => {
+      const activeEl = document.activeElement;
+      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT' || activeEl.isContentEditable)) {
+        return;
+      }
+
       const isF1Mode = document.getElementById('spin-mode') && document.getElementById('spin-mode').value === 'f1';
       const isHorseMode = document.getElementById('spin-mode') && document.getElementById('spin-mode').value === 'horse';
-      const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+      const isArenaTab = document.getElementById('tab-arena') && !document.getElementById('tab-arena').classList.contains('hidden');
+      const resultModalOpen = document.getElementById('result-modal') && !document.getElementById('result-modal').classList.contains('hidden');
 
       // Phím C: Chuyển cảnh đường đua F1 hoặc Trường đua ngựa
       if ((e.key === 'c' || e.key === 'C') && (isF1Mode || isHorseMode || isFullscreen)) {
@@ -3121,27 +3177,11 @@
         }
       }
 
-      if (e.code === 'Space' || e.key === ' ') {
-        if ((isWheelTab && (isDuckMode || isF1Mode || isHorseMode)) || isFullscreen) {
+      // Phím Space: Khi phóng to toàn màn hình hoặc ở đấu trường đua -> Bấm Space là tự đua
+      if (e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar') {
+        if (isFullscreen || isArenaTab || resultModalOpen) {
           e.preventDefault();
-
-          // Nếu bảng kết quả HS chiến thắng đang mở, nhấn Space sẽ tự đóng và mở vòng đua tiếp theo
-          const resultModal = document.getElementById('result-modal');
-          if (resultModal && !resultModal.classList.contains('hidden')) {
-            closeResultModal(false);
-            setTimeout(() => {
-              startSpin();
-            }, 260);
-            return;
-          }
-
-          if (isDuckMode && !duckRaceRunning) {
-            startSpin();
-          } else if (isF1Mode && !f1RaceRunning) {
-            startSpin();
-          } else if (isHorseMode && !horseRaceRunning) {
-            startSpin();
-          }
+          triggerRaceBySpacebar();
         }
       }
     });
@@ -11719,6 +11759,11 @@
     }
 
     function openResultModal() {
+      const modal = document.getElementById('result-modal');
+      const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+      if (modal && fsEl && fsEl !== document.documentElement && modal.parentElement !== fsEl) {
+        fsEl.appendChild(modal);
+      }
       openModalUi('result-modal', 'result-modal-content');
     }
 
@@ -11776,20 +11821,6 @@
       if (currentClassId) {
         loadClassIntoStage(currentClassId);
       }
-
-      // Phím Space để bắt đầu đua nhanh
-      window.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' && !e.target.matches('input, textarea, select')) {
-          e.preventDefault();
-          const modalOpen = document.querySelector('#app-modal:not(.hidden), #result-modal:not(.hidden), #auth-modal:not(.hidden), #class-edit-modal:not(.hidden), #app-settings-modal:not(.hidden), #logout-confirm-modal:not(.hidden)');
-          if (!modalOpen) {
-            const spinBtn = document.getElementById('spin-btn');
-            if (spinBtn && !spinBtn.disabled) {
-              startSpin();
-            }
-          }
-        }
-      });
 
       // Kích hoạt ResizeObserver để tự động thích ứng với mọi kích thước màn hình
       if (typeof setupRaceResizeObservers === 'function') {
