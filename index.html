@@ -357,51 +357,108 @@
     border-color: #fcd34d !important;
   }
 
-  /* Khung Card & Box nội dung */
-  .bg-slate-900,
-  .bg-slate-950,
-  .bg-slate-900\/90,
-  .bg-slate-950\/70,
-  .bg-slate-950\/80,
-  .bg-slate-950\/90 {
+  /* ========================================================= */
+  /* QUY TẮC BẤT DI BẤT DỊCH:                                   */
+  /* - NỀN SÁNG -> CHỮ ĐEN                                      */
+  /* - NỀN TỐI -> CHỮ TRẮNG (RACE CONTROLS, HUD, ARENA)         */
+  /* ========================================================= */
+
+  /* 1. KHU VỰC NỀN SÁNG (Sảnh Trang Chủ, Quản Lý Lớp, Bảng, Hộp Thoại) */
+  #tab-home, #tab-classes {
+    color: #0f172a;
+  }
+  #tab-classes .bg-slate-900,
+  #tab-classes .bg-slate-950,
+  #tab-classes .bg-slate-800 {
     background-color: #ffffff !important;
     border-color: #e2e8f0 !important;
   }
-
-  .bg-slate-800,
-  .bg-slate-800\/80,
-  .bg-slate-800\/90,
-  .bg-slate-800\/60,
-  .bg-slate-800\/40 {
-    background-color: #f8fafc !important;
-    border-color: #e2e8f0 !important;
-    color: #1e293b !important;
-  }
-
-  .border-slate-800,
-  .border-slate-800\/80,
-  .border-slate-800\/60,
-  .border-slate-800\/40,
-  .border-slate-700,
-  .border-slate-700\/80,
-  .border-slate-700\/70,
-  .border-slate-700\/60,
-  .border-slate-700\/50 {
-    border-color: #e2e8f0 !important;
-  }
-
-  /* Văn bản sáng rõ ràng */
-  h1, h2, h3, h4, h5, h6 {
-    color: #0f172a;
-  }
-  .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *, .badge-white, #winner-modal *, .tab-nav-active *, #hero-banner > div:first-child *, #header-user-area button *) {
+  #tab-classes h1, #tab-classes h2, #tab-classes h3, #tab-classes h4,
+  #tab-home h1, #tab-home h2, #tab-home h3, #tab-home h4 {
     color: #0f172a !important;
   }
-  .text-slate-100, .text-slate-200, .text-slate-300 {
+  #tab-home p, #tab-classes p {
     color: #334155 !important;
   }
-  .text-slate-400, .text-slate-500 {
-    color: #64748b !important;
+
+  /* Chuyển text-white thành chữ đen CHỈ KHI nằm trên nền sáng */
+  #tab-home .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *, .badge-white),
+  #tab-classes .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *),
+  #app-settings-content .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *),
+  #auth-modal-content .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *),
+  #class-edit-content .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *),
+  #app-modal-content .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *) {
+    color: #0f172a !important;
+  }
+
+  /* 2. KHU VỰC NỀN TỐI (ĐẤU TRƯỜNG, CANVAS, HUD BUTTONS, ĐUA NGỰA, ĐUA XE, ĐUA VỊT) */
+  /* NỀN TỐI -> CHỮ TRẮNG 100%, KHÔNG ĐƯỢC CHỮ ĐEN TRÊN NỀN TỐI */
+  #tab-arena > div:first-child {
+    background-color: #0f172a !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+  }
+  #tab-arena > div:first-child #arena-current-title,
+  #tab-arena > div:first-child button[onclick*="switchAppTab"] {
+    color: #ffffff !important;
+  }
+  #tab-arena > div:first-child p {
+    color: #94a3b8 !important;
+  }
+
+  /* Nút bấm & thẻ trạng thái HUD trên canvas nền tối */
+  [id*="-race-container"] [class*="bg-slate-900"],
+  [id*="-race-container"] [class*="bg-slate-950"],
+  [id*="-race-container"] [class*="bg-slate-800"],
+  [id*="-race-container"] button,
+  [id*="-race-container"] .text-white,
+  [id*="-race-container"] #horse-race-status,
+  [id*="-race-container"] #duck-race-status,
+  [id*="-race-container"] #bike-race-status,
+  [id*="-race-container"] #motogp-race-status,
+  [id*="-race-container"] #f1-race-status,
+  [id*="-race-container"] #wheel-status {
+    color: #ffffff !important;
+  }
+
+  [id*="-race-container"] button {
+    background-color: rgba(15, 23, 42, 0.88) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    color: #ffffff !important;
+  }
+  [id*="-race-container"] button:hover {
+    background-color: rgba(30, 41, 59, 0.98) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+  }
+  [id*="-race-container"] button i,
+  [id*="-race-container"] button svg {
+    color: #fbbf24 !important;
+  }
+
+  /* Dropdown chọn sân đua ngựa, F1 */
+  #horse-scene-menu, #f1-scene-menu {
+    background-color: #0f172a !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7) !important;
+  }
+  #horse-scene-menu button, #f1-scene-menu button {
+    color: #ffffff !important;
+    background-color: transparent !important;
+  }
+  #horse-scene-menu button:hover, #f1-scene-menu button:hover {
+    background-color: #1e293b !important;
+    color: #38bdf8 !important;
+  }
+
+  /* Bảng xếp hạng trên canvas */
+  [id*="-leaderboard"] > div:first-child {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  }
+  [id*="-leaderboard"] * {
+    color: #ffffff !important;
   }
 
   /* Ô Nhập Liệu Input, Select */
@@ -606,20 +663,20 @@
           <i class="fa-solid fa-flag-checkered text-lg"></i>
         </div>
         <div class="hidden sm:block">
-          <div class="text-base sm:text-lg font-black tracking-tight flex items-center gap-1.5 font-display text-white">
-            TRƯỜNG ĐUA <span class="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">GỌI TÊN</span>
+          <div class="text-base sm:text-lg font-black tracking-tight flex items-center gap-1.5 font-display text-slate-900">
+            TRƯỜNG ĐUA <span class="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">GỌI TÊN</span>
           </div>
-          <div class="text-[11px] text-amber-300 font-extrabold tracking-tight flex items-center gap-1 -mt-0.5">
-            <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-amber-400/20 text-amber-300 font-black text-[10px] ring-1 ring-amber-400/50">©</span>
-            <span>Thiết kế bởi Thầy Tuấn - GV Toán TT GDNN - GDTX Q12</span>
+          <div class="text-[11px] text-slate-800 font-extrabold tracking-tight flex items-center gap-1 -mt-0.5">
+            <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-amber-100 text-amber-800 font-black text-[10px] ring-1 ring-amber-400">©</span>
+            <span class="text-slate-900">Thiết kế bởi <span class="text-indigo-600 font-black">Thầy Tuấn</span> - GV Toán TT GDNN - GDTX Q12</span>
           </div>
         </div>
         <div class="sm:hidden">
-          <div class="text-sm font-black tracking-tight flex items-center gap-1 font-display text-white">
-            TRƯỜNG ĐUA <span class="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">GỌI TÊN</span>
+          <div class="text-sm font-black tracking-tight flex items-center gap-1 font-display text-slate-900">
+            TRƯỜNG ĐUA <span class="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">GỌI TÊN</span>
           </div>
-          <div class="text-[9px] text-amber-300 font-bold flex items-center gap-0.5">
-            <span>©</span> <span>Thầy Tuấn - Q12</span>
+          <div class="text-[9px] text-slate-800 font-bold flex items-center gap-0.5">
+            <span class="text-amber-600 font-black">©</span> <span class="text-slate-900 font-extrabold">Thầy Tuấn - Q12</span>
           </div>
         </div>
       </div>
@@ -9377,12 +9434,23 @@
       ctx.arc(w * 0.8, h * 0.15, w * 0.4, 0, Math.PI);
       ctx.fill();
 
-      // Banner tên trường đua ở góc trên
+      // Banner tên trường đua ở góc trên (Nền pill tối + chữ trắng sắc nét: Màu tối thì chữ trắng)
       ctx.save();
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.font = '900 16px sans-serif';
+      ctx.font = '900 13px sans-serif';
+      const bannerText = scene.banner;
+      const tw = ctx.measureText(bannerText).width;
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(w * 0.5 - tw / 2 - 12, 10, tw + 24, 24, 12);
+      else ctx.rect(w * 0.5 - tw / 2 - 12, 10, tw + 24, 24);
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
-      ctx.fillText(scene.banner, w * 0.5, 26);
+      ctx.textBaseline = 'middle';
+      ctx.fillText(bannerText, w * 0.5, 22);
       ctx.restore();
     }
 
