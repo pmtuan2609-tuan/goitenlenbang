@@ -11307,14 +11307,9 @@
       ctx.roundRect(hipX + 3, hipY - 5, 8, 4, 2);
       ctx.fill();
 
-      // Số đeo thi đấu của học sinh trên đuôi xe
+      // Họa tiết tem đua thể thao trên đuôi xe
       ctx.fillStyle = '#ffffff';
-      ctx.fillRect(-17, -4, 7, 5);
-      ctx.fillStyle = '#0f172a';
-      ctx.font = 'bold 4.5px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(moto.bibNumber || '1', -13.5, -1.5);
+      ctx.fillRect(-17, -4, 7, 3);
 
       // Cánh tay ôm sát ghi-đông núp gió
       ctx.strokeStyle = moto.secondaryColor || '#ffffff';
@@ -11378,60 +11373,52 @@
       }
 
       // ==========================================
-      // 7. BIỂN TÊN HỌC SINH (ULTRA-CRISP HIGH-CONTRAST WHITE PILL)
-      // Nền trắng tinh khôi, viền đậm theo đội đua, chữ đen tuyền to rõ
+      // 7. BIỂN TÊN HỌC SINH (ULTRA-CRISP HIGH-CONTRAST WHITE PILL - GIỐNG XE ĐẠP)
+      // Bỏ số thứ tự, nền trắng/vàng bo tròn, nằm cao hơn đầu tay đua xíu để hiển thị rõ trọn vẹn người lái
       // ==========================================
       ctx.save();
       const badgeText = moto.displayName;
-      ctx.font = '900 13px sans-serif';
+      ctx.font = '900 12.5px sans-serif';
       const textMetrics = ctx.measureText(badgeText);
       const textW = textMetrics.width;
-      const padX = 9;
-      const badgeW = Math.max(textW + padX * 2 + 18, 54);
-      const badgeH = 22;
-      const badgeX = -badgeW / 2 + 6;
-      const badgeY = -38 + engineShake;
+      const padX = 11;
+      const badgeW = Math.max(textW + padX * 2, 46);
+      const badgeH = 21;
+      const badgeX = headX - badgeW / 2;
+      // Nằm cao hơn đầu tay đua xíu để hiển thị trọn vẹn người lái và xe (nếu có vương miện thì nâng cao hơn vương miện)
+      const badgeY = (motogpRaceState === 'finished' && moto.isWinner) ? (headY - 48) : (headY - 32);
 
-      // Bóng đổ nổi bật
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.65)';
-      ctx.shadowBlur = 6;
-      ctx.shadowOffsetY = 3;
+      // Bóng đổ của bảng tên
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
+      ctx.shadowBlur = 5;
+      ctx.shadowOffsetY = 2.5;
 
+      // Thân bảng tên bo tròn dạng viên thuốc (pill)
       ctx.beginPath();
-      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 11);
+      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 10.5);
       if (moto.isWinner && motogpRaceState === 'finished') {
         ctx.fillStyle = '#fef08a';
         ctx.fill();
         ctx.strokeStyle = '#ea580c';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2.2;
         ctx.stroke();
       } else {
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.strokeStyle = moto.fairingColor || '#ea580c';
-        ctx.lineWidth = 2.2;
+        ctx.lineWidth = 1.8;
         ctx.stroke();
       }
 
+      // Tắt bóng đổ để vẽ chữ sắc nét
       ctx.shadowColor = 'transparent';
 
-      // Hình tròn số áo bên trái
-      ctx.beginPath();
-      ctx.arc(badgeX + 11, badgeY + 11, 7.5, 0, Math.PI * 2);
-      ctx.fillStyle = moto.fairingColor || '#ea580c';
-      ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 8.5px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(moto.bibNumber || '1', badgeX + 11, badgeY + 11.5);
-
-      // Chữ Tên Học Sinh
+      // Chữ Họ Tên Học Sinh: Căn giữa chính xác ngay trên đỉnh đầu
       ctx.fillStyle = (moto.isWinner && motogpRaceState === 'finished') ? '#9a3412' : '#0f172a';
       ctx.font = '900 12px sans-serif';
-      ctx.textAlign = 'left';
+      ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(badgeText, badgeX + 22, badgeY + 11.5);
+      ctx.fillText(badgeText, headX, badgeY + badgeH / 2 + 0.5);
 
       ctx.restore();
 
