@@ -394,7 +394,7 @@
   h1, h2, h3, h4, h5, h6 {
     color: #0f172a;
   }
-  .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *, .badge-white, #winner-modal *, .tab-nav-active *, #tab-home > div:first-child *, #header-user-area button *) {
+  .text-white:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *, .badge-white, #winner-modal *, .tab-nav-active *, #hero-banner > div:first-child *, #header-user-area button *) {
     color: #0f172a !important;
   }
   .text-slate-100, .text-slate-200, .text-slate-300 {
@@ -465,24 +465,70 @@
     color: #b45309 !important;
   }
 
-  /* Hero Banner giữ màu gradient chuyên nghiệp */
-  #tab-home > div:first-child {
-    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e3a8a 100%) !important;
-    border-color: rgba(255,255,255,0.15) !important;
-    box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.25) !important;
+  /* Hero Banner giữ màu gradient chuyên nghiệp & sắc nét */
+  #hero-banner {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1e3a8a 100%) !important;
+    border-color: rgba(255,255,255,0.12) !important;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25) !important;
   }
-  #tab-home > div:first-child h1,
-  #tab-home > div:first-child p,
-  #tab-home > div:first-child span {
+  #hero-banner .hero-headline,
+  #hero-banner .hero-desc {
     color: #ffffff !important;
   }
-  #tab-home > div:first-child span.bg-clip-text {
+  #hero-banner span.bg-clip-text {
     color: transparent !important;
   }
-  #tab-home > div:first-child div.bg-slate-800\/80 {
-    background-color: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
+
+  /* Pill Badges trên Hero Banner: nền mờ kính tối, chữ trắng sáng */
+  .hero-pill-badge {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     color: #ffffff !important;
+  }
+  .hero-pill-badge span,
+  .hero-pill-badge i {
+    color: inherit !important;
+  }
+
+  /* Quick launch box trên Hero Banner: NỀN TRẮNG -> CHỮ ĐEN 100% */
+  #quick-launch-box {
+    background: #ffffff !important;
+    background-image: none !important;
+    border: 1.5px solid #e2e8f0 !important;
+    box-shadow: 0 12px 30px -5px rgba(15, 23, 42, 0.25) !important;
+  }
+  #quick-launch-box *:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *) {
+    color: #0f172a !important;
+  }
+  #quick-launch-box label {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+  }
+  #quick-launch-box select {
+    background-color: #f8fafc !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+  #quick-launch-box select option {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+  #quick-launch-box .duration-quick-btn {
+    background-color: #f1f5f9 !important;
+    border: 1.5px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+  }
+  #quick-launch-box .duration-quick-btn:hover {
+    background-color: #e2e8f0 !important;
+    border-color: #94a3b8 !important;
+    color: #0f172a !important;
+  }
+  #quick-launch-box .duration-quick-btn[class*="bg-amber"] {
+    background-color: #fef3c7 !important;
+    border-color: #f59e0b !important;
+    color: #78350f !important;
   }
 
   /* Nút bấm gradient vẫn giữ chữ trắng */
@@ -502,43 +548,39 @@
     color: #ffffff !important;
   }
 
-  /* 9 Thẻ Trò Chơi (Game Cards) Nền Trắng Tinh Khôi, Siêu Rõ Nét */
+  /* 9 Thẻ Trò Chơi (Game Cards) Gọn Gàng, Chi Tiết: NỀN TRẮNG -> CHỮ PHẢI ĐEN */
   .game-card-item {
     background: #ffffff !important;
     background-image: none !important;
     border: 1.5px solid #e2e8f0 !important;
-    border-radius: 1.5rem !important;
-    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.04), 0 1px 3px -1px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
   .game-card-item:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 16px 30px -6px rgba(15, 23, 42, 0.12), 0 6px 12px -2px rgba(15, 23, 42, 0.06) !important;
-    border-color: #cbd5e1 !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.06) !important;
+    border-color: #94a3b8 !important;
   }
   .game-card-item h3 {
     color: #0f172a !important;
-    font-weight: 800 !important;
+    font-weight: 900 !important;
   }
   .game-card-item:hover h3 {
     color: #4338ca !important;
   }
   .game-card-item p {
-    color: #475569 !important;
+    color: #334155 !important;
     font-weight: 500 !important;
+  }
+  .game-card-item .spec-chip {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
   }
   .game-card-item .border-t {
     border-color: #f1f5f9 !important;
-  }
-
-  /* Quick launch box trên Hero Banner */
-  #quick-launch-box {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid rgba(255, 255, 255, 0.5) !important;
-    box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.35) !important;
-  }
-  #quick-launch-box label {
-    color: #334155 !important;
   }
 
   /* Modals inner elements light mode */
@@ -626,284 +668,398 @@
   <div class="flex-1 flex flex-col">
 
     <!-- ======================================================= -->
-    <!-- 1. TAB: SẢNH TRÒ CHƠI (HOME / GAME LOBBY)             -->
+    <!-- 1. TAB: SẢNH CHỌN TRÒ CHƠI                             -->
     <!-- ======================================================= -->
-    <section id="tab-home" class="tab-section max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      
-      <!-- Hero Banner -->
-      <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-indigo-950 via-purple-950 to-slate-900 border border-slate-800/80 p-6 sm:p-8 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-6">
-        <div class="space-y-4 text-center lg:text-left z-10 flex-1">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold tracking-wide uppercase">
-            <i class="fa-solid fa-cloud text-emerald-400"></i> Lưu Đám Mây Đa Thiết Bị - Đấu Trường Gọi Tên Đỉnh Cao
+    <section id="tab-home" class="tab-section max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-5">
+
+      <!-- Hero Banner (Sleek & Compact) -->
+      <div id="hero-banner" class="relative rounded-2xl overflow-hidden border p-4 sm:p-5 lg:p-6 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-5">
+        <div class="space-y-3 text-center lg:text-left z-10 flex-1">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-black tracking-wide uppercase">
+            <i class="fa-solid fa-cloud text-emerald-400"></i> Lưu Đám Mây Đa Thiết Bị - Đấu Trường Gọi Tên
           </div>
-          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-display text-white">
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight font-display hero-headline text-white leading-tight">
             Chọn Phương Pháp <span class="bg-gradient-to-r from-amber-400 via-rose-400 to-cyan-400 bg-clip-text text-transparent">Đua Gọi Tên</span>
           </h1>
-          <p class="text-slate-300 max-w-xl text-sm sm:text-base leading-relaxed">
-            Biến tiết học căng thẳng thành đấu trường nghẹt thở! Dữ liệu lớp học được đồng bộ <strong class="text-emerald-400">Đám Mây tự động</strong> — đổi sang máy chiếu, TV cảm ứng hay trình duyệt khác chỉ cần đăng nhập là lớp học xuất hiện ngay!
+          <p class="hero-desc text-slate-300 max-w-xl text-xs sm:text-sm leading-relaxed font-normal">
+            Biến tiết học căng thẳng thành đấu trường hào hứng! Dữ liệu lớp học được đồng bộ <strong class="text-emerald-400">Đám Mây tự động</strong> — đổi máy chiếu hay trình duyệt chỉ cần đăng nhập là dùng được ngay!
           </p>
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-2 text-xs text-slate-400 font-semibold">
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-400"></i> 60 FPS Mượt Mà</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 flex items-center gap-1.5"><i class="fa-solid fa-bicycle text-emerald-400"></i> Đua Xe Đạp Chạy Ngang</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 flex items-center gap-1.5"><i class="fa-solid fa-motorcycle text-orange-400"></i> Đua Moto GP Chạy Ngang</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 flex items-center gap-1.5"><i class="fa-solid fa-palette text-pink-400"></i> Đổi Màu Giao Diện</span>
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1 text-xs font-semibold">
+            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-400"></i> 60 FPS Mượt Mà</span>
+            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-bicycle text-emerald-400"></i> Đua Xe Đạp Chạy Ngang</span>
+            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-motorcycle text-orange-400"></i> Đua Moto GP Chạy Ngang</span>
+            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-palette text-pink-400"></i> Đổi Màu Giao Diện</span>
           </div>
         </div>
 
-        <!-- Quick Launch Bar -->
-        <div id="quick-launch-box" class="bg-white/95 border border-white/40 rounded-3xl p-5 sm:p-6 w-full lg:w-96 shadow-2xl backdrop-blur-md z-10 space-y-4 text-slate-800">
-          <div class="flex items-center justify-between text-xs font-black text-slate-500 uppercase tracking-wider">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-amber-500"></i> Cài đặt nhanh</span>
-            <button onclick="switchAppTab('tab-classes')" class="text-indigo-600 hover:text-indigo-700 font-bold transition flex items-center gap-1">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tải Excel / Thêm lớp
+        <!-- Quick Launch Bar (Compact & Nền Trắng Chữ Đen 100%) -->
+        <div id="quick-launch-box" class="rounded-2xl p-4 sm:p-5 w-full lg:w-84 space-y-3 shrink-0 shadow-lg">
+          <div class="flex items-center justify-between text-xs font-black uppercase tracking-wider pb-1 border-b border-slate-100">
+            <span class="flex items-center gap-1.5 font-black text-slate-900"><i class="fa-solid fa-sliders text-amber-500"></i> CÀI ĐẶT NHANH</span>
+            <button onclick="switchAppTab('tab-classes')" class="text-indigo-700 hover:text-indigo-900 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Thêm lớp
             </button>
           </div>
 
           <!-- Select Class -->
           <div>
-            <label class="block text-xs text-slate-700 font-bold mb-1.5">1. Lớp học đang chọn:</label>
-            <select id="home-class-select" onchange="onClassSelectChange(this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-400 outline-none cursor-pointer">
+            <label class="block text-xs text-slate-900 font-black mb-1">1. Lớp học đang chọn:</label>
+            <select id="home-class-select" onchange="onClassSelectChange(this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none cursor-pointer">
               <!-- Populated by JS -->
             </select>
           </div>
 
           <!-- Select Duration -->
           <div>
-            <label class="block text-xs text-slate-700 font-bold mb-1.5">2. Thời gian cuộc đua (giây):</label>
+            <label class="block text-xs text-slate-900 font-black mb-1">2. Thời gian cuộc đua:</label>
             <div class="grid grid-cols-4 gap-1.5" id="homeDurationButtons">
-              <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition" data-sec="3">3s</button>
-              <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn py-2 text-xs font-black rounded-xl border border-amber-400 bg-amber-100 text-amber-800 transition" data-sec="5">5s</button>
-              <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition" data-sec="10">10s</button>
-              <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition" data-sec="15">15s</button>
+              <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="3">3s</button>
+              <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn py-1.5 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 transition cursor-pointer" data-sec="5">5s</button>
+              <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="10">10s</button>
+              <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="15">15s</button>
             </div>
           </div>
 
           <!-- Fast Launch Button -->
-          <button onclick="launchGame('duck')" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black py-3.5 rounded-2xl shadow-xl shadow-amber-500/20 text-sm flex items-center justify-center gap-2 transition hover:scale-[1.02] active:scale-95">
+          <button onclick="launchGame('duck')" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black py-2.5 sm:py-3 rounded-xl shadow-md text-xs sm:text-sm flex items-center justify-center gap-2 transition hover:scale-[1.01] active:scale-95 cursor-pointer">
             <i class="fa-solid fa-rocket text-amber-200 animate-bounce"></i> VÀO ĐUA NGAY
           </button>
         </div>
       </div>
 
       <!-- Filter Controls & Section Title -->
-      <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
         <div>
-          <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
-            <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
+          <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
             DANH SÁCH 9 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
-          <p class="text-xs text-slate-500 mt-0.5 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
+          <p class="text-xs text-slate-600 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
 
         <!-- Filter Buttons -->
-        <div class="flex items-center gap-1.5 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
-          <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 transition">
+        <div class="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
+          <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 transition">
             Tất Cả (9)
           </button>
-          <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+          <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
             🏎️ Đường Đua Tốc Độ (5)
           </button>
-          <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+          <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
             🎁 May Mắn & Vòng Quay (4)
           </button>
         </div>
       </div>
 
-      <!-- Game Cards Grid: 3x3 layout (9 games) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="home-game-cards-container">
+      <!-- Game Cards Grid: 3x3 layout (9 games) - Gọn hơn, Chi tiết hơn, Nền trắng Chữ đen -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="home-game-cards-container">
         
-        <!-- 1. ĐUA VỊT TRÊN SÔNG (CHẠY NGANG) -->
-        <div onclick="launchGame('duck')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-sky-200 hover:border-sky-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
-          <div class="absolute top-3.5 right-3.5 bg-sky-50 text-sky-700 border border-sky-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🦆 Chạy Ngang Về Đích
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-sky-100/70 border border-sky-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🦆
+        <!-- 1. ĐUA VỊT TRÊN SÔNG -->
+        <div onclick="launchGame('duck')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-sky-200 hover:border-sky-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-sky-100/80 border border-sky-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🦆
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-sky-50 text-sky-800 border border-sky-200 text-[10px] font-black uppercase tracking-wide">
+                🦆 Chạy Ngang Về Đích
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-sky-600 transition">
-              Đua Vịt Trên Sông
-            </h3>
-            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-              Các chú vịt đầy sắc màu bơi lội, lắc lư theo làn sóng nước sinh động. Vịt chiến thắng tung cú nước rút nghẹt thở ở những mét cuối cùng!
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-sky-600 transition">
+                Đua Vịt Trên Sông
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Các chú vịt bơi lội, lắc lư theo làn sóng nước sinh động. Bứt phá nước rút nghẹt thở ở mét cuối!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌊 Lướt Sóng</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-sky-600">
-            <span>Vào Trường Đua</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-600 text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng
+            </span>
+            <span class="text-sky-600 group-hover:text-sky-700 font-black flex items-center gap-1">
+              Vào Đua <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition"></i>
+            </span>
           </div>
         </div>
 
-        <!-- 2. ĐUA XE ĐẠP THỂ THAO (CHẠY NGANG) -->
-        <div onclick="launchGame('bike')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-emerald-200 hover:border-emerald-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
-          <div class="absolute top-3.5 right-3.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🚴 Sprint Tour Chạy Ngang
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-emerald-100/70 border border-emerald-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🚴
+        <!-- 2. ĐUA XE ĐẠP THỂ THAO -->
+        <div onclick="launchGame('bike')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-emerald-200 hover:border-emerald-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-emerald-100/80 border border-emerald-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🚴
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black uppercase tracking-wide">
+                🚴 Sprint Tour Chạy Ngang
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-emerald-600 transition">
-              Đua Xe Đạp Thể Thao
-            </h3>
-            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-              Đường đua Tour de France thẳng tắp sang phải! Bứt tốc vũ bão bỏ xa đối thủ, núp gió lướt xé gió và tung nước rút qua cổng chào chiến thắng!
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-emerald-600 transition">
+                Đua Xe Đạp Thể Thao
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Đường đua Tour de France thẳng tắp! Núp gió khí động học xé gió và tung nước rút qua cổng chào.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🚴 Núp Gió</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-emerald-600">
-            <span>Vào Trường Đua</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-600 text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng
+            </span>
+            <span class="text-emerald-600 group-hover:text-emerald-700 font-black flex items-center gap-1">
+              Vào Đua <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition"></i>
+            </span>
           </div>
         </div>
 
-        <!-- 3. ĐUA XE MOTO GP (CHẠY NGANG) -->
-        <div onclick="launchGame('motogp')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-orange-200 hover:border-orange-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
-          <div class="absolute top-3.5 right-3.5 bg-orange-50 text-orange-700 border border-orange-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🏍️ Siêu Tốc 350 km/h
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-orange-100/70 border border-orange-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🏍️
+        <!-- 3. ĐUA XE MOTO GP -->
+        <div onclick="launchGame('motogp')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-orange-200 hover:border-orange-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-orange-100/80 border border-orange-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🏍️
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-orange-50 text-orange-900 border border-orange-200 text-[10px] font-black uppercase tracking-wide">
+                🏍️ Siêu Tốc 350 km/h
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-orange-600 transition">
-              Đua Xe Moto GP
-            </h3>
-            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-              Đoạn đường thẳng Grand Prix khốc liệt! Đèn FIM đếm ngược, siêu mô tô 1000cc gầm rú, xả lửa nitro rực rỡ và cán đích tốc độ 350 km/h!
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-orange-600 transition">
+                Đua Xe Moto GP
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Đường thẳng Grand Prix khốc liệt! Siêu mô tô 1000cc gầm rú xả lửa nitro rực rỡ cán đích 350km/h.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔥 Lửa Nitro</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-orange-600">
-            <span>Vào Trường Đua</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-600 text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng
+            </span>
+            <span class="text-orange-600 group-hover:text-orange-700 font-black flex items-center gap-1">
+              Vào Đua <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition"></i>
+            </span>
           </div>
         </div>
 
-        <!-- 4. ĐUA XE F1 ĐỈNH CAO (CIRCUIT LOOP) -->
-        <div onclick="launchGame('f1')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-rose-200 hover:border-rose-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
-          <div class="absolute top-3.5 right-3.5 bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🏎️ Grand Prix Sa Mạc & Rừng Rậm
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-rose-100/70 border border-rose-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🏎️
+        <!-- 4. ĐUA XE F1 ĐỈNH CAO -->
+        <div onclick="launchGame('f1')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-rose-200 hover:border-rose-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-rose-100/80 border border-rose-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🏎️
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-900 border border-rose-200 text-[10px] font-black uppercase tracking-wide">
+                🏎️ Vòng Đua Khép Kín
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-rose-600 transition">
-              Đua Xe F1 Chuyên Nghiệp
-            </h3>
-            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-              Đường đua vòng tròn khép kín với các góc cua chữ S, DRS bứt phá vượt mặt, tính số vòng đua tùy chỉnh và bảng xếp hạng trực tiếp.
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-rose-600 transition">
+                Đua Xe F1 Chuyên Nghiệp
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Đường đua vòng quanh sa mạc & rừng rậm! Cua chữ S kỹ thuật, mở cánh gió DRS bứt phá ngoạn mục.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 1 - 5 Vòng</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">📈 Bảng Hạng</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-rose-600">
-            <span>Vào Trường Đua</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-600 text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng
+            </span>
+            <span class="text-rose-600 group-hover:text-rose-700 font-black flex items-center gap-1">
+              Vào Đua <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition"></i>
+            </span>
           </div>
         </div>
 
-        <!-- 5. ĐUA NGỰA TRƯỜNG ĐUA (CHẠY NGANG) -->
-        <div onclick="launchGame('horse')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-amber-200 hover:border-amber-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
-          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🏇 Vó Ngựa Thảo Nguyên
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-amber-100/70 border border-amber-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🏇
+        <!-- 5. ĐUA NGỰA THỂ THAO -->
+        <div onclick="launchGame('horse')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-amber-200 hover:border-amber-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-amber-100/80 border border-amber-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🏇
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase tracking-wide">
+                🏇 Vó Ngựa 4 Mùa
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
-              Đua Ngựa Thể Thao
-            </h3>
-            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-              Chiến mã phi nước đại dũng mãnh, vó ngựa tung bay trong tiếng reo hò cuồng nhiệt của khán đài.
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
+                Đua Ngựa Thể Thao
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Chiến mã phi nước đại dũng mãnh, tiếng vó ngựa rộn rã trên thảo nguyên xanh và trường đua mùa thu.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌸 4 Cảnh Đua</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-amber-700">
-            <span>Vào Trường Đua</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-600 text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng
+            </span>
+            <span class="text-amber-700 group-hover:text-amber-800 font-black flex items-center gap-1">
+              Vào Đua <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition"></i>
+            </span>
           </div>
         </div>
 
-        <!-- 6. VÒNG QUAY MAY MẮN (WHEEL) -->
-        <div onclick="launchGame('wheel_pie')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-purple-200 hover:border-purple-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
-          <div class="absolute top-3.5 right-3.5 bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🎡 Vòng Quay Cổ Điển
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-purple-100/70 border border-purple-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🎡
+        <!-- 6. VÒNG QUAY MAY MẮN -->
+        <div onclick="launchGame('wheel_pie')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-purple-200 hover:border-purple-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-purple-100/80 border border-purple-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🎡
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-purple-50 text-purple-900 border border-purple-200 text-[10px] font-black uppercase tracking-wide">
+                🎡 Vòng Quay 360°
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-purple-600 transition">
-              Vòng Quay May Mắn
-            </h3>
-            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-              Vòng quay tròn 360 độ rực rỡ sắc màu, âm thanh tích tắc hồi hộp giảm dần trước khi kim chỉ dừng đúng tên học sinh may mắn.
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-purple-600 transition">
+                Vòng Quay May Mắn
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Bánh xe quay tròn rực rỡ sắc màu, âm thanh tích tắc hồi hộp giảm tốc dừng lại đúng bạn may mắn!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎯 Kim Chỉ Chuẩn</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-purple-600">
-            <span>Vào Đấu Trường</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="inline-flex items-center gap-1 text-emerald-600 text-[11px]">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Sẵn sàng
+            </span>
+            <span class="text-purple-600 group-hover:text-purple-700 font-black flex items-center gap-1">
+              Vào Quay <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition"></i>
+            </span>
           </div>
         </div>
 
         <!-- 7. HỘP QUÀ BÍ MẬT 3D -->
-        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-slate-50/80 border border-slate-200 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-md transition-all opacity-85 hover:opacity-100">
-          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
-            <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🎁
+        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-slate-50/80 border border-slate-200 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all opacity-85 hover:opacity-100 group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+                🎁
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-clock-rotate-left"></i> Đang Cập Nhật
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
-              Hộp Quà Bí Mật
-            </h3>
-            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
-              Các hộp quà lung linh lắc lư theo điệu nhạc. Nắp hộp bật mở tung ngôi sao lấp lánh hé lộ tên bạn học sinh được gọi lên bảng!
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
+                Hộp Quà Bí Mật
+              </h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
+                Các hộp quà lung linh lắc lư theo điệu nhạc. Nắp hộp bật mở tung ngôi sao lấp lánh hé lộ tên học sinh.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎁 Hộp Quà</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏳ Đang Làm</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bản Mới</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-xs font-bold text-amber-600">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Đang cập nhật, chưa sử dụng được</span>
+          <div class="pt-3 border-t border-slate-200 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-amber-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-wrench text-[10px]"></i> Tạm khóa
+            </span>
+            <span class="text-slate-400 font-semibold text-[11px]">Sắp ra mắt</span>
           </div>
         </div>
 
         <!-- 8. THẢ BÓNG BAY KHÍ CẦU -->
-        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-slate-50/80 border border-slate-200 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-md transition-all opacity-85 hover:opacity-100">
-          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
-            <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🎈
+        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-slate-50/80 border border-slate-200 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all opacity-85 hover:opacity-100 group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+                🎈
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-clock-rotate-left"></i> Đang Cập Nhật
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
-              Thả Bóng Bay Gọi Tên
-            </h3>
-            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
-              Chùm bóng bay rực rỡ lơ lửng bay lên bầu trời mây xanh. Quả bóng may mắn phát nổ pháo hoa xuất hiện tên học sinh.
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
+                Thả Bóng Bay Gọi Tên
+              </h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
+                Chùm bóng bay rực rỡ lơ lửng trên mây trời. Quả bóng may mắn nổ pháo hoa xuất hiện tên bạn học sinh.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎈 Bóng Bay</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏳ Đang Làm</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bản Mới</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-xs font-bold text-amber-600">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Đang cập nhật, chưa sử dụng được</span>
+          <div class="pt-3 border-t border-slate-200 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-amber-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-wrench text-[10px]"></i> Tạm khóa
+            </span>
+            <span class="text-slate-400 font-semibold text-[11px]">Sắp ra mắt</span>
           </div>
         </div>
 
         <!-- 9. RÚT THĂM & MÁY KÉO SỐ MAY MẮN -->
-        <div onclick="launchGame('wheel_slot')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-slate-50/80 border border-slate-200 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-md transition-all opacity-85 hover:opacity-100">
-          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
-            <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
-          </div>
-          <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
-              🎰
+        <div onclick="launchGame('wheel_slot')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-slate-50/80 border border-slate-200 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all opacity-85 hover:opacity-100 group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+                🎰
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-clock-rotate-left"></i> Đang Cập Nhật
+              </span>
             </div>
-            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
-              Máy Kéo Số Jackpot
-            </h3>
-            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
-              Các trục cuộn quay tít mù với hiệu ứng đèn neon Las Vegas hoành tráng, dừng lại đúng bạn học sinh tỏa sáng nhất!
-            </p>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
+                Máy Kéo Số Jackpot
+              </h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
+                Trục cuộn quay tít với hiệu ứng đèn neon Las Vegas, dừng lại đúng bạn học sinh tỏa sáng nhất lớp!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎰 Jackpot</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏳ Đang Làm</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bản Mới</span>
+            </div>
           </div>
-          <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-xs font-bold text-amber-600">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Đang cập nhật, chưa sử dụng được</span>
+          <div class="pt-3 border-t border-slate-200 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-amber-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-wrench text-[10px]"></i> Tạm khóa
+            </span>
+            <span class="text-slate-400 font-semibold text-[11px]">Sắp ra mắt</span>
           </div>
         </div>
 
