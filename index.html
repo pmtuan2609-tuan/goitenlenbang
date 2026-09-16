@@ -1033,36 +1033,36 @@
           </div>
         </div>
 
-        <!-- 8. THẢ BÓNG BAY KHÍ CẦU -->
-        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-slate-50/80 border border-slate-200 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all opacity-85 hover:opacity-100 group">
+        <!-- 8. BẮN BÓNG BAY GỌI TÊN -->
+        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-rose-200 hover:border-rose-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-              <div class="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-100 to-amber-100 border border-rose-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
                 🎈
               </div>
-              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
-                <i class="fa-solid fa-clock-rotate-left"></i> Đang Cập Nhật
+              <span class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-500"></i> Mới Ra Mắt
               </span>
             </div>
             <div>
-              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
-                Thả Bóng Bay Gọi Tên
+              <h3 class="text-base font-black text-slate-900 group-hover:text-rose-600 transition">
+                Bắn Bóng Bay Gọi Tên
               </h3>
               <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
-                Chùm bóng bay rực rỡ lơ lửng trên mây trời. Quả bóng may mắn nổ pháo hoa xuất hiện tên bạn học sinh.
+                20-30 chùm bóng bay lượn trên bầu trời xanh. Cậu bé bắn tên bách phát bách trúng làm nổ tung bóng hiện tên học sinh!
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎈 Bóng Bay</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏳ Đang Làm</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bản Mới</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🏹 Bắn Cung</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎈 25 Bóng Bay</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">💥 Nổ Tên Vàng</span>
             </div>
           </div>
           <div class="pt-3 border-t border-slate-200 mt-3 flex items-center justify-between text-xs font-bold">
-            <span class="text-amber-600 text-[11px] font-bold flex items-center gap-1">
-              <i class="fa-solid fa-wrench text-[10px]"></i> Tạm khóa
+            <span class="text-rose-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-play text-[10px]"></i> Sẵn sàng
             </span>
-            <span class="text-slate-400 font-semibold text-[11px]">Sắp ra mắt</span>
+            <span class="text-rose-500 font-extrabold text-[11px] group-hover:translate-x-0.5 transition">Vào Bắn Ngay →</span>
           </div>
         </div>
 
@@ -1150,7 +1150,7 @@
               <option value="horse" class="bg-slate-900 text-white font-bold">🏇 Đua Ngựa Thể Thao</option>
               <option value="wheel_pie" class="bg-slate-900 text-white font-bold">🎡 Vòng Quay May Mắn</option>
               <option value="gift" class="bg-slate-900 text-slate-400 font-bold">🎁 Hộp Quà Bí Mật (Đang cập nhật)</option>
-              <option value="balloon" class="bg-slate-900 text-slate-400 font-bold">🎈 Thả Bóng Bay (Đang cập nhật)</option>
+              <option value="balloon" class="bg-slate-900 text-white font-bold">🎈 Bắn Bóng Bay (Cậu Bé Bắn Tên)</option>
               <option value="wheel_slot" class="bg-slate-900 text-slate-400 font-bold">🎰 Máy Kéo Số (Đang cập nhật)</option>
             </select>
           </div>
@@ -1375,9 +1375,29 @@
           <!-- Populated by JS -->
         </div>
 
-        <!-- STAGE 8: THẢ BÓNG BAY KHÍ CẦU -->
-        <div id="bubble-stage-container" class="hidden w-full h-full min-h-[440px] flex flex-wrap gap-4 items-center justify-center p-6 overflow-y-auto max-h-[600px] dark-scrollbar relative">
-          <!-- Populated by JS -->
+        <!-- STAGE 8: BẮN BÓNG BAY GỌI TÊN (CẬU BÉ BẮN CUNG) -->
+        <div id="bubble-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-sky-400 via-sky-200 to-emerald-100 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 text-white text-xs font-bold shadow-md">
+              <span class="text-amber-400 font-extrabold text-sm">🎈</span>
+              <span id="balloon-game-status">Sẵn sàng bắn bóng bay!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white text-xs font-black px-3 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md">
+                <i class="fa-solid fa-crosshairs text-white"></i> Bắn Tên
+              </button>
+              <button onclick="toggleBalloonSound()" id="balloon-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
+                🔊 Bật
+              </button>
+              <button onclick="toggleBalloonFullscreen()" id="balloon-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-300"></i> Phóng to
+              </button>
+              <button onclick="resetBalloonGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-300"></i> Thả Lại Bóng
+              </button>
+            </div>
+          </div>
+          <canvas id="balloon-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -3128,10 +3148,9 @@
     }
 
     function launchGame(mode) {
-      if (mode === 'gift' || mode === 'balloon' || mode === 'wheel_slot') {
+      if (mode === 'gift' || mode === 'wheel_slot') {
         const names = {
           gift: 'Hộp Quà Bí Mật',
-          balloon: 'Thả Bóng Bay Gọi Tên',
           wheel_slot: 'Máy Kéo Số Jackpot'
         };
         showUpcomingNotice(names[mode]);
@@ -3160,10 +3179,9 @@
     // ==========================================
     function handleModeChange() {
       const mode = document.getElementById('spin-mode')?.value || 'duck';
-      if (mode === 'gift' || mode === 'balloon' || mode === 'wheel_slot') {
+      if (mode === 'gift' || mode === 'wheel_slot') {
         const names = {
           gift: 'Hộp Quà Bí Mật',
-          balloon: 'Thả Bóng Bay Gọi Tên',
           wheel_slot: 'Máy Kéo Số Jackpot'
         };
         showUpcomingNotice(names[mode]);
@@ -3237,7 +3255,11 @@
         renderGiftBoxes();
       } else if (mode === 'balloon') {
         if (bubbleContainer) bubbleContainer.classList.remove('hidden');
-        renderBalloons();
+        initBalloonGame(true);
+        setTimeout(() => {
+          resizeBalloonCanvas();
+          renderBalloonCanvas(performance.now());
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -3257,7 +3279,7 @@
         horse: { title: 'Đua Ngựa Thể Thao (Vó Ngựa Chạy Ngang)', icon: '🏇' },
         wheel_pie: { title: 'Vòng Quay May Mắn (Cổ Điển 360 Độ)', icon: '🎡' },
         gift: { title: 'Hộp Quà Bí Mật 3D', icon: '🎁' },
-        balloon: { title: 'Thả Bóng Bay Khí Cầu', icon: '🎈' },
+        balloon: { title: 'Bắn Bóng Bay Gọi Tên (Cậu Bé Bắn Cung)', icon: '🎈' },
         wheel_slot: { title: 'Máy Kéo Số May Mắn', icon: '🎰' }
       };
 
@@ -3351,23 +3373,1085 @@
       showWinnerResult(st, document.getElementById('spin-btn'));
     }
 
-    function renderBalloons() {
-      const container = document.getElementById('bubble-stage-container');
-      if (!container) return;
-      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+    // ==========================================
+    // MODULE: BẮN BÓNG BAY GỌI TÊN (CẬU BÉ BẮN CUNG)
+    // ==========================================
+    const BalloonAudio = {
+      ctx: null,
+      enabled: true,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playAim() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          const now = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.linearRampToValueAtTime(220, now + 0.35);
+          gain.gain.setValueAtTime(0.01, now);
+          gain.gain.linearRampToValueAtTime(0.06, now + 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        } catch(e) {}
+      },
+      playShoot() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          // Bow twang
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(110, now + 0.18);
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.19);
 
-      if (visible.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 text-xs font-bold">Chưa có học sinh nào trong lớp!</p>';
-        return;
+          // Arrow whoosh
+          const bufferSize = Math.floor(this.ctx.sampleRate * 0.18);
+          const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            output[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+          }
+          const whiteNoise = this.ctx.createBufferSource();
+          whiteNoise.buffer = noiseBuffer;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(900, now);
+          filter.frequency.linearRampToValueAtTime(2400, now + 0.14);
+          const noiseGain = this.ctx.createGain();
+          noiseGain.gain.setValueAtTime(0.22, now);
+          noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          whiteNoise.connect(filter);
+          filter.connect(noiseGain);
+          noiseGain.connect(this.ctx.destination);
+          whiteNoise.start(now);
+        } catch(e) {}
+      },
+      playPop() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          // Low boom thud
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(340, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.14);
+          gain.gain.setValueAtTime(0.55, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.15);
+
+          // Sharp burst
+          const bufferSize = Math.floor(this.ctx.sampleRate * 0.09);
+          const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            output[i] = (Math.random() * 2 - 1);
+          }
+          const whiteNoise = this.ctx.createBufferSource();
+          whiteNoise.buffer = noiseBuffer;
+          const noiseGain = this.ctx.createGain();
+          noiseGain.gain.setValueAtTime(0.45, now);
+          noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          whiteNoise.connect(noiseGain);
+          noiseGain.connect(this.ctx.destination);
+          whiteNoise.start(now);
+        } catch(e) {}
+      },
+      playFanfare() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+          const now = this.ctx.currentTime;
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+            gain.gain.setValueAtTime(0, now + idx * 0.1);
+            gain.linearRampToValueAtTime ? gain.gain.linearRampToValueAtTime(0.25, now + idx * 0.1 + 0.03) : null;
+            const dur = (idx === notes.length - 1) ? 0.6 : 0.22;
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + dur);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now + idx * 0.1);
+            osc.stop(now + idx * 0.1 + dur + 0.05);
+          });
+        } catch(e) {}
+      }
+    };
+
+    function toggleBalloonSound() {
+      BalloonAudio.enabled = !BalloonAudio.enabled;
+      const btn = document.getElementById('balloon-sound-btn');
+      if (btn) btn.innerHTML = BalloonAudio.enabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleBalloonFullscreen() {
+      const el = document.getElementById('bubble-stage-container');
+      if (!el) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+    }
+
+    function resetBalloonGame() {
+      initBalloonGame(true);
+    }
+
+    // Balloon Game State Variables
+    let balloonList = [];
+    let balloonGameAnimId = null;
+    let balloonGameState = 'idle'; // 'idle', 'aiming', 'shooting', 'celebrating'
+    let balloonTarget = null;
+    let balloonFinishCallback = null;
+    let archerBoy = {
+      aimAngle: -Math.PI / 4.5,
+      drawTension: 0,
+      jumpY: 0
+    };
+    let balloonArrow = null;
+    let balloonPopParticles = [];
+    let balloonWinnerReveal = null;
+    let balloonClouds = [];
+
+    function adjustColor(hex, percent) {
+      let num = parseInt(hex.replace('#', ''), 16);
+      let r = (num >> 16) + Math.round(255 * (percent / 100));
+      let g = ((num >> 8) & 0x00FF) + Math.round(255 * (percent / 100));
+      let b = (num & 0x0000FF) + Math.round(255 * (percent / 100));
+      r = Math.min(255, Math.max(0, r));
+      g = Math.min(255, Math.max(0, g));
+      b = Math.min(255, Math.max(0, b));
+      return '#' + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
+    }
+
+    function drawBalloonRoundedRect(ctx, x, y, width, height, radius, fill, stroke, strokeWidth = 1) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      if (fill) {
+        ctx.fillStyle = fill;
+        ctx.fill();
+      }
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = strokeWidth;
+        ctx.stroke();
+      }
+    }
+
+    function resizeBalloonCanvas() {
+      const container = document.getElementById('bubble-stage-container');
+      const canvas = document.getElementById('balloon-canvas');
+      if (!container || !canvas) return;
+      const rect = container.getBoundingClientRect();
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+      if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    }
+
+    function initBalloonGame(resetPositions = true) {
+      resizeBalloonCanvas();
+      const canvas = document.getElementById('balloon-canvas');
+      if (!canvas) return;
+      const w = canvas.width || 800;
+      const h = canvas.height || 500;
+
+      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+      const studentPool = visible.length > 0 ? visible : Array.from({ length: 25 }, (_, i) => ({ id: 'st-' + i, name: `Học sinh ${i + 1}` }));
+
+      // Luôn duy trì khoảng 20-30 quả bóng bay (mặc định 25 quả)
+      const count = 25;
+      const colors = ['#f43f5e', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
+
+      if (resetPositions || balloonList.length === 0) {
+        balloonList = [];
+        for (let i = 0; i < count; i++) {
+          const st = studentPool[i % studentPool.length];
+          const rx = 23 + (i % 4) * 2;
+          const ry = rx * 1.25;
+          const col = colors[i % colors.length];
+          const minX = 75;
+          const maxX = w - 75;
+          const baseX = minX + (i / (count - 1)) * (maxX - minX) + (Math.random() - 0.5) * 22;
+          const y = h * 0.12 + Math.random() * (h * 0.72);
+
+          balloonList.push({
+            id: 'balloon-obj-' + i,
+            student: st,
+            studentId: st.id,
+            studentName: st.name,
+            baseX: Math.max(50, Math.min(w - 50, baseX)),
+            x: baseX,
+            y: y,
+            rx: rx,
+            ry: ry,
+            color: col,
+            vy: 0.35 + (i % 5) * 0.08,
+            swayAmp: 10 + (i % 4) * 3,
+            swayFreq: 0.0015 + (i % 3) * 0.0005,
+            phase: (i * 0.65) % (Math.PI * 2),
+            popped: false,
+            isTarget: false
+          });
+        }
+
+        // Mây lững lờ trôi trên bầu trời
+        balloonClouds = [];
+        for (let c = 0; c < 5; c++) {
+          balloonClouds.push({
+            x: Math.random() * w,
+            y: 25 + Math.random() * (h * 0.35),
+            speed: 0.15 + Math.random() * 0.2,
+            scale: 0.7 + Math.random() * 0.5
+          });
+        }
       }
 
-      const colors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-      container.innerHTML = visible.map((s, i) => `
-        <div id="balloon-${s.id}" onclick="openSingleGift('${s.id}')" class="cursor-pointer p-3 rounded-full flex flex-col items-center justify-center shadow-lg transition transform hover:scale-110 active:scale-95 w-24 h-24 select-none" style="background: ${colors[i % colors.length]};">
-          <span class="text-xs font-black text-white text-center px-1 truncate w-full drop-shadow-md">${s.name}</span>
-          <span class="text-[9px] text-white/80">🎈</span>
-        </div>
-      `).join('');
+      balloonGameState = 'idle';
+      balloonTarget = null;
+      balloonArrow = null;
+      balloonPopParticles = [];
+      balloonWinnerReveal = null;
+      archerBoy.drawTension = 0;
+      archerBoy.jumpY = 0;
+
+      const statusEl = document.getElementById('balloon-game-status');
+      if (statusEl) statusEl.innerHTML = 'Sẵn sàng bắn bóng bay!';
+
+      if (!balloonGameAnimId) {
+        balloonGameAnimId = requestAnimationFrame(runBalloonLoop);
+      }
+    }
+
+    function runBalloonLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const bubbleContainer = document.getElementById('bubble-stage-container');
+      if (mode !== 'balloon' || !bubbleContainer || bubbleContainer.classList.contains('hidden')) {
+        balloonGameAnimId = null;
+        return;
+      }
+      renderBalloonCanvas(now);
+      balloonGameAnimId = requestAnimationFrame(runBalloonLoop);
+    }
+
+    function startBalloonShoot(winnerStudent, durationMs = 3000, callback) {
+      balloonFinishCallback = callback;
+      if (!winnerStudent) {
+        const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+        winnerStudent = visible[Math.floor(Math.random() * visible.length)] || { id: 'demo', name: 'Học sinh' };
+      }
+
+      // Đảm bảo quả bóng mục tiêu mang chính xác tên học sinh được chọn
+      let target = balloonList.find(b => !b.popped && String(b.studentId) === String(winnerStudent.id));
+      if (!target) {
+        // Nếu chưa có, gán luôn cho một quả bóng còn nguyên vẹn ở nửa trên bầu trời
+        const available = balloonList.filter(b => !b.popped && b.y > 60 && b.y < 340);
+        target = available[Math.floor(Math.random() * available.length)] || balloonList[0];
+        if (target) {
+          target.student = winnerStudent;
+          target.studentId = winnerStudent.id;
+          target.studentName = winnerStudent.name;
+        }
+      }
+
+      balloonList.forEach(b => b.isTarget = false);
+      if (target) {
+        target.isTarget = true;
+        balloonTarget = target;
+      }
+
+      balloonWinnerReveal = null;
+      balloonGameState = 'aiming';
+      archerBoy.drawTension = 0;
+      BalloonAudio.playAim();
+
+      const statusEl = document.getElementById('balloon-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🎯 Cung thủ đang ngắm bắn: <b class="text-amber-400">${winnerStudent.name}</b>...`;
+      }
+
+      // Thời gian ngắm kéo cung ~1300ms rồi phóng tên vút đi!
+      setTimeout(() => {
+        if (balloonGameState !== 'aiming') return;
+        balloonGameState = 'shooting';
+        BalloonAudio.playShoot();
+
+        const canvas = document.getElementById('balloon-canvas');
+        const w = canvas ? canvas.width : 800;
+        const h = canvas ? canvas.height : 500;
+        const moundW = Math.max(180, w * 0.28);
+        const moundH = Math.max(100, h * 0.22);
+        const boyX = moundW * 0.45;
+        const boyY = h - moundH * 0.65;
+        const shoulderX = boyX + 5;
+        const shoulderY = boyY - 38;
+
+        const angle = archerBoy.aimAngle;
+        const bowX = shoulderX + Math.cos(angle) * 30;
+        const bowY = shoulderY + Math.sin(angle) * 30;
+
+        balloonArrow = {
+          active: true,
+          startX: bowX,
+          startY: bowY,
+          x: bowX,
+          y: bowY,
+          targetX: balloonTarget ? balloonTarget.x : w / 2,
+          targetY: balloonTarget ? balloonTarget.y : 150,
+          progress: 0,
+          trail: []
+        };
+      }, 1300);
+    }
+
+    function popTargetBalloon() {
+      if (!balloonTarget) return;
+      balloonTarget.popped = true;
+      BalloonAudio.playPop();
+
+      // Bắn 36 hạt pháo hoa confetti và bụi sao rực rỡ
+      balloonPopParticles = [];
+      const pColors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4'];
+      for (let i = 0; i < 36; i++) {
+        const angle = (Math.PI * 2 * i) / 36 + (Math.random() - 0.5) * 0.4;
+        const speed = 2.5 + Math.random() * 6.5;
+        balloonPopParticles.push({
+          x: balloonTarget.x,
+          y: balloonTarget.y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.2,
+          color: pColors[i % pColors.length],
+          size: 4 + Math.random() * 6,
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.25,
+          alpha: 1.0,
+          isStar: i % 3 === 0
+        });
+      }
+
+      // Hiện Bảng Vàng Vinh Danh Hoàng Gia Tại Vị Trí Bóng Nổ
+      const canvas = document.getElementById('balloon-canvas');
+      const cw = canvas ? canvas.width : 800;
+      const ch = canvas ? canvas.height : 500;
+      balloonWinnerReveal = {
+        student: balloonTarget.student,
+        x: Math.max(160, Math.min(cw - 160, balloonTarget.x)),
+        y: Math.max(110, Math.min(ch - 180, balloonTarget.y)),
+        scale: 0.1,
+        alpha: 0
+      };
+
+      balloonGameState = 'celebrating';
+      BalloonAudio.playFanfare();
+
+      const statusEl = document.getElementById('balloon-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🎯 Bắn trúng: <b class="text-amber-400">${balloonTarget.student.name}</b>!`;
+      }
+
+      // Về nhất là gọi luôn ngay sau khoảnh khắc nổ bóng & hiện tên vàng hoành tráng (650ms)
+      setTimeout(() => {
+        if (typeof balloonFinishCallback === 'function') {
+          const cb = balloonFinishCallback;
+          balloonFinishCallback = null;
+          cb(balloonTarget.student);
+        }
+      }, 650);
+    }
+
+    function renderBalloonCanvas(now) {
+      const canvas = document.getElementById('balloon-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // 1. NỀN BẦU TRỜI XANH TƯƠI SÁNG
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      skyGrad.addColorStop(0, '#38bdf8');   // Sky blue
+      skyGrad.addColorStop(0.55, '#bae6fd'); // Light cyan
+      skyGrad.addColorStop(1, '#f0fdf4');   // Soft horizon
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. MẶT TRỜI TỎA HÀO QUANG DỊU MÁT
+      ctx.save();
+      const sunX = w - 80;
+      const sunY = 70;
+      const sunAura = ctx.createRadialGradient(sunX, sunY, 15, sunX, sunY, 90);
+      sunAura.addColorStop(0, 'rgba(254, 240, 138, 0.9)');
+      sunAura.addColorStop(0.4, 'rgba(253, 224, 71, 0.4)');
+      sunAura.addColorStop(1, 'rgba(253, 224, 71, 0)');
+      ctx.fillStyle = sunAura;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 90, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 26, 0, Math.PI * 2);
+      ctx.fillStyle = '#fef08a';
+      ctx.fill();
+      ctx.restore();
+
+      // 3. MÂY TRẮNG BỒNG BỀNH TRÔI
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+      balloonClouds.forEach(cl => {
+        cl.x += cl.speed;
+        if (cl.x > w + 120) cl.x = -120;
+        ctx.save();
+        ctx.translate(cl.x, cl.y);
+        ctx.scale(cl.scale, cl.scale);
+        ctx.beginPath();
+        ctx.arc(0, 0, 25, 0, Math.PI * 2);
+        ctx.arc(22, -10, 20, 0, Math.PI * 2);
+        ctx.arc(42, 0, 22, 0, Math.PI * 2);
+        ctx.arc(20, 10, 18, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+      ctx.restore();
+
+      // 4. CẬP NHẬT VÀ VẼ 20-30 QUẢ BÓNG BAY
+      balloonList.forEach(b => {
+        if (b.popped) return;
+
+        // Chuyển động bay lên và đung đưa theo gió
+        b.x = b.baseX + Math.sin(now * b.swayFreq + b.phase) * b.swayAmp;
+        b.y -= b.vy;
+
+        // Khi bay quá đỉnh màn hình -> tái sinh ở đáy với toạ độ x mới
+        if (b.y < -70) {
+          b.y = h + 60;
+          b.baseX = 60 + Math.random() * (w - 120);
+        }
+
+        ctx.save();
+
+        // Nút thắt đuôi bóng
+        ctx.beginPath();
+        ctx.moveTo(b.x - 4, b.y + b.ry);
+        ctx.lineTo(b.x + 4, b.y + b.ry);
+        ctx.lineTo(b.x, b.y + b.ry + 6);
+        ctx.closePath();
+        ctx.fillStyle = adjustColor(b.color, -25);
+        ctx.fill();
+
+        // Sợi dây bóng đung đưa uốn lượn
+        ctx.beginPath();
+        ctx.moveTo(b.x, b.y + b.ry + 5);
+        const strWobble = Math.sin(now * 0.003 + b.phase) * 6;
+        ctx.quadraticCurveTo(b.x + strWobble, b.y + b.ry + 20, b.x - strWobble * 0.5, b.y + b.ry + 38);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.lineWidth = 1.3;
+        ctx.stroke();
+
+        // Thân bóng bay 3D hình cầu
+        ctx.beginPath();
+        ctx.ellipse(b.x, b.y, b.rx, b.ry, 0, 0, Math.PI * 2);
+        const grad = ctx.createRadialGradient(b.x - b.rx * 0.35, b.y - b.ry * 0.35, b.rx * 0.1, b.x, b.y, b.ry);
+        grad.addColorStop(0, adjustColor(b.color, 45));
+        grad.addColorStop(0.65, b.color);
+        grad.addColorStop(1, adjustColor(b.color, -30));
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Vết phản chiếu ánh sáng (Specular Gloss Reflection)
+        ctx.beginPath();
+        ctx.ellipse(b.x - b.rx * 0.35, b.y - b.ry * 0.35, b.rx * 0.28, b.ry * 0.2, -Math.PI / 4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
+        ctx.fill();
+
+        // BẢNG TÊN HỌC SINH RÕ NÉT (VIÊN THUỐC TRẮNG BÓNG MỜ)
+        ctx.font = '800 11px system-ui, -apple-system, sans-serif';
+        const txtW = ctx.measureText(b.studentName).width;
+        const badgeW = Math.min(105, Math.max(72, txtW + 16));
+        const badgeH = 20;
+        const badgeX = b.x - badgeW / 2;
+        const badgeY = b.y + b.ry + 6;
+
+        // Nếu là bóng mục tiêu đang bị khóa: vẽ hào quang vàng nhấp nháy
+        if (b.isTarget && balloonGameState === 'aiming') {
+          const pulse = (Math.sin(now * 0.01) + 1) * 0.5;
+          ctx.save();
+          ctx.shadowColor = '#f59e0b';
+          ctx.shadowBlur = 14 + pulse * 10;
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, b.ry + 8 + pulse * 6, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(251, 191, 36, 0.85)';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        drawBalloonRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, 10, 'rgba(255, 255, 255, 0.96)', b.color, 1.5);
+        ctx.fillStyle = '#0f172a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(b.studentName, b.x, badgeY + badgeH / 2, badgeW - 6);
+
+        ctx.restore();
+      });
+
+      // 5. ĐỒI CỎ XANH Ở GÓC DƯỚI BÊN TRÁI
+      const moundW = Math.max(180, w * 0.28);
+      const moundH = Math.max(100, h * 0.22);
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      ctx.lineTo(0, h - 85);
+      ctx.quadraticCurveTo(moundW * 0.5, h - 110, moundW, h);
+      ctx.closePath();
+      const hillGrad = ctx.createLinearGradient(0, h - 110, 0, h);
+      hillGrad.addColorStop(0, '#22c55e');
+      hillGrad.addColorStop(1, '#15803d');
+      ctx.fillStyle = hillGrad;
+      ctx.fill();
+
+      // Hoa dại trên đồi cỏ
+      const flowers = [[30, h - 45, '#fbbf24'], [65, h - 70, '#f43f5e'], [100, h - 55, '#ffffff'], [140, h - 35, '#38bdf8']];
+      flowers.forEach(([fx, fy, col]) => {
+        ctx.beginPath();
+        ctx.arc(fx, fy, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = col;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(fx, fy, 1.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#f59e0b';
+        ctx.fill();
+      });
+      ctx.restore();
+
+      // 6. TẠO HÌNH VÀ HOẠT HỌA CẬU BÉ CUNG THỦ (ARCHER BOY)
+      const boyX = moundW * 0.45;
+      const boyY = h - moundH * 0.65;
+      const jumpY = (balloonGameState === 'celebrating') ? Math.abs(Math.sin(now * 0.012)) * 22 : 0;
+      const currentBoyY = boyY - jumpY;
+
+      // Cập nhật góc ngắm khi đang kéo cung
+      if (balloonGameState === 'aiming' && balloonTarget) {
+        const shoulderX = boyX + 5;
+        const shoulderY = currentBoyY - 38;
+        const targetAngle = Math.atan2(balloonTarget.y - shoulderY, balloonTarget.x - shoulderX);
+        archerBoy.aimAngle += (targetAngle - archerBoy.aimAngle) * 0.15;
+        archerBoy.drawTension = Math.min(1.0, archerBoy.drawTension + 0.04);
+      }
+
+      ctx.save();
+
+      // Bóng dưới chân cậu bé
+      ctx.beginPath();
+      ctx.ellipse(boyX, boyY + 2, 20 - jumpY * 0.3, 6 - jumpY * 0.1, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.fill();
+
+      // Đôi bốt da nâu
+      ctx.fillStyle = '#78350f';
+      ctx.beginPath();
+      ctx.roundRect(boyX - 14, currentBoyY - 10, 10, 11, 3);
+      ctx.roundRect(boyX + 4, currentBoyY - 10, 10, 11, 3);
+      ctx.fill();
+
+      // Đôi chân
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(boyX - 12, currentBoyY - 20, 7, 12);
+      ctx.fillRect(boyX + 5, currentBoyY - 20, 7, 12);
+
+      // Thân áo Tunic xanh lá
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.moveTo(boyX - 16, currentBoyY - 20);
+      ctx.lineTo(boyX + 16, currentBoyY - 20);
+      ctx.lineTo(boyX + 13, currentBoyY - 45);
+      ctx.lineTo(boyX - 13, currentBoyY - 45);
+      ctx.closePath();
+      ctx.fill();
+
+      // Dây lưng & khóa vàng
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(boyX - 15, currentBoyY - 28, 30, 5);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(boyX - 4, currentBoyY - 29, 8, 7);
+
+      // Bao đựng tên sau lưng
+      ctx.save();
+      ctx.translate(boyX - 12, currentBoyY - 40);
+      ctx.rotate(-0.35);
+      ctx.fillStyle = '#92400e';
+      ctx.fillRect(-4, -5, 8, 22);
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(-2, -5); ctx.lineTo(-4, -14);
+      ctx.moveTo(1, -5); ctx.lineTo(1, -16);
+      ctx.moveTo(4, -5); ctx.lineTo(5, -13);
+      ctx.stroke();
+      ctx.restore();
+
+      // Khuôn mặt đáng yêu
+      const headY = currentBoyY - 58;
+      ctx.beginPath();
+      ctx.arc(boyX, headY, 16, 0, Math.PI * 2);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fill();
+
+      // Má hồng
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
+      ctx.beginPath();
+      ctx.arc(boyX - 8, headY + 3, 3.5, 0, Math.PI * 2);
+      ctx.arc(boyX + 8, headY + 3, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mắt & Miệng
+      if (balloonGameState === 'celebrating') {
+        // Mắt cười híp mí mừng rỡ
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(boyX - 6, headY - 1, 4, Math.PI, 0);
+        ctx.arc(boyX + 6, headY - 1, 4, Math.PI, 0);
+        ctx.stroke();
+        // Miệng cười mở to reo vui
+        ctx.fillStyle = '#be123c';
+        ctx.beginPath();
+        ctx.arc(boyX, headY + 5, 5, 0, Math.PI);
+        ctx.fill();
+      } else if (balloonGameState === 'aiming') {
+        // Một mắt nhắm một mắt mở ngắm chuẩn xác
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(boyX + 6, headY - 2, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(boyX + 7, headY - 3, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(boyX - 8, headY - 2);
+        ctx.lineTo(boyX - 3, headY - 2);
+        ctx.stroke();
+        ctx.strokeStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(boyX + 2, headY + 5, 4, 0.2, Math.PI * 0.8);
+        ctx.stroke();
+      } else {
+        // Mắt to tròn thân thiện lúc nghỉ
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(boyX - 5, headY - 2, 3, 0, Math.PI * 2);
+        ctx.arc(boyX + 5, headY - 2, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(boyX - 4, headY - 3, 1.2, 0, Math.PI * 2);
+        ctx.arc(boyX + 6, headY - 3, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.arc(boyX, headY + 4, 4, 0.1, Math.PI - 0.1);
+        ctx.stroke();
+      }
+
+      // Mái tóc nâu hạt dẻ
+      ctx.fillStyle = '#78350f';
+      ctx.beginPath();
+      ctx.arc(boyX, headY - 4, 16, Math.PI, Math.PI * 2);
+      ctx.lineTo(boyX + 16, headY - 2);
+      ctx.lineTo(boyX + 12, headY + 6);
+      ctx.lineTo(boyX + 8, headY);
+      ctx.lineTo(boyX - 8, headY);
+      ctx.lineTo(boyX - 12, headY + 6);
+      ctx.lineTo(boyX - 16, headY - 2);
+      ctx.closePath();
+      ctx.fill();
+
+      // Mũ cung thủ Robin Hood xanh lá
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath();
+      ctx.moveTo(boyX - 18, headY - 8);
+      ctx.quadraticCurveTo(boyX, headY - 28, boyX + 22, headY - 8);
+      ctx.lineTo(boyX + 16, headY - 2);
+      ctx.lineTo(boyX - 18, headY - 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Lông vũ đỏ cài trên mũ
+      ctx.save();
+      ctx.translate(boyX - 10, headY - 18);
+      ctx.rotate(-0.5);
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 14, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#b91c1c';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-14, 0); ctx.lineTo(14, 0);
+      ctx.stroke();
+      ctx.restore();
+
+      // Cánh tay & Cung tên theo trạng thái
+      if (balloonGameState === 'celebrating') {
+        // Cánh tay giương cao ăn mừng
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(boyX - 12, currentBoyY - 40);
+        ctx.lineTo(boyX - 22, currentBoyY - 65);
+        ctx.moveTo(boyX + 12, currentBoyY - 40);
+        ctx.lineTo(boyX + 22, currentBoyY - 65);
+        ctx.stroke();
+
+        // Cây cung cầm trên tay nâng cao
+        ctx.save();
+        ctx.translate(boyX + 22, currentBoyY - 65);
+        ctx.rotate(0.4);
+        ctx.strokeStyle = '#92400e';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.arc(0, 0, 22, -Math.PI * 0.45, Math.PI * 0.45);
+        ctx.stroke();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(15, -16); ctx.lineTo(15, 16);
+        ctx.stroke();
+        ctx.restore();
+
+        // Bong bóng thoại ăn mừng
+        const bubbleX = boyX + 50;
+        const bubbleY = currentBoyY - 80;
+        drawBalloonRoundedRect(ctx, bubbleX - 45, bubbleY - 18, 90, 26, 12, '#ffffff', '#fbbf24', 2);
+        ctx.beginPath();
+        ctx.moveTo(bubbleX - 15, bubbleY + 8);
+        ctx.lineTo(bubbleX - 28, bubbleY + 16);
+        ctx.lineTo(bubbleX - 8, bubbleY + 8);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.font = '900 11px system-ui, sans-serif';
+        ctx.fillStyle = '#0f172a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🎯 TRÚNG RỒI!', bubbleX, bubbleY - 5);
+
+      } else if (balloonGameState === 'aiming' || balloonGameState === 'shooting') {
+        // Tư thế giương cung ngắm bắn
+        const angle = archerBoy.aimAngle;
+        const shoulderX = boyX + 5;
+        const shoulderY = currentBoyY - 38;
+
+        ctx.save();
+        ctx.translate(shoulderX, shoulderY);
+        ctx.rotate(angle);
+
+        // Tay trái đẩy thẳng cung về phía trước
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(24, 0);
+        ctx.stroke();
+
+        // Cây cung gỗ uốn cong
+        const bowX = 24;
+        ctx.strokeStyle = '#92400e';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.arc(bowX, 0, 24, -Math.PI * 0.45, Math.PI * 0.45);
+        ctx.stroke();
+        // Đầu bọc vàng 2 đầu cung
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(bowX + 17, -17, 2.5, 0, Math.PI * 2);
+        ctx.arc(bowX + 17, 17, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Dây cung kéo căng
+        const pullX = bowX - archerBoy.drawTension * 22;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(bowX + 17, -17);
+        ctx.lineTo(pullX, 0);
+        ctx.lineTo(bowX + 17, 17);
+        ctx.stroke();
+
+        // Mũi tên đặt trên dây cung (khi đang ngắm)
+        if (balloonGameState === 'aiming') {
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(pullX, 0);
+          ctx.lineTo(bowX + 22, 0);
+          ctx.stroke();
+          // Đầu tên thép
+          ctx.fillStyle = '#94a3b8';
+          ctx.beginPath();
+          ctx.moveTo(bowX + 28, 0);
+          ctx.lineTo(bowX + 21, -3);
+          ctx.lineTo(bowX + 21, 3);
+          ctx.closePath();
+          ctx.fill();
+          // Lông vũ đuôi tên
+          ctx.fillStyle = '#ef4444';
+          ctx.beginPath();
+          ctx.moveTo(pullX, 0);
+          ctx.lineTo(pullX + 5, -3);
+          ctx.lineTo(pullX + 7, 0);
+          ctx.lineTo(pullX + 5, 3);
+          ctx.closePath();
+          ctx.fill();
+
+          // Tia ngắm laser hướng tới mục tiêu
+          if (balloonTarget) {
+            ctx.save();
+            ctx.setLineDash([5, 5]);
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(bowX + 28, 0);
+            const distToTarget = Math.hypot(balloonTarget.x - shoulderX, balloonTarget.y - shoulderY);
+            ctx.lineTo(distToTarget, 0);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+
+        // Tay phải kéo dây cung
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 4.5;
+        ctx.beginPath();
+        ctx.moveTo(0, 5);
+        ctx.lineTo(pullX - 4, 3);
+        ctx.stroke();
+
+        ctx.restore();
+      } else {
+        // Tư thế đứng nghỉ
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(boyX - 12, currentBoyY - 38);
+        ctx.lineTo(boyX - 18, currentBoyY - 22);
+        ctx.moveTo(boyX + 12, currentBoyY - 38);
+        ctx.lineTo(boyX + 20, currentBoyY - 28);
+        ctx.stroke();
+
+        // Cung đặt đứng cạnh người
+        ctx.save();
+        ctx.translate(boyX + 20, currentBoyY - 28);
+        ctx.strokeStyle = '#92400e';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.arc(0, -5, 24, -Math.PI * 0.45, Math.PI * 0.45);
+        ctx.stroke();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(17, -22); ctx.lineTo(17, 12);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.restore();
+
+      // 7. MŨI TÊN XÉ GIÓ LAO VÚT QUA BẦU TRỜI
+      if (balloonArrow && balloonArrow.active) {
+        balloonArrow.progress += 0.052;
+        const t = Math.min(1.0, balloonArrow.progress);
+        balloonArrow.x = balloonArrow.startX + (balloonArrow.targetX - balloonArrow.startX) * t;
+        balloonArrow.y = balloonArrow.startY + (balloonArrow.targetY - balloonArrow.startY) * t;
+        balloonArrow.angle = Math.atan2(balloonArrow.targetY - balloonArrow.startY, balloonArrow.targetX - balloonArrow.startX);
+
+        balloonArrow.trail.push({ x: balloonArrow.x, y: balloonArrow.y });
+        if (balloonArrow.trail.length > 10) balloonArrow.trail.shift();
+
+        // Vệt bụi sao vàng sau đuôi mũi tên
+        ctx.save();
+        for (let i = 0; i < balloonArrow.trail.length; i++) {
+          const tr = balloonArrow.trail[i];
+          ctx.beginPath();
+          ctx.arc(tr.x, tr.y, (i + 1) * 0.4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(251, 191, 36, ${(i / balloonArrow.trail.length) * 0.75})`;
+          ctx.fill();
+        }
+
+        ctx.translate(balloonArrow.x, balloonArrow.y);
+        ctx.rotate(balloonArrow.angle);
+
+        // Thân mũi tên gỗ
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 2.8;
+        ctx.beginPath();
+        ctx.moveTo(-22, 0); ctx.lineTo(4, 0);
+        ctx.stroke();
+
+        // Đầu mũi tên bạc
+        ctx.fillStyle = '#e2e8f0';
+        ctx.beginPath();
+        ctx.moveTo(8, 0); ctx.lineTo(2, -4); ctx.lineTo(2, 4);
+        ctx.closePath();
+        ctx.fill();
+
+        // Lông vũ đỏ
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(-22, 0); ctx.lineTo(-17, -4); ctx.lineTo(-14, 0); ctx.lineTo(-17, 4);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
+
+        // Khi tên cắm trúng tâm quả bóng -> nổ tung pháo hoa!
+        if (balloonArrow.progress >= 1.0) {
+          balloonArrow.active = false;
+          popTargetBalloon();
+        }
+      }
+
+      // 8. HẠT PHÁO HOA NỔ BÓNG (CONFETTI & STARS)
+      for (let pIdx = balloonPopParticles.length - 1; pIdx >= 0; pIdx--) {
+        const p = balloonPopParticles[pIdx];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.12; // Gravity
+        p.rotation += p.vRot;
+        p.alpha -= 0.015;
+
+        if (p.alpha <= 0) {
+          balloonPopParticles.splice(pIdx, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        if (p.isStar) {
+          // Ngôi sao 4 cánh
+          ctx.beginPath();
+          ctx.moveTo(0, -p.size);
+          ctx.lineTo(p.size * 0.3, -p.size * 0.3);
+          ctx.lineTo(p.size, 0);
+          ctx.lineTo(p.size * 0.3, p.size * 0.3);
+          ctx.lineTo(0, p.size);
+          ctx.lineTo(-p.size * 0.3, p.size * 0.3);
+          ctx.lineTo(-p.size, 0);
+          ctx.lineTo(-p.size * 0.3, -p.size * 0.3);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+        }
+        ctx.restore();
+      }
+
+      // 9. HIỆN RA TÊN NGƯỜI ĐƯỢC GỌI (GRAND WINNER REVEAL BANNER)
+      if (balloonWinnerReveal && balloonWinnerReveal.alpha > 0.01) {
+        balloonWinnerReveal.scale += (1.0 - balloonWinnerReveal.scale) * 0.15;
+        balloonWinnerReveal.alpha = Math.min(1.0, balloonWinnerReveal.alpha + 0.12);
+
+        ctx.save();
+        ctx.translate(balloonWinnerReveal.x, balloonWinnerReveal.y);
+        ctx.scale(balloonWinnerReveal.scale, balloonWinnerReveal.scale);
+
+        // Hào quang tia mặt trời vàng xoay tròn
+        ctx.save();
+        ctx.rotate(now * 0.001);
+        for (let r = 0; r < 12; r++) {
+          ctx.rotate(Math.PI / 6);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(-12, -75);
+          ctx.lineTo(12, -75);
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.22)';
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // Bảng Vàng Hoàng Gia
+        const bw = 270;
+        const bh = 76;
+        ctx.shadowColor = 'rgba(245, 158, 11, 0.85)';
+        ctx.shadowBlur = 24;
+
+        // Khung vàng kim
+        drawBalloonRoundedRect(ctx, -bw / 2, -bh / 2, bw, bh, 18, '#f59e0b', '#fef08a', 2.5);
+        // Lòng đỏ nhung sang trọng
+        drawBalloonRoundedRect(ctx, -bw / 2 + 3, -bh / 2 + 3, bw - 6, bh - 6, 15, '#881337', null, 0);
+
+        ctx.shadowBlur = 0;
+
+        // Dòng tiêu đề nhỏ
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '900 11px system-ui, sans-serif';
+        ctx.fillStyle = '#fde047';
+        ctx.fillText('✨ CHÚC MỪNG CHIẾN THẮNG ✨', 0, -bh / 2 + 18);
+
+        // TÊN HỌC SINH TO, ĐẬM, SẮC NÉT RỰC RỠ
+        ctx.font = '900 23px system-ui, -apple-system, sans-serif';
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 4.5;
+        ctx.strokeText(balloonWinnerReveal.student.name, 0, -bh / 2 + 46);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(balloonWinnerReveal.student.name, 0, -bh / 2 + 46);
+
+        ctx.restore();
+      }
     }
 
     // ==========================================
@@ -3410,7 +4494,7 @@
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) {
         const m = modeSelect.value;
-        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp') {
+        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon') {
           if (grid) grid.classList.add('hidden');
         }
         if (m === 'wheel_pie') {
@@ -3437,6 +4521,10 @@
           const c = document.getElementById('horse-race-container');
           if (c) c.classList.remove('hidden');
           if (typeof initHorseRace === 'function') initHorseRace(false);
+        } else if (m === 'balloon') {
+          const c = document.getElementById('bubble-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initBalloonGame === 'function') initBalloonGame(false);
         }
       }
     }
@@ -3572,6 +4660,7 @@
       else if (mode === 'motogp' && typeof resizeMotoGPCanvas === 'function') resizeMotoGPCanvas();
       else if (mode === 'f1' && typeof resizeF1Canvas === 'function') resizeF1Canvas();
       else if (mode === 'horse' && typeof resizeHorseCanvas === 'function') resizeHorseCanvas();
+      else if (mode === 'balloon' && typeof resizeBalloonCanvas === 'function') resizeBalloonCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -3583,7 +4672,8 @@
         { id: 'bike-fullscreen-btn', color: 'text-emerald-400' },
         { id: 'motogp-fullscreen-btn', color: 'text-orange-400' },
         { id: 'f1-fullscreen-btn', color: 'text-rose-300' },
-        { id: 'horse-fullscreen-btn', color: 'text-amber-300' }
+        { id: 'horse-fullscreen-btn', color: 'text-amber-300' },
+        { id: 'balloon-fullscreen-btn', color: 'text-rose-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -4122,10 +5212,10 @@
               targetProgress = 0.84 + sprintEase * 0.16;
             }
           } else {
-            const maxReach = 0.75 + (d.speedFactor - 0.9) * 1.4;
+            const maxReach = Math.min(0.93, 0.74 + (d.speedFactor - 0.9) * 0.8);
             const ease = Math.min(1.0, p * d.speedFactor);
-            const surge = Math.sin(p * Math.PI * 4 + d.wobbleOffset) * 0.03;
-            targetProgress = (ease * maxReach) + surge;
+            const surge = Math.sin(p * Math.PI * 4 + d.wobbleOffset) * 0.02;
+            targetProgress = Math.min(0.93, (ease * maxReach) + surge);
           }
 
           const thisRacerDist = duckFinishX - d.startX;
@@ -4182,14 +5272,21 @@
             confetti({ particleCount: 160, spread: 90, origin: { y: 0.55 } });
           }
 
+          const actualLeadDuck = sorted[0];
+          const leadStudent = (students && students.find(s => String(s.id) === String(actualLeadDuck.id))) || duckRaceWinner;
+
           const statusEl = document.getElementById('duck-race-status');
-          if (statusEl && duckRaceWinner) {
-            statusEl.innerHTML = `🏆 Về đích: <b class="text-amber-600">${duckRaceWinner.name}</b>!`;
+          if (statusEl) {
+            statusEl.innerHTML = `🏆 Về đích: <b class="text-amber-400">${leadStudent.name}</b>!`;
           }
 
-          // Gọi tên luôn ngay lập tức, không chờ đợi thêm
+          // VỀ NHẤT LÀ GỌI LUÔN NGAY LẬP TỨC
           if (duckRaceCallback) {
-            duckRaceCallback();
+            const cb = duckRaceCallback;
+            duckRaceCallback = null;
+            setTimeout(() => {
+              cb(leadStudent);
+            }, 180);
           }
         }
       } else if (duckRaceState === 'finished') {
@@ -5904,10 +7001,16 @@
       resetF1RacePositions(false);
       f1RevealX = 99999;
 
-      // 3. Chọn ngẫu nhiên đồng đều tuyệt đối 1 xe trong danh sách f1CarList (xác suất 1/N cho mỗi xe)
-      const luckyIndex = Math.floor(Math.random() * f1CarList.length);
-      const chosenCar = f1CarList[luckyIndex];
-      const actualWinnerStudent = (students && students.find(s => s.id === chosenCar.id)) || {
+      // 3. Khớp chính xác xe đua với học sinh được chọn (nếu có winnerStudent), hoặc chọn ngẫu nhiên
+      let chosenCar = null;
+      if (winnerStudent && winnerStudent.id) {
+        chosenCar = f1CarList.find(c => String(c.id) === String(winnerStudent.id));
+      }
+      if (!chosenCar) {
+        const luckyIndex = Math.floor(Math.random() * f1CarList.length);
+        chosenCar = f1CarList[luckyIndex];
+      }
+      const actualWinnerStudent = (students && students.find(s => String(s.id) === String(chosenCar.id))) || winnerStudent || {
         id: chosenCar.id,
         name: chosenCar.fullName || chosenCar.name,
         avatar: chosenCar.avatar,
@@ -5919,7 +7022,7 @@
       f1FinishCallback = callback;
 
       f1CarList.forEach(car => {
-        car.isWinner = (car.id === chosenCar.id);
+        car.isWinner = (String(car.id) === String(chosenCar.id));
       });
 
       f1RaceState = 'countdown';
@@ -9000,10 +10103,16 @@
       shuffleHorseStartingGrid();
       resetHorseRacePositions(false);
 
-      // 2. Chọn ngẫu nhiên đồng đều 1 chiến mã (xác suất 1/N)
-      const luckyIndex = Math.floor(Math.random() * horseCarList.length);
-      const chosenHorse = horseCarList[luckyIndex];
-      const actualWinnerStudent = (students && students.find(s => s.id === chosenHorse.id)) || {
+      // 2. Khớp chính xác chiến mã với học sinh được chọn (nếu có winnerStudent), hoặc chọn ngẫu nhiên
+      let chosenHorse = null;
+      if (winnerStudent && winnerStudent.id) {
+        chosenHorse = horseCarList.find(h => String(h.id) === String(winnerStudent.id));
+      }
+      if (!chosenHorse) {
+        const luckyIndex = Math.floor(Math.random() * horseCarList.length);
+        chosenHorse = horseCarList[luckyIndex];
+      }
+      const actualWinnerStudent = (students && students.find(s => String(s.id) === String(chosenHorse.id))) || winnerStudent || {
         id: chosenHorse.id,
         name: chosenHorse.fullName || chosenHorse.name,
         avatar: chosenHorse.avatar,
@@ -9015,7 +10124,7 @@
       horseFinishCallback = callback;
 
       horseCarList.forEach(horse => {
-        horse.isWinner = (horse.id === chosenHorse.id);
+        horse.isWinner = (String(horse.id) === String(chosenHorse.id));
       });
 
       // Hiệu ứng mở chuồng xuất phát (Starting Gate Call to the Post)
@@ -9232,14 +10341,16 @@
 
         renderHorseRaceCanvas(now);
 
-        // Sau khi ngựa đã cán đích rõ ràng, chờ 500ms cho mọi người nhìn thấy ngựa chạm vạch đích rồi mới bật popup kết quả!
+        // Về đích là gọi tên luôn ngay lập tức (180ms)
         setTimeout(() => {
           if (typeof horseFinishCallback === 'function') {
             const cb = horseFinishCallback;
             horseFinishCallback = null;
-            cb(actualWinnerStudent);
+            const actualLeadHorse = [...horseCarList].sort((a, b) => b.dist - a.dist)[0] || chosenHorse;
+            const leadStudent = (students && students.find(s => String(s.id) === String(actualLeadHorse.id))) || actualWinnerStudent;
+            cb(leadStudent);
           }
-        }, 500);
+        }, 180);
         return;
       }
 
@@ -10277,12 +11388,12 @@
               if (statusEl) statusEl.innerText = `🏆 ${b.displayName} tung nước rút thần tốc về đích!`;
             }
           } else {
-            // Peloton (Các cua-rơ còn lại): Biến động tự nhiên, liên tục đảo vị trí
-            const baseReach = 0.76 + (b.speedFactor - 0.9) * 1.5;
+            // Peloton (Các cua-rơ còn lại): Biến động tự nhiên, không bao giờ vượt winner
+            const baseReach = 0.74 + (b.speedFactor - 0.9) * 0.8;
             const ease = Math.min(1.0, p * b.speedFactor);
-            const surge = Math.sin(p * Math.PI * 6 + b.wobbleOffset) * 0.04;
-            const draft = Math.sin(p * Math.PI * 10 + b.wobbleOffset * 1.5) * 0.015;
-            targetProgress = (ease * baseReach) + surge + draft;
+            const surge = Math.sin(p * Math.PI * 6 + b.wobbleOffset) * 0.02;
+            const draft = Math.sin(p * Math.PI * 10 + b.wobbleOffset * 1.5) * 0.01;
+            targetProgress = Math.min(0.92, (ease * baseReach) + surge + draft);
             b.speedKmh = Math.round(46 + surge * 80);
           }
 
@@ -10337,9 +11448,11 @@
           bikeRaceRunning = false;
           BikeAudio.playFanfare();
 
-          const winObj = bikeList.find(b => b.isWinner);
-          if (statusEl && winObj) {
-            statusEl.innerText = `🎉 ${winObj.displayName} đã xuất sắc cán đích đầu tiên!`;
+          const actualLeadBike = sorted[0];
+          const leadStudent = (students && students.find(s => String(s.id) === String(actualLeadBike.id))) || bikeRaceWinner;
+
+          if (statusEl && actualLeadBike) {
+            statusEl.innerText = `🎉 ${actualLeadBike.displayName} đã xuất sắc cán đích VỀ NHẤT!`;
           }
 
           if (typeof confetti === 'function') {
@@ -10350,10 +11463,13 @@
             });
           }
 
+          // VỀ NHẤT LÀ GỌI TÊN LUÔN NGAY LẬP TỨC
           if (bikeRaceCallback) {
+            const cb = bikeRaceCallback;
+            bikeRaceCallback = null;
             setTimeout(() => {
-              bikeRaceCallback();
-            }, 1200);
+              cb(leadStudent);
+            }, 180);
           }
         }
       }
@@ -11529,12 +12645,12 @@
               if (statusEl) statusEl.innerText = `🏆 ${m.displayName} full ga 360 km/h cán vạch đích!`;
             }
           } else {
-            // Peloton (Các xe khác)
-            const baseReach = 0.76 + (m.speedFactor - 0.9) * 1.5;
+            // Peloton (Các xe khác): Biến động tự nhiên, không bao giờ vượt xe thắng
+            const baseReach = 0.74 + (m.speedFactor - 0.9) * 0.8;
             const ease = Math.min(1.0, p * m.speedFactor);
-            const surge = Math.sin(p * Math.PI * 6 + m.wobbleOffset) * 0.04;
-            const draft = Math.sin(p * Math.PI * 10 + m.wobbleOffset * 1.5) * 0.015;
-            targetProgress = (ease * baseReach) + surge + draft;
+            const surge = Math.sin(p * Math.PI * 6 + m.wobbleOffset) * 0.02;
+            const draft = Math.sin(p * Math.PI * 10 + m.wobbleOffset * 1.5) * 0.01;
+            targetProgress = Math.min(0.92, (ease * baseReach) + surge + draft);
             m.speedKmh = Math.round(270 + surge * 300);
           }
 
@@ -11590,9 +12706,11 @@
           motogpRaceRunning = false;
           MotoGPAudio.playFanfare();
 
-          const winObj = motogpList.find(m => m.isWinner);
-          if (statusEl && winObj) {
-            statusEl.innerText = `🎉 ${winObj.displayName} đã vô địch chặng đua MotoGP 1000cc!`;
+          const actualLeadMoto = sorted[0];
+          const leadStudent = (students && students.find(s => String(s.id) === String(actualLeadMoto.id))) || motogpRaceWinner;
+
+          if (statusEl && actualLeadMoto) {
+            statusEl.innerText = `🎉 ${actualLeadMoto.displayName} đã vô địch chặng đua MotoGP 1000cc!`;
           }
 
           if (typeof confetti === 'function') {
@@ -11603,10 +12721,13 @@
             });
           }
 
+          // VỀ NHẤT LÀ GỌI TÊN LUÔN NGAY LẬP TỨC
           if (motogpRaceCallback) {
+            const cb = motogpRaceCallback;
+            motogpRaceCallback = null;
             setTimeout(() => {
-              motogpRaceCallback();
-            }, 1200);
+              cb(leadStudent);
+            }, 180);
           }
         }
       }
@@ -12270,9 +13391,10 @@
         const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
         const raceDuration = Math.max(4000, durationSec * 1100);
         btn.innerHTML = "🦆 ĐANG ĐUA VỊT...";
-        startDuckRace(selected, raceDuration, () => {
-          currentWinner = selected;
-          showWinnerResult(selected, btn);
+        startDuckRace(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
         });
         return;
       }
@@ -12282,9 +13404,10 @@
         const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
         const raceDuration = Math.max(4000, durationSec * 1100);
         btn.innerHTML = "🚴 ĐANG ĐUA XE ĐẠP...";
-        startBikeRace(selected, raceDuration, () => {
-          currentWinner = selected;
-          showWinnerResult(selected, btn);
+        startBikeRace(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
         });
         return;
       }
@@ -12294,9 +13417,10 @@
         const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
         const raceDuration = Math.max(4000, durationSec * 1100);
         btn.innerHTML = "🏍️ ĐANG ĐUA MOTO GP...";
-        startMotoGPRace(selected, raceDuration, () => {
-          currentWinner = selected;
-          showWinnerResult(selected, btn);
+        startMotoGPRace(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
         });
         return;
       }
@@ -12306,9 +13430,10 @@
         const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
         const raceDuration = Math.max(4500, durationSec * 1200);
         btn.innerHTML = "🏎️ ĐANG ĐUA F1...";
-        startF1Race(selected, raceDuration, () => {
-          currentWinner = selected;
-          showWinnerResult(selected, btn);
+        startF1Race(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
         });
         return;
       }
@@ -12318,9 +13443,10 @@
         const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
         const raceDuration = Math.max(4500, durationSec * 1200);
         btn.innerHTML = "🏇 ĐANG ĐUA NGỰA...";
-        startHorseRace(selected, raceDuration, () => {
-          currentWinner = selected;
-          showWinnerResult(selected, btn);
+        startHorseRace(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
         });
         return;
       }
@@ -12356,12 +13482,14 @@
         return;
       }
 
-      // 8. Thả Bóng Bay
+      // 8. Bắn Bóng Bay (Cậu Bé Bắn Cung)
       if (mode === 'balloon') {
-        btn.innerHTML = "🎈 ĐANG THẢ BÓNG...";
-        setTimeout(() => {
-          showWinnerResult(selected, btn);
-        }, 2000);
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG BẮN...';
+        startBalloonShoot(selected, durationMs, (winnerStudent) => {
+          showWinnerResult(winnerStudent || selected, btn);
+        });
         return;
       }
 
@@ -12432,7 +13560,7 @@
       setTimeout(() => {
         openResultModal();
         speakCurrentWinner();
-      }, 600);
+      }, 100);
     }
 
     function openResultModal() {
@@ -12455,6 +13583,7 @@
         else if (mode === 'motogp') initMotoGPRace(true);
         else if (mode === 'f1') initF1Race(true);
         else if (mode === 'horse') initHorseRace(true);
+        else if (mode === 'balloon') initBalloonGame(true);
       }
     }
 
