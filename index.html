@@ -52,8 +52,6 @@
     @keyframes waddle { 0%, 100% { transform: rotate(-5deg) translateX(0) scale(1.05); } 50% { transform: rotate(5deg) translateX(5px) scale(1.05); } }
     .mode-duck { animation: waddle 0.4s ease-in-out infinite; border: 4px solid #facc15 !important; background-color: #fef9c3 !important; position: relative; }
     .mode-duck::after { content: "🦆"; position: absolute; bottom: -12px; right: -12px; font-size: 24px; }
-    #duck-race-container:fullscreen, #f1-race-container:fullscreen { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; border: none !important; max-height: none !important; }
-    #duck-race-container:-webkit-full-screen, #f1-race-container:-webkit-full-screen { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; border: none !important; max-height: none !important; }
     @keyframes gallop { 0%, 100% { transform: translateY(0) scale(1.05); } 50% { transform: translateY(-10px) scale(1.1) rotate(2deg); } }
     .mode-horse { animation: gallop 0.3s linear infinite; border: 4px solid #8b5cf6 !important; background-color: #f3e8ff !important; position: relative; }
     .mode-horse::after { content: "🐎"; position: absolute; bottom: -12px; right: -12px; font-size: 24px; }
@@ -240,17 +238,42 @@
     border-color: rgba(245, 158, 11, 0.8) !important;
   }
 
-  /* Fullscreen adjustments */
+  /* Fullscreen adjustments for all 5 race containers */
   #duck-race-container:fullscreen,
+  #duck-race-container:-webkit-full-screen,
   #bike-race-container:fullscreen,
+  #bike-race-container:-webkit-full-screen,
   #motogp-race-container:fullscreen,
+  #motogp-race-container:-webkit-full-screen,
   #f1-race-container:fullscreen,
-  #horse-race-container:fullscreen {
+  #f1-race-container:-webkit-full-screen,
+  #horse-race-container:fullscreen,
+  #horse-race-container:-webkit-full-screen {
     width: 100vw !important;
     height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
     border-radius: 0 !important;
     border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #020617 !important;
+    overflow: hidden !important;
+  }
+
+  #duck-race-container:fullscreen canvas,
+  #duck-race-container:-webkit-full-screen canvas,
+  #bike-race-container:fullscreen canvas,
+  #bike-race-container:-webkit-full-screen canvas,
+  #motogp-race-container:fullscreen canvas,
+  #motogp-race-container:-webkit-full-screen canvas,
+  #f1-race-container:fullscreen canvas,
+  #f1-race-container:-webkit-full-screen canvas,
+  #horse-race-container:fullscreen canvas,
+  #horse-race-container:-webkit-full-screen canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
   }
 
   /* Theme Transitions */
@@ -710,7 +733,7 @@
         </div>
 
         <!-- STAGE 2: ĐƯỜNG ĐUA VỊT TRÊN SÔNG (CHẠY NGANG) -->
-        <div id="duck-race-container" class="hidden flex flex-col relative w-full h-[420px] md:h-[500px] bg-sky-400 border border-slate-200 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+        <div id="duck-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-sky-400 border border-slate-200 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
             <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 text-white text-xs font-bold shadow-md">
               <span class="text-amber-400 font-extrabold text-sm">🦆</span>
@@ -720,7 +743,7 @@
               <button onclick="toggleDuckSound()" id="duck-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md">
                 🔊 Bật
               </button>
-              <button onclick="toggleDuckFullscreen()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md">
+              <button onclick="toggleDuckFullscreen()" id="duck-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md">
                 <i data-lucide="maximize" class="w-3.5 h-3.5 text-cyan-300"></i> Phóng to
               </button>
               <button onclick="resetDuckRacePositions()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md">
@@ -743,7 +766,7 @@
         </div>
 
         <!-- STAGE 3: ĐƯỜNG ĐUA XE ĐẠP THỂ THAO (CHẠY NGANG ĐẾN ĐÍCH) -->
-        <div id="bike-race-container" class="hidden flex flex-col relative w-full h-[420px] md:h-[500px] bg-slate-900 border border-emerald-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+        <div id="bike-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-900 border border-emerald-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
             <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-emerald-400/30 text-white text-xs font-bold shadow-md">
               <span class="text-emerald-400 font-extrabold text-sm">🚴</span>
@@ -753,7 +776,7 @@
               <button onclick="toggleBikeSound()" id="bike-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
                 🔊 Bật
               </button>
-              <button onclick="toggleBikeFullscreen()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
+              <button onclick="toggleBikeFullscreen()" id="bike-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
                 <i data-lucide="maximize" class="w-3.5 h-3.5 text-emerald-400"></i> Phóng to
               </button>
               <button onclick="resetBikeRacePositions()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
@@ -776,7 +799,7 @@
         </div>
 
         <!-- STAGE 4: ĐƯỜNG ĐUA XE MOTO GP (CHẠY NGANG ĐẾN ĐÍCH) -->
-        <div id="motogp-race-container" class="hidden flex flex-col relative w-full h-[420px] md:h-[500px] bg-slate-950 border border-orange-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+        <div id="motogp-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-orange-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
             <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-orange-400/30 text-white text-xs font-bold shadow-md">
               <span class="text-orange-400 font-extrabold text-sm">🏍️</span>
@@ -786,7 +809,7 @@
               <button onclick="toggleMotoGPSound()" id="motogp-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
                 🔊 Bật
               </button>
-              <button onclick="toggleMotoGPFullscreen()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
+              <button onclick="toggleMotoGPFullscreen()" id="motogp-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
                 <i data-lucide="maximize" class="w-3.5 h-3.5 text-orange-400"></i> Phóng to
               </button>
               <button onclick="resetMotoGPRacePositions()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md">
@@ -809,7 +832,7 @@
         </div>
 
         <!-- STAGE 5: ĐƯỜNG ĐUA F1 CHUYÊN NGHIỆP (CIRCUIT LOOP) -->
-        <div id="f1-race-container" class="hidden flex flex-col relative w-full h-[420px] md:h-[500px] bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+        <div id="f1-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
             <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 text-white text-xs font-bold shadow-md">
               <span class="text-rose-400 font-extrabold text-sm">🏎️</span>
@@ -834,7 +857,7 @@
               <button onclick="toggleF1Sound()" id="f1-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
                 🔊 Bật
               </button>
-              <button onclick="toggleF1Fullscreen()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
+              <button onclick="toggleF1Fullscreen()" id="f1-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
                 <i data-lucide="maximize" class="w-3.5 h-3.5 text-rose-300"></i> Phóng to
               </button>
               <button onclick="resetF1RacePositions()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
@@ -851,7 +874,7 @@
         </div>
 
         <!-- STAGE 6: ĐƯỜNG ĐUA NGỰA (CHẠY NGANG) -->
-        <div id="horse-race-container" class="hidden flex flex-col relative w-full h-[420px] md:h-[500px] bg-amber-950 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+        <div id="horse-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-amber-950 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
             <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 text-white text-xs font-bold shadow-md">
               <span class="text-amber-400 font-extrabold text-sm">🏇</span>
@@ -873,7 +896,7 @@
               <button onclick="toggleHorseSound()" id="horse-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
                 🔊 Bật
               </button>
-              <button onclick="toggleHorseFullscreen()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
+              <button onclick="toggleHorseFullscreen()" id="horse-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
                 <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-300"></i> Phóng to
               </button>
               <button onclick="resetHorseRacePositions()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md">
@@ -2573,7 +2596,7 @@
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) {
         const m = modeSelect.value;
-        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse') {
+        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp') {
           if (grid) grid.classList.add('hidden');
         }
         if (m === 'wheel_pie') {
@@ -2584,6 +2607,14 @@
           const c = document.getElementById('duck-race-container');
           if (c) c.classList.remove('hidden');
           if (typeof initDuckRace === 'function') initDuckRace(false);
+        } else if (m === 'bike') {
+          const c = document.getElementById('bike-race-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initBikeRace === 'function') initBikeRace(false);
+        } else if (m === 'motogp') {
+          const c = document.getElementById('motogp-race-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initMotoGPRace === 'function') initMotoGPRace(false);
         } else if (m === 'f1') {
           const c = document.getElementById('f1-race-container');
           if (c) c.classList.remove('hidden');
@@ -2720,6 +2751,49 @@
       if (text) text.innerText = DuckAudio.enabled ? 'Âm thanh' : 'Đã tắt tiếng';
     }
 
+    function triggerActiveRaceResize() {
+      const mode = document.getElementById('spin-mode')?.value || 'duck';
+      if (mode === 'duck' && typeof resizeDuckCanvas === 'function') resizeDuckCanvas();
+      else if (mode === 'bike' && typeof resizeBikeCanvas === 'function') resizeBikeCanvas();
+      else if (mode === 'motogp' && typeof resizeMotoGPCanvas === 'function') resizeMotoGPCanvas();
+      else if (mode === 'f1' && typeof resizeF1Canvas === 'function') resizeF1Canvas();
+      else if (mode === 'horse' && typeof resizeHorseCanvas === 'function') resizeHorseCanvas();
+
+      updateAllFullscreenButtons();
+    }
+
+    function updateAllFullscreenButtons() {
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const btnConfigs = [
+        { id: 'duck-fullscreen-btn', color: 'text-cyan-300' },
+        { id: 'bike-fullscreen-btn', color: 'text-emerald-400' },
+        { id: 'motogp-fullscreen-btn', color: 'text-orange-400' },
+        { id: 'f1-fullscreen-btn', color: 'text-rose-300' },
+        { id: 'horse-fullscreen-btn', color: 'text-amber-300' }
+      ];
+      btnConfigs.forEach(cfg => {
+        const btn = document.getElementById(cfg.id);
+        if (btn) {
+          if (isFs) {
+            btn.innerHTML = `<i data-lucide="minimize" class="w-3.5 h-3.5 ${cfg.color}"></i> Thu nhỏ`;
+          } else {
+            btn.innerHTML = `<i data-lucide="maximize" class="w-3.5 h-3.5 ${cfg.color}"></i> Phóng to`;
+          }
+        }
+      });
+      if (window.lucide && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+
+    function scheduleRaceResizes() {
+      triggerActiveRaceResize();
+      setTimeout(triggerActiveRaceResize, 50);
+      setTimeout(triggerActiveRaceResize, 150);
+      setTimeout(triggerActiveRaceResize, 300);
+      setTimeout(triggerActiveRaceResize, 500);
+    }
+
     function toggleDuckFullscreen() {
       const container = document.getElementById('duck-race-container');
       if (!container) return;
@@ -2730,28 +2804,39 @@
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
-    document.addEventListener('fullscreenchange', () => {
-      setTimeout(() => {
-        if (typeof resizeDuckCanvas === 'function') resizeDuckCanvas();
-        if (typeof resizeF1Canvas === 'function') resizeF1Canvas();
-        if (typeof resizeHorseCanvas === 'function') resizeHorseCanvas();
-      }, 150);
-    });
-    document.addEventListener('webkitfullscreenchange', () => {
-      setTimeout(() => {
-        if (typeof resizeDuckCanvas === 'function') resizeDuckCanvas();
-        if (typeof resizeF1Canvas === 'function') resizeF1Canvas();
-        if (typeof resizeHorseCanvas === 'function') resizeHorseCanvas();
-      }, 150);
-    });
+    document.addEventListener('fullscreenchange', scheduleRaceResizes);
+    document.addEventListener('webkitfullscreenchange', scheduleRaceResizes);
 
     window.addEventListener('resize', () => {
-      if (typeof resizeDuckCanvas === 'function') resizeDuckCanvas();
-      if (typeof resizeF1Canvas === 'function') resizeF1Canvas();
-      if (typeof resizeHorseCanvas === 'function') resizeHorseCanvas();
+      triggerActiveRaceResize();
+      setTimeout(triggerActiveRaceResize, 100);
     });
+
+    function setupRaceResizeObservers() {
+      if (typeof ResizeObserver === 'undefined') return;
+      const containerIds = [
+        'duck-race-container',
+        'bike-race-container',
+        'motogp-race-container',
+        'f1-race-container',
+        'horse-race-container'
+      ];
+      const ro = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.contentRect && entry.contentRect.width > 0 && entry.contentRect.height > 0) {
+            triggerActiveRaceResize();
+            break;
+          }
+        }
+      });
+      containerIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) ro.observe(el);
+      });
+    }
 
     // Bấm phím Space để Bắt đầu đua / Chạy tiếp, hoặc phím C để đổi cảnh F1/Đua ngựa
     window.addEventListener('keydown', (e) => {
@@ -2881,15 +2966,15 @@
 
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
 
       duckTrackLength = Math.max(w * 3.2, 2500);
       duckStartX = 140;
       duckFinishX = duckTrackLength - 200;
 
-      const topBankH = Math.max(50, Math.floor(h * 0.15));
-      const botBankH = Math.max(50, Math.floor(h * 0.15));
+      const topBankH = Math.min(110, Math.max(50, Math.floor(h * 0.14)));
+      const botBankH = Math.min(110, Math.max(50, Math.floor(h * 0.14)));
       const waterH = h - topBankH - botBankH;
       const count = duckList.length;
       if (count > 0) {
@@ -2899,11 +2984,15 @@
         duckList.forEach((d, idx) => {
           d.baseY = topBankH + padY + (count > 1 ? idx * spacingY : usableH / 2);
           d.startX = duckStartX - 28; // Tất cả vịt cùng 1 vị trí xuất phát
-          if (duckRaceState === 'idle') {
-            d.x = d.startX;
+          if (duckRaceState === 'idle' || duckRaceState === 'finished') {
+            if (duckRaceState === 'idle') d.x = d.startX;
             d.y = d.baseY;
           }
         });
+      }
+
+      if (!duckRaceRunning && typeof renderDuckRaceCanvas === 'function') {
+        renderDuckRaceCanvas(performance.now());
       }
     }
 
@@ -3245,8 +3334,8 @@
       const camX = Math.floor(duckCameraX);
       ctx.translate(-camX, 0);
 
-      const topBankH = Math.max(50, Math.floor(h * 0.15));
-      const botBankH = Math.max(50, Math.floor(h * 0.15));
+      const topBankH = Math.min(110, Math.max(50, Math.floor(h * 0.14)));
+      const botBankH = Math.min(110, Math.max(50, Math.floor(h * 0.14)));
       const waterH = h - topBankH - botBankH;
       const waterY = topBankH;
       const waterBottomY = h - botBankH;
@@ -3311,7 +3400,7 @@
       botBankGrad.addColorStop(0.15, '#22c55e');
       botBankGrad.addColorStop(1, '#14532d');
       ctx.fillStyle = botBankGrad;
-      ctx.fillRect(0, waterBottomY, duckTrackLength, botBankH);
+      ctx.fillRect(0, waterBottomY, duckTrackLength, Math.max(botBankH, h - waterBottomY));
 
       const flowerColors = ['#f43f5e', '#fbbf24', '#ffffff', '#c084fc', '#fb7185'];
       for (let fx = Math.max(0, camX - 50); fx < Math.min(duckTrackLength, camX + w + 50); fx += 45) {
@@ -3774,6 +3863,7 @@
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
     let f1RaceRunning = false;
@@ -7122,6 +7212,7 @@
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
     const HORSE_SCENES = {
@@ -8884,11 +8975,18 @@
     function toggleBikeFullscreen() {
       const container = document.getElementById('bike-race-container');
       if (!container) return;
-      if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(err => alert("Không thể mở toàn màn hình: " + err.message));
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isFs) {
+        if (container.requestFullscreen) {
+          container.requestFullscreen().catch(err => alert("Không thể mở toàn màn hình: " + err.message));
+        } else if (container.webkitRequestFullscreen) {
+          container.webkitRequestFullscreen();
+        }
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
     function resizeBikeCanvas() {
@@ -8903,15 +9001,15 @@
 
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
 
       bikeTrackLength = Math.max(w * 3.4, 2800);
       bikeStartX = 160;
       bikeFinishX = bikeTrackLength - 220;
 
-      const topBankH = Math.max(65, Math.floor(h * 0.18));
-      const botBankH = Math.max(55, Math.floor(h * 0.16));
+      const topBankH = Math.min(130, Math.max(65, Math.floor(h * 0.16)));
+      const botBankH = Math.min(110, Math.max(55, Math.floor(h * 0.14)));
       const roadH = h - topBankH - botBankH;
       const count = bikeList.length;
       if (count > 0) {
@@ -8921,8 +9019,8 @@
         bikeList.forEach((b, idx) => {
           b.baseY = topBankH + padY + (count > 1 ? idx * spacingY : usableH / 2);
           b.startX = bikeStartX - 30;
-          if (bikeRaceState === 'idle') {
-            b.x = b.startX;
+          if (bikeRaceState === 'idle' || bikeRaceState === 'finished') {
+            if (bikeRaceState === 'idle') b.x = b.startX;
             b.y = b.baseY;
           }
         });
@@ -9353,8 +9451,8 @@
       const camX = Math.floor(bikeCameraX);
       ctx.translate(-camX, 0);
 
-      const topBankH = Math.max(65, Math.floor(h * 0.18));
-      const botBankH = Math.max(55, Math.floor(h * 0.16));
+      const topBankH = Math.min(130, Math.max(65, Math.floor(h * 0.16)));
+      const botBankH = Math.min(110, Math.max(55, Math.floor(h * 0.14)));
       const roadH = h - topBankH - botBankH;
       const roadY = topBankH;
       const roadBottomY = h - botBankH;
@@ -9449,7 +9547,7 @@
       botBankGrad.addColorStop(0.4, '#16a34a');
       botBankGrad.addColorStop(1, '#15803d');
       ctx.fillStyle = botBankGrad;
-      ctx.fillRect(0, roadBottomY + 6, bikeTrackLength, botBankH - 6);
+      ctx.fillRect(0, roadBottomY + 6, bikeTrackLength, Math.max(botBankH, h - roadBottomY));
 
       // Biển báo khoảng cách tới đích (1000m, 500m, 200m, 100m, 50m)
       const distanceMarkers = [
@@ -10134,11 +10232,18 @@
     function toggleMotoGPFullscreen() {
       const container = document.getElementById('motogp-race-container');
       if (!container) return;
-      if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(err => alert("Không thể mở toàn màn hình: " + err.message));
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isFs) {
+        if (container.requestFullscreen) {
+          container.requestFullscreen().catch(err => alert("Không thể mở toàn màn hình: " + err.message));
+        } else if (container.webkitRequestFullscreen) {
+          container.webkitRequestFullscreen();
+        }
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
     function resizeMotoGPCanvas() {
@@ -10153,15 +10258,15 @@
 
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
 
       motogpTrackLength = Math.max(w * 3.4, 2800);
       motogpStartX = 160;
       motogpFinishX = motogpTrackLength - 220;
 
-      const topBankH = Math.max(65, Math.floor(h * 0.18));
-      const botBankH = Math.max(55, Math.floor(h * 0.16));
+      const topBankH = Math.min(130, Math.max(65, Math.floor(h * 0.16)));
+      const botBankH = Math.min(110, Math.max(55, Math.floor(h * 0.14)));
       const roadH = h - topBankH - botBankH;
       const count = motogpList.length;
       if (count > 0) {
@@ -10171,8 +10276,8 @@
         motogpList.forEach((m, idx) => {
           m.baseY = topBankH + padY + (count > 1 ? idx * spacingY : usableH / 2);
           m.startX = motogpStartX - 30;
-          if (motogpRaceState === 'idle') {
-            m.x = m.startX;
+          if (motogpRaceState === 'idle' || motogpRaceState === 'finished') {
+            if (motogpRaceState === 'idle') m.x = m.startX;
             m.y = m.baseY;
           }
         });
@@ -10581,8 +10686,8 @@
       const camX = Math.floor(motogpCameraX);
       ctx.translate(-camX, 0);
 
-      const topBankH = Math.max(65, Math.floor(h * 0.18));
-      const botBankH = Math.max(55, Math.floor(h * 0.16));
+      const topBankH = Math.min(130, Math.max(65, Math.floor(h * 0.16)));
+      const botBankH = Math.min(110, Math.max(55, Math.floor(h * 0.14)));
       const roadH = h - topBankH - botBankH;
       const roadY = topBankH;
       const roadBottomY = h - botBankH;
@@ -10663,7 +10768,7 @@
       botBankGrad.addColorStop(0.7, '#075985');
       botBankGrad.addColorStop(1, '#0c4a6e');
       ctx.fillStyle = botBankGrad;
-      ctx.fillRect(0, roadBottomY + 7, motogpTrackLength, botBankH - 7);
+      ctx.fillRect(0, roadBottomY + 7, motogpTrackLength, Math.max(botBankH, h - roadBottomY));
 
       // Biển báo cự ly đo tốc độ MotoGP (1000m, 500m, 200m, 100m, 50m)
       const distanceMarkers = [
@@ -11475,6 +11580,11 @@
           }
         }
       });
+
+      // Kích hoạt ResizeObserver để tự động thích ứng với mọi kích thước màn hình
+      if (typeof setupRaceResizeObservers === 'function') {
+        setupRaceResizeObservers();
+      }
 
       // Tự động khởi tạo canvas và render ngay khi tải trang
       setTimeout(() => {
