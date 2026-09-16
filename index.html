@@ -654,59 +654,59 @@
 <body class="bg-slate-50 text-slate-800 min-h-full flex flex-col font-sans selection:bg-amber-500 selection:text-white">
 
   <!-- ================= TOP NAVIGATION HEADER ================= -->
-  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[4rem] py-2 flex items-center justify-between gap-3">
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[3.75rem] py-1.5 flex items-center justify-between gap-3">
       
       <!-- Brand Logo -->
-      <div class="flex items-center space-x-3 cursor-pointer select-none shrink-0" onclick="switchAppTab('tab-home')">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/30 ring-2 ring-white/10">
-          <i class="fa-solid fa-flag-checkered text-lg"></i>
+      <div class="flex items-center space-x-2.5 cursor-pointer select-none shrink-0" onclick="switchAppTab('tab-home')">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-white shadow-xs ring-1 ring-black/5">
+          <i class="fa-solid fa-flag-checkered text-base"></i>
         </div>
         <div class="hidden sm:block">
-          <div class="text-base sm:text-lg font-black tracking-tight flex items-center gap-1.5 font-display text-slate-900">
+          <div class="text-base font-black tracking-tight flex items-center gap-1 font-display text-slate-900 leading-none">
             TRƯỜNG ĐUA <span class="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">GỌI TÊN</span>
           </div>
-          <div class="text-[11px] text-slate-800 font-extrabold tracking-tight flex items-center gap-1 -mt-0.5">
-            <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-amber-100 text-amber-800 font-black text-[10px] ring-1 ring-amber-400">©</span>
-            <span class="text-slate-900">Thiết kế bởi <span class="text-indigo-600 font-black">Thầy Tuấn</span> - GV Toán TT GDNN - GDTX Q12</span>
+          <div class="text-[11px] font-bold text-slate-600 flex items-center gap-1 mt-1">
+            <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-amber-100 text-amber-800 font-black text-[9px] ring-1 ring-amber-300">©</span>
+            <span>Thiết kế bởi <b class="text-indigo-600 font-extrabold">Thầy Tuấn</b> · GV Toán Q12</span>
           </div>
         </div>
         <div class="sm:hidden">
           <div class="text-sm font-black tracking-tight flex items-center gap-1 font-display text-slate-900">
             TRƯỜNG ĐUA <span class="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">GỌI TÊN</span>
           </div>
-          <div class="text-[9px] text-slate-800 font-bold flex items-center gap-0.5">
+          <div class="text-[9px] text-slate-600 font-bold flex items-center gap-0.5">
             <span class="text-amber-600 font-black">©</span> <span class="text-slate-900 font-extrabold">Thầy Tuấn - Q12</span>
           </div>
         </div>
       </div>
 
       <!-- Navigation Tabs (Always single line, no vertical stacking) -->
-      <nav class="flex items-center space-x-1 sm:space-x-2 bg-slate-950/70 p-1.5 rounded-2xl border border-slate-800 shrink-0">
-        <button id="nav-btn-home" onclick="switchAppTab('tab-home')" class="tab-nav-btn tab-nav-active whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 text-slate-300 hover:text-white">
-          <i class="fa-solid fa-gamepad text-amber-400"></i> <span class="whitespace-nowrap">Sảnh Trò Chơi</span>
+      <nav class="flex items-center space-x-1 sm:space-x-1.5 bg-slate-100/90 p-1 rounded-2xl border border-slate-200/90 shadow-xs shrink-0">
+        <button id="nav-btn-home" onclick="switchAppTab('tab-home')" class="tab-nav-btn tab-nav-active whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i class="fa-solid fa-gamepad text-amber-500"></i> <span class="whitespace-nowrap">Sảnh Trò Chơi</span>
         </button>
-        <button id="nav-btn-arena" onclick="switchAppTab('tab-arena')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 text-slate-300 hover:text-white">
-          <i class="fa-solid fa-flag-checkered text-rose-400"></i> <span class="whitespace-nowrap">Đấu Trường Đua</span>
+        <button id="nav-btn-arena" onclick="switchAppTab('tab-arena')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i class="fa-solid fa-flag-checkered text-rose-500"></i> <span class="whitespace-nowrap">Đấu Trường Đua</span>
         </button>
-        <button id="nav-btn-classes" onclick="switchAppTab('tab-classes')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 text-slate-300 hover:text-white">
-          <i class="fa-solid fa-users text-cyan-400"></i> <span class="whitespace-nowrap">Quản Lý Lớp</span>
+        <button id="nav-btn-classes" onclick="switchAppTab('tab-classes')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i class="fa-solid fa-users text-cyan-600"></i> <span class="whitespace-nowrap">Quản Lý Lớp</span>
         </button>
       </nav>
 
       <!-- Right Controls: Audio, Fullscreen, User Info & Settings -->
-      <div class="flex items-center space-x-2 shrink-0">
+      <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
         <!-- Sound Toggle -->
-        <button id="soundToggleBtn" onclick="toggleGlobalAppSound()" title="Bật/Tắt Âm Thanh" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700 cursor-pointer">
+        <button id="soundToggleBtn" onclick="toggleGlobalAppSound()" title="Bật/Tắt Âm Thanh" class="w-8.5 h-8.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center transition border border-slate-200 shadow-xs cursor-pointer">
           <span id="soundIcon" class="text-sm">🔊</span>
         </button>
         
         <!-- Fullscreen Toggle -->
-        <button onclick="toggleGlobalFullscreen()" title="Toàn Màn Hình Máy Chiếu/TV" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700 cursor-pointer">
-          <i data-lucide="maximize" class="w-4 h-4 text-indigo-400"></i>
+        <button onclick="toggleGlobalFullscreen()" title="Toàn Màn Hình Máy Chiếu/TV" class="w-8.5 h-8.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center transition border border-slate-200 shadow-xs cursor-pointer">
+          <i data-lucide="maximize" class="w-4 h-4 text-indigo-500"></i>
         </button>
 
-        <!-- User & Settings Area (Populated by JS: 1 Nút Duy Nhất) -->
+        <!-- User & Settings Area (Populated by JS: Gọn gàng & Đẹp mắt) -->
         <div id="header-user-area">
           <!-- Populated dynamically -->
         </div>
@@ -2633,40 +2633,49 @@
       if (currentUser) {
         if (isAdmin) {
           area.innerHTML = `
-            <button onclick="openAdminHubModal()" class="group px-3.5 py-1.5 sm:py-2 rounded-2xl bg-gradient-to-r from-purple-950/90 via-purple-900/80 to-indigo-950/90 hover:from-purple-900 hover:to-indigo-900 border border-purple-500/40 hover:border-amber-400/60 shadow-md shadow-purple-950/50 text-white flex items-center gap-2.5 text-xs font-black transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer select-none" title="Nhấn để mở Khu Vực Quản Trị Hệ Thống">
-              <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-amber-400 via-orange-500 to-amber-500 flex items-center justify-center text-slate-950 font-black shadow-sm text-sm shrink-0 group-hover:rotate-12 transition-transform">
-                👑
-              </div>
-              <div class="text-left leading-tight hidden sm:block">
-                <div class="text-xs font-black text-white whitespace-nowrap group-hover:text-amber-300 transition-colors">${currentUser.fullName || currentUser.username}</div>
-                <div class="text-[9px] text-amber-300/90 font-extrabold uppercase tracking-wide flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> Khu Vực Admin
+            <div class="flex items-center gap-1.5 bg-white/95 border border-purple-200/90 pl-1.5 pr-2 py-1 rounded-full shadow-xs hover:border-purple-300 transition-all">
+              <button onclick="openAdminHubModal()" class="flex items-center gap-2 cursor-pointer group" title="Nhấn để mở Khu Vực Quản Trị Hệ Thống">
+                <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-400 via-orange-500 to-amber-500 flex items-center justify-center text-slate-950 font-black shadow-xs text-xs shrink-0 group-hover:rotate-12 transition-transform">
+                  👑
                 </div>
-              </div>
-              <div class="w-6 h-6 rounded-lg bg-white/5 group-hover:bg-amber-400/20 flex items-center justify-center text-amber-400 transition ml-0.5">
-                <i data-lucide="settings" class="w-3.5 h-3.5"></i>
-              </div>
-            </button>
+                <div class="text-left leading-tight hidden sm:block">
+                  <div class="text-xs font-bold text-slate-800 whitespace-nowrap max-w-[120px] truncate group-hover:text-purple-700 transition-colors">${currentUser.fullName || currentUser.username}</div>
+                  <div class="text-[9px] text-amber-600 font-extrabold uppercase tracking-wide flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Admin
+                  </div>
+                </div>
+                <div class="w-6 h-6 rounded-full bg-purple-50 group-hover:bg-purple-100 flex items-center justify-center text-purple-600 transition">
+                  <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+                </div>
+              </button>
+
+              <div class="h-4 w-[1px] bg-slate-200 mx-0.5"></div>
+
+              <!-- Nút Đăng Xuất -->
+              <button onclick="promptLogout()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-600 flex items-center justify-center transition border border-slate-200/60 cursor-pointer shadow-2xs" title="Đăng xuất tài khoản">
+                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
           `;
         } else {
           area.innerHTML = `
-            <div class="flex items-center gap-1.5 sm:gap-2 bg-slate-800/90 border border-slate-700/80 px-2.5 sm:px-3 py-1.5 rounded-2xl shadow-sm">
-              <span class="text-sm sm:text-base">🎓</span>
+            <div class="flex items-center gap-1.5 bg-white/95 border border-slate-200/90 pl-1.5 pr-2 py-1 rounded-full shadow-xs hover:border-slate-300 transition-all">
+              <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                🎓
+              </div>
               <div class="text-left leading-tight pr-1 hidden sm:block">
-                <div class="text-xs font-black text-white whitespace-nowrap">${currentUser.fullName || currentUser.username}</div>
-                <div class="text-[9px] text-emerald-400 font-bold">Giáo Viên</div>
+                <div class="text-xs font-bold text-slate-800 whitespace-nowrap max-w-[130px] truncate">${currentUser.fullName || currentUser.username}</div>
+                <div class="text-[9px] font-semibold text-emerald-600 uppercase tracking-wide">Giáo Viên</div>
               </div>
 
               <!-- Nút Cài Đặt -->
-              <button onclick="openSettingsModal()" class="px-2.5 py-1.5 bg-slate-700/60 hover:bg-slate-700 hover:text-amber-400 text-slate-300 rounded-xl transition flex items-center gap-1 text-xs font-bold border border-slate-600/50 cursor-pointer" title="Cài đặt thông tin, giao diện & hệ thống">
-                <i data-lucide="settings" class="w-3.5 h-3.5 text-amber-400"></i>
-                <span class="hidden md:inline">Cài Đặt</span>
+              <button onclick="openSettingsModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700 flex items-center justify-center transition border border-slate-200/60 cursor-pointer shadow-2xs" title="Cài đặt thông tin, giao diện & hệ thống">
+                <i data-lucide="settings" class="w-3.5 h-3.5"></i>
               </button>
 
               <!-- Nút Đăng Xuất -->
-              <button onclick="promptLogout()" class="px-2.5 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-rose-100 rounded-xl transition flex items-center gap-1 text-xs font-bold border border-rose-800/50 cursor-pointer" title="Đăng xuất tài khoản">
-                <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
-                <span class="hidden md:inline">Đăng Xuất</span>
+              <button onclick="promptLogout()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-600 flex items-center justify-center transition border border-slate-200/60 cursor-pointer shadow-2xs" title="Đăng xuất tài khoản">
+                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
               </button>
             </div>
           `;
@@ -2674,14 +2683,14 @@
       } else {
         area.innerHTML = `
           <div class="flex items-center gap-1.5">
-            <button onclick="openAuthModal('login')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs rounded-xl transition hover:scale-105 active:scale-95 flex items-center gap-1 cursor-pointer">
-              <i data-lucide="log-in" class="w-3.5 h-3.5 text-amber-400"></i> <span>Đăng Nhập</span>
+            <button onclick="openAuthModal('login')" class="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-bold text-xs rounded-full shadow-2xs transition hover:scale-105 active:scale-95 flex items-center gap-1 cursor-pointer">
+              <i data-lucide="log-in" class="w-3.5 h-3.5 text-amber-500"></i> <span>Đăng Nhập</span>
             </button>
-            <button onclick="openAuthModal('register')" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md transition hover:scale-105 active:scale-95 flex items-center gap-1 cursor-pointer">
+            <button onclick="openAuthModal('register')" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-full shadow-xs transition hover:scale-105 active:scale-95 flex items-center gap-1 cursor-pointer">
               <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> <span>Đăng Ký</span>
             </button>
-            <button onclick="openSettingsModal('theme')" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition hover:scale-105 cursor-pointer" title="Đổi màu sắc giao diện">
-              <i data-lucide="palette" class="w-4 h-4 text-cyan-400"></i>
+            <button onclick="openSettingsModal('theme')" class="w-7.5 h-7.5 bg-white hover:bg-slate-50 text-slate-600 hover:text-indigo-600 border border-slate-200/90 rounded-full shadow-2xs transition hover:scale-105 flex items-center justify-center cursor-pointer" title="Đổi màu sắc giao diện">
+              <i data-lucide="palette" class="w-3.5 h-3.5 text-indigo-500"></i>
             </button>
           </div>
         `;
@@ -2773,6 +2782,7 @@
       else if (mode === 'motogp') initMotoGPRace(true);
       else if (mode === 'f1') initF1Race(true);
       else if (mode === 'horse') initHorseRace(true);
+      else if (mode === 'balloon') initBalloonGame(true);
     }
 
     function renderClassesListTab() {
@@ -3286,6 +3296,17 @@
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
       titleEl.innerText = info.title;
       iconEl.innerText = info.icon;
+
+      const spinBtn = document.getElementById('spin-btn');
+      if (spinBtn) {
+        if (mode === 'balloon') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-crosshairs"></i> BẮN TÊN GỌI TÊN';
+        } else if (mode === 'wheel_pie') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> QUAY VÒNG';
+        } else {
+          spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
+        }
+      }
     }
 
     function ensureActiveArenaRendered() {
@@ -3341,6 +3362,7 @@
         else if (mode === 'motogp') initMotoGPRace(true);
         else if (mode === 'f1') initF1Race(true);
         else if (mode === 'horse') initHorseRace(true);
+        else if (mode === 'balloon') initBalloonGame(true);
       }
     }
 
@@ -3587,11 +3609,22 @@
       const canvas = document.getElementById('balloon-canvas');
       if (!container || !canvas) return;
       const rect = container.getBoundingClientRect();
-      const w = Math.floor(rect.width);
-      const h = Math.floor(rect.height);
-      if (w > 0 && h > 0 && (canvas.width !== w || canvas.height !== h)) {
+      let w = Math.floor(rect.width || container.clientWidth || container.offsetWidth || 900);
+      let h = Math.floor(rect.height || container.clientHeight || container.offsetHeight || 560);
+      if (w < 200) w = 900;
+      if (h < 200) h = 560;
+
+      if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
+        if (balloonList && balloonList.length > 0) {
+          const count = balloonList.length;
+          const minX = 75;
+          const maxX = Math.max(minX + 100, w - 75);
+          balloonList.forEach((b, i) => {
+            b.baseX = minX + (i / (count - 1)) * (maxX - minX) + (Math.sin(i) * 15);
+          });
+        }
       }
     }
 
@@ -3617,7 +3650,7 @@
           const ry = rx * 1.25;
           const col = colors[i % colors.length];
           const minX = 75;
-          const maxX = w - 75;
+          const maxX = Math.max(minX + 100, w - 75);
           const baseX = minX + (i / (count - 1)) * (maxX - minX) + (Math.random() - 0.5) * 22;
           const y = h * 0.12 + Math.random() * (h * 0.72);
 
@@ -3676,7 +3709,11 @@
         balloonGameAnimId = null;
         return;
       }
-      renderBalloonCanvas(now);
+      try {
+        renderBalloonCanvas(now);
+      } catch (err) {
+        console.error("renderBalloonCanvas error:", err);
+      }
       balloonGameAnimId = requestAnimationFrame(runBalloonLoop);
     }
 
@@ -3991,11 +4028,8 @@
       ctx.fill();
 
       // Đôi bốt da nâu
-      ctx.fillStyle = '#78350f';
-      ctx.beginPath();
-      ctx.roundRect(boyX - 14, currentBoyY - 10, 10, 11, 3);
-      ctx.roundRect(boyX + 4, currentBoyY - 10, 10, 11, 3);
-      ctx.fill();
+      drawBalloonRoundedRect(ctx, boyX - 14, currentBoyY - 10, 10, 11, 3, '#78350f', null);
+      drawBalloonRoundedRect(ctx, boyX + 4, currentBoyY - 10, 10, 11, 3, '#78350f', null);
 
       // Đôi chân
       ctx.fillStyle = '#fed7aa';
@@ -4399,7 +4433,7 @@
       }
 
       // 9. HIỆN RA TÊN NGƯỜI ĐƯỢC GỌI (GRAND WINNER REVEAL BANNER)
-      if (balloonWinnerReveal && balloonWinnerReveal.alpha > 0.01) {
+      if (balloonWinnerReveal) {
         balloonWinnerReveal.scale += (1.0 - balloonWinnerReveal.scale) * 0.15;
         balloonWinnerReveal.alpha = Math.min(1.0, balloonWinnerReveal.alpha + 0.12);
 
@@ -13484,6 +13518,8 @@
 
       // 8. Bắn Bóng Bay (Cậu Bé Bắn Cung)
       if (mode === 'balloon') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const durationMs = durationSec * 1000;
         btn.disabled = true;
         btn.classList.add('opacity-70');
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG BẮN...';
@@ -13537,7 +13573,14 @@
       if (btnElement) {
         btnElement.disabled = false;
         btnElement.classList.remove('opacity-70');
-        btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
+        const mode = document.getElementById('spin-mode')?.value;
+        if (mode === 'balloon') {
+          btnElement.innerHTML = '<i class="fa-solid fa-crosshairs"></i> TIẾP TỤC BẮN';
+        } else if (mode === 'wheel_pie') {
+          btnElement.innerHTML = '<i class="fa-solid fa-rotate"></i> TIẾP TỤC QUAY';
+        } else {
+          btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
+        }
       }
 
       const nameDisplay = document.getElementById('winner-name-display');
