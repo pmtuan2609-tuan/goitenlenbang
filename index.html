@@ -502,6 +502,60 @@
     color: #ffffff !important;
   }
 
+  /* 9 Thẻ Trò Chơi (Game Cards) Nền Trắng Tinh Khôi, Siêu Rõ Nét */
+  .game-card-item {
+    background: #ffffff !important;
+    background-image: none !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .game-card-item:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 16px 30px -6px rgba(15, 23, 42, 0.12), 0 6px 12px -2px rgba(15, 23, 42, 0.06) !important;
+    border-color: #cbd5e1 !important;
+  }
+  .game-card-item h3 {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+  }
+  .game-card-item:hover h3 {
+    color: #4338ca !important;
+  }
+  .game-card-item p {
+    color: #475569 !important;
+    font-weight: 500 !important;
+  }
+  .game-card-item .border-t {
+    border-color: #f1f5f9 !important;
+  }
+
+  /* Quick launch box trên Hero Banner */
+  #quick-launch-box {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 20px 35px -10px rgba(15, 23, 42, 0.35) !important;
+  }
+  #quick-launch-box label {
+    color: #334155 !important;
+  }
+
+  /* Modals inner elements light mode */
+  #app-settings-content .bg-emerald-950\/40 {
+    background-color: #ecfdf5 !important;
+    border-color: #a7f3d0 !important;
+  }
+  #app-settings-content .bg-emerald-950\/40 .text-emerald-300 {
+    color: #047857 !important;
+  }
+  #app-settings-content .bg-slate-800\/60,
+  #app-settings-content .bg-slate-950\/60,
+  #app-settings-content .bg-slate-950\/70 {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+  }
+
   /* Game Canvas in Normal Mode */
   .race-stage-card,
   #duck-race-container:not(:fullscreen),
@@ -597,30 +651,30 @@
         </div>
 
         <!-- Quick Launch Bar -->
-        <div class="bg-slate-900/95 border border-slate-700/70 rounded-3xl p-5 sm:p-6 w-full lg:w-96 shadow-2xl backdrop-blur-md z-10 space-y-4">
-          <div class="flex items-center justify-between text-xs font-black text-slate-400 uppercase tracking-wider">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-amber-400"></i> Cài đặt nhanh</span>
-            <button onclick="switchAppTab('tab-classes')" class="text-indigo-400 hover:text-indigo-300 transition flex items-center gap-1">
-              <i data-lucide="plus" class="w-3 h-3"></i> Tải Excel / Thêm lớp
+        <div id="quick-launch-box" class="bg-white/95 border border-white/40 rounded-3xl p-5 sm:p-6 w-full lg:w-96 shadow-2xl backdrop-blur-md z-10 space-y-4 text-slate-800">
+          <div class="flex items-center justify-between text-xs font-black text-slate-500 uppercase tracking-wider">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-sliders text-amber-500"></i> Cài đặt nhanh</span>
+            <button onclick="switchAppTab('tab-classes')" class="text-indigo-600 hover:text-indigo-700 font-bold transition flex items-center gap-1">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tải Excel / Thêm lớp
             </button>
           </div>
 
           <!-- Select Class -->
           <div>
-            <label class="block text-xs text-slate-300 font-bold mb-1.5">1. Lớp học đang chọn:</label>
-            <select id="home-class-select" onchange="onClassSelectChange(this.value)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-bold focus:ring-2 focus:ring-amber-400 outline-none cursor-pointer">
+            <label class="block text-xs text-slate-700 font-bold mb-1.5">1. Lớp học đang chọn:</label>
+            <select id="home-class-select" onchange="onClassSelectChange(this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-400 outline-none cursor-pointer">
               <!-- Populated by JS -->
             </select>
           </div>
 
           <!-- Select Duration -->
           <div>
-            <label class="block text-xs text-slate-300 font-bold mb-1.5">2. Thời gian cuộc đua (giây):</label>
+            <label class="block text-xs text-slate-700 font-bold mb-1.5">2. Thời gian cuộc đua (giây):</label>
             <div class="grid grid-cols-4 gap-1.5" id="homeDurationButtons">
-              <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400 transition" data-sec="3">3s</button>
-              <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-amber-400 bg-amber-500/20 text-amber-300 transition" data-sec="5">5s</button>
-              <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400 transition" data-sec="10">10s</button>
-              <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400 transition" data-sec="15">15s</button>
+              <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition" data-sec="3">3s</button>
+              <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn py-2 text-xs font-black rounded-xl border border-amber-400 bg-amber-100 text-amber-800 transition" data-sec="5">5s</button>
+              <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition" data-sec="10">10s</button>
+              <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition" data-sec="15">15s</button>
             </div>
           </div>
 
@@ -634,22 +688,22 @@
       <!-- Filter Controls & Section Title -->
       <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
         <div>
-          <h2 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2.5">
-            <span class="w-3 h-3 rounded-full bg-amber-400 animate-ping"></span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
+            <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
             DANH SÁCH 9 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
-          <p class="text-xs text-slate-400 mt-0.5">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
+          <p class="text-xs text-slate-500 mt-0.5 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
 
         <!-- Filter Buttons -->
-        <div class="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
-          <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40 transition">
+        <div class="flex items-center gap-1.5 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+          <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 transition">
             Tất Cả (9)
           </button>
-          <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition">
+          <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
             🏎️ Đường Đua Tốc Độ (5)
           </button>
-          <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition">
+          <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
             🎁 May Mắn & Vòng Quay (4)
           </button>
         </div>
@@ -659,197 +713,197 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="home-game-cards-container">
         
         <!-- 1. ĐUA VỊT TRÊN SÔNG (CHẠY NGANG) -->
-        <div onclick="launchGame('duck')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-sky-950/70 via-slate-900 to-slate-950 border border-sky-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-sky-500/20 text-sky-300 border border-sky-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
+        <div onclick="launchGame('duck')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-sky-200 hover:border-sky-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
+          <div class="absolute top-3.5 right-3.5 bg-sky-50 text-sky-700 border border-sky-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
             🦆 Chạy Ngang Về Đích
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-sky-100/70 border border-sky-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🦆
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-sky-600 transition">
               Đua Vịt Trên Sông
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
               Các chú vịt đầy sắc màu bơi lội, lắc lư theo làn sóng nước sinh động. Vịt chiến thắng tung cú nước rút nghẹt thở ở những mét cuối cùng!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-sky-400">
+          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-sky-600">
             <span>Vào Trường Đua</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
         </div>
 
         <!-- 2. ĐUA XE ĐẠP THỂ THAO (CHẠY NGANG) -->
-        <div onclick="launchGame('bike')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-emerald-950/70 via-slate-900 to-slate-950 border border-emerald-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
+        <div onclick="launchGame('bike')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-emerald-200 hover:border-emerald-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
+          <div class="absolute top-3.5 right-3.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
             🚴 Sprint Tour Chạy Ngang
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-100/70 border border-emerald-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🚴
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-emerald-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-emerald-600 transition">
               Đua Xe Đạp Thể Thao
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
               Đường đua Tour de France thẳng tắp sang phải! Bứt tốc vũ bão bỏ xa đối thủ, núp gió lướt xé gió và tung nước rút qua cổng chào chiến thắng!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-emerald-400">
+          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-emerald-600">
             <span>Vào Trường Đua</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
         </div>
 
         <!-- 3. ĐUA XE MOTO GP (CHẠY NGANG) -->
-        <div onclick="launchGame('motogp')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-orange-950/70 via-slate-900 to-slate-950 border border-orange-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-orange-500/20 text-orange-300 border border-orange-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
+        <div onclick="launchGame('motogp')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-orange-200 hover:border-orange-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
+          <div class="absolute top-3.5 right-3.5 bg-orange-50 text-orange-700 border border-orange-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
             🏍️ Siêu Tốc 350 km/h
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-orange-100/70 border border-orange-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🏍️
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-orange-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-orange-600 transition">
               Đua Xe Moto GP
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
               Đoạn đường thẳng Grand Prix khốc liệt! Đèn FIM đếm ngược, siêu mô tô 1000cc gầm rú, xả lửa nitro rực rỡ và cán đích tốc độ 350 km/h!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-orange-400">
+          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-orange-600">
             <span>Vào Trường Đua</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
         </div>
 
         <!-- 4. ĐUA XE F1 ĐỈNH CAO (CIRCUIT LOOP) -->
-        <div onclick="launchGame('f1')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-rose-950/70 via-slate-900 to-slate-950 border border-rose-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-rose-500/20 text-rose-300 border border-rose-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
+        <div onclick="launchGame('f1')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-rose-200 hover:border-rose-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
+          <div class="absolute top-3.5 right-3.5 bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
             🏎️ Grand Prix Sa Mạc & Rừng Rậm
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-rose-100/70 border border-rose-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🏎️
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-rose-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-rose-600 transition">
               Đua Xe F1 Chuyên Nghiệp
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
               Đường đua vòng tròn khép kín với các góc cua chữ S, DRS bứt phá vượt mặt, tính số vòng đua tùy chỉnh và bảng xếp hạng trực tiếp.
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-rose-400">
+          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-rose-600">
             <span>Vào Trường Đua</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
         </div>
 
         <!-- 5. ĐUA NGỰA TRƯỜNG ĐUA (CHẠY NGANG) -->
-        <div onclick="launchGame('horse')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-amber-950/70 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
+        <div onclick="launchGame('horse')" data-category="race" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-amber-200 hover:border-amber-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
+          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
             🏇 Vó Ngựa Thảo Nguyên
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-amber-100/70 border border-amber-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🏇
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
               Đua Ngựa Thể Thao
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
               Chiến mã phi nước đại dũng mãnh, vó ngựa tung bay trong tiếng reo hò cuồng nhiệt của khán đài.
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
+          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-amber-700">
             <span>Vào Trường Đua</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
         </div>
 
         <!-- 6. VÒNG QUAY MAY MẮN (WHEEL) -->
-        <div onclick="launchGame('wheel_pie')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-purple-950/70 via-slate-900 to-slate-950 border border-purple-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-purple-500/20 text-purple-300 border border-purple-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
+        <div onclick="launchGame('wheel_pie')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-white border border-purple-200 hover:border-purple-400 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-xl transition-all">
+          <div class="absolute top-3.5 right-3.5 bg-purple-50 text-purple-700 border border-purple-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
             🎡 Vòng Quay Cổ Điển
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-purple-100/70 border border-purple-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🎡
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-purple-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-purple-600 transition">
               Vòng Quay May Mắn
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed">
               Vòng quay tròn 360 độ rực rỡ sắc màu, âm thanh tích tắc hồi hộp giảm dần trước khi kim chỉ dừng đúng tên học sinh may mắn.
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-purple-400">
+          <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between text-xs font-bold text-purple-600">
             <span>Vào Đấu Trường</span>
             <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
           </div>
         </div>
 
         <!-- 7. HỘP QUÀ BÍ MẬT 3D -->
-        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-pink-950/40 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl opacity-80 hover:opacity-100 transition">
-          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-slate-50/80 border border-slate-200 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-md transition-all opacity-85 hover:opacity-100">
+          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
             <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🎁
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
               Hộp Quà Bí Mật
             </h3>
-            <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
               Các hộp quà lung linh lắc lư theo điệu nhạc. Nắp hộp bật mở tung ngôi sao lấp lánh hé lộ tên bạn học sinh được gọi lên bảng!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Đang cập nhật, chưa sử dụng được</span>
+          <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-xs font-bold text-amber-600">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Đang cập nhật, chưa sử dụng được</span>
           </div>
         </div>
 
         <!-- 8. THẢ BÓNG BAY KHÍ CẦU -->
-        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-teal-950/40 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl opacity-80 hover:opacity-100 transition">
-          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-slate-50/80 border border-slate-200 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-md transition-all opacity-85 hover:opacity-100">
+          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
             <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🎈
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
               Thả Bóng Bay Gọi Tên
             </h3>
-            <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
               Chùm bóng bay rực rỡ lơ lửng bay lên bầu trời mây xanh. Quả bóng may mắn phát nổ pháo hoa xuất hiện tên học sinh.
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Đang cập nhật, chưa sử dụng được</span>
+          <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-xs font-bold text-amber-600">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Đang cập nhật, chưa sử dụng được</span>
           </div>
         </div>
 
         <!-- 9. RÚT THĂM & MÁY KÉO SỐ MAY MẮN -->
-        <div onclick="launchGame('wheel_slot')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl opacity-80 hover:opacity-100 transition">
-          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+        <div onclick="launchGame('wheel_slot')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-slate-50/80 border border-slate-200 overflow-hidden group p-5 flex flex-col justify-between relative shadow-sm hover:shadow-md transition-all opacity-85 hover:opacity-100">
+          <div class="absolute top-3.5 right-3.5 bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
             <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
           </div>
           <div class="space-y-3 pt-2">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
+            <div class="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition">
               🎰
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
+            <h3 class="text-lg font-black text-slate-900 group-hover:text-amber-600 transition">
               Máy Kéo Số Jackpot
             </h3>
-            <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
               Các trục cuộn quay tít mù với hiệu ứng đèn neon Las Vegas hoành tráng, dừng lại đúng bạn học sinh tỏa sáng nhất!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Đang cập nhật, chưa sử dụng được</span>
+          <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-xs font-bold text-amber-600">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Đang cập nhật, chưa sử dụng được</span>
           </div>
         </div>
 
@@ -1293,20 +1347,20 @@
       </div>
 
       <!-- Tab Navigation Buttons -->
-      <div class="flex flex-wrap items-center gap-1.5 bg-slate-950/70 p-1.5 rounded-2xl border border-slate-800 shrink-0">
+      <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shrink-0">
         <!-- Admin only tabs -->
-        <button id="st-tab-teachers-btn" onclick="switchSettingsTab('teachers')" class="settings-tab-btn hidden flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-purple-400 cursor-pointer">
-          <i data-lucide="users" class="w-3.5 h-3.5 text-purple-400"></i> <span>Quản Lý Giáo Viên</span>
+        <button id="st-tab-teachers-btn" onclick="switchSettingsTab('teachers')" class="settings-tab-btn hidden flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-purple-700 cursor-pointer" style="display: none;">
+          <i data-lucide="users" class="w-3.5 h-3.5 text-purple-600"></i> <span>Quản Lý Giáo Viên</span>
         </button>
-        <button id="st-tab-cloud-btn" onclick="switchSettingsTab('cloud')" class="settings-tab-btn hidden flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-emerald-400 cursor-pointer">
-          <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i> <span>Lưu Trữ Đám Mây</span>
+        <button id="st-tab-cloud-btn" onclick="switchSettingsTab('cloud')" class="settings-tab-btn hidden flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-emerald-700 cursor-pointer" style="display: none;">
+          <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-600"></i> <span>Lưu Trữ Đám Mây</span>
         </button>
         <!-- Common tabs -->
-        <button id="st-tab-profile-btn" onclick="switchSettingsTab('profile')" class="settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-amber-400 bg-amber-500/20 border border-amber-400/40 shadow-sm cursor-pointer">
-          <i data-lucide="user" class="w-3.5 h-3.5"></i> <span>Thông Tin & Mật Khẩu</span>
+        <button id="st-tab-profile-btn" onclick="switchSettingsTab('profile')" class="settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 text-amber-800 bg-amber-100 border border-amber-300 shadow-sm cursor-pointer">
+          <i data-lucide="user" class="w-3.5 h-3.5 text-amber-700"></i> <span>Thông Tin & Mật Khẩu</span>
         </button>
-        <button id="st-tab-theme-btn" onclick="switchSettingsTab('theme')" class="settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 cursor-pointer">
-          <i data-lucide="palette" class="w-3.5 h-3.5 text-cyan-400"></i> <span>Màu Giao Diện</span>
+        <button id="st-tab-theme-btn" onclick="switchSettingsTab('theme')" class="settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 cursor-pointer">
+          <i data-lucide="palette" class="w-3.5 h-3.5 text-cyan-600"></i> <span>Màu Giao Diện</span>
         </button>
       </div>
 
@@ -1525,39 +1579,39 @@
           <h3 id="class-modal-title" class="text-base font-black text-white flex items-center gap-2">
             <i class="fa-solid fa-folder-plus text-emerald-400"></i> Thêm Lớp Học Mới
           </h3>
-          <p class="text-xs text-slate-400">Tải file Excel hoặc dán danh sách - Tự động đồng bộ Đám Mây</p>
+          <p class="text-xs text-slate-500">Tải file Excel hoặc dán danh sách học sinh</p>
         </div>
-        <button onclick="closeClassModal()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-slate-400 hover:text-white">
+        <button onclick="closeClassModal()" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 hover:text-slate-800 transition">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
 
       <div class="overflow-y-auto space-y-4 pr-1 dark-scrollbar flex-1">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Tên Lớp Học *</label>
-          <input type="text" id="modal-class-name" placeholder="Ví dụ: Lớp 10A1, Lớp 11B2..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white font-bold outline-none focus:ring-2 focus:ring-emerald-400">
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tên Lớp Học *</label>
+          <input type="text" id="modal-class-name" placeholder="Ví dụ: Lớp 10A1, Lớp 11B2..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm text-slate-900 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
 
         <!-- Upload File Excel -->
-        <div class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-2xl p-4 text-center transition bg-slate-800/50 cursor-pointer" onclick="document.getElementById('modal-excel-input').click()">
+        <div class="border-2 border-dashed border-emerald-200 hover:border-emerald-500 rounded-2xl p-4 text-center transition bg-emerald-50/40 cursor-pointer" onclick="document.getElementById('modal-excel-input').click()">
           <input type="file" id="modal-excel-input" accept=".xlsx, .xls, .csv" onchange="handleExcelFileUpload(event)" class="hidden">
-          <i class="fa-solid fa-cloud-arrow-up text-3xl text-emerald-400 mb-2"></i>
-          <p class="text-xs font-bold text-slate-200">Nhấn vào đây để tải lên file Excel danh sách học sinh</p>
-          <p class="text-[10px] text-slate-400 mt-1">Hỗ trợ định dạng .xlsx, .xls, .csv. Tự động nhận diện cột Họ và tên.</p>
+          <i class="fa-solid fa-file-excel text-3xl text-emerald-600 mb-2"></i>
+          <p class="text-xs font-bold text-slate-800">Nhấn vào đây để tải lên file Excel danh sách học sinh</p>
+          <p class="text-[10px] text-slate-500 mt-1">Hỗ trợ định dạng .xlsx, .xls, .csv. Tự động nhận diện cột Họ và tên.</p>
         </div>
 
         <!-- Textarea Paste Names -->
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">Hoặc dán danh sách học sinh (mỗi dòng một tên):</label>
-          <textarea id="modal-class-names-paste" rows="6" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Văn C..." class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white font-mono outline-none focus:ring-2 focus:ring-emerald-400 leading-relaxed"></textarea>
-          <span class="text-[11px] text-slate-400" id="modal-detected-count">Đã nhận diện: 0 học sinh</span>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Hoặc dán danh sách học sinh (mỗi dòng một tên):</label>
+          <textarea id="modal-class-names-paste" rows="6" placeholder="Nguyễn Văn A&#10;Trần Thị B&#10;Lê Văn C..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 font-mono outline-none focus:ring-2 focus:ring-emerald-500 leading-relaxed"></textarea>
+          <span class="text-[11px] text-slate-500 font-semibold" id="modal-detected-count">Đã nhận diện: 0 học sinh</span>
         </div>
       </div>
 
-      <div class="pt-4 border-t border-slate-800 mt-4 flex items-center justify-end gap-3 shrink-0">
-        <button type="button" onclick="closeClassModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition">Hủy</button>
+      <div class="pt-4 border-t border-slate-200 mt-4 flex items-center justify-end gap-3 shrink-0">
+        <button type="button" onclick="closeClassModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs hover:bg-slate-200 transition">Hủy</button>
         <button type="button" onclick="saveClassFromModal()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs hover:from-emerald-600 hover:to-teal-700 transition shadow-lg flex items-center gap-2">
-          <i class="fa-solid fa-cloud"></i> Lưu Lớp Học (Lên Đám Mây)
+          <i class="fa-solid fa-check"></i> Lưu Lớp Học
         </button>
       </div>
     </div>
@@ -1762,17 +1816,17 @@
       grid.innerHTML = Object.values(APP_THEMES).map(t => {
         const isSelected = (t.id === currentThemeId);
         return `
-          <div onclick="applyAppTheme('${t.id}')" class="cursor-pointer p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 ${isSelected ? 'bg-slate-800/90 border-amber-400 ring-2 ring-amber-400/30' : 'bg-slate-800/40 border-slate-700/80 hover:bg-slate-800/80'}">
+          <div onclick="applyAppTheme('${t.id}')" class="cursor-pointer p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 ${isSelected ? 'bg-amber-50/80 border-amber-500 ring-2 ring-amber-400/30 shadow-sm' : 'bg-white border-slate-200 hover:bg-slate-50 shadow-xs'}">
             <div class="flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl flex items-center justify-center shadow-md shrink-0" style="background: linear-gradient(135deg, ${t.c1}, ${t.c2});">
                 ${isSelected ? '<i class="fa-solid fa-check text-white text-xs"></i>' : ''}
               </div>
               <div class="text-left leading-tight">
-                <div class="text-xs font-black text-white">${t.name}</div>
-                <div class="text-[10px] text-slate-400 font-medium">${t.subtitle}</div>
+                <div class="text-xs font-black text-slate-900">${t.name}</div>
+                <div class="text-[10px] text-slate-500 font-medium">${t.subtitle}</div>
               </div>
             </div>
-            ${isSelected ? '<span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-black border border-amber-400/30 shrink-0">Đang Chọn</span>' : ''}
+            ${isSelected ? '<span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-black border border-amber-300 shrink-0">Đang Chọn</span>' : ''}
           </div>
         `;
       }).join('');
@@ -2181,17 +2235,17 @@
       const teachersBtn = document.getElementById('st-tab-teachers-btn');
 
       if (isAdmin) {
-        if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-crown text-amber-400"></i> <span>Khu Vực Quản Trị Hệ Thống</span>';
+        if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-crown text-amber-500"></i> <span>Khu Vực Quản Trị Hệ Thống</span>';
         if (modalSubtitle) modalSubtitle.innerText = 'Quản lý tài khoản giáo viên, dữ liệu đám mây và tùy chỉnh hệ thống';
         if (modalIcon) modalIcon.innerHTML = '👑';
-        if (cloudBtn) cloudBtn.classList.remove('hidden');
-        if (teachersBtn) teachersBtn.classList.remove('hidden');
+        if (cloudBtn) { cloudBtn.classList.remove('hidden'); cloudBtn.style.display = ''; }
+        if (teachersBtn) { teachersBtn.classList.remove('hidden'); teachersBtn.style.display = ''; }
       } else {
         if (modalTitle) modalTitle.innerText = 'Cài Đặt Hệ Thống & Tài Khoản';
-        if (modalSubtitle) modalSubtitle.innerText = 'Tùy biến thông tin, màu sắc giao diện và quản lý hệ thống';
-        if (modalIcon) modalIcon.innerHTML = '<i data-lucide="settings" class="w-5 h-5"></i>';
-        if (cloudBtn) cloudBtn.classList.add('hidden');
-        if (teachersBtn) teachersBtn.classList.add('hidden');
+        if (modalSubtitle) modalSubtitle.innerText = 'Tùy biến thông tin cá nhân và màu sắc giao diện';
+        if (modalIcon) modalIcon.innerHTML = '<i data-lucide="settings" class="w-5 h-5 text-indigo-600"></i>';
+        if (cloudBtn) { cloudBtn.classList.add('hidden'); cloudBtn.style.display = 'none'; }
+        if (teachersBtn) { teachersBtn.classList.add('hidden'); teachersBtn.style.display = 'none'; }
         if (tab === 'teachers' || tab === 'cloud') tab = 'profile';
       }
 
@@ -2222,6 +2276,11 @@
     }
 
     function switchSettingsTab(tab) {
+      const isAdmin = (currentUser && (currentUser.role === 'admin' || currentUser.username === 'thaytuan'));
+      if (!isAdmin && (tab === 'cloud' || tab === 'teachers')) {
+        tab = 'profile';
+      }
+
       const tabs = ['profile', 'theme', 'cloud', 'teachers'];
       tabs.forEach(t => {
         const btn = document.getElementById(`st-tab-${t}-btn`);
@@ -2231,10 +2290,18 @@
           else panel.classList.add('hidden');
         }
         if (btn) {
-          if (t === tab) {
-            btn.className = "settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-amber-400 bg-amber-500/20 border border-amber-400/40 shadow-sm cursor-pointer";
+          const isRestricted = (!isAdmin && (t === 'cloud' || t === 'teachers'));
+          if (isRestricted) {
+            btn.classList.add('hidden');
+            btn.style.display = 'none';
           } else {
-            btn.className = "settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 cursor-pointer";
+            btn.classList.remove('hidden');
+            btn.style.display = '';
+            if (t === tab) {
+              btn.className = "settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 text-amber-800 bg-amber-100 border border-amber-300 shadow-sm cursor-pointer";
+            } else {
+              btn.className = "settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 cursor-pointer";
+            }
           }
         }
       });
@@ -2799,9 +2866,9 @@
         const btn = document.getElementById(`home-filter-${b}`);
         if (btn) {
           if (b === category) {
-            btn.className = "home-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40 transition";
+            btn.className = "home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-black bg-amber-100 text-amber-800 border border-amber-300 shadow-sm transition";
           } else {
-            btn.className = "home-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition";
+            btn.className = "home-filter-btn px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition";
           }
         }
       });
@@ -2862,9 +2929,9 @@
       if (select) select.value = sec;
       document.querySelectorAll('.duration-quick-btn').forEach(btn => {
         if (parseInt(btn.getAttribute('data-sec')) === sec) {
-          btn.className = "duration-quick-btn py-2 text-xs font-bold rounded-xl border border-amber-400 bg-amber-500/20 text-amber-300 transition";
+          btn.className = "duration-quick-btn py-2 text-xs font-black rounded-xl border border-amber-400 bg-amber-100 text-amber-800 shadow-xs transition";
         } else {
-          btn.className = "duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:border-amber-400 transition";
+          btn.className = "duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition";
         }
       });
     }
