@@ -328,8 +328,8 @@
           <i class="fa-solid fa-users text-cyan-400"></i> <span class="hidden sm:inline">Quản Lý Lớp</span>
         </button>
         <!-- Admin only button (for thaytuan) -->
-        <button id="nav-btn-admin" onclick="switchAppTab('tab-admin')" class="tab-nav-btn hidden px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-purple-900/40 text-purple-300 hover:bg-purple-800/60 border border-purple-500/30 flex items-center gap-2">
-          <i class="fa-solid fa-shield-halved text-purple-400"></i> <span class="hidden sm:inline">Admin</span>
+        <button id="nav-btn-admin" onclick="switchAppTab('tab-admin')" class="tab-nav-btn hidden px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black transition bg-gradient-to-r from-purple-900/70 via-indigo-900/60 to-purple-900/70 text-purple-200 hover:text-white hover:from-purple-800 hover:to-indigo-800 border border-purple-500/40 shadow-sm shadow-purple-950/50 flex items-center gap-2">
+          <i class="fa-solid fa-crown text-amber-400 text-xs"></i> <span class="hidden sm:inline">Khu Vực Admin</span>
         </button>
       </nav>
 
@@ -576,68 +576,65 @@
         </div>
 
         <!-- 7. HỘP QUÀ BÍ MẬT 3D -->
-        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-pink-950/70 via-slate-900 to-slate-950 border border-pink-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-pink-500/20 text-pink-300 border border-pink-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🎁 Bất Ngờ Thú Vị
+        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-pink-950/40 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl opacity-80 hover:opacity-100 transition">
+          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+            <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
           </div>
           <div class="space-y-3 pt-2">
             <div class="w-14 h-14 rounded-2xl bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
               🎁
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-pink-300 transition">
+            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
               Hộp Quà Bí Mật
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
               Các hộp quà lung linh lắc lư theo điệu nhạc. Nắp hộp bật mở tung ngôi sao lấp lánh hé lộ tên bạn học sinh được gọi lên bảng!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-pink-400">
-            <span>Vào Đấu Trường</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Đang cập nhật, chưa sử dụng được</span>
           </div>
         </div>
 
         <!-- 8. THẢ BÓNG BAY KHÍ CẦU -->
-        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-teal-950/70 via-slate-900 to-slate-950 border border-teal-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-teal-500/20 text-teal-300 border border-teal-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🎈 Bay Lượn Bầu Trời
+        <div onclick="launchGame('balloon')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-teal-950/40 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl opacity-80 hover:opacity-100 transition">
+          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+            <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
           </div>
           <div class="space-y-3 pt-2">
             <div class="w-14 h-14 rounded-2xl bg-teal-500/20 border border-teal-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
               🎈
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-teal-300 transition">
+            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
               Thả Bóng Bay Gọi Tên
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
               Chùm bóng bay rực rỡ lơ lửng bay lên bầu trời mây xanh. Quả bóng may mắn phát nổ pháo hoa xuất hiện tên học sinh.
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-teal-400">
-            <span>Vào Đấu Trường</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Đang cập nhật, chưa sử dụng được</span>
           </div>
         </div>
 
         <!-- 9. RÚT THĂM & MÁY KÉO SỐ MAY MẮN -->
-        <div onclick="launchGame('wheel_slot')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-indigo-950/70 via-slate-900 to-slate-950 border border-indigo-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl">
-          <div class="absolute top-3.5 right-3.5 bg-indigo-500/20 text-indigo-300 border border-indigo-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full">
-            🎰 Rút Thăm Hồi Hộp
+        <div onclick="launchGame('wheel_slot')" data-category="lucky" class="game-card-item game-card-hover cursor-pointer rounded-3xl bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-950 border border-amber-500/30 overflow-hidden group p-5 flex flex-col justify-between relative shadow-xl opacity-80 hover:opacity-100 transition">
+          <div class="absolute top-3.5 right-3.5 bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1.5">
+            <i class="fa-solid fa-clock-rotate-left text-[11px]"></i> Đang Cập Nhật
           </div>
           <div class="space-y-3 pt-2">
             <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 border border-indigo-400/40 flex items-center justify-center text-3xl shadow-inner group-hover:scale-110 transition">
               🎰
             </div>
-            <h3 class="text-lg font-black text-white group-hover:text-indigo-300 transition">
+            <h3 class="text-lg font-black text-white group-hover:text-amber-300 transition">
               Máy Kéo Số Jackpot
             </h3>
-            <p class="text-xs text-slate-300 line-clamp-3 leading-relaxed">
+            <p class="text-xs text-slate-400 line-clamp-3 leading-relaxed">
               Các trục cuộn quay tít mù với hiệu ứng đèn neon Las Vegas hoành tráng, dừng lại đúng bạn học sinh tỏa sáng nhất!
             </p>
           </div>
-          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-indigo-400">
-            <span>Vào Đấu Trường</span>
-            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+          <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between text-xs font-bold text-amber-400">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Đang cập nhật, chưa sử dụng được</span>
           </div>
         </div>
 
@@ -691,9 +688,9 @@
               <option value="f1" class="bg-slate-900 text-white font-bold">🏎️ Đua Xe F1 Chuyên Nghiệp</option>
               <option value="horse" class="bg-slate-900 text-white font-bold">🏇 Đua Ngựa Thể Thao</option>
               <option value="wheel_pie" class="bg-slate-900 text-white font-bold">🎡 Vòng Quay May Mắn</option>
-              <option value="gift" class="bg-slate-900 text-white font-bold">🎁 Hộp Quà Bí Mật</option>
-              <option value="balloon" class="bg-slate-900 text-white font-bold">🎈 Thả Bóng Bay</option>
-              <option value="wheel_slot" class="bg-slate-900 text-white font-bold">🎰 Máy Kéo Số May Mắn</option>
+              <option value="gift" class="bg-slate-900 text-slate-400 font-bold">🎁 Hộp Quà Bí Mật (Đang cập nhật)</option>
+              <option value="balloon" class="bg-slate-900 text-slate-400 font-bold">🎈 Thả Bóng Bay (Đang cập nhật)</option>
+              <option value="wheel_slot" class="bg-slate-900 text-slate-400 font-bold">🎰 Máy Kéo Số (Đang cập nhật)</option>
             </select>
           </div>
 
@@ -967,12 +964,26 @@
           </h2>
           <p class="text-xs text-slate-400 mt-1">Chỉ tài khoản Quản trị viên cao cấp (thaytuan) mới có quyền truy cập</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="openSettingsModal('cloud')" class="px-3.5 py-2 rounded-xl bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-700 text-xs font-bold transition flex items-center gap-1.5">
-            <i data-lucide="cloud" class="w-4 h-4 text-emerald-400"></i> Cài Đặt Đám Mây
+        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+          <!-- Nút Cài Đặt Đám Mây -->
+          <button onclick="openSettingsModal('cloud')" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs shadow-md shadow-emerald-950/50 border border-emerald-400/40 transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer" title="Cài đặt cấu hình kết nối đám mây Supabase">
+            <i data-lucide="cloud" class="w-4 h-4 text-emerald-100"></i>
+            <span>Cài Đặt Đám Mây</span>
           </button>
-          <button onclick="exportSystemDataJson()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition flex items-center gap-1.5">
-            <i data-lucide="download" class="w-4 h-4 text-amber-400"></i> Xuất Toàn Bộ JSON
+          <!-- Nút Xuất JSON -->
+          <button onclick="exportSystemDataJson()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs shadow-md shadow-orange-950/50 border border-amber-300/40 transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer" title="Xuất toàn bộ cơ sở dữ liệu hệ thống ra file JSON">
+            <i data-lucide="download" class="w-4 h-4 text-amber-100"></i>
+            <span>Xuất Dữ Liệu JSON</span>
+          </button>
+          <!-- Nút Đồng Bộ Ngay -->
+          <button onclick="adminSyncNow()" class="px-3.5 py-2 rounded-xl bg-purple-900/60 hover:bg-purple-800 text-purple-200 hover:text-white border border-purple-500/40 font-bold text-xs shadow-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer" title="Kiểm tra kết nối và đồng bộ ngay với Supabase">
+            <i data-lucide="refresh-cw" class="w-4 h-4 text-purple-300"></i>
+            <span>Đồng Bộ Ngay</span>
+          </button>
+          <!-- Nút Thêm Giáo Viên -->
+          <button onclick="openAdminAddTeacherModal()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 hover:border-indigo-400/50 font-bold text-xs shadow-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer" title="Đăng ký tài khoản giáo viên mới">
+            <i data-lucide="user-plus" class="w-4 h-4 text-indigo-400"></i>
+            <span>+ Thêm Giáo Viên</span>
           </button>
         </div>
       </div>
@@ -1899,21 +1910,46 @@
       if (!tbody) return;
       const users = getAllUsers();
       tbody.innerHTML = users.map((u, i) => `
-        <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition text-xs">
-          <td class="p-2.5 font-bold text-slate-400">${i + 1}</td>
-          <td class="p-2.5 font-bold text-white font-mono">${u.username}</td>
-          <td class="p-2.5 text-slate-200">${u.fullName || '-'}</td>
+        <tr class="border-b border-slate-800/80 hover:bg-slate-800/40 transition text-xs ${u.username === 'thaytuan' ? 'bg-purple-950/20' : ''}">
+          <td class="p-2.5 font-bold ${u.username === 'thaytuan' ? 'text-amber-400' : 'text-slate-400'}">
+            ${u.username === 'thaytuan' ? '👑 ' + (i + 1) : (i + 1)}
+          </td>
+          <td class="p-2.5 font-bold text-white font-mono">
+            <div class="flex items-center gap-1.5">
+              <span>${u.username}</span>
+              ${u.username === 'thaytuan' ? '<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[9px] font-black">Admin</span>' : ''}
+            </div>
+          </td>
+          <td class="p-2.5 text-slate-200 font-bold">${u.fullName || '-'}</td>
           <td class="p-2.5 text-slate-400">${u.subject || 'Giáo viên'}</td>
           <td class="p-2.5 font-mono text-[11px] text-slate-400">${u.createdAt ? u.createdAt.slice(0, 10) : 'Hệ thống'}</td>
           <td class="p-2.5 text-right">
-            ${u.username === 'thaytuan' ? '<span class="text-[10px] text-amber-400 font-black">Admin Gốc</span>' : `
-              <button onclick="deleteTeacherAccount('${u.username}')" class="px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-300 font-bold rounded-lg transition text-[11px]">
-                Xóa
-              </button>
+            ${u.username === 'thaytuan' ? `
+              <div class="flex items-center justify-end gap-1">
+                <button type="button" onclick="switchSettingsTab('profile')" class="px-2 py-1 bg-amber-500/10 hover:bg-amber-500/25 border border-amber-400/30 text-amber-300 font-bold rounded-lg transition text-[11px] flex items-center gap-1 cursor-pointer" title="Đổi mật khẩu / Thông tin Admin">
+                  <i data-lucide="key" class="w-3 h-3 text-amber-400"></i> <span>Đổi MK</span>
+                </button>
+                <button type="button" onclick="switchSettingsTab('cloud')" class="px-2 py-1 bg-emerald-500/10 hover:bg-emerald-500/25 border border-emerald-400/30 text-emerald-300 font-bold rounded-lg transition text-[11px] flex items-center gap-1 cursor-pointer" title="Cấu hình đám mây">
+                  <i data-lucide="cloud" class="w-3 h-3 text-emerald-400"></i> <span>Đám Mây</span>
+                </button>
+                <button type="button" onclick="exportSystemDataJson()" class="px-2 py-1 bg-purple-500/10 hover:bg-purple-500/25 border border-purple-400/30 text-purple-300 font-bold rounded-lg transition text-[11px] flex items-center gap-1 cursor-pointer" title="Xuất JSON sao lưu">
+                  <i data-lucide="download" class="w-3 h-3 text-purple-400"></i> <span>Sao Lưu</span>
+                </button>
+              </div>
+            ` : `
+              <div class="flex items-center justify-end gap-1">
+                <button type="button" onclick="adminResetTeacherPassword('${u.username}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-amber-300 font-bold rounded-lg transition text-[11px] flex items-center gap-1 cursor-pointer" title="Đổi mật khẩu giáo viên">
+                  <i data-lucide="key" class="w-3 h-3 text-amber-400"></i> <span>Đổi MK</span>
+                </button>
+                <button type="button" onclick="deleteTeacherAccount('${u.username}')" class="px-2 py-1 bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-300 font-bold rounded-lg transition text-[11px] flex items-center gap-1 cursor-pointer" title="Xóa tài khoản">
+                  <i data-lucide="trash-2" class="w-3 h-3 text-rose-400"></i> <span>Xóa</span>
+                </button>
+              </div>
             `}
           </td>
         </tr>
       `).join('');
+      if (window.lucide) lucide.createIcons();
     }
 
     function updateUserHeaderArea() {
@@ -1928,37 +1964,79 @@
       }
 
       if (currentUser) {
-        area.innerHTML = `
-          <div class="flex items-center gap-1.5 sm:gap-2 bg-slate-800/90 border border-slate-700/80 px-2.5 sm:px-3 py-1.5 rounded-2xl shadow-sm">
-            <span class="text-sm sm:text-base">${isAdmin ? '👑' : '🎓'}</span>
-            <div class="text-left leading-tight pr-1 hidden sm:block">
-              <div class="text-xs font-black text-white">${currentUser.fullName || currentUser.username}</div>
-              <div class="text-[9px] text-amber-400 font-bold">${isAdmin ? 'Quản Trị Admin' : 'Giáo Viên'}</div>
+        if (isAdmin) {
+          area.innerHTML = `
+            <div class="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-purple-950/80 via-slate-900/95 to-slate-900/90 border border-purple-500/40 p-1 sm:p-1.5 pl-2 sm:pl-3 rounded-2xl shadow-lg shadow-purple-950/30">
+              <!-- Admin Identity Badge -->
+              <div class="flex items-center gap-2 pr-1 cursor-pointer select-none" onclick="switchAppTab('tab-admin')" title="Nhấn để vào Khu Vực Quản Trị Hệ Thống">
+                <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-amber-500/30 text-xs sm:text-sm">
+                  👑
+                </div>
+                <div class="text-left leading-tight hidden sm:block">
+                  <div class="text-xs font-black text-white flex items-center gap-1 truncate max-w-[120px]">
+                    ${currentUser.fullName || currentUser.username}
+                  </div>
+                  <div class="inline-flex items-center gap-1 text-[9px] font-extrabold text-amber-300">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    Quản Trị Admin
+                  </div>
+                </div>
+              </div>
+
+              <div class="h-5 w-px bg-slate-700/80 mx-0.5 hidden sm:block"></div>
+
+              <!-- Nút 1: Khu Vực Quản Trị Admin -->
+              <button onclick="switchAppTab('tab-admin')" class="px-2.5 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs rounded-xl shadow-md shadow-purple-900/40 border border-purple-400/40 transition flex items-center gap-1.5 hover:scale-105 active:scale-95 cursor-pointer" title="Khu Vực Quản Trị Admin">
+                <i class="fa-solid fa-shield-halved text-amber-300 text-xs"></i>
+                <span class="hidden md:inline">Admin</span>
+              </button>
+
+              <!-- Nút 2: Cài Đặt Hệ Thống -->
+              <button onclick="openSettingsModal()" class="px-2.5 py-1.5 bg-slate-800/90 hover:bg-slate-700 text-amber-300 hover:text-amber-200 border border-slate-700 hover:border-amber-400/40 rounded-xl transition flex items-center gap-1.5 text-xs font-bold shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Cài đặt hệ thống, giao diện & tài khoản">
+                <i data-lucide="settings" class="w-3.5 h-3.5 text-amber-400"></i>
+                <span class="hidden md:inline">Cài Đặt</span>
+              </button>
+
+              <!-- Nút 3: Đăng Xuất -->
+              <button onclick="promptLogout()" class="px-2.5 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-rose-100 border border-rose-800/50 hover:border-rose-500/50 rounded-xl transition flex items-center gap-1.5 text-xs font-bold shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Đăng xuất tài khoản">
+                <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
+                <span class="hidden md:inline">Đăng Xuất</span>
+              </button>
             </div>
+          `;
+        } else {
+          area.innerHTML = `
+            <div class="flex items-center gap-1.5 sm:gap-2 bg-slate-800/90 border border-slate-700/80 px-2.5 sm:px-3 py-1.5 rounded-2xl shadow-sm">
+              <span class="text-sm sm:text-base">🎓</span>
+              <div class="text-left leading-tight pr-1 hidden sm:block">
+                <div class="text-xs font-black text-white">${currentUser.fullName || currentUser.username}</div>
+                <div class="text-[9px] text-emerald-400 font-bold">Giáo Viên</div>
+              </div>
 
-            <!-- Nút Cài Đặt (Cho GV & Admin) -->
-            <button onclick="openSettingsModal()" class="p-1.5 hover:text-amber-400 hover:bg-slate-700/60 rounded-xl text-slate-300 transition flex items-center gap-1 text-xs font-bold" title="Cài đặt thông tin, giao diện & hệ thống">
-              <i data-lucide="settings" class="w-4 h-4 text-amber-400"></i>
-              <span class="hidden md:inline">Cài Đặt</span>
-            </button>
+              <!-- Nút Cài Đặt -->
+              <button onclick="openSettingsModal()" class="px-2.5 py-1.5 bg-slate-700/60 hover:bg-slate-700 hover:text-amber-400 text-slate-300 rounded-xl transition flex items-center gap-1 text-xs font-bold border border-slate-600/50 cursor-pointer" title="Cài đặt thông tin, giao diện & hệ thống">
+                <i data-lucide="settings" class="w-3.5 h-3.5 text-amber-400"></i>
+                <span class="hidden md:inline">Cài Đặt</span>
+              </button>
 
-            <!-- Nút Đăng Xuất (Hiện Popup Xác Nhận) -->
-            <button onclick="promptLogout()" class="p-1.5 hover:text-rose-400 hover:bg-slate-700/60 rounded-xl text-slate-400 transition flex items-center gap-1 text-xs font-bold" title="Đăng xuất tài khoản">
-              <i data-lucide="log-out" class="w-4 h-4 text-rose-400"></i>
-              <span class="hidden md:inline">Đăng Xuất</span>
-            </button>
-          </div>
-        `;
+              <!-- Nút Đăng Xuất -->
+              <button onclick="promptLogout()" class="px-2.5 py-1.5 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-rose-100 rounded-xl transition flex items-center gap-1 text-xs font-bold border border-rose-800/50 cursor-pointer" title="Đăng xuất tài khoản">
+                <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
+                <span class="hidden md:inline">Đăng Xuất</span>
+              </button>
+            </div>
+          `;
+        }
       } else {
         area.innerHTML = `
           <div class="flex items-center gap-1.5">
-            <button onclick="openAuthModal('login')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs rounded-xl transition hover:scale-105 active:scale-95 flex items-center gap-1">
+            <button onclick="openAuthModal('login')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs rounded-xl transition hover:scale-105 active:scale-95 flex items-center gap-1 cursor-pointer">
               <i data-lucide="log-in" class="w-3.5 h-3.5 text-amber-400"></i> <span>Đăng Nhập</span>
             </button>
-            <button onclick="openAuthModal('register')" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md transition hover:scale-105 active:scale-95 flex items-center gap-1">
+            <button onclick="openAuthModal('register')" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs rounded-xl shadow-md transition hover:scale-105 active:scale-95 flex items-center gap-1 cursor-pointer">
               <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> <span>Đăng Ký</span>
             </button>
-            <button onclick="openSettingsModal('theme')" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition hover:scale-105" title="Đổi màu sắc giao diện">
+            <button onclick="openSettingsModal('theme')" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition hover:scale-105 cursor-pointer" title="Đổi màu sắc giao diện">
               <i data-lucide="palette" class="w-4 h-4 text-cyan-400"></i>
             </button>
           </div>
@@ -2272,27 +2350,96 @@
       a.remove();
     }
 
+    function openAdminAddTeacherModal() {
+      openAuthModal('register');
+    }
+
+    function adminResetTeacherPassword(username) {
+      const newPass = prompt(`🔑 Nhập mật khẩu mới cho giáo viên "${username}":`);
+      if (!newPass) return;
+      const cleanPass = newPass.trim();
+      if (!cleanPass) return;
+      let users = getAllUsers();
+      const idx = users.findIndex(u => u.username === username);
+      if (idx !== -1) {
+        users[idx].password = cleanPass;
+        saveAllUsersToStorage(users);
+        renderAdminTeacherTable();
+        renderSettingsTeacherTable();
+        callSupabaseRest('POST', `teacher_${username.toLowerCase()}`, {
+          user: users[idx],
+          classes: getAllSavedClasses()
+        });
+        showCloudToast(`🔑 Đã đổi mật khẩu cho giáo viên ${username} thành công!`);
+      }
+    }
+
+    async function adminSyncNow() {
+      showCloudToast('🔄 Đang kiểm tra kết nối và đồng bộ đám mây...');
+      try {
+        if (currentUser && currentUser.username) {
+          await callSupabaseRest('POST', `teacher_${currentUser.username.toLowerCase()}`, {
+            user: currentUser,
+            classes: getAllSavedClasses()
+          });
+        }
+        showCloudToast('✅ Kết nối máy chủ đám mây Supabase ổn định! Dữ liệu đã đồng bộ an toàn.');
+      } catch (e) {
+        showCloudToast('☁️ Dữ liệu cục bộ của hệ thống đã sẵn sàng!');
+      }
+    }
+
     function renderAdminTeacherTable() {
       const tbody = document.getElementById('admin-teacher-table-body');
       if (!tbody) return;
       const users = getAllUsers();
       tbody.innerHTML = users.map((u, i) => `
-        <tr class="hover:bg-slate-800/50 transition">
-          <td class="p-3 font-bold text-slate-400">${i + 1}</td>
-          <td class="p-3 font-mono font-bold text-white">${u.username}</td>
+        <tr class="hover:bg-slate-800/50 transition ${u.username === 'thaytuan' ? 'bg-purple-950/20 border-l-4 border-amber-400' : ''}">
+          <td class="p-3 font-bold ${u.username === 'thaytuan' ? 'text-amber-400' : 'text-slate-400'}">
+            ${u.username === 'thaytuan' ? '👑 ' + (i + 1) : (i + 1)}
+          </td>
+          <td class="p-3 font-mono font-bold text-white">
+            <div class="flex items-center gap-2">
+              <span>${u.username}</span>
+              ${u.username === 'thaytuan' ? '<span class="px-2 py-0.5 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/40 text-[10px] font-black tracking-wide uppercase">Admin Gốc</span>' : ''}
+            </div>
+          </td>
           <td class="p-3 font-bold text-slate-200">${u.fullName || '-'}</td>
           <td class="p-3 text-slate-400">${u.subject || 'Giáo viên'}</td>
           <td class="p-3 text-slate-400">${u.contact || '-'}</td>
           <td class="p-3 font-mono text-[11px] text-slate-500">${u.createdAt ? u.createdAt.slice(0, 10) : '2025-01-01'}</td>
           <td class="p-3 text-right">
-            ${u.username === 'thaytuan' ? '<span class="text-xs text-amber-400 font-bold">Admin Gốc</span>' : `
-              <button onclick="deleteTeacherAccount('${u.username}')" class="px-2.5 py-1 bg-rose-950/60 hover:bg-rose-900 border border-rose-800 text-rose-300 font-bold rounded-lg transition text-xs">
-                Xóa
-              </button>
+            ${u.username === 'thaytuan' ? `
+              <div class="flex items-center justify-end gap-1.5">
+                <button type="button" onclick="openSettingsModal('profile')" class="px-2.5 py-1.5 bg-amber-500/10 hover:bg-amber-500/25 border border-amber-400/40 text-amber-300 hover:text-amber-200 font-bold rounded-xl transition text-xs flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Đổi mật khẩu / Thông tin Admin">
+                  <i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Đổi MK</span>
+                </button>
+                <button type="button" onclick="openSettingsModal('cloud')" class="px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 hover:text-emerald-200 font-bold rounded-xl transition text-xs flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Cài đặt cấu hình đám mây">
+                  <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <span>Đám Mây</span>
+                </button>
+                <button type="button" onclick="exportSystemDataJson()" class="px-2.5 py-1.5 bg-purple-500/10 hover:bg-purple-500/25 border border-purple-400/40 text-purple-300 hover:text-purple-200 font-bold rounded-xl transition text-xs flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Xuất JSON sao lưu toàn bộ">
+                  <i data-lucide="download" class="w-3.5 h-3.5 text-purple-400"></i>
+                  <span>Sao Lưu</span>
+                </button>
+              </div>
+            ` : `
+              <div class="flex items-center justify-end gap-1.5">
+                <button type="button" onclick="adminResetTeacherPassword('${u.username}')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-400/40 text-amber-300 font-bold rounded-xl transition text-xs flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Đặt lại mật khẩu cho giáo viên">
+                  <i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i>
+                  <span>Đổi MK</span>
+                </button>
+                <button type="button" onclick="deleteTeacherAccount('${u.username}')" class="px-2.5 py-1.5 bg-rose-950/50 hover:bg-rose-900 border border-rose-800/60 text-rose-300 hover:text-rose-100 font-bold rounded-xl transition text-xs flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Xóa tài khoản giáo viên này">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5 text-rose-400"></i>
+                  <span>Xóa</span>
+                </button>
+              </div>
             `}
           </td>
         </tr>
       `).join('');
+      if (window.lucide) lucide.createIcons();
     }
 
     // ==========================================
@@ -2344,7 +2491,28 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function showUpcomingNotice(featureName) {
+      if (typeof showModal === 'function') {
+        showModal(
+          'warning',
+          '🚧 Đang Cập Nhật',
+          `Chức năng "${featureName || 'này'}" đang được nâng cấp và hoàn thiện, tạm thời chưa sử dụng được. Thầy/Cô vui lòng chọn các phương pháp đua khác (Đua xe đạp, Đua vịt, MotoGP, F1, Đua ngựa, Vòng quay) nhé!`
+        );
+      } else {
+        alert(`Chức năng "${featureName || 'này'}" đang được cập nhật, tạm thời chưa sử dụng được!`);
+      }
+    }
+
     function launchGame(mode) {
+      if (mode === 'gift' || mode === 'balloon' || mode === 'wheel_slot') {
+        const names = {
+          gift: 'Hộp Quà Bí Mật',
+          balloon: 'Thả Bóng Bay Gọi Tên',
+          wheel_slot: 'Máy Kéo Số Jackpot'
+        };
+        showUpcomingNotice(names[mode]);
+        return;
+      }
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) modeSelect.value = mode;
       switchAppTab('tab-arena');
@@ -2368,6 +2536,18 @@
     // ==========================================
     function handleModeChange() {
       const mode = document.getElementById('spin-mode')?.value || 'duck';
+      if (mode === 'gift' || mode === 'balloon' || mode === 'wheel_slot') {
+        const names = {
+          gift: 'Hộp Quà Bí Mật',
+          balloon: 'Thả Bóng Bay Gọi Tên',
+          wheel_slot: 'Máy Kéo Số Jackpot'
+        };
+        showUpcomingNotice(names[mode]);
+        const select = document.getElementById('spin-mode');
+        if (select) select.value = 'bike';
+        handleModeChange();
+        return;
+      }
       const grid = document.getElementById('student-grid');
       const canvasContainer = document.getElementById('wheel-canvas-container');
       const duckContainer = document.getElementById('duck-race-container');
@@ -10033,62 +10213,52 @@
       }
 
       // ==========================================
-      // 10. BIỂN TÊN HỌC SINH (ULTRA-CRISP HIGH-CONTRAST WHITE PILL)
-      // Nền trắng tinh, bóng đổ đậm, chữ đen tuyền đậm nét, dễ đọc trên máy chiếu
+      // 10. BIỂN TÊN HỌC SINH (NẰM PHÍA TRÊN ĐẦU NGƯỜI ĐẠP, KHÔNG CẦN SỐ THỨ TỰ)
+      // Nền trắng/vàng bo tròn, nằm cao hơn đầu người đạp xíu, căn giữa theo đầu người
       // ==========================================
       ctx.save();
       const badgeText = bike.displayName;
-      ctx.font = '900 13px sans-serif';
+      ctx.font = '900 12.5px sans-serif';
       const textMetrics = ctx.measureText(badgeText);
       const textW = textMetrics.width;
-      const padX = 9;
-      const badgeW = Math.max(textW + padX * 2 + 18, 54);
-      const badgeH = 22;
-      const badgeX = -badgeW / 2 + 6;
-      const badgeY = -40 + sprintBob;
+      const padX = 11;
+      const badgeW = Math.max(textW + padX * 2, 46);
+      const badgeH = 21;
+      const badgeX = headX - badgeW / 2;
+      // Nằm phía trên đầu người đạp, cao hơn đầu xíu (nếu có vương miện thì nâng cao hơn vương miện)
+      const badgeY = (bikeRaceState === 'finished' && bike.isWinner) ? (headY - 48) : (headY - 30);
 
       // Bóng đổ của bảng tên
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-      ctx.shadowBlur = 6;
-      ctx.shadowOffsetY = 3;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
+      ctx.shadowBlur = 5;
+      ctx.shadowOffsetY = 2.5;
 
       // Thân bảng tên bo tròn
       ctx.beginPath();
-      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 11);
+      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 10.5);
       if (bike.isWinner && bikeRaceState === 'finished') {
         ctx.fillStyle = '#fef08a';
         ctx.fill();
         ctx.strokeStyle = '#eab308';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2.2;
         ctx.stroke();
       } else {
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.strokeStyle = bike.bikeColor || '#0284c7';
-        ctx.lineWidth = 2.0;
+        ctx.lineWidth = 1.8;
         ctx.stroke();
       }
 
       // Tắt bóng đổ để vẽ chữ sắc nét
       ctx.shadowColor = 'transparent';
 
-      // Hình tròn số áo bên trái
-      ctx.beginPath();
-      ctx.arc(badgeX + 11, badgeY + 11, 7.5, 0, Math.PI * 2);
-      ctx.fillStyle = bike.bikeColor || '#3b82f6';
-      ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 8.5px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(bike.bibNumber || '1', badgeX + 11, badgeY + 11.5);
-
-      // Chữ Họ Tên Học Sinh: Đen tuyền siêu đậm
+      // Chữ Họ Tên Học Sinh: Căn giữa chính xác ngay trên đỉnh đầu
       ctx.fillStyle = (bike.isWinner && bikeRaceState === 'finished') ? '#854d0e' : '#0f172a';
       ctx.font = '900 12px sans-serif';
-      ctx.textAlign = 'left';
+      ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(badgeText, badgeX + 22, badgeY + 11.5);
+      ctx.fillText(badgeText, headX, badgeY + badgeH / 2 + 0.5);
 
       ctx.restore();
 
