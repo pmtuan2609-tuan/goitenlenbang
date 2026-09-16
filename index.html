@@ -465,67 +465,37 @@
     color: #b45309 !important;
   }
 
-  /* Hero Banner giữ màu gradient chuyên nghiệp & sắc nét */
-  #hero-banner {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1e3a8a 100%) !important;
-    border-color: rgba(255,255,255,0.12) !important;
-    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25) !important;
-  }
-  #hero-banner .hero-headline,
-  #hero-banner .hero-desc {
-    color: #ffffff !important;
-  }
-  #hero-banner span.bg-clip-text {
-    color: transparent !important;
-  }
-
-  /* Pill Badges trên Hero Banner: nền mờ kính tối, chữ trắng sáng */
-  .hero-pill-badge {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
-  }
-  .hero-pill-badge span,
-  .hero-pill-badge i {
-    color: inherit !important;
-  }
-
-  /* Quick launch box trên Hero Banner: NỀN TRẮNG -> CHỮ ĐEN 100% */
-  #quick-launch-box {
+  /* Thanh Điều Khiển Nhanh Tinh Gọn (Home Control Bar) */
+  #home-control-bar {
     background: #ffffff !important;
-    background-image: none !important;
     border: 1.5px solid #e2e8f0 !important;
-    box-shadow: 0 12px 30px -5px rgba(15, 23, 42, 0.25) !important;
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05) !important;
   }
-  #quick-launch-box *:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *) {
+  #home-control-bar *:not(button[class*="bg-gradient-to-r"], button[class*="bg-gradient-to-r"] *) {
     color: #0f172a !important;
   }
-  #quick-launch-box label {
-    color: #0f172a !important;
-    font-weight: 800 !important;
-  }
-  #quick-launch-box select {
+  #home-control-bar select {
     background-color: #f8fafc !important;
     border: 1.5px solid #cbd5e1 !important;
     color: #0f172a !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
   }
-  #quick-launch-box select option {
+  #home-control-bar select option {
     background-color: #ffffff !important;
     color: #0f172a !important;
   }
-  #quick-launch-box .duration-quick-btn {
+  #home-control-bar .duration-quick-btn {
     background-color: #f1f5f9 !important;
     border: 1.5px solid #cbd5e1 !important;
     color: #0f172a !important;
     font-weight: 800 !important;
   }
-  #quick-launch-box .duration-quick-btn:hover {
+  #home-control-bar .duration-quick-btn:hover {
     background-color: #e2e8f0 !important;
     border-color: #94a3b8 !important;
     color: #0f172a !important;
   }
-  #quick-launch-box .duration-quick-btn[class*="bg-amber"] {
+  #home-control-bar .duration-quick-btn[class*="bg-amber"] {
     background-color: #fef3c7 !important;
     border-color: #f59e0b !important;
     color: #78350f !important;
@@ -672,59 +642,45 @@
     <!-- ======================================================= -->
     <section id="tab-home" class="tab-section max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 space-y-5">
 
-      <!-- Hero Banner (Sleek & Compact) -->
-      <div id="hero-banner" class="relative rounded-2xl overflow-hidden border p-4 sm:p-5 lg:p-6 shadow-xl flex flex-col lg:flex-row items-center justify-between gap-5">
-        <div class="space-y-3 text-center lg:text-left z-10 flex-1">
-          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] font-black tracking-wide uppercase">
-            <i class="fa-solid fa-cloud text-emerald-400"></i> Lưu Đám Mây Đa Thiết Bị - Đấu Trường Gọi Tên
-          </div>
-          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight font-display hero-headline text-white leading-tight">
-            Chọn Phương Pháp <span class="bg-gradient-to-r from-amber-400 via-rose-400 to-cyan-400 bg-clip-text text-transparent">Đua Gọi Tên</span>
-          </h1>
-          <p class="hero-desc text-slate-300 max-w-xl text-xs sm:text-sm leading-relaxed font-normal">
-            Biến tiết học căng thẳng thành đấu trường hào hứng! Dữ liệu lớp học được đồng bộ <strong class="text-emerald-400">Đám Mây tự động</strong> — đổi máy chiếu hay trình duyệt chỉ cần đăng nhập là dùng được ngay!
-          </p>
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1 text-xs font-semibold">
-            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-bolt text-amber-400"></i> 60 FPS Mượt Mà</span>
-            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-bicycle text-emerald-400"></i> Đua Xe Đạp Chạy Ngang</span>
-            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-motorcycle text-orange-400"></i> Đua Moto GP Chạy Ngang</span>
-            <span class="hero-pill-badge px-2.5 py-1 rounded-lg flex items-center gap-1.5"><i class="fa-solid fa-palette text-pink-400"></i> Đổi Màu Giao Diện</span>
-          </div>
-        </div>
-
-        <!-- Quick Launch Bar (Compact & Nền Trắng Chữ Đen 100%) -->
-        <div id="quick-launch-box" class="rounded-2xl p-4 sm:p-5 w-full lg:w-84 space-y-3 shrink-0 shadow-lg">
-          <div class="flex items-center justify-between text-xs font-black uppercase tracking-wider pb-1 border-b border-slate-100">
-            <span class="flex items-center gap-1.5 font-black text-slate-900"><i class="fa-solid fa-sliders text-amber-500"></i> CÀI ĐẶT NHANH</span>
-            <button onclick="switchAppTab('tab-classes')" class="text-indigo-700 hover:text-indigo-900 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer">
-              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Thêm lớp
-            </button>
-          </div>
-
-          <!-- Select Class -->
-          <div>
-            <label class="block text-xs text-slate-900 font-black mb-1">1. Lớp học đang chọn:</label>
-            <select id="home-class-select" onchange="onClassSelectChange(this.value)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-900 font-bold focus:ring-2 focus:ring-amber-500 outline-none cursor-pointer">
-              <!-- Populated by JS -->
-            </select>
-          </div>
-
-          <!-- Select Duration -->
-          <div>
-            <label class="block text-xs text-slate-900 font-black mb-1">2. Thời gian cuộc đua:</label>
-            <div class="grid grid-cols-4 gap-1.5" id="homeDurationButtons">
-              <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="3">3s</button>
-              <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn py-1.5 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 transition cursor-pointer" data-sec="5">5s</button>
-              <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="10">10s</button>
-              <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn py-1.5 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="15">15s</button>
+      <!-- Sleek Compact Quick Bar (Trực quan, Gọn gàng, Nền trắng Chữ đen 100%) -->
+      <div id="home-control-bar" class="rounded-2xl bg-white border border-slate-200 p-3.5 sm:p-4 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
+        
+        <!-- Left: Class selector & Class actions -->
+        <div class="flex items-center gap-2.5 flex-1 min-w-0">
+          <span class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 flex items-center justify-center text-base shadow-xs shrink-0">
+            🏫
+          </span>
+          <div class="flex-1 min-w-0">
+            <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider block">Lớp học gọi tên:</span>
+            <div class="flex items-center gap-2 mt-0.5">
+              <select id="home-class-select" onchange="onClassSelectChange(this.value)" class="flex-1 max-w-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-1.5 text-xs sm:text-sm text-slate-900 font-extrabold focus:ring-2 focus:ring-amber-500 outline-none cursor-pointer">
+                <!-- Populated by JS -->
+              </select>
+              <button onclick="switchAppTab('tab-classes')" class="text-indigo-600 hover:text-indigo-800 font-bold transition flex items-center gap-1 text-xs bg-indigo-50 border border-indigo-200 px-2.5 py-1.5 rounded-xl cursor-pointer hover:bg-indigo-100 shrink-0">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Thêm lớp
+              </button>
             </div>
           </div>
+        </div>
 
-          <!-- Fast Launch Button -->
-          <button onclick="launchGame('duck')" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black py-2.5 sm:py-3 rounded-xl shadow-md text-xs sm:text-sm flex items-center justify-center gap-2 transition hover:scale-[1.01] active:scale-95 cursor-pointer">
-            <i class="fa-solid fa-rocket text-amber-200 animate-bounce"></i> VÀO ĐUA NGAY
+        <!-- Middle: Duration selector -->
+        <div class="flex items-center gap-2 md:border-l md:border-slate-200 md:pl-4 shrink-0">
+          <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider whitespace-nowrap">Thời gian:</span>
+          <div class="flex items-center gap-1" id="homeDurationButtons">
+            <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn px-2.5 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="3">3s</button>
+            <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn px-2.5 py-1 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 transition cursor-pointer" data-sec="5">5s</button>
+            <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn px-2.5 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="10">10s</button>
+            <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn px-2.5 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="15">15s</button>
+          </div>
+        </div>
+
+        <!-- Right: Fast launch button -->
+        <div class="flex items-center md:border-l md:border-slate-200 md:pl-4 shrink-0">
+          <button onclick="launchGame('duck')" class="w-full md:w-auto bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black px-4 py-2 rounded-xl shadow-xs text-xs flex items-center justify-center gap-2 transition hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap">
+            <i class="fa-solid fa-rocket text-amber-200 animate-bounce"></i> VÀO ĐUA NHANH
           </button>
         </div>
+
       </div>
 
       <!-- Filter Controls & Section Title -->
@@ -3758,13 +3714,29 @@
       const botBankH = Math.min(110, Math.max(50, Math.floor(h * 0.14)));
       const waterH = h - topBankH - botBankH;
       const count = duckList.length;
+
+      const padY = 22;
+      const usableH = Math.max(40, waterH - padY * 2);
+      const minGapY = count > 40 ? 28 : (count > 25 ? 32 : 38);
+      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
+      const colSpacingX = count > 40 ? 70 : 80;
+      const frontX = Math.max(180, 90 + (numCols - 1) * colSpacingX);
+
+      duckStartX = frontX;
+      duckTrackLength = Math.max(w * 3.2, frontX + 2400);
+      duckFinishX = duckTrackLength - 200;
+
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+
       if (count > 0) {
-        const padY = 22;
-        const usableH = Math.max(30, waterH - padY * 2);
-        const spacingY = count > 1 ? usableH / (count - 1) : usableH / 2;
         duckList.forEach((d, idx) => {
-          d.baseY = topBankH + padY + (count > 1 ? idx * spacingY : usableH / 2);
-          d.startX = duckStartX - 28; // Tất cả vịt cùng 1 vị trí xuất phát
+          const col = idx % numCols;
+          const row = Math.floor(idx / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
+          d.baseY = topBankH + padY + Math.min(usableH, row * rowStep + staggerOffset);
+          d.startX = frontX - col * colSpacingX;
           if (duckRaceState === 'idle' || duckRaceState === 'finished') {
             if (duckRaceState === 'idle') d.x = d.startX;
             d.y = d.baseY;
@@ -3794,14 +3766,28 @@
       const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
       const count = visible.length;
 
-      if (resetPositions || duckList.length !== count) {
-        const padY = 22;
-        const usableH = Math.max(30, waterH - padY * 2);
-        const spacingY = count > 1 ? usableH / (count - 1) : usableH / 2;
-        const startDuckX = duckStartX - 28; // TẤT CẢ VỊT CÙNG Ở VỊ TRÍ XUẤT PHÁT NHƯ NHAU!
+      const padY = 22;
+      const usableH = Math.max(40, waterH - padY * 2);
+      const minGapY = count > 40 ? 28 : (count > 25 ? 32 : 38);
+      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
+      const colSpacingX = count > 40 ? 70 : 80;
+      const frontX = Math.max(180, 90 + (numCols - 1) * colSpacingX);
 
+      duckStartX = frontX;
+      duckTrackLength = Math.max(w * 3.2, frontX + 2400);
+      duckFinishX = duckTrackLength - 200;
+
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+
+      if (resetPositions || duckList.length !== count) {
         duckList = visible.map((st, i) => {
-          const baseY = topBankH + padY + (count > 1 ? i * spacingY : usableH / 2);
+          const col = i % numCols;
+          const row = Math.floor(i / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
+          const baseY = topBankH + padY + Math.min(usableH, row * rowStep + staggerOffset);
+          const startX = frontX - col * colSpacingX;
           const palette = DUCK_COLOR_PALETTES[i % DUCK_COLOR_PALETTES.length];
           const capColor = DUCK_CAP_COLORS[(i * 3 + 1) % DUCK_CAP_COLORS.length];
 
@@ -3812,12 +3798,12 @@
             id: st.id,
             student: st,
             displayName: shortName,
-            x: startDuckX,
+            x: startX,
             y: baseY,
             baseY: baseY,
             lane: i,
-            startX: startDuckX,
-            targetX: startDuckX,
+            startX: startX,
+            targetX: startX,
             speedFactor: 0.92 + (Math.sin(i * 31) * 0.08) + (Math.random() * 0.08),
             wobbleOffset: i * 0.85,
             bodyColor: palette.body,
@@ -4025,7 +4011,8 @@
             targetProgress = (ease * maxReach) + surge;
           }
 
-          const targetX = d.startX + raceDistance * targetProgress;
+          const thisRacerDist = duckFinishX - d.startX;
+          const targetX = d.startX + thisRacerDist * targetProgress;
           d.x += (targetX - d.x) * 0.25;
           d.y = d.baseY + Math.sin(now * 0.007 + d.wobbleOffset) * 3.5;
 
@@ -9793,13 +9780,29 @@
       const botBankH = Math.min(110, Math.max(55, Math.floor(h * 0.14)));
       const roadH = h - topBankH - botBankH;
       const count = bikeList.length;
+
+      const padY = 24;
+      const usableH = Math.max(50, roadH - padY * 2);
+      const minGapY = count > 40 ? 30 : (count > 25 ? 34 : 40);
+      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
+      const colSpacingX = count > 40 ? 78 : 86;
+      const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
+
+      bikeStartX = frontX;
+      bikeTrackLength = Math.max(w * 3.4, frontX + 2600);
+      bikeFinishX = bikeTrackLength - 220;
+
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+
       if (count > 0) {
-        const padY = 28;
-        const usableH = Math.max(40, roadH - padY * 2);
-        const spacingY = count > 1 ? usableH / (count - 1) : usableH / 2;
         bikeList.forEach((b, idx) => {
-          b.baseY = topBankH + padY + (count > 1 ? idx * spacingY : usableH / 2);
-          b.startX = bikeStartX - 30;
+          const col = idx % numCols;
+          const row = Math.floor(idx / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
+          b.baseY = topBankH + padY + Math.min(usableH, row * rowStep + staggerOffset);
+          b.startX = frontX - col * colSpacingX;
           if (bikeRaceState === 'idle' || bikeRaceState === 'finished') {
             if (bikeRaceState === 'idle') b.x = b.startX;
             b.y = b.baseY;
@@ -9824,18 +9827,32 @@
 
       const rect = container.getBoundingClientRect();
       const h = rect.height || 450;
-      const topBankH = Math.max(65, Math.floor(h * 0.18));
-      const botBankH = Math.max(55, Math.floor(h * 0.16));
+      const topBankH = Math.max(65, Math.floor(h * 0.16));
+      const botBankH = Math.max(55, Math.floor(h * 0.14));
       const roadH = h - topBankH - botBankH;
 
-      if (resetPositions || bikeList.length !== count) {
-        const padY = 28;
-        const usableH = Math.max(40, roadH - padY * 2);
-        const spacingY = count > 1 ? usableH / (count - 1) : usableH / 2;
-        const startBikeX = bikeStartX - 30;
+      const padY = 24;
+      const usableH = Math.max(50, roadH - padY * 2);
+      const minGapY = count > 40 ? 30 : (count > 25 ? 34 : 40);
+      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
+      const colSpacingX = count > 40 ? 78 : 86;
+      const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
 
+      bikeStartX = frontX;
+      bikeTrackLength = Math.max((rect.width || 800) * 3.4, frontX + 2600);
+      bikeFinishX = bikeTrackLength - 220;
+
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+
+      if (resetPositions || bikeList.length !== count) {
         bikeList = visible.map((st, i) => {
-          const baseY = topBankH + padY + (count > 1 ? i * spacingY : usableH / 2);
+          const col = i % numCols;
+          const row = Math.floor(i / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
+          const baseY = topBankH + padY + Math.min(usableH, row * rowStep + staggerOffset);
+          const startX = frontX - col * colSpacingX;
           const palette = BIKE_COLOR_PALETTES[i % BIKE_COLOR_PALETTES.length];
 
           const nameParts = (st.name || '').trim().split(/\s+/);
@@ -9847,12 +9864,12 @@
             displayName: shortName,
             fullName: st.name,
             bibNumber: i + 1,
-            x: startBikeX,
+            x: startX,
             y: baseY,
             baseY: baseY,
             lane: i,
-            startX: startBikeX,
-            targetX: startBikeX,
+            startX: startX,
+            targetX: startX,
             speedFactor: 0.92 + (Math.sin(i * 37) * 0.08) + (Math.random() * 0.08),
             wobbleOffset: i * 0.85,
             isWinner: false,
@@ -10141,7 +10158,8 @@
             b.speedKmh = Math.round(46 + surge * 80);
           }
 
-          const targetX = b.startX + raceDistance * targetProgress;
+          const thisRacerDist = bikeFinishX - b.startX;
+          const targetX = b.startX + thisRacerDist * targetProgress;
           b.x += (targetX - b.x) * 0.26;
           b.y = b.baseY + Math.sin(now * 0.008 + b.wobbleOffset) * 2.2;
 
@@ -10248,24 +10266,20 @@
       ctx.fillStyle = roadGrad;
       ctx.fillRect(0, roadY, bikeTrackLength, roadH);
 
-      // Vạch sơn phân làn trắng đứt đoạn cho từng tay đua (Lane Dividers)
-      const count = bikeList.length;
-      if (count > 1) {
-        ctx.save();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.lineWidth = 2.0;
-        ctx.setLineDash([18, 16]);
-        for (let i = 0; i < count - 1; i++) {
-          if (bikeList[i] && bikeList[i + 1]) {
-            const laneDivY = (bikeList[i].baseY + bikeList[i + 1].baseY) / 2;
-            ctx.beginPath();
-            ctx.moveTo(Math.max(0, camX - 100), laneDivY);
-            ctx.lineTo(Math.min(bikeTrackLength, camX + w + 100), laneDivY);
-            ctx.stroke();
-          }
-        }
-        ctx.restore();
+      // Vạch sơn phân làn: Chỉ vẽ 4 vạch ngắt quãng tinh tế chia đều mặt đường
+      const numLanes = 4;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+      ctx.lineWidth = 1.8;
+      ctx.setLineDash([20, 18]);
+      for (let l = 1; l < numLanes; l++) {
+        const laneY = roadY + (roadH / numLanes) * l;
+        ctx.beginPath();
+        ctx.moveTo(Math.max(0, camX - 100), laneY);
+        ctx.lineTo(Math.min(bikeTrackLength, camX + w + 100), laneY);
+        ctx.stroke();
       }
+      ctx.restore();
 
       // Gờ giảm tốc thể thao sọc đỏ-trắng nổi bật (Kerbs / Rumble Strip)
       const kerbBlock = 26;
@@ -10395,18 +10409,19 @@
       });
 
       // 5. VẠCH XUẤT PHÁT (START LINE GANTRY)
-      if (bikeStartX >= camX - 100 && bikeStartX <= camX + w + 100) {
+      const gantryX = bikeStartX + 35;
+      if (gantryX >= camX - 100 && gantryX <= camX + w + 100) {
         const sqSize = 14;
         const numSq = Math.floor(roadH / sqSize);
         for (let sq = 0; sq < numSq; sq++) {
           ctx.fillStyle = (sq % 2 === 0) ? '#ffffff' : '#0f172a';
-          ctx.fillRect(bikeStartX - 8, roadY + sq * sqSize, 16, sqSize);
+          ctx.fillRect(gantryX - 8, roadY + sq * sqSize, 16, sqSize);
         }
 
         // Cổng xuất phát
         ctx.fillStyle = '#475569';
-        ctx.fillRect(bikeStartX - 8, topBankH - 48, 16, 48);
-        ctx.fillRect(bikeStartX - 8, roadBottomY, 16, 48);
+        ctx.fillRect(gantryX - 8, topBankH - 48, 16, 48);
+        ctx.fillRect(gantryX - 8, roadBottomY, 16, 48);
 
         ctx.save();
         ctx.fillStyle = '#f59e0b';
@@ -10414,8 +10429,8 @@
         ctx.lineWidth = 3;
         ctx.font = '900 13px sans-serif';
         ctx.textAlign = 'center';
-        ctx.strokeText('🏁 XUẤT PHÁT', bikeStartX, topBankH - 22);
-        ctx.fillText('🏁 XUẤT PHÁT', bikeStartX, topBankH - 22);
+        ctx.strokeText('🏁 XUẤT PHÁT', gantryX, topBankH - 22);
+        ctx.fillText('🏁 XUẤT PHÁT', gantryX, topBankH - 22);
         ctx.restore();
       }
 
@@ -11032,21 +11047,37 @@
       canvas.style.width = '100%';
       canvas.style.height = '100%';
 
-      motogpTrackLength = Math.max(w * 3.4, 2800);
-      motogpStartX = 160;
-      motogpFinishX = motogpTrackLength - 220;
-
       const topBankH = Math.min(130, Math.max(65, Math.floor(h * 0.16)));
       const botBankH = Math.min(110, Math.max(55, Math.floor(h * 0.14)));
       const roadH = h - topBankH - botBankH;
       const count = motogpList.length;
+
+      // ========================================================
+      // STAGGERED STARTING GRID (LƯỚI XUẤT PHÁT SO LE CHUYÊN NGHIỆP)
+      // Giải quyết triệt để vấn đề 40 - 60 học sinh bị đè chữ lên nhau!
+      // ========================================================
+      const padY = 24;
+      const usableH = Math.max(50, roadH - padY * 2);
+      const minGapY = count > 40 ? 30 : (count > 25 ? 34 : 40);
+      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
+      const colSpacingX = count > 40 ? 78 : 86;
+      const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
+
+      motogpStartX = frontX;
+      motogpTrackLength = Math.max(w * 3.4, frontX + 2600);
+      motogpFinishX = motogpTrackLength - 220;
+
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+
       if (count > 0) {
-        const padY = 28;
-        const usableH = Math.max(40, roadH - padY * 2);
-        const spacingY = count > 1 ? usableH / (count - 1) : usableH / 2;
         motogpList.forEach((m, idx) => {
-          m.baseY = topBankH + padY + (count > 1 ? idx * spacingY : usableH / 2);
-          m.startX = motogpStartX - 30;
+          const col = idx % numCols;
+          const row = Math.floor(idx / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
+          m.baseY = topBankH + padY + Math.min(usableH, row * rowStep + staggerOffset);
+          m.startX = frontX - col * colSpacingX;
           if (motogpRaceState === 'idle' || motogpRaceState === 'finished') {
             if (motogpRaceState === 'idle') m.x = m.startX;
             m.y = m.baseY;
@@ -11071,18 +11102,32 @@
 
       const rect = container.getBoundingClientRect();
       const h = rect.height || 450;
-      const topBankH = Math.max(65, Math.floor(h * 0.18));
-      const botBankH = Math.max(55, Math.floor(h * 0.16));
+      const topBankH = Math.max(65, Math.floor(h * 0.16));
+      const botBankH = Math.max(55, Math.floor(h * 0.14));
       const roadH = h - topBankH - botBankH;
 
-      if (resetPositions || motogpList.length !== count) {
-        const padY = 28;
-        const usableH = Math.max(40, roadH - padY * 2);
-        const spacingY = count > 1 ? usableH / (count - 1) : usableH / 2;
-        const startMotoGPX = motogpStartX - 30;
+      const padY = 24;
+      const usableH = Math.max(50, roadH - padY * 2);
+      const minGapY = count > 40 ? 30 : (count > 25 ? 34 : 40);
+      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
+      const colSpacingX = count > 40 ? 78 : 86;
+      const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
 
+      motogpStartX = frontX;
+      motogpTrackLength = Math.max((rect.width || 800) * 3.4, frontX + 2600);
+      motogpFinishX = motogpTrackLength - 220;
+
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+
+      if (resetPositions || motogpList.length !== count) {
         motogpList = visible.map((st, i) => {
-          const baseY = topBankH + padY + (count > 1 ? i * spacingY : usableH / 2);
+          const col = i % numCols;
+          const row = Math.floor(i / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
+          const baseY = topBankH + padY + Math.min(usableH, row * rowStep + staggerOffset);
+          const startX = frontX - col * colSpacingX;
           const palette = MOTOGP_COLOR_PALETTES[i % MOTOGP_COLOR_PALETTES.length];
 
           const nameParts = (st.name || '').trim().split(/\s+/);
@@ -11094,12 +11139,12 @@
             displayName: shortName,
             fullName: st.name,
             bibNumber: i + 1,
-            x: startMotoGPX,
+            x: startX,
             y: baseY,
             baseY: baseY,
             lane: i,
-            startX: startMotoGPX,
-            targetX: startMotoGPX,
+            startX: startX,
+            targetX: startX,
             speedFactor: 0.92 + (Math.sin(i * 41) * 0.08) + (Math.random() * 0.08),
             wobbleOffset: i * 0.95,
             isWinner: false,
@@ -11365,7 +11410,8 @@
             m.speedKmh = Math.round(270 + surge * 300);
           }
 
-          const targetX = m.startX + raceDistance * targetProgress;
+          const thisRacerDist = motogpFinishX - m.startX;
+          const targetX = m.startX + thisRacerDist * targetProgress;
           m.x += (targetX - m.x) * 0.26;
           m.y = m.baseY + Math.sin(now * 0.008 + m.wobbleOffset) * 2.0;
 
@@ -11465,46 +11511,40 @@
 
       // 1. MẶT ĐƯỜNG ĐUA GRAND PRIX (Titanium Grey sáng rõ, độ bám cao)
       const roadGrad = ctx.createLinearGradient(0, roadY, 0, roadBottomY);
-      roadGrad.addColorStop(0, '#3f3f46');
-      roadGrad.addColorStop(0.15, '#27272a');
-      roadGrad.addColorStop(0.85, '#27272a');
-      roadGrad.addColorStop(1, '#3f3f46');
+      roadGrad.addColorStop(0, '#27272a');
+      roadGrad.addColorStop(0.5, '#18181b');
+      roadGrad.addColorStop(1, '#27272a');
 
       ctx.fillStyle = roadGrad;
       ctx.fillRect(0, roadY, motogpTrackLength, roadH);
 
-      // Phân làn đua xe sơn trắng ngắt quãng nổi bật
-      const count = motogpList.length;
-      if (count > 1) {
-        ctx.save();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.40)';
-        ctx.lineWidth = 2.2;
-        ctx.setLineDash([20, 16]);
-        for (let i = 0; i < count - 1; i++) {
-          if (motogpList[i] && motogpList[i + 1]) {
-            const laneDivY = (motogpList[i].baseY + motogpList[i + 1].baseY) / 2;
-            ctx.beginPath();
-            ctx.moveTo(Math.max(0, camX - 100), laneDivY);
-            ctx.lineTo(Math.min(motogpTrackLength, camX + w + 100), laneDivY);
-            ctx.stroke();
-          }
-        }
-        ctx.restore();
+      // Phân làn đua xe: Chỉ vẽ 4 vạch ngắt quãng tinh tế chia đều mặt đường (không vẽ theo số lượng học sinh)
+      const numLanes = 4;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+      ctx.lineWidth = 1.8;
+      ctx.setLineDash([24, 20]);
+      for (let l = 1; l < numLanes; l++) {
+        const laneY = roadY + (roadH / numLanes) * l;
+        ctx.beginPath();
+        ctx.moveTo(Math.max(0, camX - 100), laneY);
+        ctx.lineTo(Math.min(motogpTrackLength, camX + w + 100), laneY);
+        ctx.stroke();
       }
+      ctx.restore();
 
-      // Gờ giảm tốc thể thao FIM sọc Đỏ-Trắng & Xanh-Trắng nổi bật (Kerbs)
+      // Gờ giảm tốc thể thao FIM sọc Đỏ-Trắng đồng bộ chuẩn quốc tế (Kerbs)
       const kerbBlock = 28;
       for (let kx = Math.max(0, camX - 60); kx < Math.min(motogpTrackLength, camX + w + 60); kx += kerbBlock) {
         const isRed = (Math.floor(kx / kerbBlock) % 2 === 0);
-        ctx.fillStyle = isRed ? '#ef4444' : '#ffffff';
-        ctx.fillRect(kx, roadY - 7, kerbBlock, 7);
-        ctx.fillStyle = isRed ? '#0284c7' : '#ffffff';
-        ctx.fillRect(kx, roadBottomY, kerbBlock, 7);
+        ctx.fillStyle = isRed ? '#e11d48' : '#ffffff';
+        ctx.fillRect(kx, roadY - 6, kerbBlock, 6);
+        ctx.fillRect(kx, roadBottomY, kerbBlock, 6);
       }
 
       // Vạch biên liền màu trắng tinh
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2.8;
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
       ctx.moveTo(Math.max(0, camX - 100), roadY);
       ctx.lineTo(Math.min(motogpTrackLength, camX + w + 100), roadY);
@@ -11512,34 +11552,33 @@
       ctx.lineTo(Math.min(motogpTrackLength, camX + w + 100), roadBottomY);
       ctx.stroke();
 
-      // 2. KHU VỰC PIT LANE & TƯỜNG BẢO VỆ FIM (Lề trên)
-      const topBankGrad = ctx.createLinearGradient(0, 0, 0, topBankH - 7);
-      topBankGrad.addColorStop(0, '#1e293b');
-      topBankGrad.addColorStop(0.7, '#334155');
-      topBankGrad.addColorStop(1, '#475569');
+      // 2. KHU VỰC THẢM CỎ & HÀNG RÀO AN TOÀN FIM (Lề trên)
+      const topBankGrad = ctx.createLinearGradient(0, 0, 0, topBankH - 6);
+      topBankGrad.addColorStop(0, '#14532d');
+      topBankGrad.addColorStop(0.6, '#166534');
+      topBankGrad.addColorStop(1, '#15803d');
       ctx.fillStyle = topBankGrad;
-      ctx.fillRect(0, 0, motogpTrackLength, topBankH - 7);
+      ctx.fillRect(0, 0, motogpTrackLength, topBankH - 6);
 
-      // Tường rào bê-tông & Hàng rào lưới thép bảo vệ khán giả
-      ctx.fillStyle = '#64748b';
-      ctx.fillRect(0, topBankH - 16, motogpTrackLength, 9);
+      // Tường bảo vệ & rào chắn
+      ctx.fillStyle = '#475569';
+      ctx.fillRect(0, topBankH - 14, motogpTrackLength, 8);
       ctx.strokeStyle = '#94a3b8';
       ctx.lineWidth = 1.5;
-      for (let fx = Math.max(0, camX - 40); fx < Math.min(motogpTrackLength, camX + w + 40); fx += 16) {
+      for (let fx = Math.max(0, camX - 40); fx < Math.min(motogpTrackLength, camX + w + 40); fx += 18) {
         ctx.beginPath();
-        ctx.moveTo(fx, topBankH - 28);
-        ctx.lineTo(fx, topBankH - 16);
+        ctx.moveTo(fx, topBankH - 24);
+        ctx.lineTo(fx, topBankH - 14);
         ctx.stroke();
       }
 
-      // 3. KHU VỰC THOÁT HIỂM AN TOÀN (Run-off Area & Sỏi bẫy xe - Lề dưới)
-      const botBankGrad = ctx.createLinearGradient(0, roadBottomY + 7, 0, h);
-      botBankGrad.addColorStop(0, '#0284c7');
-      botBankGrad.addColorStop(0.35, '#0369a1');
-      botBankGrad.addColorStop(0.7, '#075985');
-      botBankGrad.addColorStop(1, '#0c4a6e');
+      // 3. KHU VỰC THẢM CỎ SÂN VẬN ĐỘNG HÀI HÒA (Lề dưới)
+      const botBankGrad = ctx.createLinearGradient(0, roadBottomY + 6, 0, h);
+      botBankGrad.addColorStop(0, '#15803d');
+      botBankGrad.addColorStop(0.4, '#166534');
+      botBankGrad.addColorStop(1, '#14532d');
       ctx.fillStyle = botBankGrad;
-      ctx.fillRect(0, roadBottomY + 7, motogpTrackLength, Math.max(botBankH, h - roadBottomY));
+      ctx.fillRect(0, roadBottomY + 6, motogpTrackLength, Math.max(botBankH, h - roadBottomY));
 
       // Biển báo cự ly đo tốc độ MotoGP (1000m, 500m, 200m, 100m, 50m)
       const distanceMarkers = [
@@ -11570,24 +11609,25 @@
         }
       });
 
-      // 4. DÀN ĐÈN XUẤT PHÁT FIM START GANTRY
-      if (motogpStartX >= camX - 100 && motogpStartX <= camX + w + 100) {
+      // 4. DÀN ĐÈN XUẤT PHÁT FIM START GANTRY (Ngay phía trước hàng đầu tiên)
+      const gantryX = motogpStartX + 35;
+      if (gantryX >= camX - 100 && gantryX <= camX + w + 100) {
         const sqSize = 14;
         const numSq = Math.floor(roadH / sqSize);
         for (let sq = 0; sq < numSq; sq++) {
           ctx.fillStyle = (sq % 2 === 0) ? '#ffffff' : '#0f172a';
-          ctx.fillRect(motogpStartX - 8, roadY + sq * sqSize, 16, sqSize);
+          ctx.fillRect(gantryX - 8, roadY + sq * sqSize, 16, sqSize);
         }
 
         // Cột gantry
         ctx.fillStyle = '#1e293b';
-        ctx.fillRect(motogpStartX - 8, topBankH - 52, 16, 52);
-        ctx.fillRect(motogpStartX - 8, roadBottomY, 16, 52);
+        ctx.fillRect(gantryX - 8, topBankH - 52, 16, 52);
+        ctx.fillRect(gantryX - 8, roadBottomY, 16, 52);
 
         // Bảng đèn FIM 5 bóng
         ctx.fillStyle = '#0f172a';
         ctx.beginPath();
-        ctx.roundRect(motogpStartX - 42, topBankH - 46, 84, 22, 6);
+        ctx.roundRect(gantryX - 42, topBankH - 46, 84, 22, 6);
         ctx.fill();
         ctx.strokeStyle = '#475569';
         ctx.lineWidth = 2;
@@ -11595,7 +11635,7 @@
 
         const isGreen = (motogpRaceState === 'racing' || motogpRaceState === 'finished');
         for (let li = 0; li < 5; li++) {
-          const lx = motogpStartX - 30 + li * 15;
+          const lx = gantryX - 30 + li * 15;
           ctx.beginPath();
           ctx.arc(lx, topBankH - 35, 5, 0, Math.PI * 2);
           ctx.fillStyle = isGreen ? '#22c55e' : (motogpRaceState === 'countdown' ? '#ef4444' : '#64748b');
@@ -11676,7 +11716,7 @@
 
       // Kích thước siêu xe to rõ, nổi bật
       const count = motogpList ? motogpList.length : 20;
-      const s = count > 32 ? 0.95 : (count > 20 ? 1.08 : 1.18);
+      const s = count > 40 ? 0.86 : (count > 25 ? 0.96 : 1.14);
       ctx.scale(s, s);
 
       const engineShake = (motogpRaceState === 'racing') 
@@ -11926,35 +11966,36 @@
       // ==========================================
       ctx.save();
       const badgeText = moto.displayName;
-      ctx.font = '900 12.5px sans-serif';
+      const isLargeClass = count > 30;
+      ctx.font = isLargeClass ? '900 11px sans-serif' : '900 12.5px sans-serif';
       const textMetrics = ctx.measureText(badgeText);
       const textW = textMetrics.width;
-      const padX = 11;
-      const badgeW = Math.max(textW + padX * 2, 46);
-      const badgeH = 21;
+      const padX = isLargeClass ? 8 : 10;
+      const badgeW = Math.max(textW + padX * 2, 40);
+      const badgeH = isLargeClass ? 18.5 : 21;
       const badgeX = headX - badgeW / 2;
       // Nằm cao hơn đầu tay đua xíu để hiển thị trọn vẹn người lái và xe (nếu có vương miện thì nâng cao hơn vương miện)
-      const badgeY = (motogpRaceState === 'finished' && moto.isWinner) ? (headY - 48) : (headY - 32);
+      const badgeY = (motogpRaceState === 'finished' && moto.isWinner) ? (headY - 44) : (headY - 27);
 
       // Bóng đổ của bảng tên
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.55)';
-      ctx.shadowBlur = 5;
-      ctx.shadowOffsetY = 2.5;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetY = 2;
 
       // Thân bảng tên bo tròn dạng viên thuốc (pill)
       ctx.beginPath();
-      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 10.5);
+      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 9.5);
       if (moto.isWinner && motogpRaceState === 'finished') {
         ctx.fillStyle = '#fef08a';
         ctx.fill();
         ctx.strokeStyle = '#ea580c';
-        ctx.lineWidth = 2.2;
+        ctx.lineWidth = 2.0;
         ctx.stroke();
       } else {
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.strokeStyle = moto.fairingColor || '#ea580c';
-        ctx.lineWidth = 1.8;
+        ctx.lineWidth = 1.6;
         ctx.stroke();
       }
 
@@ -11963,7 +12004,7 @@
 
       // Chữ Họ Tên Học Sinh: Căn giữa chính xác ngay trên đỉnh đầu
       ctx.fillStyle = (moto.isWinner && motogpRaceState === 'finished') ? '#9a3412' : '#0f172a';
-      ctx.font = '900 12px sans-serif';
+      ctx.font = isLargeClass ? '900 11px sans-serif' : '900 12px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(badgeText, headX, badgeY + badgeH / 2 + 0.5);
