@@ -327,10 +327,6 @@
         <button id="nav-btn-classes" onclick="switchAppTab('tab-classes')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 text-slate-300 hover:text-white">
           <i class="fa-solid fa-users text-cyan-400"></i> <span class="whitespace-nowrap">Quản Lý Lớp</span>
         </button>
-        <!-- Admin only button (for thaytuan) -->
-        <button id="nav-btn-admin" onclick="switchAppTab('tab-admin')" class="tab-nav-btn whitespace-nowrap hidden px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-purple-900/40 text-purple-300 hover:bg-purple-800/60 border border-purple-500/30 flex items-center gap-2">
-          <i class="fa-solid fa-crown text-amber-400 text-xs"></i> <span class="whitespace-nowrap">Admin</span>
-        </button>
       </nav>
 
       <!-- Right Controls: Audio, Fullscreen, User Info & Settings -->
@@ -345,71 +341,9 @@
           <i data-lucide="maximize" class="w-4 h-4 text-indigo-400"></i>
         </button>
 
-        <!-- User & Settings Area (Populated by JS) -->
+        <!-- User & Settings Area (Populated by JS: 1 Nút Duy Nhất) -->
         <div id="header-user-area">
           <!-- Populated dynamically -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= DÒNG CHỨC NĂNG ADMIN XUỐNG HÀNG (DÀNH CHO ADMIN) ================= -->
-    <div id="admin-subbar" class="hidden border-t border-purple-800/40 bg-gradient-to-r from-purple-950/90 via-slate-900/95 to-indigo-950/90 px-4 sm:px-6 lg:px-8 py-2.5 transition-all shadow-inner">
-      <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
-        <!-- Bên trái: Nhãn định danh Admin -->
-        <div class="flex items-center gap-2.5 select-none">
-          <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-amber-500/30 text-sm">
-            👑
-          </div>
-          <div>
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-purple-500/25 text-purple-300 border border-purple-400/40 text-[11px] font-black uppercase tracking-wider">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-              Dòng Quản Trị Hệ Thống
-            </div>
-            <div class="text-xs text-slate-300 font-bold hidden sm:block">
-              Quản trị viên: <span id="admin-subbar-user" class="text-amber-300 font-extrabold">Thầy Tuấn (thaytuan)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bên phải: Các nút chức năng Admin rộng rãi, đẹp mắt, tự động xuống hàng nếu màn hình nhỏ -->
-        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
-          <!-- 1. Vào Tab Quản Trị Hệ Thống -->
-          <button type="button" onclick="switchAppTab('tab-admin')" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs shadow-md shadow-purple-900/40 border border-purple-400/40 transition-all flex items-center gap-1.5 hover:scale-105 active:scale-95 cursor-pointer" title="Mở trang Quản Trị Hệ Thống">
-            <i class="fa-solid fa-shield-halved text-amber-300 text-xs"></i>
-            <span>Khu Vực Admin</span>
-          </button>
-
-          <!-- 2. Cài Đặt Hệ Thống -->
-          <button type="button" onclick="openSettingsModal()" class="px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-amber-300 hover:text-amber-200 border border-slate-700 hover:border-amber-400/50 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Cài đặt thông tin, giao diện và hệ thống">
-            <i data-lucide="settings" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span>Cài Đặt</span>
-          </button>
-
-          <!-- 3. Cài Đặt Đám Mây -->
-          <button type="button" onclick="openSettingsModal('cloud')" class="px-3.5 py-2 rounded-xl bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 hover:text-emerald-200 border border-emerald-700/60 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Cấu hình kết nối Supabase">
-            <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i>
-            <span>Đám Mây</span>
-          </button>
-
-          <!-- 4. Xuất Dữ Liệu JSON -->
-          <button type="button" onclick="exportSystemDataJson()" class="px-3.5 py-2 rounded-xl bg-amber-950/60 hover:bg-amber-900 text-amber-300 hover:text-amber-200 border border-amber-700/60 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Xuất JSON dự phòng toàn bộ">
-            <i data-lucide="download" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span>Xuất JSON</span>
-          </button>
-
-          <!-- 5. Đồng Bộ Ngay -->
-          <button type="button" onclick="adminSyncNow()" class="px-3.5 py-2 rounded-xl bg-purple-900/60 hover:bg-purple-800 text-purple-200 hover:text-white border border-purple-600/50 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Kiểm tra kết nối và đồng bộ đám mây ngay">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-300"></i>
-            <span>Đồng Bộ</span>
-          </button>
-
-          <div class="h-5 w-px bg-slate-700/80 mx-1 hidden sm:block"></div>
-
-          <!-- 6. Đăng Xuất -->
-          <button type="button" onclick="promptLogout()" class="px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900 text-rose-300 hover:text-rose-100 border border-rose-800/60 text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm hover:scale-105 active:scale-95 cursor-pointer" title="Đăng xuất khỏi hệ thống">
-            <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
-            <span>Đăng Xuất</span>
-          </button>
         </div>
       </div>
     </div>
@@ -1121,38 +1055,39 @@
 
   <!-- ================= MODAL: CÀI ĐẶT HỆ THỐNG & TÀI KHOẢN (GV & ADMIN) ================= -->
   <div id="app-settings-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-[550] p-4 opacity-0 transition-opacity duration-300">
-    <div id="app-settings-content" class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 max-w-2xl w-full shadow-2xl transform scale-95 transition-transform duration-300 space-y-4 max-h-[90vh] flex flex-col">
+    <div id="app-settings-content" class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 max-w-3xl lg:max-w-4xl w-full shadow-2xl transform scale-95 transition-transform duration-300 space-y-4 max-h-[90vh] flex flex-col">
       
       <!-- Header -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
-        <div class="flex items-center gap-2.5">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 text-xl">
+        <div class="flex items-center gap-3">
+          <div id="settings-modal-icon" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-purple-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 text-xl shrink-0 shadow-inner">
             <i data-lucide="settings" class="w-5 h-5"></i>
           </div>
           <div>
-            <h3 class="text-base font-black text-white">Cài Đặt Hệ Thống & Tài Khoản</h3>
-            <p class="text-[11px] text-slate-400">Tùy biến thông tin, màu sắc giao diện và quản lý hệ thống</p>
+            <h3 id="settings-modal-title" class="text-base font-black text-white flex items-center gap-2">Cài Đặt Hệ Thống & Tài Khoản</h3>
+            <p id="settings-modal-subtitle" class="text-[11px] text-slate-400">Tùy biến thông tin, màu sắc giao diện và quản lý hệ thống</p>
           </div>
         </div>
-        <button onclick="closeSettingsModal()" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+        <button onclick="closeSettingsModal()" class="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition cursor-pointer">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
       <!-- Tab Navigation Buttons -->
       <div class="flex flex-wrap items-center gap-1.5 bg-slate-950/70 p-1.5 rounded-2xl border border-slate-800 shrink-0">
-        <button id="st-tab-profile-btn" onclick="switchSettingsTab('profile')" class="settings-tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-amber-400 bg-amber-500/20 border border-amber-400/40 shadow-sm">
-          <i data-lucide="user" class="w-3.5 h-3.5"></i> <span>Thông Tin Cá Nhân</span>
-        </button>
-        <button id="st-tab-theme-btn" onclick="switchSettingsTab('theme')" class="settings-tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200">
-          <i data-lucide="palette" class="w-3.5 h-3.5 text-cyan-400"></i> <span>Màu Giao Diện</span>
-        </button>
         <!-- Admin only tabs -->
-        <button id="st-tab-cloud-btn" onclick="switchSettingsTab('cloud')" class="settings-tab-btn hidden flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200">
+        <button id="st-tab-teachers-btn" onclick="switchSettingsTab('teachers')" class="settings-tab-btn hidden flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-purple-400 cursor-pointer">
+          <i data-lucide="users" class="w-3.5 h-3.5 text-purple-400"></i> <span>Quản Lý Giáo Viên</span>
+        </button>
+        <button id="st-tab-cloud-btn" onclick="switchSettingsTab('cloud')" class="settings-tab-btn hidden flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-emerald-400 cursor-pointer">
           <i data-lucide="cloud" class="w-3.5 h-3.5 text-emerald-400"></i> <span>Lưu Trữ Đám Mây</span>
         </button>
-        <button id="st-tab-teachers-btn" onclick="switchSettingsTab('teachers')" class="settings-tab-btn hidden flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-bold transition items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200">
-          <i data-lucide="users" class="w-3.5 h-3.5 text-purple-400"></i> <span>Tài Khoản GV</span>
+        <!-- Common tabs -->
+        <button id="st-tab-profile-btn" onclick="switchSettingsTab('profile')" class="settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-amber-400 bg-amber-500/20 border border-amber-400/40 shadow-sm cursor-pointer">
+          <i data-lucide="user" class="w-3.5 h-3.5"></i> <span>Thông Tin & Mật Khẩu</span>
+        </button>
+        <button id="st-tab-theme-btn" onclick="switchSettingsTab('theme')" class="settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 cursor-pointer">
+          <i data-lucide="palette" class="w-3.5 h-3.5 text-cyan-400"></i> <span>Màu Giao Diện</span>
         </button>
       </div>
 
@@ -1179,8 +1114,8 @@
             </div>
 
             <div class="flex items-center justify-between pt-2">
-              <span id="settings-profile-note" class="text-[11px] text-slate-400">Tài khoản: <strong id="settings-profile-username" class="text-amber-300">thaytuan</strong></span>
-              <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-xl shadow-lg transition">
+              <span id="settings-profile-note" class="text-[11px] text-slate-400">Tài khoản: <strong id="settings-profile-username" class="text-amber-300">-</strong></span>
+              <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black rounded-xl shadow-lg transition cursor-pointer">
                 💾 Lưu Thông Tin Cá Nhân
               </button>
             </div>
@@ -1215,40 +1150,72 @@
             <label class="block font-bold text-slate-300 mb-1">Supabase Anon Public Key:</label>
             <input type="password" id="supabase-key-input" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs text-white font-mono outline-none">
           </div>
-          <div class="pt-2 flex items-center justify-end">
-            <button type="button" onclick="saveCustomCloudConfig()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black rounded-xl shadow-lg transition">
-              Lưu & Kiểm Tra Kết Nối Đám Mây
+          <div class="pt-2 flex items-center justify-between">
+            <button type="button" onclick="adminSyncNow()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/30 font-bold rounded-xl text-xs transition flex items-center gap-1.5 cursor-pointer">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span>Kiểm Tra Đồng Bộ</span>
+            </button>
+            <button type="button" onclick="saveCustomCloudConfig()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black rounded-xl shadow-lg transition cursor-pointer">
+              Lưu & Kiểm Tra Kết Nối
             </button>
           </div>
         </div>
 
         <!-- Panel 4: Quản Lý Tài Khoản Giáo Viên (Chỉ cho Admin) -->
         <div id="settings-panel-teachers" class="settings-panel hidden space-y-3 text-xs">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-slate-300">Danh Sách Giáo Viên Đã Đăng Ký Hệ Thống:</span>
-            <button onclick="exportSystemDataJson()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl font-bold transition flex items-center gap-1.5 text-xs">
-              <i data-lucide="download" class="w-3.5 h-3.5 text-amber-400"></i> Xuất JSON Dự Phòng
-            </button>
+          <div class="flex flex-wrap items-center justify-between gap-2.5 bg-slate-950/60 p-3 rounded-2xl border border-slate-800">
+            <div>
+              <span class="font-black text-sm text-white flex items-center gap-2">
+                <i class="fa-solid fa-users-gear text-purple-400"></i> Danh Sách Giáo Viên Hệ Thống
+              </span>
+              <p class="text-[11px] text-slate-400">Quản lý tài khoản, thêm giáo viên mới, cấp lại mật khẩu hoặc xuất dữ liệu</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <button type="button" onclick="openAdminAddTeacherModal()" class="px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl font-black transition flex items-center gap-1.5 text-xs shadow-md shadow-purple-950/40 hover:scale-105 active:scale-95 cursor-pointer">
+                <i data-lucide="user-plus" class="w-3.5 h-3.5 text-amber-300"></i> <span>+ Thêm Giáo Viên</span>
+              </button>
+              <button type="button" onclick="adminSyncNow()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/30 rounded-xl font-bold transition flex items-center gap-1.5 text-xs hover:scale-105 active:scale-95 cursor-pointer" title="Đồng bộ ngay với Supabase">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-purple-400"></i> <span>Đồng Bộ</span>
+              </button>
+              <button type="button" onclick="exportSystemDataJson()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 rounded-xl font-bold transition flex items-center gap-1.5 text-xs hover:scale-105 active:scale-95 cursor-pointer" title="Xuất toàn bộ cơ sở dữ liệu hệ thống ra file JSON">
+                <i data-lucide="download" class="w-3.5 h-3.5 text-amber-400"></i> <span>Xuất JSON</span>
+              </button>
+            </div>
           </div>
-          <div class="border border-slate-800 rounded-2xl overflow-hidden">
-            <table class="w-full text-left">
-              <thead class="bg-slate-950/80 text-[11px] text-slate-400 uppercase font-black border-b border-slate-800">
-                <tr>
-                  <th class="p-2.5">STT</th>
-                  <th class="p-2.5">Tên Đăng Nhập</th>
-                  <th class="p-2.5">Họ Và Tên</th>
-                  <th class="p-2.5">Môn Học</th>
-                  <th class="p-2.5">Ngày ĐK</th>
-                  <th class="p-2.5 text-right">Thao Tác</th>
-                </tr>
-              </thead>
-              <tbody id="settings-teachers-tbody">
-                <!-- Populated by JS -->
-              </tbody>
-            </table>
+          <div class="border border-slate-800 rounded-2xl overflow-hidden shadow-inner">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left">
+                <thead class="bg-slate-950/90 text-[11px] text-slate-400 uppercase font-black border-b border-slate-800">
+                  <tr>
+                    <th class="p-3">STT</th>
+                    <th class="p-3">Tài Khoản</th>
+                    <th class="p-3">Họ Và Tên</th>
+                    <th class="p-3">Môn Học</th>
+                    <th class="p-3">Ngày ĐK</th>
+                    <th class="p-3 text-right">Thao Tác</th>
+                  </tr>
+                </thead>
+                <tbody id="settings-teachers-tbody" class="divide-y divide-slate-800/60">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between shrink-0">
+        <div id="settings-modal-footer-left">
+          <button type="button" onclick="closeSettingsModal(); promptLogout();" class="px-3.5 py-2 bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 hover:text-rose-100 border border-rose-800/50 rounded-xl transition flex items-center gap-1.5 text-xs font-bold cursor-pointer" title="Đăng xuất tài khoản">
+            <i data-lucide="log-out" class="w-3.5 h-3.5 text-rose-400"></i>
+            <span>Đăng Xuất</span>
+          </button>
+        </div>
+        <button type="button" onclick="closeSettingsModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 rounded-xl text-xs font-bold transition cursor-pointer">
+          Đóng
+        </button>
       </div>
 
     </div>
@@ -1271,17 +1238,24 @@
       <form id="auth-form-login" onsubmit="handleAuthLogin(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1">Tên Đăng Nhập</label>
-          <input type="text" id="auth-login-username" required placeholder="thaytuan hoặc tài khoản của bạn" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-400 outline-none">
+          <input type="text" id="auth-login-username" required placeholder="Nhập tên đăng nhập của Thầy/Cô" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-400 outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1">Mật Khẩu</label>
           <input type="password" id="auth-login-password" required placeholder="Nhập mật khẩu" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-sm text-white font-semibold focus:ring-2 focus:ring-amber-400 outline-none">
         </div>
         <div id="auth-login-err" class="text-xs p-2.5 rounded-xl font-bold border bg-rose-950/60 text-rose-400 border-rose-800 hidden"></div>
-        <button type="submit" id="auth-login-submit-btn" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-          <span>ĐĂNG NHẬP (TỰ ĐỘNG NẠP ĐÁM MÂY)</span>
+        <button type="submit" id="auth-login-submit-btn" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
+          <span>ĐĂNG NHẬP</span>
         </button>
-        <p class="text-[11px] text-slate-400 text-center">Tài khoản Admin mặc định: <code class="text-amber-300 font-bold">thaytuan</code> / pass: <code class="text-amber-300 font-bold">minhmay</code></p>
+        <div class="pt-2 text-center border-t border-slate-800/80">
+          <p class="text-xs text-slate-400">
+            Chưa có tài khoản? 
+            <button type="button" onclick="switchAuthTab('register')" class="text-amber-400 hover:text-amber-300 font-bold hover:underline cursor-pointer ml-1">
+              Đăng ký tài khoản mới
+            </button>
+          </p>
+        </div>
       </form>
 
       <!-- Register Form -->
@@ -1309,9 +1283,17 @@
           <input type="password" id="auth-reg-password" required placeholder="Mật khẩu của bạn" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-sm text-white font-semibold focus:ring-2 focus:ring-emerald-400 outline-none">
         </div>
         <div id="auth-reg-msg" class="text-xs p-2.5 rounded-xl font-bold border hidden"></div>
-        <button type="submit" id="auth-reg-submit-btn" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-          <span>ĐĂNG KÝ (LƯU LÊN ĐÁM MÂY)</span>
+        <button type="submit" id="auth-reg-submit-btn" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black py-3 rounded-xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer">
+          <span>ĐĂNG KÝ GIÁO VIÊN</span>
         </button>
+        <div class="pt-2 text-center border-t border-slate-800/80">
+          <p class="text-xs text-slate-400">
+            Đã có tài khoản? 
+            <button type="button" onclick="switchAuthTab('login')" class="text-emerald-400 hover:text-emerald-300 font-bold hover:underline cursor-pointer ml-1">
+              Đăng nhập ngay
+            </button>
+          </p>
+        </div>
       </form>
     </div>
   </div>
@@ -1878,19 +1860,33 @@
       promptLogout();
     }
 
+    function openAdminHubModal(tab = 'teachers') {
+      openSettingsModal(tab);
+    }
+
     // MODAL CÀI ĐẶT HỆ THỐNG & TÀI KHOẢN (PROFILE, THEME, CLOUD, TEACHERS)
     function openSettingsModal(tab = 'profile') {
       const isAdmin = (currentUser && (currentUser.role === 'admin' || currentUser.username === 'thaytuan'));
       
+      const modalTitle = document.getElementById('settings-modal-title');
+      const modalSubtitle = document.getElementById('settings-modal-subtitle');
+      const modalIcon = document.getElementById('settings-modal-icon');
       const cloudBtn = document.getElementById('st-tab-cloud-btn');
       const teachersBtn = document.getElementById('st-tab-teachers-btn');
-      if (cloudBtn) {
-        if (isAdmin) cloudBtn.classList.remove('hidden');
-        else cloudBtn.classList.add('hidden');
-      }
-      if (teachersBtn) {
-        if (isAdmin) teachersBtn.classList.remove('hidden');
-        else teachersBtn.classList.add('hidden');
+
+      if (isAdmin) {
+        if (modalTitle) modalTitle.innerHTML = '<i class="fa-solid fa-crown text-amber-400"></i> <span>Khu Vực Quản Trị Hệ Thống</span>';
+        if (modalSubtitle) modalSubtitle.innerText = 'Quản lý tài khoản giáo viên, dữ liệu đám mây và tùy chỉnh hệ thống';
+        if (modalIcon) modalIcon.innerHTML = '👑';
+        if (cloudBtn) cloudBtn.classList.remove('hidden');
+        if (teachersBtn) teachersBtn.classList.remove('hidden');
+      } else {
+        if (modalTitle) modalTitle.innerText = 'Cài Đặt Hệ Thống & Tài Khoản';
+        if (modalSubtitle) modalSubtitle.innerText = 'Tùy biến thông tin, màu sắc giao diện và quản lý hệ thống';
+        if (modalIcon) modalIcon.innerHTML = '<i data-lucide="settings" class="w-5 h-5"></i>';
+        if (cloudBtn) cloudBtn.classList.add('hidden');
+        if (teachersBtn) teachersBtn.classList.add('hidden');
+        if (tab === 'teachers' || tab === 'cloud') tab = 'profile';
       }
 
       // Điền sẵn thông tin profile
@@ -1912,6 +1908,7 @@
 
       switchSettingsTab(tab);
       openModalUi('app-settings-modal', 'app-settings-content');
+      if (window.lucide) lucide.createIcons();
     }
 
     function closeSettingsModal() {
@@ -1929,12 +1926,13 @@
         }
         if (btn) {
           if (t === tab) {
-            btn.className = "settings-tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-amber-400 bg-amber-500/20 border border-amber-400/40 shadow-sm";
+            btn.className = "settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-amber-400 bg-amber-500/20 border border-amber-400/40 shadow-sm cursor-pointer";
           } else {
-            btn.className = "settings-tab-btn flex-1 min-w-[120px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200";
+            btn.className = "settings-tab-btn flex-1 min-w-[125px] py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 text-slate-400 hover:text-slate-200 cursor-pointer";
           }
         }
       });
+      if (window.lucide) lucide.createIcons();
     }
 
     function saveUserProfile(e) {
@@ -2016,46 +2014,27 @@
 
     function updateUserHeaderArea() {
       const area = document.getElementById('header-user-area');
-      const adminNav = document.getElementById('nav-btn-admin');
-      const subbar = document.getElementById('admin-subbar');
-      const subbarUser = document.getElementById('admin-subbar-user');
       if (!area) return;
 
       const isAdmin = (currentUser && (currentUser.role === 'admin' || currentUser.username === 'thaytuan'));
-      if (adminNav) {
-        if (isAdmin) adminNav.classList.remove('hidden');
-        else adminNav.classList.add('hidden');
-      }
-
-      if (subbar) {
-        if (isAdmin) {
-          subbar.classList.remove('hidden');
-          if (subbarUser) {
-            subbarUser.innerText = `${currentUser.fullName || currentUser.username} (${currentUser.username})`;
-          }
-        } else {
-          subbar.classList.add('hidden');
-        }
-      }
 
       if (currentUser) {
         if (isAdmin) {
           area.innerHTML = `
-            <div class="flex items-center gap-2 bg-slate-800/90 border border-slate-700/80 px-2.5 sm:px-3 py-1.5 rounded-2xl shadow-sm select-none">
-              <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-md shadow-amber-500/30 text-xs sm:text-sm shrink-0 cursor-pointer" onclick="openSettingsModal('profile')" title="Nhấn để xem thông tin cá nhân">
+            <button onclick="openAdminHubModal()" class="group px-3.5 py-1.5 sm:py-2 rounded-2xl bg-gradient-to-r from-purple-950/90 via-purple-900/80 to-indigo-950/90 hover:from-purple-900 hover:to-indigo-900 border border-purple-500/40 hover:border-amber-400/60 shadow-md shadow-purple-950/50 text-white flex items-center gap-2.5 text-xs font-black transition-all duration-200 transform hover:scale-105 active:scale-95 cursor-pointer select-none" title="Nhấn để mở Khu Vực Quản Trị Hệ Thống">
+              <div class="w-7 h-7 rounded-xl bg-gradient-to-tr from-amber-400 via-orange-500 to-amber-500 flex items-center justify-center text-slate-950 font-black shadow-sm text-sm shrink-0 group-hover:rotate-12 transition-transform">
                 👑
               </div>
-              <div class="text-left leading-tight hidden sm:block cursor-pointer" onclick="openSettingsModal('profile')" title="Nhấn để xem thông tin cá nhân">
-                <div class="text-xs font-black text-white whitespace-nowrap">${currentUser.fullName || currentUser.username}</div>
-                <div class="inline-flex items-center gap-1 text-[9px] font-extrabold text-amber-300">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-                  Quản Trị Admin
+              <div class="text-left leading-tight hidden sm:block">
+                <div class="text-xs font-black text-white whitespace-nowrap group-hover:text-amber-300 transition-colors">${currentUser.fullName || currentUser.username}</div>
+                <div class="text-[9px] text-amber-300/90 font-extrabold uppercase tracking-wide flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> Khu Vực Admin
                 </div>
               </div>
-              <button onclick="promptLogout()" class="p-1 hover:text-rose-400 text-slate-400 rounded-lg hover:bg-slate-700 transition ml-0.5" title="Đăng xuất">
-                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-              </button>
-            </div>
+              <div class="w-6 h-6 rounded-lg bg-white/5 group-hover:bg-amber-400/20 flex items-center justify-center text-amber-400 transition ml-0.5">
+                <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+              </div>
+            </button>
           `;
         } else {
           area.innerHTML = `
@@ -2538,8 +2517,8 @@
         document.getElementById('nav-btn-classes')?.classList.add('tab-nav-active');
         renderClassesListTab();
       } else if (tabId === 'tab-admin') {
-        document.getElementById('nav-btn-admin')?.classList.add('tab-nav-active');
-        renderAdminTeacherTable();
+        openAdminHubModal('teachers');
+        return;
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
