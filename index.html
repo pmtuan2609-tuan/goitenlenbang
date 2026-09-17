@@ -4753,58 +4753,245 @@
     // Dây Pháo Đại Đỏ Rực Rỡ, Bánh Chưng Xanh, Dưa Hấu Đỏ, Kim Nguyên Bảo & Liễn Phúc Lộc
     // ==========================================
 
+    function hexToRgba(hex, alpha) {
+      let c = hex.replace('#', '');
+      if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2];
+      const r = parseInt(c.substring(0, 2), 16) || 255;
+      const g = parseInt(c.substring(2, 4), 16) || 255;
+      const b = parseInt(c.substring(4, 6), 16) || 255;
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    // ==========================================
+    // HỆ THỐNG BẮN PHÁO HOA ĐÊM GIAO THỪA NỀN TẾT (TET FESTIVE FIREWORKS SYSTEM)
+    // ==========================================
+    let tetFireworkRockets = [];
+    let tetFireworkParticles = [];
+    let tetFireworkFlashes = [];
+    let lastTetFireworkLaunch = 0;
+
+    const TET_FIREWORK_PALETTES = [
+      ['#fde047', '#f59e0b', '#ffffff', '#ef4444'], // Kim hoàng & xích kim
+      ['#ef4444', '#f43f5e', '#ffffff', '#fde047'], // Đỏ may mắn
+      ['#38bdf8', '#818cf8', '#ffffff', '#f472b6'], // Lam ngọc & tím phấn
+      ['#34d399', '#10b981', '#fde047', '#ffffff'], // Ngọc bích xuân
+      ['#e879f9', '#c084fc', '#fde047', '#ffffff'], // Tím hoàng gia
+      ['#fb923c', '#f59e0b', '#fde047', '#ffffff']  // Hổ phách rực lửa
+    ];
+
+    function launchTetFirework(w, groundY) {
+      const startX = w * 0.12 + Math.random() * (w * 0.76);
+      const targetY = groundY * 0.12 + Math.random() * (groundY * 0.45);
+      const speed = 7.5 + Math.random() * 3.5;
+      const palette = TET_FIREWORK_PALETTES[Math.floor(Math.random() * TET_FIREWORK_PALETTES.length)];
+      const type = Math.random() < 0.35 ? 'willow' : (Math.random() < 0.65 ? 'ring' : 'peony');
+
+      tetFireworkRockets.push({
+        x: startX,
+        y: groundY - 10,
+        targetY: targetY,
+        vx: (Math.random() - 0.5) * 1.6,
+        vy: -speed,
+        palette: palette,
+        type: type,
+        trail: []
+      });
+    }
+
+    function explodeTetFirework(rx, ry, palette, type) {
+      tetFireworkFlashes.push({
+        x: rx,
+        y: ry,
+        radius: 35 + Math.random() * 45,
+        color: palette[0],
+        alpha: 0.7
+      });
+
+      const particleCount = type === 'willow' ? 65 : (type === 'ring' ? 48 : 75);
+      const baseSpeed = type === 'willow' ? 3.5 : 4.8;
+
+      for (let i = 0; i < particleCount; i++) {
+        let angle, speed;
+        if (type === 'ring') {
+          angle = (i * 2 * Math.PI) / particleCount;
+          speed = baseSpeed * (0.85 + Math.random() * 0.3);
+        } else {
+          angle = Math.random() * Math.PI * 2;
+          speed = (0.3 + Math.random() * 0.9) * baseSpeed;
+        }
+
+        const color = palette[Math.floor(Math.random() * palette.length)];
+        tetFireworkParticles.push({
+          x: rx,
+          y: ry,
+          prevX: rx,
+          prevY: ry,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          color: color,
+          size: type === 'willow' ? (1.8 + Math.random() * 1.5) : (2.2 + Math.random() * 1.8),
+          alpha: 1.0,
+          decay: type === 'willow' ? (0.010 + Math.random() * 0.008) : (0.016 + Math.random() * 0.012),
+          gravity: type === 'willow' ? 0.055 : 0.038,
+          friction: type === 'willow' ? 0.975 : 0.965,
+          twinkle: Math.random() < 0.45,
+          phase: Math.random() * 10
+        });
+      }
+    }
+
+    function initTetFireworksIfEmpty(w, groundY) {
+      if (tetFireworkParticles.length === 0 && tetFireworkRockets.length === 0) {
+        const p1 = TET_FIREWORK_PALETTES[0];
+        const p2 = TET_FIREWORK_PALETTES[1];
+        const p3 = TET_FIREWORK_PALETTES[2];
+        explodeTetFirework(w * 0.28, groundY * 0.26, p1, 'willow');
+        explodeTetFirework(w * 0.52, groundY * 0.20, p2, 'peony');
+        explodeTetFirework(w * 0.74, groundY * 0.30, p3, 'ring');
+      }
+    }
+
+    function updateAndDrawTetFireworks(ctx, w, groundY, now) {
+      initTetFireworksIfEmpty(w, groundY);
+
+      if (now - lastTetFireworkLaunch > 650 + Math.random() * 550) {
+        lastTetFireworkLaunch = now;
+        launchTetFirework(w, groundY);
+      }
+
+      // 1. ROCKETS BAY LÊN
+      for (let i = tetFireworkRockets.length - 1; i >= 0; i--) {
+        const rk = tetFireworkRockets[i];
+        rk.trail.push({ x: rk.x, y: rk.y });
+        if (rk.trail.length > 8) rk.trail.shift();
+
+        rk.x += rk.vx;
+        rk.y += rk.vy;
+        rk.vy += 0.08;
+
+        ctx.save();
+        for (let t = 0; t < rk.trail.length; t++) {
+          const pt = rk.trail[t];
+          ctx.fillStyle = rk.palette[0];
+          ctx.globalAlpha = (t / rk.trail.length) * 0.85;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.fillStyle = '#ffffff';
+        ctx.globalAlpha = 1.0;
+        ctx.beginPath();
+        ctx.arc(rk.x, rk.y, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (rk.y <= rk.targetY || rk.vy >= -0.5) {
+          explodeTetFirework(rk.x, rk.y, rk.palette, rk.type);
+          tetFireworkRockets.splice(i, 1);
+        }
+      }
+
+      // 2. HÀO QUANG NỔ (FLASH GLOW)
+      for (let i = tetFireworkFlashes.length - 1; i >= 0; i--) {
+        const fl = tetFireworkFlashes[i];
+        fl.alpha -= 0.045;
+        if (fl.alpha <= 0) {
+          tetFireworkFlashes.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        const flGrad = ctx.createRadialGradient(fl.x, fl.y, 0, fl.x, fl.y, fl.radius * 2);
+        flGrad.addColorStop(0, hexToRgba(fl.color, fl.alpha * 0.45));
+        flGrad.addColorStop(0.5, hexToRgba(fl.color, fl.alpha * 0.15));
+        flGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = flGrad;
+        ctx.beginPath();
+        ctx.arc(fl.x, fl.y, fl.radius * 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // 3. CÁC HẠT PHÁO HOA NỔ TỎA SÁNG
+      for (let i = tetFireworkParticles.length - 1; i >= 0; i--) {
+        const p = tetFireworkParticles[i];
+        p.prevX = p.x;
+        p.prevY = p.y;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= p.friction;
+        p.vy *= p.friction;
+        p.vy += p.gravity;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0 || p.y > groundY + 10) {
+          tetFireworkParticles.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        let displayAlpha = p.alpha;
+        if (p.twinkle) {
+          displayAlpha *= (0.5 + Math.sin(now * 0.03 + p.phase) * 0.5);
+        }
+
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = p.size;
+        ctx.lineCap = 'round';
+        ctx.globalAlpha = Math.max(0.05, Math.min(1.0, displayAlpha));
+
+        ctx.beginPath();
+        ctx.moveTo(p.prevX, p.prevY);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.globalAlpha = Math.max(0.05, Math.min(1.0, displayAlpha * 0.85));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+    }
+
     function drawTetGrandBackground(ctx, w, h, groundY, now) {
       ctx.save();
-      // 1. Bầu trời xuân hoàng gia rực rỡ
+      // 1. Bầu trời đêm giao thừa hoàng gia lộng lẫy (Đêm đen huyền bí ánh tím đỏ)
       const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
-      skyGrad.addColorStop(0, '#580c1f');   // Đỏ thẫm hoàng gia
-      skyGrad.addColorStop(0.28, '#881337'); // Đỏ gấm cung đình
-      skyGrad.addColorStop(0.60, '#b91c1c'); // Đỏ cờ rực rỡ
-      skyGrad.addColorStop(0.85, '#d97706'); // Hổ phách nắng mai
-      skyGrad.addColorStop(1, '#f59e0b');    // Vàng ánh kim chân trời
+      skyGrad.addColorStop(0, '#090314');   // Đêm đen huyền bí ánh tím
+      skyGrad.addColorStop(0.35, '#1e0520'); // Tím thẫm nhung giao thừa
+      skyGrad.addColorStop(0.70, '#4a0822'); // Đỏ ruby thẫm
+      skyGrad.addColorStop(0.90, '#7a1029'); // Ánh hồng pháo hoa
+      skyGrad.addColorStop(1, '#a81c2f');    // Cam hổ phách ấm áp chân trời
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, w, groundY);
 
-      // 2. Vầng Thái Dương Mùa Xuân (Spring Sun & Gentle Rotating Rays)
-      const sunX = w * 0.5;
-      const sunY = groundY * 0.42;
-      const sunR = Math.min(65, w * 0.08);
-
+      // 2. Sao trời lấp lánh nhẹ nhàng đêm giao thừa
       ctx.save();
-      ctx.translate(sunX, sunY);
-      ctx.rotate(now * 0.00025);
-      for (let ray = 0; ray < 16; ray++) {
-        ctx.rotate(Math.PI / 8);
+      for (let st = 0; st < 30; st++) {
+        const sx = ((st * 137.5) % w);
+        const sy = ((st * 93.7) % (groundY * 0.65));
+        const sa = 0.3 + Math.sin(now * 0.003 + st) * 0.25;
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, sa)})`;
         ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(-sunR * 0.25, -sunR * 3.8);
-        ctx.lineTo(sunR * 0.25, -sunR * 3.8);
-        ctx.closePath();
-        ctx.fillStyle = (ray % 2 === 0) ? 'rgba(254, 240, 138, 0.07)' : 'rgba(251, 191, 36, 0.04)';
+        ctx.arc(sx, sy, (st % 3 === 0) ? 1.4 : 0.9, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.restore();
 
-      // Mặt trời vàng rực
-      const sunGrad = ctx.createRadialGradient(sunX, sunY, sunR * 0.1, sunX, sunY, sunR * 1.8);
-      sunGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-      sunGrad.addColorStop(0.3, 'rgba(254, 240, 138, 0.85)');
-      sunGrad.addColorStop(0.65, 'rgba(245, 158, 11, 0.4)');
-      sunGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
-      ctx.fillStyle = sunGrad;
-      ctx.beginPath();
-      ctx.arc(sunX, sunY, sunR * 1.8, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 3. Dãy núi mùa xuân xa xa tạo chiều sâu không gian
+      // 3. Dãy núi mùa xuân xa xa trong sương khói đêm
       drawScenicTetMountains(ctx, w, groundY);
 
-      // 4. Mây Cát Tường Cổ Truyền
-      drawAuspiciousCloud(ctx, w * 0.22 + Math.sin(now * 0.0006) * 12, groundY * 0.22, 0.9, 0.45);
-      drawAuspiciousCloud(ctx, w * 0.78 + Math.cos(now * 0.0005) * 15, groundY * 0.18, 0.85, 0.45);
-      drawAuspiciousCloud(ctx, w * 0.48 + Math.sin(now * 0.0004) * 8, groundY * 0.12, 0.75, 0.35);
+      // 4. Mây Cát Tường Cổ Truyền mờ ảo trong đêm
+      drawAuspiciousCloud(ctx, w * 0.22 + Math.sin(now * 0.0006) * 12, groundY * 0.22, 0.9, 0.38);
+      drawAuspiciousCloud(ctx, w * 0.78 + Math.cos(now * 0.0005) * 15, groundY * 0.18, 0.85, 0.38);
+      drawAuspiciousCloud(ctx, w * 0.48 + Math.sin(now * 0.0004) * 8, groundY * 0.12, 0.75, 0.28);
 
-      // 5. Sân Đình / Sàn Gạch Men Bát Tràng Đỏ Thắm Viền Kim Tiền
+      // 5. BẮN PHÁO HOA ĐÊM GIAO THỪA RỰC RỠ TRÊN BẦU TRỜI NỀN
+      updateAndDrawTetFireworks(ctx, w, groundY, now);
+
+      // 6. Sân Đình / Sàn Gạch Men Bát Tràng Đỏ Thắm Viền Kim Tiền
       const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
       floorGrad.addColorStop(0, '#991b1b');
       floorGrad.addColorStop(0.15, '#7f1d1d');
