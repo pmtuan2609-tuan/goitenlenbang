@@ -6428,6 +6428,78 @@
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      setTimeout(() => {
+        resizeSkiCanvas();
+      }, 100);
+      setTimeout(() => {
+        resizeSkiCanvas();
+      }, 350);
+    }
+
+    function repositionSkiRacersToDimensions(w, h) {
+      const topSkyH = Math.max(70, Math.floor(h * 0.20));
+      const botPisteH = Math.max(50, Math.floor(h * 0.12));
+      const snowSlopeH = h - topSkyH - botPisteH;
+
+      const padTop = 18;
+      const padBottom = 28;
+      const usableH = Math.max(60, snowSlopeH - padTop - padBottom);
+
+      const visible = (students && students.length > 0) ? students.filter(s => !hiddenWheelIds.includes(s.id)) : [];
+      const count = (skiRacers && skiRacers.length > 0) ? skiRacers.length : (visible.length || 20);
+
+      // Càng nhiều chiều cao dốc tuyết (đặc biệt khi phóng to fullscreen),
+      // càng phân bổ nhiều hàng trên mỗi cột để vận động viên trải đều toàn bộ chiều cao dốc tuyết từ trên xuống sát đáy rào!
+      const minGapY = count > 45 ? 26 : (count > 30 ? 30 : 36);
+      const maxRowsPerCol = Math.max(2, Math.floor(usableH / minGapY));
+      const numCols = Math.max(1, Math.ceil(count / maxRowsPerCol));
+      const totalRowsInCol = Math.ceil(count / numCols);
+      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
+      const colSpacingX = count > 40 ? 70 : 80;
+      const frontX = Math.max(180, 100 + (numCols - 1) * colSpacingX);
+
+      skiStartX = frontX;
+      skiTrackLength = Math.max(w * 5.2, frontX + 4800);
+      skiFinishX = skiTrackLength - 280;
+
+      // Cập nhật vị trí các trạm quà
+      const usableDist = skiFinishX - skiStartX;
+      const stationGap = usableDist / (SKI_TOTAL_GIFT_STATIONS + 1);
+      if (skiGiftStations && skiGiftStations.length > 0) {
+        skiGiftStations.forEach(st => {
+          st.x = Math.round(skiStartX + st.index * stationGap);
+        });
+      }
+
+      // Cập nhật vị trí các chi tiết cảnh trí (người tuyết, nhà gỗ, thông) bám sát đúng mép trên và rào dưới
+      if (skiSceneryElements && skiSceneryElements.length > 0) {
+        skiSceneryElements.forEach(item => {
+          item.y = (item.x % 2 === 0) ? (topSkyH - 8 - (item.x % 3) * 12) : (h - botPisteH + 12 + (item.x % 3) * 8);
+        });
+      }
+
+      if (skiRacers && skiRacers.length > 0) {
+        skiRacers.forEach((r, i) => {
+          const col = i % numCols;
+          const row = Math.floor(i / numCols);
+          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.40) : 0;
+          const newBaseY = topSkyH + padTop + Math.min(usableH, row * rowStep + staggerOffset);
+          const newStartX = frontX - col * colSpacingX;
+
+          const oldBaseY = r.baseY || newBaseY;
+          r.baseY = newBaseY;
+          r.startX = newStartX;
+
+          if (skiRaceState === 'idle' || skiRaceState === 'countdown') {
+            r.x = newStartX;
+            r.y = newBaseY;
+            r.targetX = newStartX;
+          } else {
+            // Khi đang đua hoặc đã về đích: dịch chuyển Y mượt mà theo tỷ lệ chiều cao mới
+            r.y += (newBaseY - oldBaseY);
+          }
+        });
+      }
     }
 
     function resizeSkiCanvas() {
@@ -6446,6 +6518,13 @@
         const ctx = canvas.getContext('2d');
         if (ctx) ctx.scale(dpr, dpr);
       }
+
+      // Tự động phân bổ lại vị trí các vận động viên trải đều toàn bộ chiều cao dốc tuyết
+      repositionSkiRacersToDimensions(displayW, displayH);
+
+      if (skiRaceState === 'idle' && typeof renderSkiRaceCanvas === 'function') {
+        renderSkiRaceCanvas(performance.now());
+      }
     }
 
     function initSkiRace(resetPositions = true) {
@@ -6453,35 +6532,26 @@
       const canvas = document.getElementById('ski-race-canvas');
       if (!container || !canvas) return;
 
-      resizeSkiCanvas();
-
       const rect = container.getBoundingClientRect();
-      const w = rect.width || 800;
-      const h = rect.height || 500;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(300, rect.width);
+      const h = Math.max(350, rect.height);
 
-      const topSkyH = Math.max(70, Math.floor(h * 0.22));
+      if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.scale(dpr, dpr);
+      }
+
+      const topSkyH = Math.max(70, Math.floor(h * 0.20));
       const botPisteH = Math.max(50, Math.floor(h * 0.12));
-      const snowSlopeH = h - topSkyH - botPisteH;
 
       const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
       const count = visible.length;
 
-      const padY = 24;
-      const usableH = Math.max(60, snowSlopeH - padY * 2);
-      const minGapY = count > 40 ? 28 : (count > 25 ? 32 : 38);
-      const maxPerCol = Math.max(1, Math.floor(usableH / minGapY));
-      const numCols = Math.max(1, Math.ceil(count / maxPerCol));
-      const colSpacingX = count > 40 ? 70 : 80;
-      const frontX = Math.max(180, 100 + (numCols - 1) * colSpacingX);
-
-      skiStartX = frontX;
-      skiTrackLength = Math.max(w * 5.2, frontX + 4800);
-      skiFinishX = skiTrackLength - 280;
-
       // 10 Trạm Hộp Quà Giáng Sinh trải đều trên sườn dốc tuyết
       skiGiftStations = [];
-      const usableDist = skiFinishX - skiStartX;
-      const stationGap = usableDist / (SKI_TOTAL_GIFT_STATIONS + 1);
       const giftThemes = [
         { box: '#dc2626', ribbon: '#facc15', name: 'Quà Đỏ Hoàng Gia' },
         { box: '#16a34a', ribbon: '#ffffff', name: 'Quà Thông Xanh' },
@@ -6498,24 +6568,15 @@
       for (let k = 1; k <= SKI_TOTAL_GIFT_STATIONS; k++) {
         skiGiftStations.push({
           index: k,
-          x: Math.round(skiStartX + k * stationGap),
+          x: 0,
           theme: giftThemes[k - 1],
           pulsePhase: k * 0.6
         });
       }
 
-      const totalRowsInCol = Math.ceil(count / numCols);
-      const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
-
       if (resetPositions || skiRacers.length !== count) {
         skiRacers = visible.map((st, i) => {
-          const col = i % numCols;
-          const row = Math.floor(i / numCols);
-          const staggerOffset = (col % 2 === 1 && totalRowsInCol > 1) ? (rowStep * 0.45) : 0;
-          const baseY = topSkyH + padY + Math.min(usableH, row * rowStep + staggerOffset);
-          const startX = frontX - col * colSpacingX;
           const palette = SKI_COLOR_PALETTES[i % SKI_COLOR_PALETTES.length];
-
           const nameParts = (st.name || '').trim().split(/\s+/);
           const shortName = nameParts.length > 2 ? nameParts.slice(-2).join(' ') : (st.name || 'HS');
 
@@ -6523,12 +6584,12 @@
             id: st.id,
             student: st,
             displayName: shortName,
-            x: startX,
-            y: baseY,
-            baseY: baseY,
+            x: 0,
+            y: 0,
+            baseY: 0,
             lane: i,
-            startX: startX,
-            targetX: startX,
+            startX: 0,
+            targetX: 0,
             speedFactor: 0.92 + (Math.sin(i * 37) * 0.08) + (Math.random() * 0.08),
             wobbleOffset: i * 0.9,
             palette: palette,
@@ -6577,7 +6638,8 @@
       }
 
       skiSceneryElements = [];
-      for (let rx = 100; rx < skiTrackLength + 300; rx += 140 + Math.floor(Math.abs(Math.sin(rx)) * 80)) {
+      const trackApprox = Math.max(w * 5.2, 5200);
+      for (let rx = 100; rx < trackApprox + 300; rx += 140 + Math.floor(Math.abs(Math.sin(rx)) * 80)) {
         const typeRoll = (rx % 7);
         let elType = 'pine';
         if (typeRoll === 0) elType = 'chalet';
@@ -6592,6 +6654,9 @@
           colorIdx: rx % 5
         });
       }
+
+      // Phân bổ chính xác toàn bộ vị trí racers, trạm quà, và cảnh trí trải đều toàn bộ dốc tuyết
+      repositionSkiRacersToDimensions(w, h);
 
       const statusEl = document.getElementById('ski-race-status');
       if (statusEl) statusEl.innerText = `Sẵn sàng săn 10 hộp quà tuyết (${count} vận động viên)`;
@@ -6754,10 +6819,10 @@
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
-      const topSkyH = Math.max(70, Math.floor(h * 0.22));
+      const topSkyH = Math.max(70, Math.floor(h * 0.20));
       const botPisteH = Math.max(50, Math.floor(h * 0.12));
-      const pisteMinY = topSkyH + 18;
-      const pisteMaxY = h - botPisteH - 18;
+      const pisteMinY = topSkyH + 16;
+      const pisteMaxY = h - botPisteH - 24;
 
       // Cập nhật bụi tuyết
       for (let i = skiSnowParticles.length - 1; i >= 0; i--) {
@@ -7078,7 +7143,7 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      const topSkyH = Math.max(70, Math.floor(h * 0.22));
+      const topSkyH = Math.max(70, Math.floor(h * 0.20));
       const botPisteH = Math.max(50, Math.floor(h * 0.12));
       const snowSlopeH = h - topSkyH - botPisteH;
       const camX = skiCameraX;
@@ -7337,7 +7402,7 @@
 
       // 3. Hộp quà Giáng sinh lơ lửng bồng bềnh giữa các làn trượt
       const hoverY = Math.sin(now * 0.005 + st.pulsePhase) * 3;
-      const numGifts = 3;
+      const numGifts = trackH > 520 ? 5 : (trackH > 360 ? 4 : 3);
       const giftStep = trackH / (numGifts + 1);
 
       for (let g = 1; g <= numGifts; g++) {
