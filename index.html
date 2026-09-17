@@ -4747,130 +4747,950 @@
       ctx.restore();
     }
 
-    function drawTetMaiDaoBranches(ctx, w, groundY, now) {
+    // ==========================================
+    // MODULE ĐỒ HỌA TẾT NGUYÊN ĐÁN HOÀNG GIA (ROYAL VIETNAMESE TET THEME)
+    // Cây Mai Vàng Cổ Thụ, Cây Đào Bích Sum Sê, Cặp Câu Đối Lụa Gấm Thư Pháp,
+    // Dây Pháo Đại Đỏ Rực Rỡ, Bánh Chưng Xanh, Dưa Hấu Đỏ, Kim Nguyên Bảo & Liễn Phúc Lộc
+    // ==========================================
+
+    function drawTetGrandBackground(ctx, w, h, groundY, now) {
       ctx.save();
-      // 1. CÀNH MAI VÀNG BÊN TRÁI (HOA MAI VÀNG TẾT)
-      ctx.strokeStyle = '#573312';
-      ctx.lineWidth = 4.5;
-      ctx.lineCap = 'round';
+      // 1. Bầu trời xuân hoàng gia rực rỡ
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
+      skyGrad.addColorStop(0, '#580c1f');   // Đỏ thẫm hoàng gia
+      skyGrad.addColorStop(0.28, '#881337'); // Đỏ gấm cung đình
+      skyGrad.addColorStop(0.60, '#b91c1c'); // Đỏ cờ rực rỡ
+      skyGrad.addColorStop(0.85, '#d97706'); // Hổ phách nắng mai
+      skyGrad.addColorStop(1, '#f59e0b');    // Vàng ánh kim chân trời
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, groundY);
+
+      // 2. Vầng Thái Dương Mùa Xuân (Spring Sun & Gentle Rotating Rays)
+      const sunX = w * 0.5;
+      const sunY = groundY * 0.42;
+      const sunR = Math.min(65, w * 0.08);
+
+      ctx.save();
+      ctx.translate(sunX, sunY);
+      ctx.rotate(now * 0.00025);
+      for (let ray = 0; ray < 16; ray++) {
+        ctx.rotate(Math.PI / 8);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-sunR * 0.25, -sunR * 3.8);
+        ctx.lineTo(sunR * 0.25, -sunR * 3.8);
+        ctx.closePath();
+        ctx.fillStyle = (ray % 2 === 0) ? 'rgba(254, 240, 138, 0.07)' : 'rgba(251, 191, 36, 0.04)';
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // Mặt trời vàng rực
+      const sunGrad = ctx.createRadialGradient(sunX, sunY, sunR * 0.1, sunX, sunY, sunR * 1.8);
+      sunGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+      sunGrad.addColorStop(0.3, 'rgba(254, 240, 138, 0.85)');
+      sunGrad.addColorStop(0.65, 'rgba(245, 158, 11, 0.4)');
+      sunGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+      ctx.fillStyle = sunGrad;
       ctx.beginPath();
-      ctx.moveTo(0, groundY - 140);
-      ctx.quadraticCurveTo(w * 0.08, groundY - 180, w * 0.16, groundY - 150);
-      ctx.quadraticCurveTo(w * 0.22, groundY - 120, w * 0.26, groundY - 160);
-      ctx.stroke();
+      ctx.arc(sunX, sunY, sunR * 1.8, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Nhánh phụ mai
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.08, groundY - 175);
-      ctx.lineTo(w * 0.12, groundY - 210);
-      ctx.moveTo(w * 0.16, groundY - 150);
-      ctx.lineTo(w * 0.2, groundY - 195);
-      ctx.stroke();
+      // 3. Dãy núi mùa xuân xa xa tạo chiều sâu không gian
+      drawScenicTetMountains(ctx, w, groundY);
 
-      // Các đóa hoa mai vàng 5 cánh khoe sắc
-      const maiNodes = [
-        { x: w * 0.05, y: groundY - 160, r: 9 },
-        { x: w * 0.09, y: groundY - 195, r: 11 },
-        { x: w * 0.12, y: groundY - 212, r: 8 },
-        { x: w * 0.15, y: groundY - 155, r: 12 },
-        { x: w * 0.19, y: groundY - 192, r: 10 },
-        { x: w * 0.22, y: groundY - 135, r: 9 },
-        { x: w * 0.26, y: groundY - 160, r: 11 }
-      ];
-      maiNodes.forEach((nd, idx) => {
-        drawTetSingleBlossom(ctx, nd.x, nd.y, nd.r, '#fde047', '#eab308', '#dc2626', now + idx * 200);
-      });
+      // 4. Mây Cát Tường Cổ Truyền
+      drawAuspiciousCloud(ctx, w * 0.22 + Math.sin(now * 0.0006) * 12, groundY * 0.22, 0.9, 0.45);
+      drawAuspiciousCloud(ctx, w * 0.78 + Math.cos(now * 0.0005) * 15, groundY * 0.18, 0.85, 0.45);
+      drawAuspiciousCloud(ctx, w * 0.48 + Math.sin(now * 0.0004) * 8, groundY * 0.12, 0.75, 0.35);
 
-      // 2. CÀNH ĐÀO PHAI BÊN PHẢI (HOA ĐÀO HỒNG BẮC BỘ)
-      ctx.strokeStyle = '#573312';
-      ctx.lineWidth = 4.5;
-      ctx.beginPath();
-      ctx.moveTo(w, groundY - 140);
-      ctx.quadraticCurveTo(w - w * 0.08, groundY - 180, w - w * 0.16, groundY - 150);
-      ctx.quadraticCurveTo(w - w * 0.22, groundY - 120, w - w * 0.26, groundY - 160);
-      ctx.stroke();
+      // 5. Sân Đình / Sàn Gạch Men Bát Tràng Đỏ Thắm Viền Kim Tiền
+      const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
+      floorGrad.addColorStop(0, '#991b1b');
+      floorGrad.addColorStop(0.15, '#7f1d1d');
+      floorGrad.addColorStop(0.55, '#450a0a');
+      floorGrad.addColorStop(1, '#1c1917');
+      ctx.fillStyle = floorGrad;
+      ctx.fillRect(0, groundY, w, h - groundY);
 
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(w - w * 0.08, groundY - 175);
-      ctx.lineTo(w - w * 0.12, groundY - 210);
-      ctx.moveTo(w - w * 0.16, groundY - 150);
-      ctx.lineTo(w - w * 0.2, groundY - 195);
-      ctx.stroke();
+      // Đường chỉ gạch men hình học
+      ctx.save();
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.12)';
+      ctx.lineWidth = 1;
+      const tileStep = Math.max(28, w / 28);
+      for (let tx = -tileStep; tx < w + tileStep; tx += tileStep) {
+        ctx.beginPath();
+        ctx.moveTo(tx, groundY);
+        ctx.lineTo(tx + (tx - w * 0.5) * 0.4, h);
+        ctx.stroke();
+      }
+      ctx.restore();
 
-      const daoNodes = [
-        { x: w - w * 0.05, y: groundY - 160, r: 9 },
-        { x: w - w * 0.09, y: groundY - 195, r: 11 },
-        { x: w - w * 0.12, y: groundY - 212, r: 8 },
-        { x: w - w * 0.15, y: groundY - 155, r: 12 },
-        { x: w - w * 0.19, y: groundY - 192, r: 10 },
-        { x: w - w * 0.22, y: groundY - 135, r: 9 },
-        { x: w - w * 0.26, y: groundY - 160, r: 11 }
-      ];
-      daoNodes.forEach((nd, idx) => {
-        drawTetSingleBlossom(ctx, nd.x, nd.y, nd.r, '#f472b6', '#db2777', '#be123c', now + idx * 300);
-      });
+      // Viền hoa văn kim tiền vàng óng ánh ở gờ sân
+      const borderGrad = ctx.createLinearGradient(0, 0, w, 0);
+      borderGrad.addColorStop(0, '#d97706');
+      borderGrad.addColorStop(0.5, '#fef08a');
+      borderGrad.addColorStop(1, '#d97706');
+      ctx.fillStyle = borderGrad;
+      ctx.fillRect(0, groundY - 3, w, 5);
 
       ctx.restore();
     }
 
-    function drawTetSingleBlossom(ctx, cx, cy, radius, col1, col2, centerCol, timeOffset) {
+    function drawScenicTetMountains(ctx, w, groundY) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(120, 18, 48, 0.28)';
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.lineTo(0, groundY - 60);
+      ctx.bezierCurveTo(w * 0.15, groundY - 110, w * 0.35, groundY - 45, w * 0.5, groundY - 80);
+      ctx.bezierCurveTo(w * 0.65, groundY - 115, w * 0.85, groundY - 50, w, groundY - 70);
+      ctx.lineTo(w, groundY);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(159, 18, 57, 0.38)';
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.lineTo(0, groundY - 40);
+      ctx.bezierCurveTo(w * 0.2, groundY - 75, w * 0.38, groundY - 20, w * 0.58, groundY - 55);
+      ctx.bezierCurveTo(w * 0.75, groundY - 85, w * 0.9, groundY - 35, w, groundY - 48);
+      ctx.lineTo(w, groundY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAuspiciousCloud(ctx, cx, cy, scale, alpha) {
       ctx.save();
       ctx.translate(cx, cy);
-      // 5 cánh hoa bung nở
+      ctx.scale(scale, scale);
+      ctx.globalAlpha = alpha;
+
+      ctx.beginPath();
+      ctx.arc(-26, 2, 16, Math.PI * 0.7, Math.PI * 1.85);
+      ctx.arc(-9, -11, 20, Math.PI * 0.9, Math.PI * 1.95);
+      ctx.arc(16, -7, 18, Math.PI * 1.1, Math.PI * 2.1);
+      ctx.arc(32, 4, 13, Math.PI * 1.25, Math.PI * 0.4);
+      ctx.bezierCurveTo(28, 18, -12, 20, -26, 14);
+      ctx.bezierCurveTo(-36, 12, -36, 6, -26, 2);
+      ctx.closePath();
+
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.22)';
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.65)';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(-9, 5, 7, 0, Math.PI * 1.4);
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.7)';
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function drawMajesticTetTrees(ctx, w, groundY, now) {
+      ctx.save();
+
+      // 1. CÂY MAI VÀNG CỔ THỤ BÊN TRÁI
+      ctx.save();
+      ctx.strokeStyle = '#3d210b';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.lineWidth = 14;
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.bezierCurveTo(w * 0.04, groundY - 40, w * 0.02, groundY - 110, w * 0.07, groundY - 150);
+      ctx.bezierCurveTo(w * 0.11, groundY - 180, w * 0.16, groundY - 195, w * 0.22, groundY - 165);
+      ctx.bezierCurveTo(w * 0.26, groundY - 145, w * 0.31, groundY - 140, w * 0.34, groundY - 120);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+
+      ctx.lineWidth = 5.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.07, groundY - 150);
+      ctx.quadraticCurveTo(w * 0.08, groundY - 215, w * 0.13, groundY - 245);
+      ctx.quadraticCurveTo(w * 0.16, groundY - 260, w * 0.20, groundY - 235);
+      ctx.stroke();
+
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.13, groundY - 245);
+      ctx.lineTo(w * 0.17, groundY - 275);
+      ctx.moveTo(w * 0.09, groundY - 190);
+      ctx.lineTo(w * 0.04, groundY - 235);
+      ctx.stroke();
+
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.16, groundY - 195);
+      ctx.quadraticCurveTo(w * 0.21, groundY - 170, w * 0.26, groundY - 190);
+      ctx.lineTo(w * 0.30, groundY - 175);
+      ctx.stroke();
+
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.04, groundY - 80);
+      ctx.quadraticCurveTo(w * 0.09, groundY - 110, w * 0.16, groundY - 95);
+      ctx.lineTo(w * 0.22, groundY - 105);
+      ctx.stroke();
+      ctx.restore();
+
+      const maiFlowers = [
+        { x: w * 0.03, y: groundY - 135, r: 10 },
+        { x: w * 0.04, y: groundY - 235, r: 9 },
+        { x: w * 0.07, y: groundY - 155, r: 13 },
+        { x: w * 0.08, y: groundY - 195, r: 11 },
+        { x: w * 0.10, y: groundY - 115, r: 10 },
+        { x: w * 0.13, y: groundY - 245, r: 12 },
+        { x: w * 0.15, y: groundY - 95, r: 11 },
+        { x: w * 0.16, y: groundY - 175, r: 14 },
+        { x: w * 0.17, y: groundY - 275, r: 9 },
+        { x: w * 0.20, y: groundY - 235, r: 11 },
+        { x: w * 0.22, y: groundY - 105, r: 9 },
+        { x: w * 0.22, y: groundY - 165, r: 13 },
+        { x: w * 0.25, y: groundY - 135, r: 12 },
+        { x: w * 0.26, y: groundY - 190, r: 10 },
+        { x: w * 0.30, y: groundY - 175, r: 11 },
+        { x: w * 0.31, y: groundY - 140, r: 12 },
+        { x: w * 0.34, y: groundY - 120, r: 10 }
+      ];
+      maiFlowers.forEach((fl, idx) => {
+        drawTetSingleBlossom(ctx, fl.x, fl.y, fl.r, '#fde047', '#eab308', '#dc2626', now + idx * 250);
+      });
+
+      const maiBuds = [
+        { x: w * 0.02, y: groundY - 200, r: 5 },
+        { x: w * 0.06, y: groundY - 250, r: 6 },
+        { x: w * 0.11, y: groundY - 265, r: 5 },
+        { x: w * 0.18, y: groundY - 260, r: 6 },
+        { x: w * 0.24, y: groundY - 210, r: 5 },
+        { x: w * 0.28, y: groundY - 160, r: 5 },
+        { x: w * 0.33, y: groundY - 105, r: 5 }
+      ];
+      maiBuds.forEach(bd => drawTetBud(ctx, bd.x, bd.y, bd.r, true));
+
+      const maiSprouts = [
+        { x: w * 0.05, y: groundY - 225, a: -0.6, s: 7 },
+        { x: w * 0.14, y: groundY - 260, a: 0.4, s: 8 },
+        { x: w * 0.19, y: groundY - 245, a: -0.3, s: 7 },
+        { x: w * 0.27, y: groundY - 180, a: 0.5, s: 8 },
+        { x: w * 0.32, y: groundY - 130, a: 0.2, s: 7 }
+      ];
+      maiSprouts.forEach(sp => drawTetSprout(ctx, sp.x, sp.y, sp.a, sp.s));
+
+      const swayMai = Math.sin(now * 0.0025) * 0.12;
+      drawHangingLixiMini(ctx, w * 0.12, groundY - 200, 1.0, swayMai);
+      drawHangingLixiMini(ctx, w * 0.24, groundY - 145, 0.95, -swayMai);
+      drawHangingCoinMini(ctx, w * 0.18, groundY - 160, 6.5, swayMai * 0.8);
+
+      // 2. CÂY ĐÀO HỒNG BÍCH BÊN PHẢI
+      ctx.save();
+      ctx.strokeStyle = '#3d210b';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.lineWidth = 14;
+      ctx.beginPath();
+      ctx.moveTo(w, groundY);
+      ctx.bezierCurveTo(w - w * 0.04, groundY - 40, w - w * 0.02, groundY - 110, w - w * 0.07, groundY - 150);
+      ctx.bezierCurveTo(w - w * 0.11, groundY - 180, w - w * 0.16, groundY - 195, w - w * 0.22, groundY - 165);
+      ctx.bezierCurveTo(w - w * 0.26, groundY - 145, w - w * 0.31, groundY - 140, w - w * 0.34, groundY - 120);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+
+      ctx.lineWidth = 5.5;
+      ctx.beginPath();
+      ctx.moveTo(w - w * 0.07, groundY - 150);
+      ctx.quadraticCurveTo(w - w * 0.08, groundY - 215, w - w * 0.13, groundY - 245);
+      ctx.quadraticCurveTo(w - w * 0.16, groundY - 260, w - w * 0.20, groundY - 235);
+      ctx.stroke();
+
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(w - w * 0.13, groundY - 245);
+      ctx.lineTo(w - w * 0.17, groundY - 275);
+      ctx.moveTo(w - w * 0.09, groundY - 190);
+      ctx.lineTo(w - w * 0.04, groundY - 235);
+      ctx.stroke();
+
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(w - w * 0.16, groundY - 195);
+      ctx.quadraticCurveTo(w - w * 0.21, groundY - 170, w - w * 0.26, groundY - 190);
+      ctx.lineTo(w - w * 0.30, groundY - 175);
+      ctx.stroke();
+
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(w - w * 0.04, groundY - 80);
+      ctx.quadraticCurveTo(w - w * 0.09, groundY - 110, w - w * 0.16, groundY - 95);
+      ctx.lineTo(w - w * 0.22, groundY - 105);
+      ctx.stroke();
+      ctx.restore();
+
+      const daoFlowers = [
+        { x: w - w * 0.03, y: groundY - 135, r: 10 },
+        { x: w - w * 0.04, y: groundY - 235, r: 9 },
+        { x: w - w * 0.07, y: groundY - 155, r: 13 },
+        { x: w - w * 0.08, y: groundY - 195, r: 11 },
+        { x: w - w * 0.10, y: groundY - 115, r: 10 },
+        { x: w - w * 0.13, y: groundY - 245, r: 12 },
+        { x: w - w * 0.15, y: groundY - 95, r: 11 },
+        { x: w - w * 0.16, y: groundY - 175, r: 14 },
+        { x: w - w * 0.17, y: groundY - 275, r: 9 },
+        { x: w - w * 0.20, y: groundY - 235, r: 11 },
+        { x: w - w * 0.22, y: groundY - 105, r: 9 },
+        { x: w - w * 0.22, y: groundY - 165, r: 13 },
+        { x: w - w * 0.25, y: groundY - 135, r: 12 },
+        { x: w - w * 0.26, y: groundY - 190, r: 10 },
+        { x: w - w * 0.30, y: groundY - 175, r: 11 },
+        { x: w - w * 0.31, y: groundY - 140, r: 12 },
+        { x: w - w * 0.34, y: groundY - 120, r: 10 }
+      ];
+      daoFlowers.forEach((fl, idx) => {
+        drawTetSingleBlossom(ctx, fl.x, fl.y, fl.r, '#f472b6', '#db2777', '#be123c', now + idx * 300);
+      });
+
+      const daoBuds = [
+        { x: w - w * 0.02, y: groundY - 200, r: 5 },
+        { x: w - w * 0.06, y: groundY - 250, r: 6 },
+        { x: w - w * 0.11, y: groundY - 265, r: 5 },
+        { x: w - w * 0.18, y: groundY - 260, r: 6 },
+        { x: w - w * 0.24, y: groundY - 210, r: 5 },
+        { x: w - w * 0.28, y: groundY - 160, r: 5 },
+        { x: w - w * 0.33, y: groundY - 105, r: 5 }
+      ];
+      daoBuds.forEach(bd => drawTetBud(ctx, bd.x, bd.y, bd.r, false));
+
+      const daoSprouts = [
+        { x: w - w * 0.05, y: groundY - 225, a: 0.6, s: 7 },
+        { x: w - w * 0.14, y: groundY - 260, a: -0.4, s: 8 },
+        { x: w - w * 0.19, y: groundY - 245, a: 0.3, s: 7 },
+        { x: w - w * 0.27, y: groundY - 180, a: -0.5, s: 8 },
+        { x: w - w * 0.32, y: groundY - 130, a: -0.2, s: 7 }
+      ];
+      daoSprouts.forEach(sp => drawTetSprout(ctx, sp.x, sp.y, sp.a, sp.s));
+
+      const swayDao = Math.sin(now * 0.0028 + 1) * 0.12;
+      drawHangingLixiMini(ctx, w - w * 0.12, groundY - 200, 1.0, swayDao);
+      drawHangingLixiMini(ctx, w - w * 0.24, groundY - 145, 0.95, -swayDao);
+      drawHangingCoinMini(ctx, w - w * 0.18, groundY - 160, 6.5, swayDao * 0.8);
+
+      ctx.restore();
+    }
+
+    function drawTetSingleBlossom(ctx, cx, cy, radius, col1, col2, centerCol, timeOffset = 0) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      const breath = Math.sin(timeOffset * 0.003) * 0.06;
+      ctx.scale(1 + breath, 1 + breath);
+
       for (let i = 0; i < 5; i++) {
-        const a = (i * 2 * Math.PI) / 5;
+        const a = (i * 2 * Math.PI) / 5 - Math.PI / 2;
         ctx.save();
         ctx.rotate(a);
-        const petalGrad = ctx.createRadialGradient(0, -radius * 0.5, 1, 0, -radius * 0.5, radius * 0.6);
-        petalGrad.addColorStop(0, '#ffffff');
-        petalGrad.addColorStop(0.4, col1);
-        petalGrad.addColorStop(1, col2);
-        ctx.fillStyle = petalGrad;
+        const pGrad = ctx.createRadialGradient(0, -radius * 0.5, 1, 0, -radius * 0.5, radius * 0.65);
+        pGrad.addColorStop(0, '#ffffff');
+        pGrad.addColorStop(0.35, col1);
+        pGrad.addColorStop(0.85, col2);
+        pGrad.addColorStop(1, adjustColor(col2, -20));
+        ctx.fillStyle = pGrad;
         ctx.beginPath();
-        ctx.ellipse(0, -radius * 0.55, radius * 0.38, radius * 0.52, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, -radius * 0.55, radius * 0.42, radius * 0.55, 0, 0, Math.PI * 2);
         ctx.fill();
+
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(0, -radius * 0.15);
+        ctx.lineTo(0, -radius * 0.75);
+        ctx.stroke();
         ctx.restore();
       }
-      // Nhuỵ hoa đỏ nhung ở tâm
+
+      ctx.save();
+      ctx.strokeStyle = centerCol;
+      ctx.lineWidth = 0.9;
+      for (let s = 0; s < 10; s++) {
+        const sa = (s * 2 * Math.PI) / 10;
+        const sx = Math.cos(sa) * (radius * 0.32);
+        const sy = Math.sin(sa) * (radius * 0.32);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(sx, sy);
+        ctx.stroke();
+        ctx.fillStyle = '#fde047';
+        ctx.beginPath();
+        ctx.arc(sx, sy, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
       ctx.fillStyle = centerCol;
       ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.28, 0, Math.PI * 2);
+      ctx.arc(0, 0, radius * 0.26, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(0, 0, radius * 0.12, 0, Math.PI * 2);
+      ctx.arc(-radius * 0.05, -radius * 0.05, radius * 0.09, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawTetBud(ctx, x, y, r, isMai) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.fillStyle = '#4ade80';
+      ctx.beginPath();
+      ctx.ellipse(0, 2, r * 0.5, r * 0.4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = isMai ? '#fde047' : '#f472b6';
+      ctx.beginPath();
+      ctx.ellipse(0, -2, r * 0.45, r * 0.65, 0, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
 
-    function drawTetCouplets(ctx, w, groundY) {
+    function drawTetSprout(ctx, x, y, angle, size) {
       ctx.save();
-      // Đôi câu đối đỏ Tết 2 bên sân
-      const bannerW = 26;
-      const bannerH = 110;
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.fillStyle = '#86efac';
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.ellipse(0, -size * 0.5, size * 0.3, size * 0.6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
 
-      // Câu đối trái
-      const lx = Math.max(14, w * 0.02);
-      const ly = groundY - 190;
-      drawBalloonRoundedRect(ctx, lx, ly, bannerW, bannerH, 4, '#b91c1c', '#f59e0b', 1.8);
-      ctx.font = '900 11px system-ui, sans-serif';
+    function drawHangingLixiMini(ctx, x, y, scale, sway) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(sway);
+      ctx.scale(scale, scale);
+
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, 14);
+      ctx.stroke();
+
+      const bw = 16;
+      const bh = 24;
+      ctx.translate(0, 14);
+      drawBalloonRoundedRect(ctx, -bw / 2, 0, bw, bh, 2.5, '#dc2626', '#f59e0b', 1.2);
+
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath();
+      ctx.moveTo(-bw / 2, 0);
+      ctx.quadraticCurveTo(0, 7, bw / 2, 0);
+      ctx.closePath();
+      ctx.fill();
+
       ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.arc(0, bh * 0.52, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, bh);
+      ctx.lineTo(0, bh + 8);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function drawHangingCoinMini(ctx, x, y, radius, sway) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(sway);
+
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, 12);
+      ctx.stroke();
+
+      ctx.translate(0, 12 + radius);
+      ctx.fillStyle = '#f59e0b';
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      const sq = radius * 0.45;
+      ctx.fillStyle = '#881337';
+      ctx.fillRect(-sq / 2, -sq / 2, sq, sq);
+
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, radius);
+      ctx.lineTo(0, radius + 8);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // CẶP CÂU ĐỐI GẤM LỤA ĐỎ THƯ PHÁP CUNG ĐÌNH
+    // ==========================================
+    function drawRoyalTetCouplets(ctx, w, groundY, now) {
+      ctx.save();
+      const bw = Math.max(34, Math.min(46, w * 0.048));
+      const bh = Math.max(165, Math.min(235, groundY * 0.62));
+      const ly = groundY - bh - 24;
+
+      const lx = Math.max(14, w * 0.02);
+      drawSingleRoyalCouplet(ctx, lx, ly, bw, bh, ['CUNG', 'CHÚC', 'TÂN', 'XUÂN'], now, 0);
+
+      const rx = Math.min(w - 14 - bw, w * 0.98 - bw);
+      drawSingleRoyalCouplet(ctx, rx, ly, bw, bh, ['VẠN', 'SỰ', 'NHƯ', 'Ý'], now, Math.PI);
+
+      ctx.restore();
+    }
+
+    function drawSingleRoyalCouplet(ctx, x, y, w, h, words, now, phaseOffset) {
+      ctx.save();
+      const sway = Math.sin(now * 0.002 + phaseOffset) * 0.04;
+
+      // Dây treo đỏ ở đỉnh
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(x + w / 2, y - 18);
+      ctx.lineTo(x + w / 2, y);
+      ctx.stroke();
+
+      // Vòng khuyên đồng vàng
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(x + w / 2, y - 18, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Trục gỗ cuốn trên bịt vàng
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+      ctx.shadowBlur = 8;
+      drawBalloonRoundedRect(ctx, x - 6, y - 5, w + 12, 10, 4, '#3d1c06', '#f59e0b', 1.8);
+      ctx.fillStyle = '#fde047';
+      ctx.fillRect(x - 6, y - 5, 4, 10);
+      ctx.fillRect(x + w + 2, y - 5, 4, 10);
+      ctx.restore();
+
+      // Thân liễn lụa gấm đỏ
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+      ctx.shadowBlur = 10;
+      const silkGrad = ctx.createLinearGradient(x, y, x + w, y + h);
+      silkGrad.addColorStop(0, '#991b1b');
+      silkGrad.addColorStop(0.5, '#b91c1c');
+      silkGrad.addColorStop(1, '#7f1d1d');
+      drawBalloonRoundedRect(ctx, x, y + 4, w, h - 8, 4, silkGrad, '#f59e0b', 2);
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.6)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x + 3, y + 7, w - 6, h - 14);
+
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(x + w / 2, y + 16, 4, 0, Math.PI * 2);
+      ctx.arc(x + w / 2, y + h - 16, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Trục gỗ cuốn dưới bịt vàng
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+      ctx.shadowBlur = 8;
+      drawBalloonRoundedRect(ctx, x - 6, y + h - 5, w + 12, 10, 4, '#3d1c06', '#f59e0b', 1.8);
+      ctx.fillStyle = '#fde047';
+      ctx.fillRect(x - 6, y + h - 5, 4, 10);
+      ctx.fillRect(x + w + 2, y + h - 5, 4, 10);
+      ctx.restore();
+
+      // Dải tua rua lụa đỏ vàng rủ đung đưa dưới đáy
+      ctx.save();
+      ctx.translate(x + w / 2, y + h + 5);
+      ctx.rotate(sway);
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(0, 4, 4, 0, Math.PI * 2);
+      ctx.fill();
+      const tassGrad = ctx.createLinearGradient(0, 6, 0, 26);
+      tassGrad.addColorStop(0, '#f59e0b');
+      tassGrad.addColorStop(0.5, '#fde047');
+      tassGrad.addColorStop(1, '#d97706');
+      ctx.fillStyle = tassGrad;
+      ctx.beginPath();
+      ctx.moveTo(-5, 8);
+      ctx.lineTo(5, 8);
+      ctx.lineTo(3, 26);
+      ctx.lineTo(-3, 26);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      const slotH = (h - 44) / words.length;
+      words.forEach((word, idx) => {
+        const cy = y + 26 + slotH * (idx + 0.5);
+
+        ctx.fillStyle = 'rgba(254, 240, 138, 0.14)';
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(x + w / 2, cy, Math.min(w * 0.42, slotH * 0.44), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.save();
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '900 13px "Times New Roman", "Playfair Display", serif, system-ui';
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 8;
+        ctx.strokeStyle = '#450a0a';
+        ctx.lineWidth = 3;
+        ctx.strokeText(word, x + w / 2, cy);
+        ctx.fillStyle = '#fef08a';
+        ctx.fillText(word, x + w / 2, cy);
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    // ==========================================
+    // CÁC ICON TẾT ĐẶC TRƯNG: LIỄN PHÚC LỘC, DÂY PHÁO ĐỎ, BÁNH CHƯNG, DƯA HẤU & KIM NGUYÊN BẢO
+    // ==========================================
+    function drawTetFestiveDecorations(ctx, w, groundY, now) {
+      ctx.save();
+
+      // 1. DÀN LIỄN TREO CHỮ VÀNG CÁT TƯỜNG TRÊN CAO (THAY THẾ HOÀN TOÀN LỒNG ĐÈN TRÒN)
+      const plaqueWords = ['PHÚC', 'LỘC', 'THỌ', 'XUÂN'];
+      const pCount = plaqueWords.length;
+      const startX = w * 0.32;
+      const endX = w * 0.68;
+      const stepX = (endX - startX) / (pCount - 1);
+
+      for (let i = 0; i < pCount; i++) {
+        const px = startX + i * stepX;
+        const sag = Math.sin(((i + 1) / (pCount + 1)) * Math.PI) * 14;
+        const py = 26 + sag;
+        const sway = Math.sin(now * 0.0024 + i * 0.9) * 0.1;
+        drawTetHangingPlaque(ctx, px, py, plaqueWords[i], sway);
+      }
+
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(startX - 20, 22);
+      ctx.quadraticCurveTo(w * 0.5, 42, endX + 20, 22);
+      ctx.stroke();
+
+      // 2. DÂY PHÁO ĐẠI NGÀY TẾT (GÓC TRÁI VÀ GÓC PHẢI)
+      drawTetFirecrackerString(ctx, Math.max(w * 0.08, 48), groundY - 265, 8, now);
+      drawTetFirecrackerString(ctx, Math.min(w * 0.92, w - 48), groundY - 265, 8, now + 1000);
+
+      // 3. GÓC TRANG TRÍ TẾT: BÁNH CHƯNG XANH, DƯA HẤU ĐỎ & THỎI KIM NGUYÊN BẢO
+      const cornerX = Math.max(45, w * 0.09);
+      drawTetBanhChungAndWatermelon(ctx, cornerX, groundY - 8, 1.0);
+
+      // 4. HOÀNH PHI CUNG ĐÌNH "CUNG CHÚC TÂN XUÂN" TRÊN ĐỈNH
+      drawTetHeaderPlaque(ctx, w, now);
+
+      ctx.restore();
+    }
+
+    function drawTetHangingPlaque(ctx, x, y, word, sway) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(sway);
+
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(0, -18);
+      ctx.lineTo(0, 0);
+      ctx.stroke();
+
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(0, -2, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      const size = 18;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+      ctx.shadowBlur = 6;
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath();
+      ctx.moveTo(0, -size);
+      ctx.lineTo(size, 0);
+      ctx.lineTo(0, size);
+      ctx.lineTo(-size, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.7)';
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.moveTo(0, -size + 4);
+      ctx.lineTo(size - 4, 0);
+      ctx.lineTo(0, size - 4);
+      ctx.lineTo(-size + 4, 0);
+      ctx.closePath();
+      ctx.stroke();
+
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      const leftText = ['CUNG', 'CHÚC', 'TÂN', 'XUÂN'];
-      leftText.forEach((word, idx) => {
-        ctx.fillText(word, lx + bannerW / 2, ly + 18 + idx * 24);
+      ctx.font = '900 11px "Times New Roman", serif, system-ui';
+      ctx.fillStyle = '#fef08a';
+      ctx.fillText(word, 0, 1);
+
+      const tassY = size;
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, tassY);
+      ctx.lineTo(0, tassY + 5);
+      ctx.stroke();
+
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.moveTo(-3, tassY + 5);
+      ctx.lineTo(3, tassY + 5);
+      ctx.lineTo(2, tassY + 20);
+      ctx.lineTo(-2, tassY + 20);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawTetFirecrackerString(ctx, x, y, count, now) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, count * 16 + 18);
+      ctx.stroke();
+
+      for (let i = 0; i < count; i++) {
+        const py = 12 + i * 15;
+        const side = (i % 2 === 0) ? -1 : 1;
+        const angle = side * 0.35 + Math.sin(now * 0.003 + i) * 0.08;
+
+        ctx.save();
+        ctx.translate(side * 2, py);
+        ctx.rotate(angle);
+
+        drawBalloonRoundedRect(ctx, -3.5, 0, 7, 16, 1.5, '#dc2626', '#f59e0b', 1);
+
+        ctx.fillStyle = '#fde047';
+        ctx.fillRect(-3.5, 0, 7, 2.5);
+        ctx.fillRect(-3.5, 13.5, 7, 2.5);
+
+        ctx.restore();
+      }
+
+      const bottomY = count * 15 + 18;
+      ctx.save();
+      ctx.translate(0, bottomY);
+      drawBalloonRoundedRect(ctx, -5, 0, 10, 22, 2.5, '#b91c1c', '#f59e0b', 1.4);
+      ctx.fillStyle = '#fde047';
+      ctx.fillRect(-5, 0, 10, 3.5);
+      ctx.fillRect(-5, 18.5, 10, 3.5);
+
+      const spark = Math.sin(now * 0.02) > 0.3;
+      if (spark) {
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.arc(0, 25, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#ea580c';
+        ctx.lineWidth = 1;
+        for (let s = 0; s < 4; s++) {
+          const sa = (s * Math.PI) / 2 + (now * 0.05);
+          ctx.beginPath();
+          ctx.moveTo(0, 25);
+          ctx.lineTo(Math.cos(sa) * 8, 25 + Math.sin(sa) * 8);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawTetBanhChungAndWatermelon(ctx, x, y, scale) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(24, 28, 28, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.translate(14, 2);
+      ctx.rotate(-0.1);
+      drawBalloonRoundedRect(ctx, 0, 0, 34, 24, 4, '#14532d', '#15803d', 1.5);
+      ctx.strokeStyle = '#fde047';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(17, 0); ctx.lineTo(17, 24);
+      ctx.moveTo(0, 12); ctx.lineTo(34, 12);
+      ctx.stroke();
+      ctx.restore();
+
+      drawBalloonRoundedRect(ctx, 0, 6, 36, 26, 4, '#16a34a', '#86efac', 1.8);
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(18, 6); ctx.lineTo(18, 32);
+      ctx.moveTo(0, 19); ctx.lineTo(36, 19);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.75)';
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.moveTo(4, 10); ctx.lineTo(32, 28);
+      ctx.moveTo(4, 28); ctx.lineTo(32, 10);
+      ctx.stroke();
+
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.arc(18, 19, 2.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(46, 12);
+
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath();
+      ctx.arc(0, 8, 16, Math.PI, 0, true);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#166534';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#f0fdf4';
+      ctx.beginPath();
+      ctx.arc(0, 8, 14.5, Math.PI, 0, true);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, 8, 13, Math.PI, 0, true);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#1e293b';
+      const seeds = [
+        { x: -7, y: 1 }, { x: -3, y: -2 }, { x: 3, y: -2 }, { x: 7, y: 1 }
+      ];
+      seeds.forEach(sd => {
+        ctx.beginPath();
+        ctx.ellipse(sd.x, sd.y, 1.1, 1.8, 0.2, 0, Math.PI * 2);
+        ctx.fill();
       });
 
-      // Câu đối phải
-      const rx = Math.min(w - 40, w * 0.98 - bannerW);
-      drawBalloonRoundedRect(ctx, rx, ly, bannerW, bannerH, 4, '#b91c1c', '#f59e0b', 1.8);
-      const rightText = ['VẠN', 'SỰ', 'NHƯ', 'Ý'];
-      rightText.forEach((word, idx) => {
-        ctx.fillText(word, rx + bannerW / 2, ly + 18 + idx * 24);
-      });
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(0, -6, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = '900 6px system-ui, sans-serif';
+      ctx.fillStyle = '#7f1d1d';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('TÀI', 0, -6);
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(28, 26);
+      const ybGrad = ctx.createLinearGradient(-12, -8, 12, 6);
+      ybGrad.addColorStop(0, '#fef08a');
+      ybGrad.addColorStop(0.5, '#f59e0b');
+      ybGrad.addColorStop(1, '#d97706');
+
+      ctx.fillStyle = ybGrad;
+      ctx.beginPath();
+      ctx.moveTo(-13, 0);
+      ctx.quadraticCurveTo(-14, 6, 0, 7);
+      ctx.quadraticCurveTo(14, 6, 13, 0);
+      ctx.quadraticCurveTo(8, -4, 0, -4);
+      ctx.quadraticCurveTo(-8, -4, -13, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#b45309';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(0, -3, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fef08a';
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawTetHeaderPlaque(ctx, w, now) {
+      ctx.save();
+      const pw = Math.min(330, w * 0.55);
+      const ph = 26;
+      const px = (w - pw) / 2;
+      const py = 6;
+
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      ctx.shadowBlur = 8;
+      drawBalloonRoundedRect(ctx, px, py, pw, ph, 8, '#7f1d1d', '#f59e0b', 2);
+
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.6)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(px + 3, py + 3, pw - 6, ph - 6);
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '900 12px "Times New Roman", serif, system-ui';
+      ctx.fillStyle = '#fef08a';
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 10;
+      ctx.fillText('🌸 CUNG CHÚC TÂN XUÂN - VẠN SỰ NHƯ Ý 🌸', w / 2, py + ph / 2);
 
       ctx.restore();
     }
@@ -4879,35 +5699,21 @@
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(rot);
-      ctx.fillStyle = isMai ? 'rgba(253, 224, 71, 0.85)' : 'rgba(244, 114, 182, 0.85)';
+      ctx.fillStyle = isMai ? 'rgba(253, 224, 71, 0.88)' : 'rgba(244, 114, 182, 0.88)';
       ctx.beginPath();
       ctx.ellipse(0, 0, r, r * 0.58, 0, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
 
+    function drawTetMaiDaoBranches(ctx, w, groundY, now) {
+      drawMajesticTetTrees(ctx, w, groundY, now);
+    }
+    function drawTetCouplets(ctx, w, groundY, now) {
+      drawRoyalTetCouplets(ctx, w, groundY, now || performance.now());
+    }
     function drawTetLanternsWire(ctx, w, now) {
-      ctx.save();
-      const count = Math.max(6, Math.floor(w / 80));
-      ctx.beginPath();
-      ctx.moveTo(0, 16);
-      for (let i = 0; i <= count; i++) {
-        const lx = (w / (count + 1)) * (i + 1);
-        const sag = Math.sin(((i + 1) / (count + 1)) * Math.PI) * 22;
-        ctx.lineTo(lx, 16 + sag);
-      }
-      ctx.strokeStyle = '#d97706';
-      ctx.lineWidth = 1.4;
-      ctx.stroke();
-
-      for (let i = 0; i < count; i++) {
-        const lx = (w / (count + 1)) * (i + 1);
-        const sag = Math.sin(((i + 1) / (count + 1)) * Math.PI) * 22;
-        const ly = 16 + sag;
-        const sway = Math.sin(now * 0.0025 + i * 0.8) * 0.12;
-        drawMidAutumnRoundLantern(ctx, lx, ly, 18, 22, 'round_red', sway, now);
-      }
-      ctx.restore();
+      drawTetFestiveDecorations(ctx, w, 400, now);
     }
 
     function renderGiftCanvas(now) {
@@ -4974,23 +5780,11 @@
         ctx.fill();
 
       } else if (theme === 'tet') {
-        // MÙA TẾT NGUYÊN ĐÁN: Ánh dương mùa xuân rực rỡ
-        const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
-        skyGrad.addColorStop(0, '#450a0a'); // Deep royal ruby
-        skyGrad.addColorStop(0.35, '#7f1d1d'); // Festive crimson
-        skyGrad.addColorStop(0.75, '#b45309'); // Warm apricot amber
-        skyGrad.addColorStop(1, '#ea580c');   // Sunrise orange
-        ctx.fillStyle = skyGrad;
-        ctx.fillRect(0, 0, w, groundY);
-
-        // Cành Mai Vàng & Đào Phai 2 bên
-        drawTetMaiDaoBranches(ctx, w, groundY, now);
-
-        // Đôi câu đối đỏ Tết
-        drawTetCouplets(ctx, w, groundY);
-
-        // Dàn lồng đèn đỏ Tết treo cao
-        drawTetLanternsWire(ctx, w, now);
+        // MÙA TẾT NGUYÊN ĐÁN: Ánh dương mùa xuân hoàng gia rực rỡ
+        drawTetGrandBackground(ctx, w, h, groundY, now);
+        drawMajesticTetTrees(ctx, w, groundY, now);
+        drawRoyalTetCouplets(ctx, w, groundY, now);
+        drawTetFestiveDecorations(ctx, w, groundY, now);
 
         // Cánh hoa mai đào bay phấp phới trong gió xuân
         if (giftTetPetals && giftTetPetals.length > 0) {
@@ -5000,25 +5794,11 @@
             pt.rot += pt.vRot;
             if (pt.y > groundY + 15 || pt.x > w + 15) {
               pt.y = -8;
-              pt.x = Math.random() * (w * 0.8);
+              pt.x = Math.random() * (w * 0.85);
             }
             drawBlossomPetal(ctx, pt.x, pt.y, pt.r, pt.rot, pt.isMai);
           });
         }
-
-        // Sân đình gạch đỏ trải thảm nhung Tết
-        const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
-        floorGrad.addColorStop(0, '#831843');
-        floorGrad.addColorStop(0.12, '#9f1239');
-        floorGrad.addColorStop(0.6, '#4c0519');
-        floorGrad.addColorStop(1, '#1c1917');
-        ctx.fillStyle = floorGrad;
-        ctx.fillRect(0, groundY, w, h - groundY);
-
-        // Viền thảm hoa văn vàng kim
-        ctx.fillStyle = '#f59e0b';
-        ctx.fillRect(0, groundY - 2, w, 4);
-
       } else {
         // MÙA TRUNG THU: Đêm rằm trăng sáng huyền ảo
         const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
@@ -9366,23 +10146,11 @@
       const groundY = h - 75;
       const trayCenterX = Math.max(w * 0.65, w - 260);
 
-      // 1. BẦU TRỜI XUÂN NGẬP TRÀN ÁNH NẮNG MAI
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
-      skyGrad.addColorStop(0, '#3b0764'); // Deep royal purple twilight
-      skyGrad.addColorStop(0.35, '#7f1d1d'); // Crimson spring sunrise
-      skyGrad.addColorStop(0.75, '#b45309'); // Warm golden amber
-      skyGrad.addColorStop(1, '#ea580c');   // Orange blossom light
-      ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, w, groundY);
-
-      // 1.1. CÀNH MAI VÀNG & CÀNH ĐÀO HỒNG 2 BÊN
-      drawTetMaiDaoBranches(ctx, w, groundY, now);
-
-      // 1.2. ĐÔI CÂU ĐỐI ĐỎ THƯ PHÁP
-      drawTetCouplets(ctx, w, groundY);
-
-      // 1.3. DÀN LỒNG ĐÈN ĐỎ TẾT ĐUNG ĐƯA
-      drawTetLanternsWire(ctx, w, now);
+      // 1. BẦU TRỜI XUÂN HOÀNG GIA & KHÔNG GIAN TẾT TRÁNG LỆ
+      drawTetGrandBackground(ctx, w, h, groundY, now);
+      drawMajesticTetTrees(ctx, w, groundY, now);
+      drawRoyalTetCouplets(ctx, w, groundY, now);
+      drawTetFestiveDecorations(ctx, w, groundY, now);
 
       // 1.4. CÁNH HOA MAI ĐÀO RƠI TRONG GIÓ XUÂN
       if (lixiPetals && lixiPetals.length > 0) {
@@ -9397,19 +10165,6 @@
           drawBlossomPetal(ctx, pt.x, pt.y, pt.r, pt.rot, pt.isMai);
         });
       }
-
-      // 2. SÂN ĐÌNH VỚI THẢM GẤM ĐỎ HOÀNG GIA
-      const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
-      floorGrad.addColorStop(0, '#831843');
-      floorGrad.addColorStop(0.12, '#9f1239');
-      floorGrad.addColorStop(0.6, '#4c0519');
-      floorGrad.addColorStop(1, '#1c1917');
-      ctx.fillStyle = floorGrad;
-      ctx.fillRect(0, groundY, w, h - groundY);
-
-      // Viền dải hoa văn đồng tiền vàng kim
-      ctx.fillStyle = '#f59e0b';
-      ctx.fillRect(0, groundY - 2, w, 4);
 
       // Ánh sáng vàng dịu rọi vào khay lì xì
       ctx.save();
