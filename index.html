@@ -1443,34 +1443,34 @@
           <!-- Canvas hiển thị toàn bộ không gian Đêm Rằm & Dàn Lồng Đèn thông thoáng ở phía trên -->
           <canvas id="gift-canvas" class="w-full h-full block"></canvas>
 
-          <!-- Thanh điều khiển & trạng thái đặt ở dưới chân sân khấu để không che lồng đèn -->
-          <div class="absolute bottom-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
-            <div class="flex items-center gap-2 bg-slate-950/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-amber-400/40 text-white text-xs font-bold shadow-xl">
-              <span class="text-amber-400 font-extrabold text-sm animate-pulse">🏮</span>
-              <span id="gift-game-status" class="text-amber-100">Đêm Hội Trăng Rằm: Sẵn sàng rước đèn bốc quà!</span>
+          <!-- Thanh điều khiển & trạng thái đặt ở trên đỉnh sân khấu (không che em bé và hộp quà phía dưới) -->
+          <div class="absolute top-3 left-3 right-3 z-30 flex items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-amber-400/40 text-white text-xs font-bold shadow-xl truncate min-w-0 max-w-[48%] sm:max-w-[55%]">
+              <span class="text-amber-400 font-extrabold text-sm shrink-0">🎁</span>
+              <span id="gift-game-status" class="text-amber-100 truncate text-[11px] sm:text-xs">Đêm Hội Trăng Rằm: Sẵn sàng rước đèn bốc quà!</span>
             </div>
-            <div class="flex items-center gap-1.5 bg-slate-950/70 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-xl">
+            <div class="flex items-center gap-1 bg-slate-950/80 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-xl shrink-0">
               <!-- Seasonal Theme Selector -->
               <div class="flex items-center gap-1 bg-slate-900/90 px-2 py-1 rounded-xl border border-amber-400/30 text-xs">
-                <span class="text-[11px] text-amber-300 font-bold hidden sm:inline">Mùa:</span>
+                <span class="text-[11px] text-amber-300 font-bold hidden md:inline">Mùa:</span>
                 <select id="gift-theme-select" onchange="changeGiftTheme(this.value)" class="bg-transparent text-amber-200 text-xs font-black outline-none cursor-pointer">
-                  <option value="auto" class="bg-slate-900 text-amber-300">✨ Tự động theo mùa</option>
-                  <option value="midautumn" class="bg-slate-900 text-amber-200">🥮 Mùa Trung Thu</option>
-                  <option value="christmas" class="bg-slate-900 text-emerald-300">🎄 Mùa Giáng Sinh</option>
-                  <option value="tet" class="bg-slate-900 text-rose-300">🧧 Mùa Tết Cổ Truyền</option>
+                  <option value="auto" class="bg-slate-900 text-amber-300">✨ Tự động</option>
+                  <option value="tet" class="bg-slate-900 text-rose-300">🧧 Mùa Tết (Pháo hoa)</option>
+                  <option value="christmas" class="bg-slate-900 text-emerald-300">🎄 Giáng Sinh</option>
+                  <option value="midautumn" class="bg-slate-900 text-amber-200">🥮 Trung Thu</option>
                 </select>
               </div>
-              <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl border border-amber-300/40 transition flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 cursor-pointer">
-                <i class="fa-solid fa-gift text-white"></i> Rước Đèn Bốc Quà
+              <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white text-xs font-black px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-300/40 transition flex items-center gap-1 shadow-md hover:scale-105 active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-gift text-white"></i> <span class="hidden sm:inline">Bốc Quà</span>
               </button>
-              <button onclick="toggleGiftSound()" id="gift-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
-                🔊 Bật
+              <button onclick="toggleGiftSound()" id="gift-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
+                🔊
               </button>
-              <button onclick="toggleGiftFullscreen()" id="gift-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
-                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-300"></i> Phóng to
+              <button onclick="toggleGiftFullscreen()" id="gift-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer flex items-center gap-1">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-300"></i> <span class="hidden sm:inline">Phóng to</span>
               </button>
-              <button onclick="resetGiftGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-300"></i> Xếp Lại Quà
+              <button onclick="resetGiftGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer flex items-center gap-1" title="Xếp Lại Quà">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-300"></i> <span class="hidden sm:inline">Xếp lại</span>
               </button>
             </div>
           </div>
@@ -1552,24 +1552,24 @@
           <!-- Canvas hiển thị không gian Tết, Khay Bát Bảo Lì Xì & Em Bé Chúc Tết -->
           <canvas id="lixi-canvas" class="w-full h-full block"></canvas>
 
-          <!-- Thanh điều khiển & trạng thái đặt ở dưới chân sân khấu -->
-          <div class="absolute bottom-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
-            <div class="flex items-center gap-2 bg-slate-950/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-red-500/40 text-white text-xs font-bold shadow-xl">
-              <span class="text-red-400 font-extrabold text-sm animate-pulse">🧧</span>
-              <span id="lixi-game-status" class="text-amber-100">Cung chúc tân xuân: Sẵn sàng nhận lì xì may mắn đầu năm!</span>
+          <!-- Thanh điều khiển & trạng thái đặt ở trên đỉnh sân khấu (không che em bé và khay lì xì phía dưới) -->
+          <div class="absolute top-3 left-3 right-3 z-30 flex items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-red-500/40 text-white text-xs font-bold shadow-xl truncate min-w-0 max-w-[48%] sm:max-w-[55%]">
+              <span class="text-red-400 font-extrabold text-sm shrink-0 animate-pulse">🧧</span>
+              <span id="lixi-game-status" class="text-amber-100 truncate text-[11px] sm:text-xs">Cung chúc tân xuân: Sẵn sàng nhận lì xì may mắn đầu năm!</span>
             </div>
-            <div class="flex items-center gap-1.5 bg-slate-950/70 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-xl">
-              <button onclick="startSpin()" class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl border border-amber-300/40 transition flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 cursor-pointer">
-                <i class="fa-solid fa-gift text-white"></i> Bắt Đầu Lì Xì
+            <div class="flex items-center gap-1 bg-slate-950/80 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-xl shrink-0">
+              <button onclick="startSpin()" class="bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white text-xs font-black px-2.5 sm:px-3.5 py-1.5 rounded-xl border border-amber-300/40 transition flex items-center gap-1 shadow-md hover:scale-105 active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-gift text-white"></i> <span class="hidden sm:inline">Bắt Đầu Lì Xì</span><span class="sm:hidden">Lì Xì</span>
               </button>
-              <button onclick="toggleLixiSound()" id="lixi-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
-                🔊 Bật
+              <button onclick="toggleLixiSound()" id="lixi-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
+                🔊
               </button>
-              <button onclick="toggleLixiFullscreen()" id="lixi-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
-                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-400"></i> Phóng to
+              <button onclick="toggleLixiFullscreen()" id="lixi-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer flex items-center gap-1">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-400"></i> <span class="hidden sm:inline">Phóng to</span>
               </button>
-              <button onclick="resetLixiGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> Xếp Lại Khay
+              <button onclick="resetLixiGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer flex items-center gap-1" title="Xếp Lại Khay">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> <span class="hidden sm:inline">Xếp lại</span>
               </button>
             </div>
           </div>
@@ -3881,7 +3881,7 @@
         for (let l = 0; l < lanternCount; l++) {
           const lx = (w / (lanternCount + 1)) * (l + 1);
           const sag = Math.sin((lx / w) * Math.PI) * 28;
-          const ly = 18 + sag;
+          const ly = 54 + sag;
           giftLanterns.push({
             x: lx,
             y: ly,
@@ -4714,10 +4714,10 @@
       ctx.save();
       const count = Math.max(8, Math.floor(w / 45));
       ctx.beginPath();
-      ctx.moveTo(0, 14);
+      ctx.moveTo(0, 52);
       for (let i = 0; i <= count; i++) {
         const lx = (w / count) * i;
-        const ly = 14 + Math.sin((i / count) * Math.PI * 3 + now * 0.001) * 6;
+        const ly = 52 + Math.sin((i / count) * Math.PI * 3 + now * 0.001) * 6;
         ctx.lineTo(lx, ly);
       }
       ctx.strokeStyle = 'rgba(100, 116, 139, 0.6)';
@@ -4728,7 +4728,7 @@
       const bulbColors = ['#ef4444', '#22c55e', '#f59e0b', '#38bdf8', '#ec4899', '#fde047'];
       for (let i = 1; i < count; i++) {
         const lx = (w / count) * i;
-        const ly = 14 + Math.sin((i / count) * Math.PI * 3 + now * 0.001) * 6;
+        const ly = 52 + Math.sin((i / count) * Math.PI * 3 + now * 0.001) * 6;
         const color = bulbColors[(i + Math.floor(now * 0.002)) % bulbColors.length];
         const pulse = 0.6 + Math.sin(now * 0.008 + i * 1.5) * 0.4;
         ctx.save();
@@ -5582,7 +5582,7 @@
       for (let i = 0; i < pCount; i++) {
         const px = startX + i * stepX;
         const sag = Math.sin(((i + 1) / (pCount + 1)) * Math.PI) * 14;
-        const py = 26 + sag;
+        const py = 54 + sag;
         const sway = Math.sin(now * 0.0024 + i * 0.9) * 0.1;
         drawTetHangingPlaque(ctx, px, py, plaqueWords[i], sway);
       }
@@ -5590,8 +5590,8 @@
       ctx.strokeStyle = 'rgba(251, 191, 36, 0.45)';
       ctx.lineWidth = 1.2;
       ctx.beginPath();
-      ctx.moveTo(startX - 20, 22);
-      ctx.quadraticCurveTo(w * 0.5, 42, endX + 20, 22);
+      ctx.moveTo(startX - 20, 50);
+      ctx.quadraticCurveTo(w * 0.5, 70, endX + 20, 50);
       ctx.stroke();
 
       // 2. DÂY PHÁO ĐẠI NGÀY TẾT (GÓC TRÁI VÀ GÓC PHẢI)
@@ -5601,9 +5601,6 @@
       // 3. GÓC TRANG TRÍ TẾT: BÁNH CHƯNG XANH, DƯA HẤU ĐỎ & THỎI KIM NGUYÊN BẢO
       const cornerX = Math.max(45, w * 0.09);
       drawTetBanhChungAndWatermelon(ctx, cornerX, groundY - 8, 1.0);
-
-      // 4. HOÀNH PHI CUNG ĐÌNH "CUNG CHÚC TÂN XUÂN" TRÊN ĐỈNH
-      drawTetHeaderPlaque(ctx, w, now);
 
       ctx.restore();
     }
@@ -6031,12 +6028,12 @@
         if (giftLanterns && giftLanterns.length > 0) {
           ctx.save();
           ctx.beginPath();
-          ctx.moveTo(0, 18);
+          ctx.moveTo(0, 54);
           for (let l = 0; l < giftLanterns.length; l++) {
             const lnt = giftLanterns[l];
             ctx.lineTo(lnt.x, lnt.y);
           }
-          ctx.lineTo(w, 18);
+          ctx.lineTo(w, 54);
           ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
           ctx.lineWidth = 1.5;
           ctx.stroke();
