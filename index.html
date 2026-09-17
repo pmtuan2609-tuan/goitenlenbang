@@ -6532,6 +6532,19 @@
             speedFactor: 0.92 + (Math.sin(i * 37) * 0.08) + (Math.random() * 0.08),
             wobbleOffset: i * 0.9,
             palette: palette,
+            vx: 0,
+            vy: 0,
+            laneOffset: 0,
+            targetLaneOffset: 0,
+            carveAngle: 0,
+            weavePhase: (i * 1.37) % (Math.PI * 2),
+            weaveFreq: 0.035 + (Math.sin(i * 19) * 0.012),
+            weaveAmp: 10 + (Math.abs(Math.sin(i * 23)) * 14),
+            overtakeTimer: 20 + Math.floor(Math.random() * 60),
+            overtakeBoost: 0,
+            overtakeDodging: 0,
+            trail: [],
+            lastTrailTime: 0,
             burstTimer: 0,
             burstSpeed: 0,
             polePhase: Math.random() * Math.PI * 2,
@@ -6643,6 +6656,17 @@
         r.isWinner = (String(r.id) === String(winner.id));
         r.x = r.startX;
         r.y = r.baseY;
+        r.vx = 0;
+        r.vy = 0;
+        r.laneOffset = 0;
+        r.targetLaneOffset = 0;
+        r.carveAngle = 0;
+        r.weavePhase = (r.lane * 1.37) % (Math.PI * 2);
+        r.overtakeTimer = 25 + Math.floor(Math.random() * 45);
+        r.overtakeBoost = 0;
+        r.overtakeDodging = 0;
+        r.trail = [];
+        r.lastTrailTime = 0;
         r.points = 0;
         r.collectedGifts = {};
         r.floatingTexts = [];
@@ -6730,6 +6754,10 @@
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
+      const topSkyH = Math.max(70, Math.floor(h * 0.22));
+      const botPisteH = Math.max(50, Math.floor(h * 0.12));
+      const pisteMinY = topSkyH + 18;
+      const pisteMaxY = h - botPisteH - 18;
 
       // Cập nhật bụi tuyết
       for (let i = skiSnowParticles.length - 1; i >= 0; i--) {
@@ -6767,6 +6795,7 @@
       if (skiRaceState === 'idle') {
         skiRacers.forEach(r => {
           r.y = r.baseY + Math.sin(now * 0.004 + r.wobbleOffset) * 2;
+          r.carveAngle = 0;
         });
         return;
       }
@@ -6774,6 +6803,7 @@
       if (skiRaceState === 'countdown') {
         skiRacers.forEach(r => {
           r.y = r.baseY + Math.sin(now * 0.015 + r.wobbleOffset) * 2;
+          r.carveAngle = Math.sin(now * 0.008 + r.wobbleOffset) * 0.04;
         });
         return;
       }
@@ -6793,38 +6823,123 @@
           let targetProgress = 0;
 
           if (r.isWinner) {
-            if (p < 0.70) {
-              targetProgress = Math.pow(p, 1.08) * 0.68 + Math.sin(p * 8 + r.wobbleOffset) * 0.025;
+            if (p < 0.68) {
+              targetProgress = Math.pow(p, 1.06) * 0.66 + Math.sin(p * 8 + r.wobbleOffset) * 0.025;
             } else {
-              const sprintP = (p - 0.70) / 0.30;
+              const sprintP = (p - 0.68) / 0.32;
               const eased = Math.pow(sprintP, 1.25);
-              targetProgress = 0.68 + eased * 0.36;
+              targetProgress = 0.66 + eased * 0.38;
             }
           } else {
             const laneVar = 0.88 + (Math.sin(r.lane * 13) * 0.08);
-            if (p < 0.70) {
+            if (p < 0.68) {
               const surge = Math.sin(p * 6 + r.wobbleOffset) * 0.04;
-              targetProgress = Math.pow(p, 1.05) * 0.65 * laneVar + surge;
+              targetProgress = Math.pow(p, 1.05) * 0.64 * laneVar + surge;
             } else {
-              const sprintP = (p - 0.70) / 0.30;
+              const sprintP = (p - 0.68) / 0.32;
               const maxNonWinner = 0.96 - (Math.abs(Math.sin(r.lane * 7)) * 0.06);
               targetProgress = 0.60 + sprintP * (maxNonWinner - 0.60);
             }
           }
 
           r.targetX = skiStartX + Math.max(0, targetProgress * totalDist);
-          r.x += (r.targetX - r.x) * 0.12;
 
-          r.y = r.baseY + Math.sin(now * 0.008 + r.wobbleOffset) * 3;
+          // Cơ chế lạng lách và vượt đối thủ (Slalom dodging & overtaking boost)
+          if (r.overtakeTimer > 0) {
+            r.overtakeTimer--;
+          } else {
+            // Tìm đối thủ chắn ngay phía trước (trong vòng 8-56px phía trước, chênh lệch Y < 22px)
+            const blocker = skiRacers.find(other => {
+              if (other.id === r.id) return false;
+              const dx = other.x - r.x;
+              const dy = Math.abs(other.y - r.y);
+              return dx > 8 && dx < 56 && dy < 22;
+            });
 
-          if (Math.random() < 0.32) {
+            if (blocker) {
+              // Bắt đầu pha lách và bứt phá vượt qua mặt đối thủ!
+              r.overtakeTimer = 45 + Math.floor(Math.random() * 35);
+              let dodgeDir = (r.y >= blocker.y) ? 1 : -1;
+              if (r.y < pisteMinY + 25) dodgeDir = 1;
+              else if (r.y > pisteMaxY - 25) dodgeDir = -1;
+
+              r.overtakeDodging = dodgeDir;
+              r.targetLaneOffset = Math.max(-42, Math.min(42, r.targetLaneOffset + dodgeDir * (22 + Math.random() * 12)));
+              r.overtakeBoost = 1.8 + Math.random() * 1.5;
+
+              if (r.isWinner && Math.random() < 0.35) {
+                SkiAudio.playWhoosh();
+              }
+            } else if (Math.random() < 0.015) {
+              // Thỉnh thoảng lướt đổi làn tự do tìm đường trượt đẹp
+              r.overtakeTimer = 35 + Math.floor(Math.random() * 30);
+              const freeDodge = Math.random() < 0.5 ? -1 : 1;
+              r.targetLaneOffset = Math.max(-36, Math.min(36, r.targetLaneOffset + freeDodge * 18));
+              r.overtakeBoost = 0.8 + Math.random() * 0.8;
+            }
+          }
+
+          // Cập nhật dao động slalom
+          r.weavePhase += r.weaveFreq;
+          const slalomSine = Math.sin(r.weavePhase) * r.weaveAmp;
+
+          // Giảm chấn và hồi quy làn trượt
+          r.overtakeBoost *= 0.94;
+          if (r.overtakeBoost < 0.02) r.overtakeBoost = 0;
+          r.targetLaneOffset *= 0.985;
+          r.laneOffset += (r.targetLaneOffset - r.laneOffset) * 0.08;
+
+          // Vị trí Y mượt mà và giới hạn an toàn trong dốc tuyết
+          const desiredY = Math.max(pisteMinY, Math.min(pisteMaxY, r.baseY + r.laneOffset + slalomSine));
+          const dy = desiredY - r.y;
+          r.vy = r.vy * 0.74 + dy * 0.08;
+          r.y += r.vy;
+
+          // Vận tốc X mượt mà kết hợp xung lực bứt phá
+          const forwardDist = r.targetX - r.x;
+          const driveForce = forwardDist * 0.12 + r.overtakeBoost;
+          r.vx = r.vx * 0.80 + driveForce * 0.18;
+          r.x += Math.max(0.2, r.vx);
+
+          // Góc nghiêng lạng lách tự nhiên theo quán tính (Carve tilt)
+          const targetAngle = Math.max(-0.28, Math.min(0.28, (r.vy / Math.max(1.8, r.vx)) * 1.05));
+          r.carveAngle += (targetAngle - r.carveAngle) * 0.20;
+
+          // Ghi nhận vệt trượt tuyết đôi (Twin ski trails)
+          if (!r.trail) r.trail = [];
+          if (now - (r.lastTrailTime || 0) > 45) {
+            r.lastTrailTime = now;
+            r.trail.push({
+              x: r.x - 12,
+              y: r.y + 14,
+              angle: r.carveAngle,
+              alpha: 0.65
+            });
+            if (r.trail.length > 20) r.trail.shift();
+          }
+          r.trail.forEach(tp => tp.alpha *= 0.985);
+
+          // Bụi tuyết bắn ra mạnh mẽ khi lạng lách hoặc tăng tốc
+          const isCarvingHard = Math.abs(r.carveAngle) > 0.09 || r.overtakeBoost > 0.6;
+          if (isCarvingHard && Math.random() < 0.55) {
+            const sprayDirY = r.carveAngle > 0 ? -1 : 1;
+            skiSnowParticles.push({
+              x: r.x - 18 + (Math.random() * 6 - 3),
+              y: r.y + 14 + (Math.random() * 4 - 2),
+              vx: -(2.2 + Math.random() * 3.0),
+              vy: sprayDirY * (1.2 + Math.random() * 2.2),
+              radius: 2 + Math.random() * 3.5,
+              alpha: 0.85,
+              color: '#ffffff'
+            });
+          } else if (Math.random() < 0.26) {
             skiSnowParticles.push({
               x: r.x - 22,
               y: r.y + 14 + (Math.random() * 4 - 2),
               vx: -(1.5 + Math.random() * 2.5),
               vy: -(0.5 + Math.random() * 1.5),
-              radius: 2 + Math.random() * 3,
-              alpha: 0.8,
+              radius: 2 + Math.random() * 2.5,
+              alpha: 0.7,
               color: '#ffffff'
             });
           }
@@ -6936,6 +7051,7 @@
       } else if (skiRaceState === 'finished') {
         skiRacers.forEach(r => {
           r.y = r.baseY + Math.sin(now * 0.003 + r.wobbleOffset) * (r.isWinner ? 4 : 2);
+          r.carveAngle *= 0.90;
           for (let ftIdx = r.floatingTexts.length - 1; ftIdx >= 0; ftIdx--) {
             const ft = r.floatingTexts[ftIdx];
             ft.yOffset += ft.vy;
@@ -7037,6 +7153,34 @@
         }
         ctx.stroke();
       }
+      ctx.restore();
+
+      // Dynamic Twin Carve Ski Trails (Vệt trượt tuyết uốn lượn theo động tác lạng lách)
+      ctx.save();
+      skiRacers.forEach(r => {
+        if (r.trail && r.trail.length > 1) {
+          for (let t = 1; t < r.trail.length; t++) {
+            const p1 = r.trail[t - 1];
+            const p2 = r.trail[t];
+            const a = (p1.alpha + p2.alpha) * 0.5 * 0.35;
+            if (a <= 0.02) continue;
+            ctx.strokeStyle = `rgba(148, 163, 184, ${a})`;
+            ctx.lineWidth = 1.6;
+
+            // Rãnh ván trượt trái
+            ctx.beginPath();
+            ctx.moveTo(p1.x - camX, p1.y - 1.8);
+            ctx.lineTo(p2.x - camX, p2.y - 1.8);
+            ctx.stroke();
+
+            // Rãnh ván trượt phải
+            ctx.beginPath();
+            ctx.moveTo(p1.x - camX, p1.y + 1.8);
+            ctx.lineTo(p2.x - camX, p2.y + 1.8);
+            ctx.stroke();
+          }
+        }
+      });
       ctx.restore();
 
       // Bottom Piste Barrier
@@ -7492,10 +7636,16 @@
       ctx.scale(s, s);
 
       const isRacing = (skiRaceState === 'racing');
-      const bob = isRacing ? Math.sin(now * 0.02 + racer.wobbleOffset) * 2.2 : Math.sin(now * 0.006 + racer.wobbleOffset) * 0.8;
-      const poleAngle = isRacing ? Math.sin(now * 0.015 + racer.wobbleOffset) * 0.5 : 0.2;
+      const boost = racer.overtakeBoost || 0;
+      const cadence = isRacing ? (0.016 + boost * 0.014) : 0.006;
+      const bob = isRacing ? Math.sin(now * (0.020 + boost * 0.016) + racer.wobbleOffset) * 2.2 : Math.sin(now * 0.006 + racer.wobbleOffset) * 0.8;
+      const poleAngle = isRacing ? Math.sin(now * cadence + racer.wobbleOffset) * 0.6 : 0.2;
 
       const p = racer.palette;
+
+      // CƠ THỂ VÀ VÁN TRƯỢT NGHIÊNG THEO ĐỘNG TÁC LẠNG LÁCH SLALOM CARVING
+      ctx.save();
+      ctx.rotate(racer.carveAngle || 0);
 
       // 1. Shadow
       ctx.save();
@@ -7664,9 +7814,11 @@
       ctx.fill();
       ctx.restore();
 
-      // 9. BẢNG TÊN HỌC SINH TÍCH HỢP ĐIỂM SỐ
+      ctx.restore(); // Kết thúc khối nghiêng người & ván trượt theo carveAngle
+
+      // 9. BẢNG TÊN HỌC SINH TÍCH HỢP ĐIỂM SỐ (Luôn thẳng đứng, không xoay, dễ đọc 100%)
       ctx.save();
-      const badgeY = -35 + bob;
+      const badgeY = -35 + bob * 0.4;
       const text = `${racer.displayName} ⭐ ${racer.points}đ`;
       ctx.font = 'bold 10px sans-serif';
       const textWidth = ctx.measureText(text).width;
