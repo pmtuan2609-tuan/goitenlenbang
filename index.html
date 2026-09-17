@@ -4580,78 +4580,392 @@
       ctx.restore();
     }
 
-    // --- VISUAL HELPERS THEO MÙA (GIÁNG SINH & TẾT) ---
-    function drawChristmasPineTree(ctx, cx, cy, width, height, now) {
-      ctx.save();
-      // Thân cây gỗ thông
-      const trunkW = width * 0.22;
-      const trunkH = height * 0.18;
-      ctx.fillStyle = '#78350f';
-      ctx.fillRect(cx - trunkW / 2, cy - trunkH, trunkW, trunkH);
+    // --- MODULE ĐỒ HỌA GIÁNG SINH HUYỀN ẢO (CHRISTMAS WONDERLAND THEME) ---
+    // Bầu trời đêm cực quang Aurora, Cỗ xe tuần lộc Santa, Nhà gỗ tuyết Bắc Âu ấm cúng,
+    // Cây thông Noel đại thụ nhiều tầng trang hoàng lộng lẫy, Người tuyết vẫy tay chào em bé,
+    // Kẹo gậy Noel, Vòng nguyệt quế và Hộp quà Giáng Sinh
 
-      // Các tầng tán lá thông xanh phủ tuyết trắng
-      const tiers = 4;
+    function drawChristmasGrandBackground(ctx, w, h, groundY, now) {
+      ctx.save();
+      // 1. Nền trời đêm Bắc Cực huyền ảo
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
+      skyGrad.addColorStop(0, '#020617'); // Midnight deep black-blue
+      skyGrad.addColorStop(0.35, '#0c192e'); // Deep winter navy
+      skyGrad.addColorStop(0.7, '#0f2744'); // Glacial twilight
+      skyGrad.addColorStop(1, '#164e63');   // Frosted cyan horizon
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, groundY);
+
+      // 2. Dải cực quang Bắc Cực mềm mại (Aurora Borealis)
+      const auroras = [
+        { color: 'rgba(52, 211, 153, 0.13)', y: groundY * 0.32, freq: 0.0032, amp: 22, speed: 0.0007 },
+        { color: 'rgba(56, 189, 248, 0.15)', y: groundY * 0.42, freq: 0.0042, amp: 26, speed: 0.0011 },
+        { color: 'rgba(192, 132, 252, 0.10)', y: groundY * 0.25, freq: 0.0024, amp: 18, speed: 0.0005 }
+      ];
+      auroras.forEach(a => {
+        ctx.beginPath();
+        ctx.moveTo(0, a.y);
+        for (let x = 0; x <= w; x += 15) {
+          const y = a.y + Math.sin(x * a.freq + now * a.speed) * a.amp + Math.cos(x * 0.005 - now * a.speed * 0.4) * (a.amp * 0.5);
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(w, groundY);
+        ctx.lineTo(0, groundY);
+        ctx.closePath();
+        ctx.fillStyle = a.color;
+        ctx.fill();
+      });
+
+      // 3. Sao đêm đông lấp lánh
+      if (typeof giftStars !== 'undefined' && giftStars && giftStars.length > 0) {
+        giftStars.forEach(st => {
+          const alpha = (st.baseAlpha || 0.6) + Math.sin(now * (st.speed || 0.002) + (st.phase || 0)) * 0.3;
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.15, Math.min(1.0, alpha))})`;
+          ctx.beginPath();
+          ctx.arc(st.x, st.y * 0.85, st.size || 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      }
+
+      // 4. Ngôi sao Giáng Sinh Bethlehem 8 cánh tỏa sáng rực rỡ
+      drawChristmasStar(ctx, Math.max(w - 120, w * 0.82), 65, 24, now);
+
+      // 5. Cỗ xe tuần lộc Santa Claus bay qua nền trời xa
+      drawFlyingSantaSleigh(ctx, w, groundY, now);
+
+      // 6. Dãy núi đồi tuyết nhấp nhô lớp lớp
+      // Lớp đồi xa
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      for (let x = 0; x <= w; x += 25) {
+        const y = groundY - 48 + Math.sin(x * 0.004 + 1.2) * 22;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w, groundY);
+      ctx.closePath();
+      ctx.fill();
+
+      // Lớp đồi tuyết gần
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      for (let x = 0; x <= w; x += 20) {
+        const y = groundY - 24 + Math.sin(x * 0.007 + 0.4) * 14;
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(w, groundY);
+      ctx.closePath();
+      ctx.fill();
+
+      // 7. Ngôi nhà gỗ Bắc Âu ấm cúng trong sương tuyết xa xa
+      const cabinX = Math.max(w * 0.32, 230);
+      drawChristmasCabin(ctx, cabinX, groundY - 14, now);
+
+      // 8. Mặt đất tuyết phủ dày
+      const snowGrad = ctx.createLinearGradient(0, groundY, 0, h);
+      snowGrad.addColorStop(0, '#ffffff');
+      snowGrad.addColorStop(0.1, '#f1f5f9');
+      snowGrad.addColorStop(0.4, '#e2e8f0');
+      snowGrad.addColorStop(1, '#cbd5e1');
+      ctx.fillStyle = snowGrad;
+      ctx.fillRect(0, groundY, w, h - groundY);
+
+      // Gờ tuyết bồng bềnh uốn lượn
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(w * 0.5, groundY + 2, w * 0.65, 11, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawFlyingSantaSleigh(ctx, w, groundY, now) {
+      ctx.save();
+      const speed = 0.035;
+      const loopW = w + 260;
+      const sx = ((now * speed) % loopW) - 130;
+      const sy = 48 + Math.sin(now * 0.0018) * 10;
+
+      ctx.translate(sx, sy);
+      ctx.scale(0.85, 0.85);
+
+      // Vệt bụi sao vàng lấp lánh sau cỗ xe
+      for (let p = 0; p < 8; p++) {
+        const px = -20 - p * 9 + Math.sin(now * 0.01 + p) * 4;
+        const py = Math.sin(now * 0.008 + p * 1.2) * 6;
+        const pAlpha = (1 - p / 8) * 0.7;
+        ctx.fillStyle = `rgba(253, 224, 71, ${pAlpha})`;
+        ctx.beginPath();
+        ctx.arc(px, py, 1.2 + Math.random() * 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Cỗ xe trượt tuyết màu đỏ viền vàng kim
+      ctx.fillStyle = '#991b1b';
+      ctx.beginPath();
+      ctx.moveTo(-18, 2);
+      ctx.lineTo(12, 2);
+      ctx.quadraticCurveTo(18, 0, 19, -8);
+      ctx.lineTo(-14, -8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Vành trượt xe kim loại vàng
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(-22, 6);
+      ctx.lineTo(14, 6);
+      ctx.quadraticCurveTo(20, 5, 22, -1);
+      ctx.stroke();
+
+      // Ông già Noel ngồi trên xe
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(0, -11, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(3, -9, 3.5, 0, Math.PI * 2);
+      ctx.arc(0, -14, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dây cương nối tuần lộc
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.55)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(12, -4);
+      ctx.lineTo(55, -2);
+      ctx.stroke();
+
+      // 2 chú tuần lộc nhảy múa dẫn đầu
+      for (let r = 0; r < 2; r++) {
+        const rx = 35 + r * 28;
+        const ry = Math.sin(now * 0.009 + r * 1.5) * 5;
+        ctx.save();
+        ctx.translate(rx, ry);
+        // Thân tuần lộc nâu
+        ctx.fillStyle = '#78350f';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 8, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // Đầu và cổ
+        ctx.beginPath();
+        ctx.ellipse(7, -4, 4, 3, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        // Sừng tuần lộc
+        ctx.strokeStyle = '#92400e';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(8, -6);
+        ctx.lineTo(11, -11);
+        ctx.lineTo(13, -12);
+        ctx.moveTo(10, -9);
+        ctx.lineTo(8, -12);
+        ctx.stroke();
+        // Chân tung vó
+        const legPhase = Math.sin(now * 0.015 + r * 2);
+        ctx.beginPath();
+        ctx.moveTo(-5, 3);
+        ctx.lineTo(-9 - legPhase * 4, 10);
+        ctx.moveTo(4, 3);
+        ctx.lineTo(8 + legPhase * 4, 9);
+        ctx.stroke();
+        // Mũi đỏ Rudolph cho chú tuần lộc dẫn đầu
+        if (r === 1) {
+          ctx.fillStyle = '#ef4444';
+          ctx.beginPath();
+          ctx.arc(11, -3, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    function drawChristmasCabin(ctx, cx, cy, now) {
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // Thân nhà gỗ
+      ctx.fillStyle = '#3e1c0d';
+      ctx.fillRect(-16, -14, 32, 14);
+
+      // Mái nhà tam giác phủ tuyết dày
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.moveTo(-20, -14);
+      ctx.lineTo(0, -28);
+      ctx.lineTo(20, -14);
+      ctx.closePath();
+      ctx.fill();
+
+      // Lớp tuyết trắng phúng phính trên mái
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.moveTo(-22, -13);
+      ctx.lineTo(0, -30);
+      ctx.lineTo(22, -13);
+      ctx.lineTo(18, -10);
+      ctx.lineTo(0, -26);
+      ctx.lineTo(-18, -10);
+      ctx.closePath();
+      ctx.fill();
+
+      // Ống khói gạch
+      ctx.fillStyle = '#7f1d1d';
+      ctx.fillRect(6, -26, 5, 10);
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(5, -27, 7, 3);
+
+      // Khói trắng bồng bềnh bay lên
+      ctx.fillStyle = 'rgba(241, 245, 249, 0.45)';
+      for (let s = 0; s < 4; s++) {
+        const sy = -30 - s * 9;
+        const sx = 8 + Math.sin(now * 0.0025 + s * 1.2) * (5 + s * 3);
+        ctx.beginPath();
+        ctx.arc(sx, sy, 3 + s * 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Cửa sổ tỏa ánh đèn vàng ấm áp
+      ctx.shadowColor = '#fde047';
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = '#fef08a';
+      ctx.fillRect(-8, -10, 8, 8);
+      ctx.strokeStyle = '#451a03';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(-8, -10, 8, 8);
+      ctx.beginPath();
+      ctx.moveTo(-4, -10);
+      ctx.lineTo(-4, -2);
+      ctx.moveTo(-8, -6);
+      ctx.lineTo(0, -6);
+      ctx.stroke();
+
+      // Cửa ra vào gỗ
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(3, -11, 7, 11);
+
+      ctx.restore();
+    }
+
+    function drawMajesticChristmasTree(ctx, cx, cy, width, height, isMain, now) {
+      ctx.save();
+      // 1. Bóng cây trên tuyết
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, width * 0.55, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Thân cây gỗ thông chắc khỏe
+      const trunkW = width * 0.22;
+      const trunkH = height * 0.16;
+      ctx.fillStyle = '#5c2d0c';
+      ctx.fillRect(cx - trunkW / 2, cy - trunkH, trunkW, trunkH);
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(cx - trunkW / 2 + 2, cy - trunkH, trunkW * 0.4, trunkH);
+
+      // 3. Các tầng tán lá thông xanh kim phủ tuyết trắng
+      const tiers = isMain ? 5 : 4;
       for (let t = tiers - 1; t >= 0; t--) {
-        const tierY = cy - trunkH - (height * 0.78 * (tiers - 1 - t)) / (tiers - 0.5);
-        const tierW = width * (0.35 + (t / tiers) * 0.65);
-        const tierH = (height * 0.32);
+        const prog = t / tiers;
+        const tierY = cy - trunkH - (height * 0.78 * (tiers - 1 - t)) / (tiers - 0.4);
+        const tierW = width * (0.32 + prog * 0.68);
+        const tierH = height * (isMain ? 0.28 : 0.32);
 
         // Tán lá xanh thông kim
         const treeGrad = ctx.createLinearGradient(0, tierY - tierH, 0, tierY);
-        treeGrad.addColorStop(0, '#166534');
+        treeGrad.addColorStop(0, '#15803d');
+        treeGrad.addColorStop(0.5, '#166534');
         treeGrad.addColorStop(1, '#14532d');
         ctx.fillStyle = treeGrad;
+
         ctx.beginPath();
         ctx.moveTo(cx, tierY - tierH);
         ctx.lineTo(cx + tierW / 2, tierY);
+        // Viền răng cưa tự nhiên của lá kim
+        for (let c = 5; c >= 1; c--) {
+          const cxPos = cx + (tierW / 2) * (c / 5);
+          ctx.lineTo(cxPos - 4, tierY - 3);
+        }
         ctx.lineTo(cx - tierW / 2, tierY);
         ctx.closePath();
         ctx.fill();
 
-        // Mép tuyết trắng phủ lên tán lá
+        // Mép tuyết trắng bồng bềnh phủ lên tán lá
         ctx.fillStyle = '#f8fafc';
         ctx.beginPath();
         ctx.moveTo(cx - tierW / 2, tierY);
-        for (let s = 0; s < 6; s++) {
-          const sx1 = cx - tierW / 2 + (tierW / 6) * s;
-          const sx2 = sx1 + tierW / 6;
-          ctx.quadraticCurveTo((sx1 + sx2) / 2, tierY + 5, sx2, tierY);
+        const scallops = Math.max(5, Math.floor(tierW / 14));
+        for (let s = 0; s < scallops; s++) {
+          const sx1 = cx - tierW / 2 + (tierW / scallops) * s;
+          const sx2 = sx1 + tierW / scallops;
+          ctx.quadraticCurveTo((sx1 + sx2) / 2, tierY + 6, sx2, tierY);
         }
-        ctx.lineTo(cx + tierW / 2, tierY - 4);
-        ctx.lineTo(cx - tierW / 2, tierY - 4);
+        ctx.lineTo(cx + tierW / 2, tierY - 5);
+        ctx.lineTo(cx - tierW / 2, tierY - 5);
         ctx.closePath();
         ctx.fill();
 
-        // Quả châu trang trí lấp lánh (Ornaments)
-        const bColors = ['#ef4444', '#f59e0b', '#38bdf8', '#e11d48', '#fbbf24'];
-        for (let b = 0; b < 3; b++) {
-          const bx = cx + (Math.sin(t * 5 + b * 4) * tierW * 0.35);
-          const by = tierY - 6 + Math.cos(t * 3 + b) * 4;
+        // Dây kim tuyến vàng óng xoắn quanh tán lá (Tinsel ribbon)
+        if (isMain) {
+          ctx.strokeStyle = 'rgba(253, 224, 71, 0.75)';
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.moveTo(cx - tierW * 0.38, tierY - tierH * 0.3);
+          ctx.quadraticCurveTo(cx, tierY - 2, cx + tierW * 0.38, tierY - tierH * 0.4);
+          ctx.stroke();
+        }
+
+        // Quả cầu châu trang trí rực rỡ (Ornaments)
+        const bColors = ['#ef4444', '#f59e0b', '#38bdf8', '#e11d48', '#10b981', '#fbbf24'];
+        const bCount = isMain ? 4 : 3;
+        for (let b = 0; b < bCount; b++) {
+          const bx = cx + (Math.sin(t * 4 + b * 3.2) * tierW * 0.36);
+          const by = tierY - 6 + Math.cos(t * 2 + b * 1.5) * 4;
           const bColor = bColors[(t * 3 + b) % bColors.length];
           ctx.save();
           ctx.shadowColor = bColor;
           ctx.shadowBlur = 8;
           ctx.fillStyle = bColor;
           ctx.beginPath();
-          ctx.arc(bx, by, 3.5, 0, Math.PI * 2);
+          ctx.arc(bx, by, 3.8, 0, Math.PI * 2);
           ctx.fill();
+          // Điểm phản chiếu ánh sáng lấp lánh
           ctx.fillStyle = '#ffffff';
           ctx.beginPath();
-          ctx.arc(bx - 1, by - 1, 1.2, 0, Math.PI * 2);
+          ctx.arc(bx - 1.2, by - 1.2, 1.3, 0, Math.PI * 2);
           ctx.fill();
+          ctx.restore();
+        }
+
+        // Chuông vàng mini treo rải rác
+        if (isMain && t % 2 === 0) {
+          const bellX = cx + (t % 2 === 0 ? 1 : -1) * tierW * 0.22;
+          const bellY = tierY + 2;
+          ctx.save();
+          ctx.fillStyle = '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(bellX, bellY, 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#dc2626';
+          ctx.fillRect(bellX - 2.5, bellY - 4, 5, 2);
           ctx.restore();
         }
       }
 
-      // Ngôi sao vàng kim đỉnh cây thông Noel
-      const starY = cy - trunkH - height * 0.78 - 6;
+      // 4. Ngôi sao vàng kim đỉnh cây thông Noel
+      const starY = cy - trunkH - height * 0.78 - 8;
       ctx.save();
       ctx.shadowColor = '#fde047';
-      ctx.shadowBlur = 18;
+      ctx.shadowBlur = 22;
       ctx.fillStyle = '#fef08a';
       ctx.beginPath();
-      const sOuter = 12;
-      const sInner = 5;
+      const sOuter = isMain ? 15 : 12;
+      const sInner = isMain ? 6.5 : 5;
       for (let i = 0; i < 5; i++) {
         const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
         const aInner = aOuter + Math.PI / 5;
@@ -4660,6 +4974,321 @@
         ctx.lineTo(cx + Math.cos(aInner) * sInner, starY + Math.sin(aInner) * sInner);
       }
       ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // 5. Các hộp quà Noel thắt nơ rực rỡ dưới gốc cây thông lớn
+      if (isMain) {
+        drawChristmasGiftUnderTree(ctx, cx - 22, cy - 4, 18, 16, '#dc2626', '#fbbf24');
+        drawChristmasGiftUnderTree(ctx, cx + 8, cy - 3, 16, 14, '#16a34a', '#ef4444');
+        drawChristmasGiftUnderTree(ctx, cx - 6, cy, 14, 12, '#0284c7', '#fde047');
+      }
+
+      ctx.restore();
+    }
+
+    // Tương thích ngược với các vị trí khác gọi drawChristmasPineTree
+    function drawChristmasPineTree(ctx, cx, cy, width, height, now) {
+      drawMajesticChristmasTree(ctx, cx, cy, width, height, true, now || Date.now());
+    }
+
+    function drawChristmasGiftUnderTree(ctx, x, y, w, h, boxColor, ribbonColor) {
+      ctx.save();
+      ctx.translate(x, y - h);
+      // Hộp quà
+      drawBalloonRoundedRect(ctx, 0, 0, w, h, 3, boxColor, 'rgba(0,0,0,0.2)', 1);
+      // Dải ruy băng chữ thập
+      ctx.fillStyle = ribbonColor;
+      ctx.fillRect(w / 2 - 1.8, 0, 3.6, h);
+      ctx.fillRect(0, h / 2 - 1.8, w, 3.6);
+      // Nơ ruy băng trên đỉnh
+      ctx.beginPath();
+      ctx.ellipse(w / 2 - 3.5, -2, 3.5, 2, -0.4, 0, Math.PI * 2);
+      ctx.ellipse(w / 2 + 3.5, -2, 3.5, 2, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawChristmasSnowman(ctx, x, y, scale, now) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+
+      // 1. Bóng đổ trên mặt tuyết
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 30, 9, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Quả cầu tuyết dưới cùng (Base)
+      const baseGrad = ctx.createRadialGradient(-7, -26, 4, 0, -24, 28);
+      baseGrad.addColorStop(0, '#ffffff');
+      baseGrad.addColorStop(0.75, '#f1f5f9');
+      baseGrad.addColorStop(1, '#cbd5e1');
+      ctx.fillStyle = baseGrad;
+      ctx.beginPath();
+      ctx.arc(0, -24, 25, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Quả cầu tuyết thân giữa (Middle)
+      const midGrad = ctx.createRadialGradient(-5, -55, 3, 0, -53, 21);
+      midGrad.addColorStop(0, '#ffffff');
+      midGrad.addColorStop(0.75, '#f1f5f9');
+      midGrad.addColorStop(1, '#cbd5e1');
+      ctx.fillStyle = midGrad;
+      ctx.beginPath();
+      ctx.arc(0, -53, 19, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. Ba chiếc cúc than đen trên ngực
+      const buttonY = [-60, -53, -46];
+      buttonY.forEach(by => {
+        ctx.save();
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(0, by, 2.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#94a3b8';
+        ctx.beginPath();
+        ctx.arc(-0.7, by - 0.7, 0.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // 5. Cánh tay cành cây gỗ (Twig arms)
+      // Tay phải: cắm hướng xuống tự nhiên
+      ctx.strokeStyle = '#5c2d0c';
+      ctx.lineWidth = 2.4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(14, -54);
+      ctx.lineTo(34, -48);
+      ctx.lineTo(44, -56);
+      ctx.moveTo(34, -48);
+      ctx.lineTo(40, -42);
+      ctx.stroke();
+
+      // Tay trái: giơ lên vẫy chào vui tươi (`waving arm`)
+      const wave = Math.sin(now * 0.006) * 0.28;
+      ctx.save();
+      ctx.translate(-14, -54);
+      ctx.rotate(-0.45 + wave);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-24, -14);
+      ctx.lineTo(-34, -12);
+      ctx.moveTo(-24, -14);
+      ctx.lineTo(-30, -22);
+      ctx.moveTo(-24, -14);
+      ctx.lineTo(-32, -6);
+      ctx.stroke();
+      ctx.restore();
+
+      // 6. Quả cầu tuyết đầu (Head)
+      const headGrad = ctx.createRadialGradient(-4, -80, 2, 0, -78, 16);
+      headGrad.addColorStop(0, '#ffffff');
+      headGrad.addColorStop(0.75, '#f8fafc');
+      headGrad.addColorStop(1, '#cbd5e1');
+      ctx.fillStyle = headGrad;
+      ctx.beginPath();
+      ctx.arc(0, -78, 15, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 7. Chiếc khăn len quàng cổ đỏ sọc xanh ấm áp
+      ctx.save();
+      ctx.fillStyle = '#dc2626';
+      drawBalloonRoundedRect(ctx, -16, -69, 32, 9, 4, '#dc2626', '#b91c1c', 1);
+      ctx.fillStyle = '#16a34a';
+      ctx.fillRect(-10, -69, 4, 9);
+      ctx.fillRect(0, -69, 4, 9);
+      ctx.fillRect(10, -69, 4, 9);
+      const scarfSway = Math.sin(now * 0.0035) * 5;
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.moveTo(4, -62);
+      ctx.lineTo(14, -62);
+      ctx.lineTo(16 + scarfSway, -38);
+      ctx.lineTo(6 + scarfSway, -38);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#16a34a';
+      ctx.fillRect(7 + scarfSway * 0.6, -52, 8, 4);
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.2;
+      for (let t = 0; t < 4; t++) {
+        ctx.beginPath();
+        ctx.moveTo(7 + scarfSway + t * 2.5, -38);
+        ctx.lineTo(7 + scarfSway + t * 2.5, -34);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 8. Khuôn mặt người tuyết đáng yêu
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(-5, -81, 2.2, 0, Math.PI * 2);
+      ctx.arc(5, -81, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-5.7, -81.7, 0.8, 0, Math.PI * 2);
+      ctx.arc(4.3, -81.7, 0.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đôi má hồng phấn
+      ctx.fillStyle = 'rgba(251, 113, 133, 0.45)';
+      ctx.beginPath();
+      ctx.arc(-9, -76, 3.5, 0, Math.PI * 2);
+      ctx.arc(9, -76, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mũi cà rốt cam nhọn
+      ctx.fillStyle = '#ea580c';
+      ctx.beginPath();
+      ctx.moveTo(0, -78);
+      ctx.lineTo(16, -76);
+      ctx.lineTo(0, -74);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#c2410c';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(5, -77.5);
+      ctx.lineTo(5, -75);
+      ctx.moveTo(10, -77);
+      ctx.lineTo(10, -75.5);
+      ctx.stroke();
+
+      // Nụ cười than đá tươi vui
+      ctx.fillStyle = '#0f172a';
+      const smilePts = [-5, -2.5, 0, 2.5, 5];
+      smilePts.forEach(sx => {
+        const sy = -71 + Math.abs(sx) * 0.4;
+        ctx.beginPath();
+        ctx.arc(sx, sy, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 9. Chiếc mũ phớt đen lịch lãm (Top Hat)
+      ctx.save();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.ellipse(0, -90, 18, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+      drawBalloonRoundedRect(ctx, -11, -111, 22, 22, 3, '#1e293b', '#0f172a', 1.2);
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(-11, -96, 22, 5);
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.ellipse(-7, -97, 4, 2, -0.4, 0, Math.PI * 2);
+      ctx.ellipse(-4, -98, 4, 2, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(-6, -96, 1.6, 0, Math.PI * 2);
+      ctx.arc(-4, -95, 1.6, 0, Math.PI * 2);
+      ctx.arc(-8, -94, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.ellipse(0, -111, 10, 2.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 10. Cây kẹo gậy cắm trên tuyết cạnh người tuyết
+      drawCandyCane(ctx, 32, -2, 0.82, 0.15);
+
+      ctx.restore();
+    }
+
+    function drawCandyCane(ctx, x, y, scale, angle = 0) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.scale(scale, scale);
+
+      // Thân kẹo gậy móc câu
+      ctx.lineCap = 'round';
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -32);
+      ctx.arc(8, -32, 8, Math.PI, 0, false);
+      ctx.stroke();
+
+      // Sọc đỏ xoắn kinh điển
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = '#dc2626';
+      ctx.setLineDash([4, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -32);
+      ctx.arc(8, -32, 8, Math.PI, 0, false);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Chiếc nơ xanh lá xinh xắn thắt giữa thân kẹo
+      ctx.fillStyle = '#16a34a';
+      ctx.beginPath();
+      ctx.ellipse(-4, -18, 4, 2.5, -0.4, 0, Math.PI * 2);
+      ctx.ellipse(4, -18, 4, 2.5, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, -18, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawChristmasWreath(ctx, cx, cy, radius, now) {
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // Vòng lá thông xanh tròn
+      ctx.strokeStyle = '#15803d';
+      ctx.lineWidth = radius * 0.42;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#166534';
+      ctx.lineWidth = radius * 0.32;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Quả mọng đỏ rải rác quanh vòng
+      for (let i = 0; i < 8; i++) {
+        const a = (i * Math.PI * 2) / 8;
+        const rx = Math.cos(a) * radius;
+        const ry = Math.sin(a) * radius;
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(rx, ry, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Nơ nhung đỏ trên đỉnh
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.ellipse(-6, -radius + 2, 7, 4, -0.4, 0, Math.PI * 2);
+      ctx.ellipse(6, -radius + 2, 7, 4, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath();
+      ctx.arc(0, -radius + 2, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đôi chuông vàng ngân vang ở giữa
+      const jingle = Math.sin(now * 0.004) * 0.08;
+      ctx.save();
+      ctx.rotate(jingle);
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(-3, -radius + 12, 3.5, 0, Math.PI * 2);
+      ctx.arc(3, -radius + 12, 3.5, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
@@ -4734,6 +5363,34 @@
         ctx.fill();
         ctx.restore();
       }
+      ctx.restore();
+    }
+
+    function drawChristmasFestiveDecorations(ctx, w, groundY, pileCenterX, now) {
+      ctx.save();
+
+      // 1. DÂY ĐÈN NOEL NHẤP NHÁY NHIỀU MÀU TRÊN CAO
+      drawChristmasFairyLights(ctx, w, now);
+
+      // 2. VÒNG NGUYỆT QUẾ GIÁNG SINH Ở CHÍNH GIỮA TRÊN CAO
+      drawChristmasWreath(ctx, w * 0.5, 38, 16, now);
+
+      // 3. CÂY THÔNG NOEL LỚN BÊN PHẢI (CẠNH ĐỐNG QUÀ)
+      const mainTreeX = Math.min(w - 75, pileCenterX + 165);
+      drawMajesticChristmasTree(ctx, mainTreeX, groundY, 86, 190, true, now);
+
+      // 4. CÂY THÔNG NOEL VỪA Ở GÓC BÊN TRÁI
+      const leftTreeX = Math.max(45, w * 0.06);
+      drawMajesticChristmasTree(ctx, leftTreeX, groundY, 62, 140, false, now);
+
+      // 5. NGƯỜI TUYẾT THÂN THIỆN (SNOWMAN VẪY TAY CHÀO EM BÉ)
+      const snowmanX = Math.max(105, w * 0.16);
+      drawChristmasSnowman(ctx, snowmanX, groundY - 2, 1.0, now);
+
+      // 6. KẸO GẬY NOEL CẮM TRÊN GỜ TUYẾT HAI BÊN
+      drawCandyCane(ctx, Math.max(18, w * 0.025), groundY - 2, 0.85, 0.1);
+      drawCandyCane(ctx, Math.min(w - 22, w * 0.96), groundY - 2, 0.85, -0.1);
+
       ctx.restore();
     }
 
@@ -5900,25 +6557,10 @@
       const theme = getEffectiveGiftTheme();
       const pileCenterX = Math.max(w * 0.62, w - 250);
 
-      // 1. BẦU TRỜI & KHÔNG GIAN THEO MÙA
       if (theme === 'christmas') {
-        // MÙA GIÁNG SINH: Đêm đông tuyết rơi an lành
-        const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
-        skyGrad.addColorStop(0, '#020617'); // Midnight deep blue
-        skyGrad.addColorStop(0.4, '#0c192e'); // Deep winter navy
-        skyGrad.addColorStop(0.8, '#0f2744'); // Glacial twilight
-        skyGrad.addColorStop(1, '#164e63');   // Frosted cyan horizon
-        ctx.fillStyle = skyGrad;
-        ctx.fillRect(0, 0, w, groundY);
-
-        // Sao sáng Giáng Sinh
-        drawChristmasStar(ctx, Math.max(w - 120, w * 0.82), 65, 24, now);
-
-        // Cây thông Noel bên cạnh đống quà
-        drawChristmasPineTree(ctx, Math.min(w - 75, pileCenterX + 160), groundY, 75, 165, now);
-
-        // Dây đèn Noel nhấp nháy nhiều màu
-        drawChristmasFairyLights(ctx, w, now);
+        // MÙA GIÁNG SINH: Đêm đông tuyết rơi an lành, cây thông rực rỡ & người tuyết thân thiện
+        drawChristmasGrandBackground(ctx, w, h, groundY, now);
+        drawChristmasFestiveDecorations(ctx, w, groundY, pileCenterX, now);
 
         // Tuyết rơi mùa đông lãng mạn
         if (giftSnowflakes && giftSnowflakes.length > 0) {
@@ -5930,29 +6572,13 @@
             }
             const dx = Math.sin(now * sn.swaySpeed + sn.phase) * sn.swayAmp;
             ctx.save();
-            ctx.fillStyle = `rgba(255, 255, 255, ${sn.alpha})`;
+            ctx.fillStyle = `rgba(255, 255, 255, ${sn.alpha || 0.85})`;
             ctx.beginPath();
             ctx.arc(sn.x + dx, sn.y, sn.r, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
           });
         }
-
-        // Sân tuyết phủ trắng
-        const snowGrad = ctx.createLinearGradient(0, groundY, 0, h);
-        snowGrad.addColorStop(0, '#f8fafc');
-        snowGrad.addColorStop(0.12, '#e2e8f0');
-        snowGrad.addColorStop(0.6, '#cbd5e1');
-        snowGrad.addColorStop(1, '#94a3b8');
-        ctx.fillStyle = snowGrad;
-        ctx.fillRect(0, groundY, w, h - groundY);
-
-        // Gờ tuyết bồng bềnh
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.ellipse(w * 0.5, groundY, w * 0.6, 9, 0, 0, Math.PI * 2);
-        ctx.fill();
-
       } else if (theme === 'tet') {
         // MÙA TẾT NGUYÊN ĐÁN: Ánh dương mùa xuân hoàng gia rực rỡ
         drawTetGrandBackground(ctx, w, h, groundY, now);
