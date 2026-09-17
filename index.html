@@ -1165,6 +1165,72 @@
           </div>
         </div>
 
+        <!-- 11. ĐƯỜNG ĐUA ĐIỀN KINH 200M -->
+        <div onclick="launchGame('athletics')" data-category="racing" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-amber-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-red-600 border border-amber-300/40 flex items-center justify-center text-2xl shadow-xs shrink-0 text-white">
+                🏃
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-fire text-amber-500"></i> Olympic Mới
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
+                Điền Kinh 200m Nước Rút
+              </h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
+                Đường chạy Tartan đỏ rực rỡ, các vận động viên sải chân nước rút xé toang dải băng đích vinh danh người chiến thắng!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🏃 Nước Rút</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🏟️ Tartan 200m</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⚡ Xé Băng Đích</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-amber-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Đường Chạy →</span>
+          </div>
+        </div>
+
+        <!-- 12. ĐƯỜNG ĐUA BƠI LỘI 200M -->
+        <div onclick="launchGame('swimming')" data-category="racing" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-cyan-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 border border-cyan-300/40 flex items-center justify-center text-2xl shadow-xs shrink-0 text-white">
+                🏊
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-water text-cyan-500"></i> Olympic Mới
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-cyan-600 transition">
+                Bơi Lội 200m Kình Ngư
+              </h3>
+              <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
+                Hồ bơi Olympic xanh biếc, dây phao 3 màu rực rỡ, kình ngư sải tay trườn sấp quẫy bọt sóng chạm tay vào tấm cảm ứng touchpad đích!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🏊 Trườn Sấp</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌊 Bọt Sóng 200m</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ Chạm Touchpad</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-cyan-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Xuống Hồ Bơi →</span>
+          </div>
+        </div>
+
       </div>
 
     </section>
@@ -1220,6 +1286,8 @@
               <option value="ski" class="bg-slate-900 text-white font-bold">⛷️ Trượt Tuyết Giáng Sinh (Đua Về Đích)</option>
               <option value="lixi" class="bg-slate-900 text-white font-bold">🧧 Lì Xì Tết May Mắn (Em Bé Nhận Lì Xì)</option>
               <option value="wheel_slot" class="bg-slate-900 text-amber-300 font-bold">🔮 Lồng Cầu Quay Số (Đập Bóng Gọi Tên)</option>
+              <option value="athletics" class="bg-slate-900 text-amber-300 font-bold">🏃 Điền Kinh 200m (Chạy Nước Rút)</option>
+              <option value="swimming" class="bg-slate-900 text-cyan-300 font-bold">🏊 Bơi Lội 200m (Kình Ngư Olympic)</option>
             </select>
           </div>
 
@@ -1585,6 +1653,76 @@
             <button onclick="resetBingoGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer flex items-center gap-1" title="Xáo Trộn Lại Lồng">
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> <span class="hidden sm:inline">Xáo lại</span>
             </button>
+          </div>
+        </div>
+
+        <!-- STAGE 12: ĐƯỜNG ĐUA ĐIỀN KINH 200M (VẬN ĐỘNG VIÊN NƯỚC RÚT) -->
+        <div id="athletics-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-amber-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-amber-400/30 text-white text-xs font-bold shadow-md">
+              <span class="text-amber-400 font-extrabold text-sm">🏃</span>
+              <span id="athletics-race-status">Sẵn sàng vào vạch xuất phát 200m!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleAthleticsSound()" id="athletics-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleAthleticsFullscreen()" id="athletics-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-400"></i> Phóng to
+              </button>
+              <button onclick="resetAthleticsRacePositions()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đặt lại vị trí xuất phát">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <!-- Bảng xếp hạng trực tiếp tốp 3 vận động viên điền kinh dẫn đầu -->
+          <div id="athletics-leaderboard" class="hidden absolute top-14 right-3 z-30 flex flex-col gap-1 w-44 pointer-events-none transition-all">
+            <div class="bg-slate-900/90 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg border border-amber-500/40 uppercase tracking-wider text-center">
+              🏃 Tốp Dẫn Đầu 200m
+            </div>
+            <div id="athletics-top-list" class="flex flex-col gap-1"></div>
+          </div>
+          <canvas id="athletics-race-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          <!-- Màn đếm ngược 3-2-1 Olympic -->
+          <div id="athletics-countdown-overlay" class="hidden absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-40 flex flex-col items-center justify-center select-none">
+            <div id="athletics-countdown-text" class="text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] font-display animate-pulse">
+              3
+            </div>
+          </div>
+        </div>
+
+        <!-- STAGE 13: ĐƯỜNG ĐUA BƠI LỘI 200M (KÌNH NGƯ OLYMPIC) -->
+        <div id="swimming-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-cyan-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-cyan-400/30 text-white text-xs font-bold shadow-md">
+              <span class="text-cyan-400 font-extrabold text-sm">🏊</span>
+              <span id="swimming-race-status">Kình ngư sẵn sàng trên bục xuất phát 200m!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleSwimSound()" id="swimming-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleSwimFullscreen()" id="swimming-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-cyan-400"></i> Phóng to
+              </button>
+              <button onclick="resetSwimRacePositions()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đặt lại vị trí xuất phát">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-cyan-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <!-- Bảng xếp hạng trực tiếp kình ngư dẫn đầu -->
+          <div id="swimming-leaderboard" class="hidden absolute top-14 right-3 z-30 flex flex-col gap-1 w-44 pointer-events-none transition-all">
+            <div class="bg-slate-900/90 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg border border-cyan-500/40 uppercase tracking-wider text-center">
+              🏊 Kình Ngư Dẫn Đầu
+            </div>
+            <div id="swimming-top-list" class="flex flex-col gap-1"></div>
+          </div>
+          <canvas id="swimming-race-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          <!-- Màn đếm ngược 3-2-1 Bể Bơi Olympic -->
+          <div id="swimming-countdown-overlay" class="hidden absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-40 flex flex-col items-center justify-center select-none">
+            <div id="swimming-countdown-text" class="text-7xl sm:text-9xl font-black text-cyan-300 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] font-display animate-pulse">
+              3
+            </div>
           </div>
         </div>
 
@@ -2974,6 +3112,9 @@
       else if (mode === 'gift') initGiftGame(true);
       else if (mode === 'ski') initSkiRace(true);
       else if (mode === 'lixi') initLixiGame(true);
+      else if (mode === 'wheel_slot' || mode === 'bingo') initBingoGame(true);
+      else if (mode === 'athletics') initAthleticsRace(true);
+      else if (mode === 'swimming') initSwimRace(true);
     }
 
     function renderClassesListTab() {
@@ -3384,6 +3525,8 @@
       const skiContainer = document.getElementById('ski-race-container');
       const lixiContainer = document.getElementById('lixi-stage-container');
       const bingoContainer = document.getElementById('bingo-stage-container');
+      const athleticsContainer = document.getElementById('athletics-race-container');
+      const swimmingContainer = document.getElementById('swimming-race-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -3397,6 +3540,8 @@
       if (skiContainer) skiContainer.classList.add('hidden');
       if (lixiContainer) lixiContainer.classList.add('hidden');
       if (bingoContainer) bingoContainer.classList.add('hidden');
+      if (athleticsContainer) athleticsContainer.classList.add('hidden');
+      if (swimmingContainer) swimmingContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -3473,6 +3618,20 @@
           resizeBingoCanvas();
           renderBingoCanvas(performance.now());
         }, 40);
+      } else if (mode === 'athletics') {
+        if (athleticsContainer) athleticsContainer.classList.remove('hidden');
+        initAthleticsRace(true);
+        setTimeout(() => {
+          resizeAthleticsCanvas();
+          renderAthleticsRaceCanvas(performance.now());
+        }, 40);
+      } else if (mode === 'swimming') {
+        if (swimmingContainer) swimmingContainer.classList.remove('hidden');
+        initSwimRace(true);
+        setTimeout(() => {
+          resizeSwimCanvas();
+          renderSwimRaceCanvas(performance.now());
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -3496,7 +3655,9 @@
         ski: { title: 'Trượt Tuyết Giáng Sinh (Đua Về Đích)', icon: '⛷️' },
         lixi: { title: 'Lì Xì Tết May Mắn (Em Bé Nhận Lì Xì Cung Kính)', icon: '🧧' },
         wheel_slot: { title: 'Lồng Cầu Quay Số (Đập Bóng Gọi Tên)', icon: '🔮' },
-        bingo: { title: 'Lồng Cầu Quay Số (Đập Bóng Gọi Tên)', icon: '🔮' }
+        bingo: { title: 'Lồng Cầu Quay Số (Đập Bóng Gọi Tên)', icon: '🔮' },
+        athletics: { title: 'Đua Điền Kinh 200m (Vận Động Viên Nước Rút)', icon: '🏃' },
+        swimming: { title: 'Đua Bơi Lội 200m (Kình Ngư Olympic)', icon: '🏊' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -3517,6 +3678,10 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-person-skiing"></i> XUẤT PHÁT TRƯỢT TUYẾT';
         } else if (mode === 'wheel_slot' || mode === 'bingo') {
           spinBtn.innerHTML = '<i class="fa-solid fa-bowling-ball"></i> QUAY LỒNG CẦU';
+        } else if (mode === 'athletics') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-person-running"></i> XUẤT PHÁT CHẠY 200M';
+        } else if (mode === 'swimming') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-person-swimming"></i> XUẤT PHÁT BƠI 200M';
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -3581,6 +3746,8 @@
         else if (mode === 'ski') initSkiRace(true);
         else if (mode === 'lixi') initLixiGame(true);
         else if (mode === 'wheel_slot' || mode === 'bingo') initBingoGame(true);
+        else if (mode === 'athletics') initAthleticsRace(true);
+        else if (mode === 'swimming') initSwimRace(true);
       }
     }
 
@@ -11804,6 +11971,8 @@
       else if (mode === 'ski' && typeof resizeSkiCanvas === 'function') resizeSkiCanvas();
       else if (mode === 'lixi' && typeof resizeLixiCanvas === 'function') resizeLixiCanvas();
       else if ((mode === 'wheel_slot' || mode === 'bingo') && typeof resizeBingoCanvas === 'function') resizeBingoCanvas();
+      else if (mode === 'athletics' && typeof resizeAthleticsCanvas === 'function') resizeAthleticsCanvas();
+      else if (mode === 'swimming' && typeof resizeSwimCanvas === 'function') resizeSwimCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -11820,7 +11989,9 @@
         { id: 'balloon-fullscreen-btn', color: 'text-rose-400' },
         { id: 'ski-fullscreen-btn', color: 'text-sky-300' },
         { id: 'lixi-fullscreen-btn', color: 'text-amber-400' },
-        { id: 'bingo-fullscreen-btn', color: 'text-amber-400' }
+        { id: 'bingo-fullscreen-btn', color: 'text-amber-400' },
+        { id: 'athletics-fullscreen-btn', color: 'text-amber-400' },
+        { id: 'swimming-fullscreen-btn', color: 'text-cyan-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -11909,6 +12080,9 @@
       if (mode === 'motogp') return motogpRaceRunning || motogpRaceState === 'racing' || motogpRaceState === 'countdown';
       if (mode === 'f1') return f1RaceRunning || f1RaceState === 'racing' || f1RaceState === 'countdown';
       if (mode === 'horse') return horseRaceRunning || horseRaceState === 'racing' || horseRaceState === 'countdown';
+      if (mode === 'athletics') return athleticsRaceState === 'running' || athleticsRaceState === 'countdown';
+      if (mode === 'swimming') return swimRaceState === 'running' || swimRaceState === 'countdown';
+      if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
     }
@@ -14189,6 +14363,1325 @@
         ctx.fillText(subtitle, w * 0.5, 58);
       }
       ctx.restore();
+    }
+
+    // ==========================================
+    // MODULE: ĐIỀN KINH 200M (ATHLETICS 200M SPRINT)
+    // ==========================================
+    const AthleticsAudio = {
+      ctx: null,
+      enabled: true,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playGunshot() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const t = this.ctx.currentTime;
+          // 1. Tiếng súng xuất phát đanh thép (Starter Pistol)
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320, t);
+          osc.frequency.exponentialRampToValueAtTime(40, t + 0.28);
+          gain.gain.setValueAtTime(0.6, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.32);
+
+          // 2. Tiếng nổ transient
+          const osc2 = this.ctx.createOscillator();
+          const gain2 = this.ctx.createGain();
+          osc2.type = 'square';
+          osc2.frequency.setValueAtTime(800, t);
+          osc2.frequency.exponentialRampToValueAtTime(100, t + 0.08);
+          gain2.gain.setValueAtTime(0.4, t);
+          gain2.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+          osc2.connect(gain2);
+          gain2.connect(this.ctx.destination);
+          osc2.start(t);
+          osc2.stop(t + 0.1);
+        } catch(e) {}
+      },
+      playFootstep() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(120 + Math.random() * 40, t);
+          osc.frequency.exponentialRampToValueAtTime(30, t + 0.04);
+          gain.gain.setValueAtTime(0.08, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.045);
+        } catch(e) {}
+      },
+      playTapeSnap() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(980, t);
+          osc.frequency.exponentialRampToValueAtTime(200, t + 0.14);
+          gain.gain.setValueAtTime(0.3, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.16);
+        } catch(e) {}
+      },
+      playFanfare() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          const t = this.ctx.currentTime;
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, t + idx * 0.09);
+            gain.gain.setValueAtTime(0.2, t + idx * 0.09);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.09 + 0.38);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t + idx * 0.09);
+            osc.stop(t + idx * 0.09 + 0.4);
+          });
+        } catch(e) {}
+      }
+    };
+
+    const ATHLETICS_COLOR_PALETTES = [
+      { jersey: '#dc2626', shorts: '#991b1b', trim: '#ffffff', skin: '#fcd34d' }, // Đỏ cờ
+      { jersey: '#2563eb', shorts: '#1e3a8a', trim: '#93c5fd', skin: '#fde68a' }, // Xanh lam
+      { jersey: '#16a34a', shorts: '#14532d', trim: '#86efac', skin: '#fed7aa' }, // Xanh lá
+      { jersey: '#f59e0b', shorts: '#78350f', trim: '#fef08a', skin: '#fcd34d' }, // Vàng cam
+      { jersey: '#9333ea', shorts: '#581c87', trim: '#d8b4fe', skin: '#fde68a' }, // Tím đậm
+      { jersey: '#0891b2', shorts: '#164e63', trim: '#a5f3fc', skin: '#fed7aa' }, // Xanh ngọc
+      { jersey: '#e11d48', shorts: '#881337', trim: '#fecdd3', skin: '#fcd34d' }, // Hồng đỏ
+      { jersey: '#475569', shorts: '#0f172a', trim: '#e2e8f0', skin: '#fde68a' }  // Xám than
+    ];
+
+    let athleticsRunners = [];
+    let athleticsRaceState = 'idle'; // 'idle' | 'countdown' | 'running' | 'finished'
+    let athleticsTrackLength = 3200;
+    let athleticsStartX = 220;
+    let athleticsFinishX = 3000;
+    let athleticsCameraX = 0;
+    let athleticsStartTime = 0;
+    let athleticsRaceDuration = 6000;
+    let athleticsTargetWinner = null;
+    let athleticsFinishCallback = null;
+    let athleticsAnimId = null;
+    let athleticsTapeBroken = false;
+    let athleticsLastStepTime = 0;
+
+    function initAthleticsRace(resetPositions = true) {
+      const container = document.getElementById('athletics-race-container');
+      const canvas = document.getElementById('athletics-race-canvas');
+      if (!container || !canvas) return;
+
+      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+      const count = visible.length;
+      resizeAthleticsCanvas();
+
+      const rect = container.getBoundingClientRect();
+      const h = rect.height || 480;
+      const stadiumTopH = Math.max(70, Math.floor(h * 0.18));
+      const infieldBottomH = Math.max(50, Math.floor(h * 0.14));
+      const trackH = h - stadiumTopH - infieldBottomH;
+
+      // Tính toán khoảng cách làn chạy
+      const usableLanes = Math.max(4, Math.min(count, 16));
+      const laneH = Math.max(26, Math.min(52, trackH / usableLanes));
+
+      athleticsStartX = 200;
+      athleticsTrackLength = Math.max((rect.width || 800) * 3.5, 3000);
+      athleticsFinishX = athleticsTrackLength - 240;
+
+      if (resetPositions || athleticsRunners.length !== count) {
+        athleticsRunners = visible.map((st, i) => {
+          const laneIdx = i % usableLanes;
+          const staggerOffset = (usableLanes - 1 - laneIdx) * 18; // Làn ngoài xuất phát trước (staggered 200m)
+          const startX = athleticsStartX + staggerOffset - Math.floor(i / usableLanes) * 55;
+          const baseY = stadiumTopH + laneIdx * laneH + laneH * 0.5;
+          const palette = ATHLETICS_COLOR_PALETTES[i % ATHLETICS_COLOR_PALETTES.length];
+
+          const nameParts = (st.name || '').trim().split(/\s+/);
+          const shortName = nameParts.length > 2 ? nameParts.slice(-2).join(' ') : (st.name || 'VĐV');
+
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortName,
+            fullName: st.name,
+            bibNumber: i + 1,
+            lane: laneIdx + 1,
+            x: startX,
+            y: baseY,
+            baseY: baseY,
+            startX: startX,
+            speedFactor: 0.92 + (Math.sin(i * 43) * 0.08) + (Math.random() * 0.06),
+            stridePhase: Math.random() * Math.PI * 2,
+            isWinner: false,
+            rank: i + 1,
+            ...palette
+          };
+        });
+      }
+
+      athleticsCameraX = 0;
+      athleticsRaceState = 'idle';
+      athleticsTapeBroken = false;
+
+      const statusEl = document.getElementById('athletics-race-status');
+      if (statusEl) statusEl.innerText = "🏃 Vận động viên sẵn sàng vào vạch xuất phát 200m!";
+      const boardEl = document.getElementById('athletics-leaderboard');
+      if (boardEl) boardEl.classList.remove('hidden');
+
+      if (!athleticsAnimId) {
+        athleticsAnimId = requestAnimationFrame(renderAthleticsRaceCanvas);
+      }
+    }
+
+    function resizeAthleticsCanvas() {
+      const container = document.getElementById('athletics-race-container');
+      const canvas = document.getElementById('athletics-race-canvas');
+      if (!container || !canvas) return;
+
+      const rect = container.getBoundingClientRect();
+      const width = Math.floor(rect.width);
+      const height = Math.floor(rect.height);
+
+      if (width > 0 && height > 0) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+    }
+
+    function toggleAthleticsSound() {
+      AthleticsAudio.enabled = !AthleticsAudio.enabled;
+      const btn = document.getElementById('athletics-sound-btn');
+      if (btn) btn.innerText = AthleticsAudio.enabled && isAppSoundActive ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleAthleticsFullscreen() {
+      const container = document.getElementById('athletics-race-container');
+      if (!container) return;
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => alert('Không thể phóng to: ' + err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function resetAthleticsRacePositions() {
+      initAthleticsRace(true);
+      const btn = document.getElementById('spin-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-70');
+        btn.innerHTML = '<i class="fa-solid fa-person-running"></i> XUẤT PHÁT CHẠY 200M';
+      }
+    }
+
+    function startAthleticsRace(winnerStudent, durationMs = 5500, callback) {
+      if (athleticsRaceState === 'running' || athleticsRaceState === 'countdown') return;
+
+      athleticsTargetWinner = winnerStudent;
+      athleticsFinishCallback = callback;
+      athleticsRaceDuration = Math.max(4500, durationMs);
+      athleticsTapeBroken = false;
+      AthleticsAudio.init();
+
+      // Đánh dấu vận động viên chiến thắng
+      athleticsRunners.forEach(r => {
+        r.isWinner = (r.id === winnerStudent.id);
+      });
+
+      // Màn đếm ngược 3-2-1 Olympic
+      athleticsRaceState = 'countdown';
+      const overlay = document.getElementById('athletics-countdown-overlay');
+      const countText = document.getElementById('athletics-countdown-text');
+      const statusEl = document.getElementById('athletics-race-status');
+
+      if (overlay) overlay.classList.remove('hidden');
+
+      let count = 3;
+      if (countText) countText.innerText = count;
+      if (statusEl) statusEl.innerText = "⏳ Chuẩn bị vào vị trí xuất phát: " + count;
+
+      const timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+          if (countText) countText.innerText = count;
+          if (statusEl) statusEl.innerText = "⏳ Chuẩn bị: " + count;
+        } else if (count === 0) {
+          if (countText) countText.innerText = "BÙM!";
+          if (statusEl) statusEl.innerText = "💥 XUẤT PHÁT!";
+          AthleticsAudio.playGunshot();
+        } else {
+          clearInterval(timer);
+          if (overlay) overlay.classList.add('hidden');
+          athleticsRaceState = 'running';
+          athleticsStartTime = performance.now();
+          if (statusEl) statusEl.innerText = "🏃 Các VĐV đang nước rút cự ly 200m!";
+        }
+      }, 750);
+    }
+
+    // --- HÀM VẼ TOÀN BỘ ĐƯỜNG ĐUA ĐIỀN KINH 200M ---
+    function renderAthleticsRaceCanvas(now) {
+      const canvas = document.getElementById('athletics-race-canvas');
+      if (!canvas) {
+        athleticsAnimId = requestAnimationFrame(renderAthleticsRaceCanvas);
+        return;
+      }
+      const ctx = canvas.getContext('2d');
+      const cw = canvas.width;
+      const ch = canvas.height;
+
+      // 1. CẬP NHẬT VẬT LÝ VÀ CHUYỂN ĐỘNG NƯỚC RÚT
+      if (athleticsRaceState === 'running') {
+        const elapsed = now - athleticsStartTime;
+        const progress = Math.min(1, elapsed / athleticsRaceDuration);
+
+        // Phát âm thanh bước chạy dồn dập
+        if (now - athleticsLastStepTime > 120) {
+          athleticsLastStepTime = now;
+          AthleticsAudio.playFootstep();
+        }
+
+        athleticsRunners.forEach(r => {
+          let speedMul = r.speedFactor;
+          if (r.isWinner) {
+            // Người thắng bứt phá mạnh mẽ ở 40% cuối chặng
+            if (progress > 0.55) {
+              speedMul *= 1.0 + (progress - 0.55) * 1.25;
+            } else {
+              speedMul *= 1.02;
+            }
+          } else {
+            // Nhiễu ngẫu nhiên cạnh tranh
+            speedMul *= 0.96 + Math.sin(progress * 12 + r.lane) * 0.05;
+          }
+
+          const targetDist = athleticsFinishX - r.startX;
+          const currentDist = targetDist * progress * speedMul;
+          r.x = r.startX + currentDist;
+
+          // Chu kỳ sải bước chân
+          r.stridePhase += 0.28 * speedMul;
+
+          // Xé băng đích
+          if (r.x >= athleticsFinishX && !athleticsTapeBroken) {
+            athleticsTapeBroken = true;
+            AthleticsAudio.playTapeSnap();
+            AthleticsAudio.playFanfare();
+          }
+        });
+
+        // Xếp hạng vận động viên
+        const sorted = [...athleticsRunners].sort((a, b) => b.x - a.x);
+        sorted.forEach((runner, idx) => { runner.rank = idx + 1; });
+
+        // Cập nhật Leaderboard trực tiếp
+        updateAthleticsLeaderboard(sorted);
+
+        // Camera bám sát nhóm vận động viên dẫn đầu
+        const leaderX = sorted[0]?.x || 0;
+        const targetCameraX = Math.max(0, leaderX - cw * 0.48);
+        athleticsCameraX += (targetCameraX - athleticsCameraX) * 0.12;
+
+        if (progress >= 1) {
+          athleticsRaceState = 'finished';
+          const winner = athleticsRunners.find(r => r.isWinner) || sorted[0];
+          const statusEl = document.getElementById('athletics-race-status');
+          if (statusEl) {
+            statusEl.innerHTML = `🏆 Vô địch 200m: <b class="text-amber-300">${winner.fullName}</b>!`;
+          }
+
+          setTimeout(() => {
+            if (typeof athleticsFinishCallback === 'function') {
+              const cb = athleticsFinishCallback;
+              athleticsFinishCallback = null;
+              cb(winner.student);
+            }
+          }, 900);
+        }
+      }
+
+      ctx.save();
+
+      // 2. KHÁN ĐÀI SÂN VẬN ĐỘNG & BẦU TRỜI (PARALLAX BACKGROUND)
+      const stadiumH = Math.max(70, Math.floor(ch * 0.18));
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, stadiumH);
+      skyGrad.addColorStop(0, '#0f172a');
+      skyGrad.addColorStop(0.7, '#1e293b');
+      skyGrad.addColorStop(1, '#334155');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, cw, stadiumH);
+
+      // Khán đài cờ hoa & khán giả cổ vũ
+      const crowdY = stadiumH * 0.45;
+      const flagColors = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#ffffff', '#ec4899'];
+      for (let i = 0; i < cw; i += 18) {
+        const flagWave = Math.sin(now * 0.005 + i) * 6;
+        ctx.fillStyle = flagColors[(Math.floor(i / 18)) % flagColors.length];
+        ctx.fillRect(i, crowdY - 12 + flagWave, 10, 7);
+        // Cán cờ
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(i, crowdY - 12 + flagWave);
+        ctx.lineTo(i, crowdY + 14);
+        ctx.stroke();
+      }
+
+      // Biển quảng cáo điện tử chạy dọc khán đài
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(0, stadiumH - 22, cw, 22);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, stadiumH - 22, cw, 22);
+
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 11px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      const adText = "⚡ OLYMPIC 200M SPRINT CHAMPIONSHIP • ĐƯỜNG ĐUA ĐIỀN KINH GỌI TÊN HỌC SINH ⚡";
+      ctx.fillText(adText, cw * 0.5, stadiumH - 8);
+
+      // 3. ĐƯỜNG CHẠY TARTAN ĐỎ RỰC RỠ VÀ CÁC LÀN CHẠY
+      const infieldH = Math.max(50, Math.floor(ch * 0.14));
+      const trackH = ch - stadiumH - infieldH;
+
+      ctx.save();
+      ctx.translate(-athleticsCameraX, 0);
+
+      // Mặt đường cao su Tartan đỏ thắm
+      const trackGrad = ctx.createLinearGradient(0, stadiumH, 0, stadiumH + trackH);
+      trackGrad.addColorStop(0, '#991b1b'); // Đỏ đậm
+      trackGrad.addColorStop(0.5, '#b91c1c'); // Đỏ Tartan
+      trackGrad.addColorStop(1, '#7f1d1d');
+      ctx.fillStyle = trackGrad;
+      ctx.fillRect(0, stadiumH, athleticsTrackLength + 400, trackH);
+
+      // Vẽ các làn chạy màu trắng (White Lane Lines)
+      const laneCount = Math.max(...athleticsRunners.map(r => r.lane), 6);
+      const laneH = trackH / laneCount;
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.lineWidth = 2.5;
+      for (let l = 0; l <= laneCount; l++) {
+        const ly = stadiumH + l * laneH;
+        ctx.beginPath();
+        ctx.moveTo(0, ly);
+        ctx.lineTo(athleticsTrackLength + 400, ly);
+        ctx.stroke();
+
+        // Số làn chạy (Lane Numbers)
+        if (l < laneCount) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+          ctx.font = '900 16px Inter, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText((l + 1).toString(), athleticsStartX - 80, ly + laneH * 0.62);
+        }
+      }
+
+      // Vạch xuất phát zíc-zắc (Staggered Starting Lines)
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      for (let l = 0; l < laneCount; l++) {
+        const staggerX = athleticsStartX + (laneCount - 1 - l) * 18;
+        const ly = stadiumH + l * laneH;
+        ctx.beginPath();
+        ctx.moveTo(staggerX, ly + 2);
+        ctx.lineTo(staggerX, ly + laneH - 2);
+        ctx.stroke();
+
+        // Bàn đạp xuất phát (Starting Blocks)
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(staggerX - 16, ly + laneH * 0.35, 14, laneH * 0.3);
+      }
+
+      // Các mốc cự ly: 150m, 100m, 50m
+      const marks = [
+        { label: '150M', pct: 0.25 },
+        { label: '100M', pct: 0.50 },
+        { label: '50M', pct: 0.75 }
+      ];
+      marks.forEach(m => {
+        const mx = athleticsStartX + (athleticsFinishX - athleticsStartX) * m.pct;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([6, 6]);
+        ctx.beginPath();
+        ctx.moveTo(mx, stadiumH);
+        ctx.lineTo(mx, stadiumH + trackH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = 'rgba(254, 240, 138, 0.7)';
+        ctx.font = 'bold 12px Inter, sans-serif';
+        ctx.fillText(m.label, mx, stadiumH + 16);
+      });
+
+      // VẠCH ĐÍCH (FINISH LINE) & DẢI BĂNG ĐỎ XÉ TOANG
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(athleticsFinishX, stadiumH);
+      ctx.lineTo(athleticsFinishX, stadiumH + trackH);
+      ctx.stroke();
+
+      // Dải băng đỏ căng ngang vạch đích
+      if (!athleticsTapeBroken) {
+        ctx.fillStyle = '#ef4444';
+        ctx.shadowColor = 'rgba(239, 68, 68, 0.6)';
+        ctx.shadowBlur = 10;
+        ctx.fillRect(athleticsFinishX - 3, stadiumH + 8, 6, trackH - 16);
+        ctx.shadowColor = 'transparent';
+
+        // Biển báo FINISH
+        ctx.fillStyle = '#fef08a';
+        ctx.font = '900 13px Inter, sans-serif';
+        ctx.fillText("FINISH 200M", athleticsFinishX, stadiumH - 6);
+      } else {
+        // Dải băng đứt đôi bay phấp phới
+        ctx.fillStyle = '#ef4444';
+        ctx.fillRect(athleticsFinishX - 18, stadiumH + 15, 12, trackH * 0.4);
+        ctx.fillRect(athleticsFinishX + 6, stadiumH + trackH * 0.5, 12, trackH * 0.4);
+      }
+
+      // 4. VẼ TỪNG VẬN ĐỘNG VIÊN ĐIỀN KINH NƯỚC RÚT
+      // Sắp xếp vẽ theo tọa độ y để tạo chiều sâu tự nhiên
+      const sortedByY = [...athleticsRunners].sort((a, b) => a.y - b.y);
+      sortedByY.forEach(r => {
+        drawAthleticsRunner(ctx, r, now);
+      });
+
+      // 5. BÃI CỎ XANH BÊN TRONG SÂN (INFIELD TURF)
+      ctx.fillStyle = '#15803d'; // Cỏ xanh mướt
+      ctx.fillRect(0, stadiumH + trackH, athleticsTrackLength + 400, infieldH);
+      // Viền vôi trắng sân cỏ
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, stadiumH + trackH + 3);
+      ctx.lineTo(athleticsTrackLength + 400, stadiumH + trackH + 3);
+      ctx.stroke();
+
+      ctx.restore();
+
+      // 6. ĐỒNG HỒ ĐIỆN TỬ BẤM GIỜ OLYMPIC GÓC TRÊN TRÁI
+      if (athleticsRaceState === 'running') {
+        const timeSec = ((now - athleticsStartTime) / 1000).toFixed(2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(16, 52, 130, 32, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#fde047';
+        ctx.font = '900 16px Courier New, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`⏱️ 00:${timeSec.padStart(5, '0')}`, 81, 73);
+      }
+
+      ctx.restore();
+
+      athleticsAnimId = requestAnimationFrame(renderAthleticsRaceCanvas);
+    }
+
+    // Vẽ 1 vận động viên điền kinh đang sải chân nước rút
+    function drawAthleticsRunner(ctx, r, now) {
+      ctx.save();
+      ctx.translate(r.x, r.y);
+
+      // Đổ bóng vận động viên xuống mặt đường Tartan
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(0, 16, 16, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Chu kỳ sải chân (Leg & Arm Swing)
+      const p = r.stridePhase;
+      const leg1Angle = Math.sin(p) * 0.75;
+      const leg2Angle = -Math.sin(p) * 0.75;
+      const arm1Angle = -Math.sin(p) * 0.85;
+      const arm2Angle = Math.sin(p) * 0.85;
+      const bobY = Math.abs(Math.cos(p)) * 3;
+
+      // 1. Chân sau (Leg 2)
+      ctx.strokeStyle = r.skin;
+      ctx.lineWidth = 4.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(0, 4 - bobY);
+      const knee2X = Math.sin(leg2Angle) * 12;
+      const knee2Y = 4 + Math.cos(leg2Angle) * 11;
+      ctx.lineTo(knee2X, knee2Y);
+      ctx.lineTo(knee2X + Math.sin(leg2Angle * 1.2) * 10, knee2Y + 9);
+      ctx.stroke();
+
+      // Giày đinh chạy (Shoe 2)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(knee2X + Math.sin(leg2Angle * 1.2) * 10 - 3, knee2Y + 7, 7, 4);
+
+      // 2. Tay sau (Arm 2)
+      ctx.strokeStyle = r.skin;
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(0, -12 - bobY);
+      ctx.lineTo(Math.sin(arm2Angle) * 12, -12 - bobY + Math.cos(arm2Angle) * 10);
+      ctx.stroke();
+
+      // 3. Thân người & Áo thi đấu (Torso & Singlet)
+      ctx.save();
+      ctx.translate(0, -bobY);
+      // Nghiêng người về phía trước theo quán tính nước rút
+      ctx.rotate(0.18);
+
+      ctx.fillStyle = r.jersey;
+      ctx.strokeStyle = r.trim;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(-7, -18, 14, 18, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      // Quần đùi thi đấu ôm sát
+      ctx.fillStyle = r.shorts;
+      ctx.fillRect(-7, 0, 14, 7);
+
+      // Số đeo trước ngực (Bib Number)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-5, -13, 10, 8);
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '900 7px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(r.bibNumber.toString(), 0, -7);
+
+      // Đầu & Tóc (Head & Hair)
+      ctx.fillStyle = r.skin;
+      ctx.beginPath();
+      ctx.arc(2, -26, 7.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tóc thể thao
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.arc(1, -28, 7.5, Math.PI * 0.9, Math.PI * 2.1);
+      ctx.fill();
+
+      // Băng đô thể thao (Headband)
+      ctx.strokeStyle = r.jersey;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(2, -26, 7.8, -Math.PI * 0.6, Math.PI * 0.3);
+      ctx.stroke();
+      ctx.restore();
+
+      // 4. Chân trước (Leg 1)
+      ctx.strokeStyle = r.skin;
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(0, 4 - bobY);
+      const knee1X = Math.sin(leg1Angle) * 13;
+      const knee1Y = 4 + Math.cos(leg1Angle) * 12;
+      ctx.lineTo(knee1X, knee1Y);
+      ctx.lineTo(knee1X + Math.sin(leg1Angle * 1.2) * 11, knee1Y + 9);
+      ctx.stroke();
+
+      // Giày đinh chạy (Shoe 1)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(knee1X + Math.sin(leg1Angle * 1.2) * 11 - 3, knee1Y + 7, 7, 4);
+
+      // 5. Tay trước (Arm 1)
+      ctx.strokeStyle = r.skin;
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(0, -12 - bobY);
+      ctx.lineTo(Math.sin(arm1Angle) * 13, -12 - bobY + Math.cos(arm1Angle) * 11);
+      ctx.stroke();
+
+      // 6. Nhãn tên học sinh nổi bật phía trên đầu
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = r.isWinner ? '#f59e0b' : '#ffffff';
+      ctx.lineWidth = r.isWinner ? 2 : 1;
+      const nameW = Math.max(50, r.displayName.length * 7 + 14);
+      ctx.beginPath();
+      ctx.roundRect(-nameW * 0.5, -46 - bobY, nameW, 16, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = r.isWinner ? '#fef08a' : '#ffffff';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(r.displayName, 0, -34 - bobY);
+
+      // Nếu đang về nhất: vương miện nhỏ
+      if (r.rank === 1) {
+        ctx.font = '11px Arial';
+        ctx.fillText('👑', 0, -50 - bobY);
+      }
+
+      ctx.restore();
+    }
+
+    // Cập nhật Leaderboard trực tiếp điền kinh
+    function updateAthleticsLeaderboard(sorted) {
+      const topListEl = document.getElementById('athletics-top-list');
+      if (!topListEl) return;
+
+      const top3 = sorted.slice(0, 3);
+      const medals = ['🥇', '🥈', '🥉'];
+      const bgColors = ['bg-amber-500/85 border-amber-300', 'bg-slate-700/85 border-slate-400', 'bg-amber-800/85 border-amber-600'];
+
+      topListEl.innerHTML = top3.map((runner, i) => `
+        <div class="${bgColors[i]} text-white font-bold text-xs px-2.5 py-1 rounded-lg border shadow flex items-center justify-between">
+          <span class="truncate max-w-[105px]">${medals[i]} ${runner.displayName}</span>
+          <span class="text-[10px] font-mono text-amber-200">L${runner.lane}</span>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // MODULE: BƠI LỘI 200M (SWIMMING 200M FREESTYLE)
+    // ==========================================
+    const SwimAudio = {
+      ctx: null,
+      enabled: true,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playBuzzer() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          // Còi bíp xuất phát điện tử chuẩn Olympic (750Hz)
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(750, t);
+          gain.gain.setValueAtTime(0.4, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.36);
+        } catch(e) {}
+      },
+      playSplash() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(240 + Math.random() * 80, t);
+          osc.frequency.exponentialRampToValueAtTime(45, t + 0.08);
+          gain.gain.setValueAtTime(0.12, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.09);
+        } catch(e) {}
+      },
+      playTouchpad() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1050, t);
+          gain.gain.setValueAtTime(0.35, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.24);
+        } catch(e) {}
+      },
+      playFanfare() {
+        if (!this.enabled || !isAppSoundActive) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          const t = this.ctx.currentTime;
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, t + idx * 0.09);
+            gain.gain.setValueAtTime(0.2, t + idx * 0.09);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.09 + 0.38);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t + idx * 0.09);
+            osc.stop(t + idx * 0.09 + 0.4);
+          });
+        } catch(e) {}
+      }
+    };
+
+    const SWIM_COLOR_PALETTES = [
+      { cap: '#06b6d4', suit: '#0e7490', goggles: '#ffffff', skin: '#fcd34d' }, // Cyan
+      { cap: '#f59e0b', suit: '#b45309', goggles: '#ffffff', skin: '#fde68a' }, // Vàng
+      { cap: '#ef4444', suit: '#991b1b', goggles: '#ffffff', skin: '#fed7aa' }, // Đỏ
+      { cap: '#10b981', suit: '#065f46', goggles: '#ffffff', skin: '#fcd34d' }, // Xanh ngọc
+      { cap: '#3b82f6', suit: '#1e40af', goggles: '#ffffff', skin: '#fde68a' }, // Xanh dương
+      { cap: '#8b5cf6', suit: '#5b21b6', goggles: '#ffffff', skin: '#fed7aa' }, // Tím
+      { cap: '#ec4899', suit: '#9d174d', goggles: '#ffffff', skin: '#fcd34d' }, // Hồng
+      { cap: '#1e293b', suit: '#0f172a', goggles: '#38bdf8', skin: '#fde68a' }  // Đen tuyền
+    ];
+
+    let swimmers = [];
+    let swimRaceState = 'idle'; // 'idle' | 'countdown' | 'running' | 'finished'
+    let swimTrackLength = 3400;
+    let swimStartX = 180;
+    let swimFinishX = 3150;
+    let swimCameraX = 0;
+    let swimStartTime = 0;
+    let swimRaceDuration = 6500;
+    let swimTargetWinner = null;
+    let swimFinishCallback = null;
+    let swimAnimId = null;
+    let swimTouchpadHit = false;
+    let swimLastSplashTime = 0;
+
+    function initSwimRace(resetPositions = true) {
+      const container = document.getElementById('swimming-race-container');
+      const canvas = document.getElementById('swimming-race-canvas');
+      if (!container || !canvas) return;
+
+      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+      const count = visible.length;
+      resizeSwimCanvas();
+
+      const rect = container.getBoundingClientRect();
+      const h = rect.height || 480;
+      const topPoolDeckH = Math.max(50, Math.floor(h * 0.12));
+      const botPoolDeckH = Math.max(45, Math.floor(h * 0.11));
+      const poolH = h - topPoolDeckH - botPoolDeckH;
+
+      const usableLanes = Math.max(4, Math.min(count, 14));
+      const laneH = Math.max(28, Math.min(54, poolH / usableLanes));
+
+      swimStartX = 160;
+      swimTrackLength = Math.max((rect.width || 800) * 3.6, 3200);
+      swimFinishX = swimTrackLength - 220;
+
+      if (resetPositions || swimmers.length !== count) {
+        swimmers = visible.map((st, i) => {
+          const laneIdx = i % usableLanes;
+          const startX = swimStartX - Math.floor(i / usableLanes) * 55;
+          const baseY = topPoolDeckH + laneIdx * laneH + laneH * 0.5;
+          const palette = SWIM_COLOR_PALETTES[i % SWIM_COLOR_PALETTES.length];
+
+          const nameParts = (st.name || '').trim().split(/\s+/);
+          const shortName = nameParts.length > 2 ? nameParts.slice(-2).join(' ') : (st.name || 'Kình Ngư');
+
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortName,
+            fullName: st.name,
+            lane: laneIdx + 1,
+            x: startX,
+            y: baseY,
+            baseY: baseY,
+            startX: startX,
+            speedFactor: 0.93 + (Math.sin(i * 31) * 0.07) + (Math.random() * 0.05),
+            strokePhase: Math.random() * Math.PI * 2,
+            isWinner: false,
+            rank: i + 1,
+            ...palette
+          };
+        });
+      }
+
+      swimCameraX = 0;
+      swimRaceState = 'idle';
+      swimTouchpadHit = false;
+
+      const statusEl = document.getElementById('swimming-race-status');
+      if (statusEl) statusEl.innerText = "🏊 Kình ngư sẵn sàng trên bục xuất phát 200m!";
+      const boardEl = document.getElementById('swimming-leaderboard');
+      if (boardEl) boardEl.classList.remove('hidden');
+
+      if (!swimAnimId) {
+        swimAnimId = requestAnimationFrame(renderSwimRaceCanvas);
+      }
+    }
+
+    function resizeSwimCanvas() {
+      const container = document.getElementById('swimming-race-container');
+      const canvas = document.getElementById('swimming-race-canvas');
+      if (!container || !canvas) return;
+
+      const rect = container.getBoundingClientRect();
+      const width = Math.floor(rect.width);
+      const height = Math.floor(rect.height);
+
+      if (width > 0 && height > 0) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+    }
+
+    function toggleSwimSound() {
+      SwimAudio.enabled = !SwimAudio.enabled;
+      const btn = document.getElementById('swimming-sound-btn');
+      if (btn) btn.innerText = SwimAudio.enabled && isAppSoundActive ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleSwimFullscreen() {
+      const container = document.getElementById('swimming-race-container');
+      if (!container) return;
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => alert('Không thể phóng to: ' + err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function resetSwimRacePositions() {
+      initSwimRace(true);
+      const btn = document.getElementById('spin-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-70');
+        btn.innerHTML = '<i class="fa-solid fa-person-swimming"></i> XUẤT PHÁT BƠI 200M';
+      }
+    }
+
+    function startSwimRace(winnerStudent, durationMs = 6000, callback) {
+      if (swimRaceState === 'running' || swimRaceState === 'countdown') return;
+
+      swimTargetWinner = winnerStudent;
+      swimFinishCallback = callback;
+      swimRaceDuration = Math.max(5000, durationMs);
+      swimTouchpadHit = false;
+      SwimAudio.init();
+
+      swimmers.forEach(s => {
+        s.isWinner = (s.id === winnerStudent.id);
+      });
+
+      swimRaceState = 'countdown';
+      const overlay = document.getElementById('swimming-countdown-overlay');
+      const countText = document.getElementById('swimming-countdown-text');
+      const statusEl = document.getElementById('swimming-race-status');
+
+      if (overlay) overlay.classList.remove('hidden');
+
+      let count = 3;
+      if (countText) countText.innerText = count;
+      if (statusEl) statusEl.innerText = "⏳ Kình ngư vào bục xuất phát: " + count;
+
+      const timer = setInterval(() => {
+        count--;
+        if (count > 0) {
+          if (countText) countText.innerText = count;
+          if (statusEl) statusEl.innerText = "⏳ Chuẩn bị: " + count;
+        } else if (count === 0) {
+          if (countText) countText.innerText = "BÍP!";
+          if (statusEl) statusEl.innerText = "💥 LAO XUỐNG NƯỚC!";
+          SwimAudio.playBuzzer();
+        } else {
+          clearInterval(timer);
+          if (overlay) overlay.classList.add('hidden');
+          swimRaceState = 'running';
+          swimStartTime = performance.now();
+          if (statusEl) statusEl.innerText = "🏊 Các kình ngư đang sải tay rẽ sóng 200m!";
+        }
+      }, 750);
+    }
+
+    // --- HÀM VẼ TOÀN BỘ BỂ BƠI OLYMPIC 200M ---
+    function renderSwimRaceCanvas(now) {
+      const canvas = document.getElementById('swimming-race-canvas');
+      if (!canvas) {
+        swimAnimId = requestAnimationFrame(renderSwimRaceCanvas);
+        return;
+      }
+      const ctx = canvas.getContext('2d');
+      const cw = canvas.width;
+      const ch = canvas.height;
+
+      // 1. CẬP NHẬT VẬT LÝ BƠI TRƯỜN SẤP (FREESTYLE)
+      if (swimRaceState === 'running') {
+        const elapsed = now - swimStartTime;
+        const progress = Math.min(1, elapsed / swimRaceDuration);
+
+        if (now - swimLastSplashTime > 140) {
+          swimLastSplashTime = now;
+          SwimAudio.playSplash();
+        }
+
+        swimmers.forEach(s => {
+          let speedMul = s.speedFactor;
+          if (s.isWinner) {
+            if (progress > 0.52) {
+              speedMul *= 1.0 + (progress - 0.52) * 1.35;
+            } else {
+              speedMul *= 1.02;
+            }
+          } else {
+            speedMul *= 0.96 + Math.sin(progress * 10 + s.lane) * 0.05;
+          }
+
+          const targetDist = swimFinishX - s.startX;
+          s.x = s.startX + targetDist * progress * speedMul;
+          s.strokePhase += 0.22 * speedMul;
+
+          // Chạm tấm cảm ứng touchpad đích
+          if (s.x >= swimFinishX && !swimTouchpadHit) {
+            swimTouchpadHit = true;
+            SwimAudio.playTouchpad();
+            SwimAudio.playFanfare();
+          }
+        });
+
+        const sorted = [...swimmers].sort((a, b) => b.x - a.x);
+        sorted.forEach((swimmer, idx) => { swimmer.rank = idx + 1; });
+        updateSwimLeaderboard(sorted);
+
+        const leaderX = sorted[0]?.x || 0;
+        const targetCameraX = Math.max(0, leaderX - cw * 0.46);
+        swimCameraX += (targetCameraX - swimCameraX) * 0.12;
+
+        if (progress >= 1) {
+          swimRaceState = 'finished';
+          const winner = swimmers.find(s => s.isWinner) || sorted[0];
+          const statusEl = document.getElementById('swimming-race-status');
+          if (statusEl) {
+            statusEl.innerHTML = `🏆 Kình ngư vô địch 200m: <b class="text-cyan-300">${winner.fullName}</b>!`;
+          }
+
+          setTimeout(() => {
+            if (typeof swimFinishCallback === 'function') {
+              const cb = swimFinishCallback;
+              swimFinishCallback = null;
+              cb(winner.student);
+            }
+          }, 900);
+        }
+      }
+
+      ctx.save();
+
+      // 2. KHÔNG GIAN BỂ BƠI & BỜ HỒ (POOL DECKS)
+      const topDeckH = Math.max(50, Math.floor(ch * 0.12));
+      const botDeckH = Math.max(45, Math.floor(ch * 0.11));
+      const poolH = ch - topDeckH - botDeckH;
+
+      // Bờ hồ lát gạch chống trượt màu be/trắng xám
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, cw, ch);
+
+      ctx.save();
+      ctx.translate(-swimCameraX, 0);
+
+      // Bờ trên và bờ dưới
+      const deckPattern = ctx.createLinearGradient(0, 0, 0, topDeckH);
+      deckPattern.addColorStop(0, '#1e293b');
+      deckPattern.addColorStop(1, '#334155');
+      ctx.fillStyle = deckPattern;
+      ctx.fillRect(0, 0, swimTrackLength + 400, topDeckH);
+      ctx.fillRect(0, topDeckH + poolH, swimTrackLength + 400, botDeckH);
+
+      // 3. LÀN NƯỚC XANH NGỌC BÍCH (TURQUOISE WATER)
+      const waterGrad = ctx.createLinearGradient(0, topDeckH, 0, topDeckH + poolH);
+      waterGrad.addColorStop(0, '#0284c7');
+      waterGrad.addColorStop(0.5, '#0ea5e9');
+      waterGrad.addColorStop(1, '#0369a1');
+      ctx.fillStyle = waterGrad;
+      ctx.fillRect(0, topDeckH, swimTrackLength + 400, poolH);
+
+      // Gợn sóng phản chiếu ánh sáng (Water Caustics)
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.lineWidth = 1.5;
+      for (let y = topDeckH + 10; y < topDeckH + poolH; y += 16) {
+        ctx.beginPath();
+        for (let x = 0; x < swimTrackLength + 400; x += 35) {
+          const waveY = Math.sin(now * 0.003 + x * 0.04 + y * 0.05) * 3.5;
+          if (x === 0) ctx.moveTo(x, y + waveY);
+          else ctx.lineTo(x, y + waveY);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Vạch gạch chỉ hướng dưới đáy hồ (Tile Guide Lines)
+      const laneCount = Math.max(...swimmers.map(s => s.lane), 6);
+      const laneH = poolH / laneCount;
+
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.55)';
+      ctx.lineWidth = 3;
+      for (let l = 0; l < laneCount; l++) {
+        const ly = topDeckH + l * laneH + laneH * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(swimStartX, ly);
+        ctx.lineTo(swimFinishX - 30, ly);
+        ctx.stroke();
+
+        // Chữ T chỉ hướng ở 2 đầu hồ
+        ctx.beginPath();
+        ctx.moveTo(swimStartX + 35, ly - 8);
+        ctx.lineTo(swimStartX + 35, ly + 8);
+        ctx.moveTo(swimFinishX - 45, ly - 8);
+        ctx.lineTo(swimFinishX - 45, ly + 8);
+        ctx.stroke();
+      }
+
+      // 4. DÂY PHAO CHIA LÀN 3 MÀU (FLOAT LANE DIVIDERS)
+      const floatColors = ['#ef4444', '#ffffff', '#0284c7'];
+      for (let l = 0; l <= laneCount; l++) {
+        const ly = topDeckH + l * laneH;
+        for (let x = 20; x < swimTrackLength + 360; x += 11) {
+          const waveBob = Math.sin(now * 0.004 + x * 0.08) * 1.5;
+          ctx.fillStyle = floatColors[(Math.floor(x / 11)) % floatColors.length];
+          ctx.beginPath();
+          ctx.ellipse(x, ly + waveBob, 4, 3, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Bục xuất phát bơi (Starting Blocks) ở đầu hồ
+      for (let l = 0; l < laneCount; l++) {
+        const ly = topDeckH + l * laneH + laneH * 0.5;
+        // Bục bơi kim loại
+        ctx.fillStyle = '#0284c7';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(swimStartX - 65, ly - 12, 26, 24, 4);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 11px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText((l + 1).toString(), swimStartX - 52, ly);
+      }
+
+      // Tấm cảm ứng điện tử (Touchpad) ở cuối hồ
+      ctx.fillStyle = '#f59e0b';
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2.5;
+      for (let l = 0; l < laneCount; l++) {
+        const ly = topDeckH + l * laneH + 3;
+        ctx.fillRect(swimFinishX, ly, 10, laneH - 6);
+        ctx.strokeRect(swimFinishX, ly, 10, laneH - 6);
+      }
+
+      // Biển báo 200M FINISH TOUCHPAD
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText("TOUCHPAD 200M", swimFinishX + 5, topDeckH - 8);
+
+      // 5. VẼ CÁC KÌNH NGƯ BƠI TRƯỜN SẤP & BỌT NƯỚC RẼ SÓNG
+      const sortedByY = [...swimmers].sort((a, b) => a.y - b.y);
+      sortedByY.forEach(s => {
+        drawSwimmer(ctx, s, now);
+      });
+
+      ctx.restore();
+
+      // 6. ĐỒNG HỒ ĐIỆN TỬ BẤM GIỜ BƠI GÓC TRÊN TRÁI
+      if (swimRaceState === 'running') {
+        const timeSec = ((now - swimStartTime) / 1000).toFixed(2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(16, 48, 130, 32, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#a5f3fc';
+        ctx.font = '900 16px Courier New, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`⏱️ 00:${timeSec.padStart(5, '0')}`, 81, 69);
+      }
+
+      ctx.restore();
+
+      swimAnimId = requestAnimationFrame(renderSwimRaceCanvas);
+    }
+
+    // Vẽ 1 kình ngư đang bơi sải (Freestyle) và tung bọt sóng
+    function drawSwimmer(ctx, s, now) {
+      ctx.save();
+      ctx.translate(s.x, s.y);
+
+      // 1. Vệt bọt nước cuộn trào phía sau chân (Water Wake & Bubbles)
+      const p = s.strokePhase;
+      const kickSpeed = Math.sin(p * 2) * 5;
+
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      for (let i = 0; i < 7; i++) {
+        const bubbleX = -18 - i * 7 + (Math.sin(now * 0.02 + i) * 3);
+        const bubbleY = kickSpeed * (i % 2 === 0 ? 1 : -1) + (Math.cos(now * 0.02 + i) * 2.5);
+        const bubbleR = 2.5 + Math.random() * 3.5;
+        ctx.beginPath();
+        ctx.arc(bubbleX, bubbleY, bubbleR, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. Thân kình ngư nằm ngang rẽ nước (Swimmer Body)
+      ctx.fillStyle = s.suit;
+      ctx.beginPath();
+      ctx.ellipse(-4, 0, 15, 6.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đôi chân đạp nước liên tục (Flutter Kick)
+      ctx.strokeStyle = s.skin;
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-16, 0);
+      ctx.lineTo(-26, kickSpeed);
+      ctx.stroke();
+
+      // Bàn chân quẫy nước
+      ctx.fillStyle = s.skin;
+      ctx.beginPath();
+      ctx.arc(-26, kickSpeed, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Sải tay cào nước và vươn tới (Arm Strokes)
+      const arm1Phase = p;
+      const arm2Phase = p + Math.PI;
+
+      // Tay 1 (Vươn sải phía trước)
+      const arm1ReachX = 8 + Math.cos(arm1Phase) * 14;
+      const arm1ReachY = -6 + Math.sin(arm1Phase) * 5;
+      ctx.strokeStyle = s.skin;
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.moveTo(4, -2);
+      ctx.lineTo(arm1ReachX, arm1ReachY);
+      ctx.stroke();
+
+      // Tay 2 (Cào nước phía sau)
+      const arm2ReachX = 8 + Math.cos(arm2Phase) * 14;
+      const arm2ReachY = 6 + Math.sin(arm2Phase) * 5;
+      ctx.beginPath();
+      ctx.moveTo(4, 2);
+      ctx.lineTo(arm2ReachX, arm2ReachY);
+      ctx.stroke();
+
+      // Bọt nước bắn tung tóe quanh tay
+      if (Math.sin(arm1Phase) > 0.6) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.beginPath();
+        ctx.arc(arm1ReachX, arm1ReachY, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 4. Đầu & Mũ bơi silicon (Head & Swim Cap)
+      // Đầu hơi nghiêng lấy hơi nhịp nhàng
+      const headTilt = Math.sin(p) * 2;
+      ctx.fillStyle = s.skin;
+      ctx.beginPath();
+      ctx.arc(10, headTilt, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mũ bơi màu sắc riêng biệt
+      ctx.fillStyle = s.cap;
+      ctx.beginPath();
+      ctx.arc(10, headTilt, 7, -Math.PI * 0.5, Math.PI * 0.5);
+      ctx.fill();
+
+      // Kính bơi (Goggles)
+      ctx.fillStyle = s.goggles;
+      ctx.fillRect(11, headTilt - 3, 4, 3);
+      ctx.fillRect(11, headTilt + 1, 4, 3);
+
+      // 5. Bảng tên kình ngư nổi phía trên mặt nước
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = s.isWinner ? '#38bdf8' : '#ffffff';
+      ctx.lineWidth = s.isWinner ? 2 : 1;
+      const nameW = Math.max(50, s.displayName.length * 7 + 14);
+      ctx.beginPath();
+      ctx.roundRect(-nameW * 0.5, -28, nameW, 16, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = s.isWinner ? '#a5f3fc' : '#ffffff';
+      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(s.displayName, 0, -16);
+
+      if (s.rank === 1) {
+        ctx.font = '11px Arial';
+        ctx.fillText('👑', 0, -32);
+      }
+
+      ctx.restore();
+    }
+
+    // Cập nhật Leaderboard trực tiếp bơi lội
+    function updateSwimLeaderboard(sorted) {
+      const topListEl = document.getElementById('swimming-top-list');
+      if (!topListEl) return;
+
+      const top3 = sorted.slice(0, 3);
+      const medals = ['🥇', '🥈', '🥉'];
+      const bgColors = ['bg-cyan-600/85 border-cyan-300', 'bg-slate-700/85 border-slate-400', 'bg-blue-900/85 border-blue-400'];
+
+      topListEl.innerHTML = top3.map((swimmer, i) => `
+        <div class="${bgColors[i]} text-white font-bold text-xs px-2.5 py-1 rounded-lg border shadow flex items-center justify-between">
+          <span class="truncate max-w-[105px]">${medals[i]} ${swimmer.displayName}</span>
+          <span class="text-[10px] font-mono text-cyan-200">L${swimmer.lane}</span>
+        </div>
+      `).join('');
     }
 
     // ==========================================
@@ -22034,7 +23527,33 @@
         return;
       }
 
-      // 12. Máy Kéo Số (Slot) hoặc Card Grid fallback
+      // 12. Điền Kinh 200m (Vận Động Viên Nước Rút)
+      if (mode === 'athletics') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(5000, durationSec * 1100);
+        btn.innerHTML = "🏃 ĐANG CHẠY 200M...";
+        startAthleticsRace(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
+        });
+        return;
+      }
+
+      // 13. Bơi Lội 200m (Kình Ngư Olympic)
+      if (mode === 'swimming') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(5500, durationSec * 1150);
+        btn.innerHTML = "🏊 ĐANG BƠI 200M...";
+        startSwimRace(selected, raceDuration, (actualWinner) => {
+          const finalWinner = actualWinner || selected;
+          currentWinner = finalWinner;
+          showWinnerResult(finalWinner, btn);
+        });
+        return;
+      }
+
+      // 14. Máy Kéo Số (Slot) hoặc Card Grid fallback
       btn.innerHTML = "🎰 ĐANG CHỌN...";
       let spinCount = 0;
       const allCards = document.querySelectorAll('.student-card');
@@ -22091,6 +23610,10 @@
           btnElement.innerHTML = '<i class="fa-solid fa-gift"></i> TIẾP TỤC LÌ XÌ';
         } else if (mode === 'wheel_slot' || mode === 'bingo') {
           btnElement.innerHTML = '<i class="fa-solid fa-bowling-ball"></i> TIẾP TỤC QUAY CẦU';
+        } else if (mode === 'athletics') {
+          btnElement.innerHTML = '<i class="fa-solid fa-person-running"></i> TIẾP TỤC ĐUA ĐIỀN KINH';
+        } else if (mode === 'swimming') {
+          btnElement.innerHTML = '<i class="fa-solid fa-person-swimming"></i> TIẾP TỤC ĐUA BƠI LỘI';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
@@ -22149,6 +23672,9 @@
         else if (mode === 'gift') initGiftGame(true);
         else if (mode === 'ski') initSkiRace(true);
         else if (mode === 'lixi') initLixiGame(true);
+        else if (mode === 'wheel_slot' || mode === 'bingo') initBingoGame(true);
+        else if (mode === 'athletics') initAthleticsRace(true);
+        else if (mode === 'swimming') initSwimRace(true);
       }
     }
 
