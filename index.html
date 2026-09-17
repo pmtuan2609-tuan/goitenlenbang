@@ -1483,12 +1483,16 @@
             </div>
           </div>
 
-          <!-- Bảng xếp hạng Tốp dẫn đầu -->
-          <div id="ski-leaderboard" class="hidden absolute top-3 right-3 z-30 flex flex-col gap-1 w-44 pointer-events-none transition-all">
-            <div class="bg-slate-900/90 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg border border-sky-500/50 uppercase tracking-wider text-center shadow-lg">
-              🏆 Tốp Dẫn Đầu Giáng Sinh
+          <!-- Bảng xếp hạng Tốp dẫn đầu theo điểm số -->
+          <div id="ski-leaderboard" class="hidden absolute top-3 right-3 z-30 flex flex-col gap-1 w-48 pointer-events-none transition-all">
+            <div class="bg-slate-900/90 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg border border-sky-500/50 uppercase tracking-wider text-center shadow-lg flex items-center justify-center gap-1">
+              <span>🎁</span> BẢNG ĐIỂM SĂN QUÀ NOEL
             </div>
-            <div id="ski-top-list" class="flex flex-col gap-1"></div>
+            <div id="ski-top-list" class="flex flex-col gap-1">
+              <div id="ski-lb-1" class="bg-amber-500/85 text-white font-bold text-xs px-2.5 py-1 rounded-lg border border-amber-300 shadow">🥇 --</div>
+              <div id="ski-lb-2" class="bg-slate-800/85 text-white font-bold text-xs px-2.5 py-1 rounded-lg border border-slate-400 shadow">🥈 --</div>
+              <div id="ski-lb-3" class="bg-amber-900/85 text-white font-bold text-xs px-2.5 py-1 rounded-lg border border-amber-600 shadow">🥉 --</div>
+            </div>
           </div>
 
           <!-- Màn đếm ngược 3-2-1 Giáng Sinh -->
@@ -6209,6 +6213,7 @@
 
     // ==========================================
     // MODULE: TRƯỢT TUYẾT GIÁNG SINH (CHRISTMAS SKI RACE)
+    // 10 Trạm Hộp Quà Giáng Sinh, Tính Điểm 1-5đ, Ai Cao Nhất Về Đích Thắng!
     // ==========================================
     const SkiAudio = {
       ctx: null,
@@ -6239,6 +6244,38 @@
             gain.connect(this.ctx.destination);
             osc.start(t);
             osc.stop(t + 0.8);
+          });
+        } catch(e) {}
+      },
+      playGiftChime(points = 3) {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const chordMap = {
+            1: [587.33],
+            2: [659.25],
+            3: [783.99, 1174.66],
+            4: [880.00, 1318.51],
+            5: [1046.50, 1318.51, 1760.00]
+          };
+          const freqs = chordMap[points] || [783.99];
+
+          freqs.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, t + idx * 0.04);
+
+            gain.gain.setValueAtTime(0, t + idx * 0.04);
+            gain.gain.linearRampToValueAtTime(0.12 / (idx + 1), t + idx * 0.04 + 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t + idx * 0.04 + 0.45);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t + idx * 0.04);
+            osc.stop(t + idx * 0.04 + 0.5);
           });
         } catch(e) {}
       },
@@ -6355,22 +6392,43 @@
       { jacket: '#14b8a6', pants: '#134e4a', hat: '#2dd4bf', skis: '#0d9488', scarf: '#f43f5e' },
     ];
 
+    const SKI_TOTAL_GIFT_STATIONS = 10;
     let skiRacers = [];
     let skiRaceRunning = false;
-    let skiRaceState = 'idle';
+    let skiRaceState = 'idle'; // 'idle' | 'countdown' | 'racing' | 'finished'
     let skiRaceStartTime = 0;
-    let skiRaceDuration = 6000;
+    let skiRaceDuration = 8000;
     let skiRaceWinner = null;
     let skiRaceCallback = null;
     let skiCameraX = 0;
-    let skiTrackLength = 2800;
+    let skiTrackLength = 5200;
     let skiStartX = 180;
-    let skiFinishX = 2500;
+    let skiFinishX = 4900;
     let skiAnimId = null;
     let skiSnowParticles = [];
+    let skiSparkles = [];
     let skiFallingSnow = [];
     let skiSceneryElements = [];
+    let skiGiftStations = [];
     let skiWhooshTimer = 0;
+
+    function toggleSkiSound() {
+      SkiAudio.enabled = !SkiAudio.enabled;
+      const btn = document.getElementById('ski-sound-btn');
+      if (btn) btn.innerText = SkiAudio.enabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleSkiFullscreen() {
+      const container = document.getElementById('ski-race-container');
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+    }
 
     function resizeSkiCanvas() {
       const container = document.getElementById('ski-race-container');
@@ -6417,8 +6475,34 @@
       const frontX = Math.max(180, 100 + (numCols - 1) * colSpacingX);
 
       skiStartX = frontX;
-      skiTrackLength = Math.max(w * 3.2, frontX + 2400);
-      skiFinishX = skiTrackLength - 200;
+      skiTrackLength = Math.max(w * 5.2, frontX + 4800);
+      skiFinishX = skiTrackLength - 280;
+
+      // 10 Trạm Hộp Quà Giáng Sinh trải đều trên sườn dốc tuyết
+      skiGiftStations = [];
+      const usableDist = skiFinishX - skiStartX;
+      const stationGap = usableDist / (SKI_TOTAL_GIFT_STATIONS + 1);
+      const giftThemes = [
+        { box: '#dc2626', ribbon: '#facc15', name: 'Quà Đỏ Hoàng Gia' },
+        { box: '#16a34a', ribbon: '#ffffff', name: 'Quà Thông Xanh' },
+        { box: '#2563eb', ribbon: '#facc15', name: 'Quà Băng Tuyết' },
+        { box: '#d97706', ribbon: '#ffffff', name: 'Quà Ngôi Sao Vàng' },
+        { box: '#9333ea', ribbon: '#f43f5e', name: 'Quà Tím Lễ Hội' },
+        { box: '#ec4899', ribbon: '#fef08a', name: 'Quà Hồng Ngọt Ngào' },
+        { box: '#06b6d4', ribbon: '#ffffff', name: 'Quà Pha Lê Xanh' },
+        { box: '#ea580c', ribbon: '#facc15', name: 'Quà Cam Rực Rỡ' },
+        { box: '#10b981', ribbon: '#dc2626', name: 'Quà Giáng Sinh May Mắn' },
+        { box: '#eab308', ribbon: '#b91c1c', name: 'Hộp Quà Đại Quán Quân' }
+      ];
+
+      for (let k = 1; k <= SKI_TOTAL_GIFT_STATIONS; k++) {
+        skiGiftStations.push({
+          index: k,
+          x: Math.round(skiStartX + k * stationGap),
+          theme: giftThemes[k - 1],
+          pulsePhase: k * 0.6
+        });
+      }
 
       const totalRowsInCol = Math.ceil(count / numCols);
       const rowStep = (totalRowsInCol > 1) ? (usableH / (totalRowsInCol - 1)) : (usableH / 2);
@@ -6452,6 +6536,10 @@
             burstSpeed: 0,
             polePhase: Math.random() * Math.PI * 2,
             rank: i + 1,
+            points: 0,
+            collectedGifts: {},
+            floatingTexts: [],
+            stationScores: {},
             isWinner: false
           };
         });
@@ -6476,7 +6564,7 @@
       }
 
       skiSceneryElements = [];
-      for (let rx = 100; rx < skiTrackLength + 300; rx += 130 + Math.floor(Math.abs(Math.sin(rx)) * 70)) {
+      for (let rx = 100; rx < skiTrackLength + 300; rx += 140 + Math.floor(Math.abs(Math.sin(rx)) * 80)) {
         const typeRoll = (rx % 7);
         let elType = 'pine';
         if (typeRoll === 0) elType = 'chalet';
@@ -6493,7 +6581,7 @@
       }
 
       const statusEl = document.getElementById('ski-race-status');
-      if (statusEl) statusEl.innerText = `Sẵn sàng trượt tuyết (${count} vận động viên)`;
+      if (statusEl) statusEl.innerText = `Sẵn sàng săn 10 hộp quà tuyết (${count} vận động viên)`;
       const boardEl = document.getElementById('ski-leaderboard');
       if (boardEl) boardEl.classList.add('hidden');
       const countOverlay = document.getElementById('ski-countdown-overlay');
@@ -6509,6 +6597,7 @@
       skiRaceState = 'idle';
       skiRaceWinner = null;
       skiCameraX = 0;
+      skiSparkles = [];
 
       const btn = document.getElementById('spin-btn');
       if (btn) {
@@ -6535,14 +6624,51 @@
       skiRaceRunning = true;
       skiRaceState = 'countdown';
       skiRaceWinner = winner;
-      skiRaceDuration = durationMs || 6000;
+      skiRaceDuration = Math.max(7500, durationMs || 7500);
       skiRaceCallback = callback;
       skiCameraX = 0;
+      skiSparkles = [];
+
+      // Phân bổ trước điểm số 10 trạm hộp quà cho từng học sinh (1 đến 5 điểm mỗi trạm)
+      // Học sinh chiến thắng nhận nhiều điểm 4 và 5, đạt tổng 45-48 điểm
+      const winnerScores = {};
+      let winnerTotal = 0;
+      for (let k = 1; k <= SKI_TOTAL_GIFT_STATIONS; k++) {
+        const pt = (Math.random() < 0.65) ? 5 : 4;
+        winnerScores[k] = pt;
+        winnerTotal += pt;
+      }
 
       skiRacers.forEach(r => {
         r.isWinner = (String(r.id) === String(winner.id));
         r.x = r.startX;
         r.y = r.baseY;
+        r.points = 0;
+        r.collectedGifts = {};
+        r.floatingTexts = [];
+        r.stationScores = {};
+
+        if (r.isWinner) {
+          r.stationScores = { ...winnerScores };
+          r.plannedTotal = winnerTotal;
+        } else {
+          // Học sinh khác nhận ngẫu nhiên 1-5 điểm, tổng thấp hơn Quán Quân
+          const targetTotal = Math.floor(22 + Math.random() * (winnerTotal - 26));
+          let remaining = targetTotal;
+          for (let k = 1; k <= SKI_TOTAL_GIFT_STATIONS; k++) {
+            const stationsLeft = SKI_TOTAL_GIFT_STATIONS - k + 1;
+            let pt = Math.round(remaining / stationsLeft);
+            pt = Math.max(1, Math.min(5, pt + Math.floor(Math.random() * 3) - 1));
+            if (remaining - pt < (stationsLeft - 1) * 1) pt = remaining - (stationsLeft - 1) * 1;
+            if (remaining - pt > (stationsLeft - 1) * 5) pt = remaining - (stationsLeft - 1) * 5;
+            pt = Math.max(1, Math.min(5, pt));
+            r.stationScores[k] = pt;
+            remaining -= pt;
+          }
+          let actualSum = 0;
+          for (let k = 1; k <= SKI_TOTAL_GIFT_STATIONS; k++) actualSum += r.stationScores[k];
+          r.plannedTotal = actualSum;
+        }
       });
 
       const countOverlay = document.getElementById('ski-countdown-overlay');
@@ -6574,7 +6700,7 @@
 
             skiRaceState = 'racing';
             skiRaceStartTime = performance.now();
-            if (statusEl) statusEl.innerText = "❄️ Đua trượt tuyết gay cấn!";
+            if (statusEl) statusEl.innerText = "❄️ Đang săn 10 hộp quà Giáng Sinh tính điểm!";
             const boardEl = document.getElementById('ski-leaderboard');
             if (boardEl) boardEl.classList.remove('hidden');
 
@@ -6605,6 +6731,7 @@
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
 
+      // Cập nhật bụi tuyết
       for (let i = skiSnowParticles.length - 1; i >= 0; i--) {
         const p = skiSnowParticles[i];
         p.x += p.vx;
@@ -6616,6 +6743,19 @@
         }
       }
 
+      // Cập nhật bụi sao ánh kim
+      for (let i = skiSparkles.length - 1; i >= 0; i--) {
+        const sp = skiSparkles[i];
+        sp.x += sp.vx;
+        sp.y += sp.vy;
+        sp.alpha -= 0.035;
+        sp.radius *= 0.96;
+        if (sp.alpha <= 0 || sp.radius <= 0.4) {
+          skiSparkles.splice(i, 1);
+        }
+      }
+
+      // Cập nhật tuyết rơi
       skiFallingSnow.forEach(f => {
         f.y += f.speedY;
         f.x += f.speedX;
@@ -6653,22 +6793,22 @@
           let targetProgress = 0;
 
           if (r.isWinner) {
-            if (p < 0.65) {
-              targetProgress = Math.pow(p, 1.1) * 0.62 + Math.sin(p * 8 + r.wobbleOffset) * 0.03;
+            if (p < 0.70) {
+              targetProgress = Math.pow(p, 1.08) * 0.68 + Math.sin(p * 8 + r.wobbleOffset) * 0.025;
             } else {
-              const sprintP = (p - 0.65) / 0.35;
-              const eased = Math.pow(sprintP, 1.3);
-              targetProgress = 0.62 + eased * 0.43;
+              const sprintP = (p - 0.70) / 0.30;
+              const eased = Math.pow(sprintP, 1.25);
+              targetProgress = 0.68 + eased * 0.36;
             }
           } else {
             const laneVar = 0.88 + (Math.sin(r.lane * 13) * 0.08);
-            if (p < 0.65) {
-              const surge = Math.sin(p * 6 + r.wobbleOffset) * 0.05;
-              targetProgress = Math.pow(p, 1.05) * 0.60 * laneVar + surge;
+            if (p < 0.70) {
+              const surge = Math.sin(p * 6 + r.wobbleOffset) * 0.04;
+              targetProgress = Math.pow(p, 1.05) * 0.65 * laneVar + surge;
             } else {
-              const sprintP = (p - 0.65) / 0.35;
-              const maxNonWinner = 0.94 - (Math.abs(Math.sin(r.lane * 7)) * 0.07);
-              targetProgress = 0.58 + sprintP * (maxNonWinner - 0.58);
+              const sprintP = (p - 0.70) / 0.30;
+              const maxNonWinner = 0.96 - (Math.abs(Math.sin(r.lane * 7)) * 0.06);
+              targetProgress = 0.60 + sprintP * (maxNonWinner - 0.60);
             }
           }
 
@@ -6677,7 +6817,7 @@
 
           r.y = r.baseY + Math.sin(now * 0.008 + r.wobbleOffset) * 3;
 
-          if (Math.random() < 0.35) {
+          if (Math.random() < 0.32) {
             skiSnowParticles.push({
               x: r.x - 22,
               y: r.y + 14 + (Math.random() * 4 - 2),
@@ -6688,13 +6828,65 @@
               color: '#ffffff'
             });
           }
+
+          // Kiểm tra nhặt hộp quà tại 10 trạm
+          skiGiftStations.forEach(st => {
+            if (!r.collectedGifts[st.index] && r.x >= st.x - 15) {
+              const earned = r.stationScores[st.index] || (Math.floor(Math.random() * 5) + 1);
+              r.collectedGifts[st.index] = earned;
+              r.points += earned;
+
+              // Nhãn điểm bay lơ lửng (+Xđ ⭐)
+              r.floatingTexts.push({
+                text: `+${earned}đ ⭐`,
+                yOffset: -45,
+                alpha: 1.0,
+                vy: -1.2,
+                color: earned >= 4 ? '#facc15' : '#4ade80'
+              });
+
+              // Bụi sao lấp lánh
+              for (let sp = 0; sp < 6; sp++) {
+                skiSparkles.push({
+                  x: r.x + (Math.random() * 20 - 10),
+                  y: r.y + (Math.random() * 10 - 5),
+                  vx: -(1 + Math.random() * 2),
+                  vy: -(1 + Math.random() * 2.5),
+                  radius: 2 + Math.random() * 3,
+                  alpha: 1.0,
+                  color: earned >= 4 ? '#fef08a' : '#86efac'
+                });
+              }
+
+              // Chuông ngân vang
+              if (r.isWinner || Math.random() < 0.22) {
+                SkiAudio.playGiftChime(earned);
+              }
+            }
+          });
+
+          // Cập nhật nhãn điểm bay
+          for (let ftIdx = r.floatingTexts.length - 1; ftIdx >= 0; ftIdx--) {
+            const ft = r.floatingTexts[ftIdx];
+            ft.yOffset += ft.vy;
+            ft.alpha -= 0.022;
+            if (ft.alpha <= 0) {
+              r.floatingTexts.splice(ftIdx, 1);
+            }
+          }
         });
 
+        // Camera bám theo tốp dẫn đầu
         const leadX = Math.max(...skiRacers.map(r => r.x));
         const targetCamX = Math.max(0, Math.min(skiTrackLength - w, leadX - w * 0.42));
         skiCameraX += (targetCamX - skiCameraX) * 0.08;
 
-        const sorted = [...skiRacers].sort((a, b) => b.x - a.x);
+        // Xếp hạng bảng dẫn đầu theo ĐIỂM SỐ giảm dần, sau đó theo khoảng cách X
+        const sorted = [...skiRacers].sort((a, b) => {
+          if (b.points !== a.points) return b.points - a.points;
+          return b.x - a.x;
+        });
+
         sorted.forEach((r, idx) => r.rank = idx + 1);
 
         const rank1 = sorted[0];
@@ -6705,10 +6897,11 @@
         const lb2 = document.getElementById('ski-lb-2');
         const lb3 = document.getElementById('ski-lb-3');
 
-        if (lb1 && rank1) lb1.innerText = `🥇 ${rank1.displayName}`;
-        if (lb2 && rank2) lb2.innerText = `🥈 ${rank2.displayName}`;
-        if (lb3 && rank3) lb3.innerText = `🥉 ${rank3.displayName}`;
+        if (lb1 && rank1) lb1.innerText = `🥇 ${rank1.displayName}: ${rank1.points}đ`;
+        if (lb2 && rank2) lb2.innerText = `🥈 ${rank2.displayName}: ${rank2.points}đ`;
+        if (lb3 && rank3) lb3.innerText = `🥉 ${rank3.displayName}: ${rank3.points}đ`;
 
+        // Kiểm tra về đích
         const hasWinnerFinished = (p >= 1.0 || (skiRaceWinner && skiRacers.some(r => r.isWinner && r.x >= skiFinishX - 10)));
 
         if (hasWinnerFinished) {
@@ -6719,15 +6912,17 @@
           SkiAudio.playBell();
 
           if (typeof confetti === 'function') {
-            confetti({ particleCount: 160, spread: 90, origin: { y: 0.55 } });
+            confetti({ particleCount: 180, spread: 95, origin: { y: 0.55 } });
           }
 
+          // Học sinh có tổng điểm cao nhất giành chiến thắng
           const actualLead = sorted[0];
           const leadStudent = (students && students.find(s => String(s.id) === String(actualLead.id))) || skiRaceWinner;
+          leadStudent.skiPoints = actualLead.points;
 
           const statusEl = document.getElementById('ski-race-status');
           if (statusEl) {
-            statusEl.innerHTML = `🏆 Về đích: <b class="text-amber-400">${leadStudent.name}</b>!`;
+            statusEl.innerHTML = `🏆 Quán quân: <b class="text-amber-400">${leadStudent.name}</b> đạt kỷ lục <b class="text-emerald-400">${actualLead.points} điểm</b> (10 hộp quà)!`;
           }
 
           if (skiRaceCallback) {
@@ -6735,12 +6930,18 @@
             skiRaceCallback = null;
             setTimeout(() => {
               cb(leadStudent);
-            }, 180);
+            }, 300);
           }
         }
       } else if (skiRaceState === 'finished') {
         skiRacers.forEach(r => {
           r.y = r.baseY + Math.sin(now * 0.003 + r.wobbleOffset) * (r.isWinner ? 4 : 2);
+          for (let ftIdx = r.floatingTexts.length - 1; ftIdx >= 0; ftIdx--) {
+            const ft = r.floatingTexts[ftIdx];
+            ft.yOffset += ft.vy;
+            ft.alpha -= 0.022;
+            if (ft.alpha <= 0) r.floatingTexts.splice(ftIdx, 1);
+          }
         });
 
         const maxRacerX = Math.max(...skiRacers.map(r => r.x));
@@ -6881,19 +7082,27 @@
       });
       ctx.restore();
 
-      // 5. START LINE
+      // 5. 10 TRẠM HỘP QUÀ GIÁNG SINH TÍNH ĐIỂM
+      skiGiftStations.forEach(st => {
+        const screenX = st.x - camX;
+        if (screenX >= -100 && screenX <= w + 100) {
+          drawSkiGiftStation(ctx, st, screenX, topSkyH, snowSlopeH, now);
+        }
+      });
+
+      // 6. START LINE
       const startGantryX = skiStartX + 20 - camX;
       if (startGantryX >= -120 && startGantryX <= w + 120) {
         drawSkiStartLine(ctx, startGantryX, topSkyH, snowSlopeH);
       }
 
-      // 6. FINISH LINE
+      // 7. FINISH LINE
       const finishGantryX = skiFinishX - camX;
       if (finishGantryX >= -160 && finishGantryX <= w + 160) {
         drawChristmasFinishArch(ctx, finishGantryX, topSkyH, snowSlopeH, now);
       }
 
-      // 7. SNOW SPRAY PARTICLES
+      // 8. SNOW SPRAY PARTICLES
       ctx.save();
       skiSnowParticles.forEach(p => {
         const spX = p.x - camX;
@@ -6906,7 +7115,21 @@
       });
       ctx.restore();
 
-      // 8. RENDER SKIERS
+      // 9. SPARKLE PARTICLES (Từ các hộp quà được nhặt)
+      ctx.save();
+      skiSparkles.forEach(sp => {
+        const spX = sp.x - camX;
+        if (spX >= -20 && spX <= w + 20) {
+          ctx.fillStyle = sp.color;
+          ctx.globalAlpha = Math.max(0, sp.alpha);
+          ctx.beginPath();
+          ctx.arc(spX, sp.y, sp.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+      ctx.restore();
+
+      // 10. RENDER SKIERS
       const sortedByY = [...skiRacers].sort((a, b) => a.y - b.y);
       sortedByY.forEach(r => {
         const racerScreenX = r.x - camX;
@@ -6915,7 +7138,7 @@
         }
       });
 
-      // 9. FOREGROUND FALLING SNOW
+      // 11. FOREGROUND FALLING SNOW
       ctx.save();
       skiFallingSnow.forEach(f => {
         ctx.fillStyle = `rgba(255, 255, 255, ${f.opacity})`;
@@ -6923,6 +7146,91 @@
         ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
         ctx.fill();
       });
+      ctx.restore();
+    }
+
+    // DRAWING HELPER: 10 Trạm Hộp Quà Giáng Sinh Tính Điểm
+    function drawSkiGiftStation(ctx, st, screenX, groundY, trackH, now) {
+      ctx.save();
+
+      // 1. Dải hào quang ánh sáng mềm mại trên dốc tuyết
+      const beamGrad = ctx.createLinearGradient(screenX - 16, 0, screenX + 16, 0);
+      beamGrad.addColorStop(0, 'rgba(254, 240, 138, 0)');
+      beamGrad.addColorStop(0.5, 'rgba(254, 240, 138, 0.12)');
+      beamGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
+      ctx.fillStyle = beamGrad;
+      ctx.fillRect(screenX - 16, groundY, 32, trackH);
+
+      // Vạch sao bàn cờ trên tuyết
+      ctx.strokeStyle = 'rgba(250, 204, 21, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(screenX, groundY);
+      ctx.lineTo(screenX, groundY + trackH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. Cột trạm kẹo que và biển hiệu phía trên
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(screenX - 4, groundY - 26, 8, 26);
+      ctx.fillRect(screenX - 4, groundY + trackH, 8, 26);
+
+      // Biển tên trạm quà ở đỉnh
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath();
+      ctx.roundRect(screenX - 40, groundY - 32, 80, 20, 5);
+      ctx.fill();
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`🎁 TRẠM #${st.index}`, screenX, groundY - 22);
+
+      // 3. Hộp quà Giáng sinh lơ lửng bồng bềnh giữa các làn trượt
+      const hoverY = Math.sin(now * 0.005 + st.pulsePhase) * 3;
+      const numGifts = 3;
+      const giftStep = trackH / (numGifts + 1);
+
+      for (let g = 1; g <= numGifts; g++) {
+        const gy = groundY + g * giftStep + hoverY;
+
+        ctx.save();
+        ctx.fillStyle = 'rgba(250, 204, 21, 0.25)';
+        ctx.beginPath();
+        ctx.arc(screenX, gy, 14, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = st.theme.box;
+        ctx.fillRect(screenX - 8, gy - 8, 16, 16);
+
+        ctx.fillStyle = st.theme.ribbon;
+        ctx.fillRect(screenX - 2.5, gy - 8, 5, 16);
+        ctx.fillRect(screenX - 8, gy - 2.5, 16, 5);
+
+        ctx.beginPath();
+        ctx.arc(screenX - 3, gy - 10, 3, 0, Math.PI * 2);
+        ctx.arc(screenX + 3, gy - 10, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.roundRect(screenX - 16, gy + 10, 32, 11, 3);
+        ctx.fill();
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fef08a';
+        ctx.font = 'bold 8px sans-serif';
+        ctx.fillText('1-5đ ⭐', screenX, gy + 16);
+        ctx.restore();
+      }
+
       ctx.restore();
     }
 
@@ -7356,45 +7664,65 @@
       ctx.fill();
       ctx.restore();
 
-      // 9. Student Name Badge
+      // 9. BẢNG TÊN HỌC SINH TÍCH HỢP ĐIỂM SỐ
       ctx.save();
       const badgeY = -35 + bob;
-      const text = racer.displayName;
-      ctx.font = 'bold 11px sans-serif';
+      const text = `${racer.displayName} ⭐ ${racer.points}đ`;
+      ctx.font = 'bold 10px sans-serif';
       const textWidth = ctx.measureText(text).width;
-      const badgeW = Math.max(38, textWidth + 14);
+      const badgeW = Math.max(46, textWidth + 16);
       const badgeH = 17;
       const badgeX = -badgeW / 2 + 3;
 
+      // Bóng đổ
       ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
       ctx.beginPath();
       ctx.roundRect(badgeX + 1, badgeY - badgeH / 2 + 1, badgeW, badgeH, 4);
       ctx.fill();
 
-      ctx.fillStyle = '#0f172a';
+      // Nền bảng tên
+      ctx.fillStyle = racer.rank === 1 ? '#1e293b' : '#0f172a';
       ctx.beginPath();
       ctx.roundRect(badgeX, badgeY - badgeH / 2, badgeW, badgeH, 4);
       ctx.fill();
 
-      ctx.strokeStyle = racer.isWinner ? '#facc15' : '#e2e8f0';
-      ctx.lineWidth = racer.isWinner ? 2 : 1.2;
+      // Viền bảng tên: Viền vàng cho hạng 1
+      ctx.strokeStyle = racer.rank === 1 ? '#facc15' : (racer.rank === 2 ? '#e2e8f0' : (racer.rank === 3 ? '#fb923c' : '#475569'));
+      ctx.lineWidth = racer.rank === 1 ? 2.0 : 1.2;
       ctx.stroke();
 
+      // Huy hiệu Top 3
       if (racer.rank <= 3) {
         ctx.fillStyle = racer.rank === 1 ? '#facc15' : (racer.rank === 2 ? '#e2e8f0' : '#d97706');
         ctx.font = 'bold 9px sans-serif';
         ctx.textAlign = 'right';
-        ctx.fillText(racer.rank === 1 ? '🥇' : (racer.rank === 2 ? '🥈' : '🥉'), badgeX + 11, badgeY + 3.5);
+        ctx.fillText(racer.rank === 1 ? '🥇' : (racer.rank === 2 ? '🥈' : '🥉'), badgeX + 12, badgeY + 3.5);
       }
 
+      // Họ tên + Điểm số
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 10px sans-serif';
+      ctx.font = 'bold 9.5px sans-serif';
       ctx.textAlign = racer.rank <= 3 ? 'left' : 'center';
       ctx.textBaseline = 'middle';
-      const textDrawX = racer.rank <= 3 ? badgeX + 13 : badgeX + badgeW / 2;
+      const textDrawX = racer.rank <= 3 ? badgeX + 14 : badgeX + badgeW / 2;
       ctx.fillText(text, textDrawX, badgeY);
 
       ctx.restore();
+
+      // 10. NHÃN ĐIỂM NỔI BAY LƠ LỬNG (+Xđ ⭐)
+      if (racer.floatingTexts && racer.floatingTexts.length > 0) {
+        ctx.save();
+        racer.floatingTexts.forEach(ft => {
+          ctx.fillStyle = ft.color;
+          ctx.globalAlpha = Math.max(0, ft.alpha);
+          ctx.font = '900 13px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(ft.text, 0, ft.yOffset);
+        });
+        ctx.restore();
+      }
 
       ctx.restore();
     }
@@ -7531,6 +7859,7 @@
       else if (mode === 'f1' && typeof resizeF1Canvas === 'function') resizeF1Canvas();
       else if (mode === 'horse' && typeof resizeHorseCanvas === 'function') resizeHorseCanvas();
       else if (mode === 'balloon' && typeof resizeBalloonCanvas === 'function') resizeBalloonCanvas();
+      else if (mode === 'ski' && typeof resizeSkiCanvas === 'function') resizeSkiCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -7543,7 +7872,8 @@
         { id: 'motogp-fullscreen-btn', color: 'text-orange-400' },
         { id: 'f1-fullscreen-btn', color: 'text-rose-300' },
         { id: 'horse-fullscreen-btn', color: 'text-amber-300' },
-        { id: 'balloon-fullscreen-btn', color: 'text-rose-400' }
+        { id: 'balloon-fullscreen-btn', color: 'text-rose-400' },
+        { id: 'ski-fullscreen-btn', color: 'text-sky-300' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -7608,7 +7938,8 @@
         'bike-race-container',
         'motogp-race-container',
         'f1-race-container',
-        'horse-race-container'
+        'horse-race-container',
+        'ski-race-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -16360,8 +16691,8 @@
       // 9. Trượt Tuyết Giáng Sinh (Ski Race)
       if (mode === 'ski') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
-        const raceDuration = Math.max(4000, durationSec * 1100);
-        btn.innerHTML = "⛷️ ĐANG TRƯỢT TUYẾT...";
+        const raceDuration = Math.max(7500, durationSec * 1500);
+        btn.innerHTML = "⛷️ ĐANG SĂN QUÀ NOEL...";
         startSkiRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
           currentWinner = finalWinner;
@@ -16421,6 +16752,8 @@
           btnElement.innerHTML = '<i class="fa-solid fa-gift"></i> TIẾP TỤC BỐC';
         } else if (mode === 'wheel_pie') {
           btnElement.innerHTML = '<i class="fa-solid fa-rotate"></i> TIẾP TỤC QUAY';
+        } else if (mode === 'ski') {
+          btnElement.innerHTML = '<i class="fa-solid fa-person-skiing"></i> TIẾP TỤC ĐUA SĂN QUÀ';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
@@ -16428,7 +16761,13 @@
 
       const nameDisplay = document.getElementById('winner-name-display');
       const classDisplay = document.getElementById('winner-class-display');
-      if (nameDisplay) nameDisplay.innerText = student.name;
+      if (nameDisplay) {
+        if (student.skiPoints) {
+          nameDisplay.innerHTML = `${student.name} <div class="text-sm font-bold text-amber-300 mt-1.5 flex items-center justify-center gap-1"><span>🎁</span> Tổng điểm: <b class="text-emerald-400 font-extrabold text-base">${student.skiPoints} điểm</b> (Kỷ lục 10 hộp quà)</div>`;
+        } else {
+          nameDisplay.innerText = student.name;
+        }
+      }
       if (classDisplay) {
         const classes = getAllSavedClasses();
         const curCls = classes.find(c => c.id === currentClassId);
@@ -16479,7 +16818,10 @@
       if (!isAppSoundActive || !currentWinner) return;
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const text = `Chúc mừng bạn ${currentWinner.name} đã chiến thắng!`;
+        let text = `Chúc mừng bạn ${currentWinner.name} đã chiến thắng!`;
+        if (currentWinner.skiPoints) {
+          text = `Chúc mừng bạn ${currentWinner.name} đã đạt điểm cao nhất với ${currentWinner.skiPoints} điểm trong cuộc đua trượt tuyết Giáng Sinh!`;
+        }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
         utterance.rate = 1.0;
