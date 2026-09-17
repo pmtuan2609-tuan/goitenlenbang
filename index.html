@@ -1004,25 +1004,25 @@
         <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-pink-200 hover:border-pink-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center text-2xl text-white shadow-xs shrink-0">
-                🎁
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-pink-500 flex items-center justify-center text-2xl text-white shadow-xs shrink-0">
+                🏮
               </div>
-              <span class="px-2.5 py-1 rounded-full bg-pink-50 text-pink-700 border border-pink-200 text-[10px] font-black uppercase flex items-center gap-1">
-                <i class="fa-solid fa-sparkles text-amber-500"></i> Mới & Hot
+              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-500"></i> Trung Thu & Hot
               </span>
             </div>
             <div>
               <h3 class="text-base font-black text-slate-900 group-hover:text-pink-600 transition">
-                Hộp Quà Bí Mật
+                Hộp Quà Trung Thu
               </h3>
               <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
-                Đống hộp quà bí mật rực rỡ tương ứng sĩ số lớp. Em bé lon ton bước ra bốc 1 hộp bung nở tên học sinh.
+                Đêm hội trăng rằm rực rỡ lồng đèn ông sao, hoa đăng. Em bé rước đèn lon ton bước ra bốc hộp quà trúng tên học sinh.
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎁 Đống Quà</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👶 Em Bé Bốc</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bất Ngờ</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🏮 Lồng Đèn</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌕 Trăng Rằm</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👶 Rước Đèn</span>
             </div>
           </div>
           <div class="pt-3 border-t border-slate-200 mt-3 flex items-center justify-between text-xs font-bold">
@@ -1149,7 +1149,7 @@
               <option value="f1" class="bg-slate-900 text-white font-bold">🏎️ Đua Xe F1 Chuyên Nghiệp</option>
               <option value="horse" class="bg-slate-900 text-white font-bold">🏇 Đua Ngựa Thể Thao</option>
               <option value="wheel_pie" class="bg-slate-900 text-white font-bold">🎡 Vòng Quay May Mắn</option>
-              <option value="gift" class="bg-slate-900 text-white font-bold">🎁 Hộp Quà Bí Mật (Em Bé Bốc Quà)</option>
+              <option value="gift" class="bg-slate-900 text-white font-bold">🥮 Hộp Quà Trung Thu (Em Bé Rước Đèn Bốc Quà)</option>
               <option value="balloon" class="bg-slate-900 text-white font-bold">🎈 Bắn Bóng Bay (Cậu Bé Bắn Tên)</option>
               <option value="wheel_slot" class="bg-slate-900 text-slate-400 font-bold">🎰 Máy Kéo Số (Đang cập nhật)</option>
             </select>
@@ -1370,16 +1370,16 @@
           </div>
         </div>
 
-        <!-- STAGE 7: HỘP QUÀ BÍ MẬT 3D (EM BÉ BỐC QUÀ) -->
+        <!-- STAGE 7: HỘP QUÀ TRUNG THU (EM BÉ RƯỚC ĐÈN BỐC QUÀ) -->
         <div id="gift-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-indigo-950 via-slate-900 to-amber-950/60 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
-            <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 text-white text-xs font-bold shadow-md">
-              <span class="text-amber-400 font-extrabold text-sm">🎁</span>
-              <span id="gift-game-status">Sẵn sàng bốc hộp quà!</span>
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-amber-400/30 text-white text-xs font-bold shadow-lg">
+              <span class="text-amber-400 font-extrabold text-sm animate-pulse">🏮</span>
+              <span id="gift-game-status" class="text-amber-100">Đêm Hội Trăng Rằm: Sẵn sàng rước đèn bốc quà!</span>
             </div>
             <div class="flex items-center gap-1.5">
-              <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white text-xs font-black px-3 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md cursor-pointer">
-                <i class="fa-solid fa-gift text-white"></i> Bốc Quà
+              <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl border border-amber-300/40 transition flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-gift text-white"></i> Rước Đèn Bốc Quà
               </button>
               <button onclick="toggleGiftSound()" id="gift-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
                 🔊 Bật
@@ -3311,7 +3311,7 @@
         f1: { title: 'Đua Xe F1 Chuyên Nghiệp (Grand Prix Circuit)', icon: '🏎️' },
         horse: { title: 'Đua Ngựa Thể Thao (Vó Ngựa Chạy Ngang)', icon: '🏇' },
         wheel_pie: { title: 'Vòng Quay May Mắn (Cổ Điển 360 Độ)', icon: '🎡' },
-        gift: { title: 'Hộp Quà Bí Mật 3D (Em Bé Bốc Quà)', icon: '🎁' },
+        gift: { title: 'Hộp Quà Trung Thu (Em Bé Rước Đèn Bốc Quà)', icon: '🏮' },
         balloon: { title: 'Bắn Bóng Bay Gọi Tên (Cậu Bé Bắn Cung)', icon: '🎈' },
         wheel_slot: { title: 'Máy Kéo Số May Mắn', icon: '🎰' }
       };
@@ -3325,7 +3325,7 @@
         if (mode === 'balloon') {
           spinBtn.innerHTML = '<i class="fa-solid fa-crosshairs"></i> BẮN TÊN GỌI TÊN';
         } else if (mode === 'gift') {
-          spinBtn.innerHTML = '<i class="fa-solid fa-gift"></i> BỐC HỘP QUÀ';
+          spinBtn.innerHTML = '<i class="fa-solid fa-gift"></i> RƯỚC ĐÈN BỐC QUÀ';
         } else if (mode === 'wheel_pie') {
           spinBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> QUAY VÒNG';
         } else {
@@ -3524,7 +3524,10 @@
     };
     let giftConfetti = [];
     let giftWinnerReveal = null;
-    let giftCeilingLights = [];
+    let giftLanterns = [];
+    let giftSkyLanterns = [];
+    let giftStars = [];
+    let giftMoonClouds = [];
 
     function resizeGiftCanvas() {
       const container = document.getElementById('gift-stage-container');
@@ -3554,8 +3557,8 @@
 
       // Số lượng hộp quà = chính xác số học sinh của lớp đó để thành 1 đống
       const count = studentPool.length;
-      const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4', '#14b8a6', '#d97706'];
-      const ribbonColors = ['#fde047', '#ffffff', '#fed7aa', '#fef08a', '#e2e8f0'];
+      const colors = ['#dc2626', '#d97706', '#059669', '#2563eb', '#7c3aed', '#db2777', '#ea580c', '#0891b2', '#e11d48', '#b45309'];
+      const ribbonColors = ['#fde047', '#fef08a', '#ffffff', '#fed7aa', '#fef3c7'];
 
       // Kích thước hộp quà tự động co giãn theo sĩ số lớp
       let bw = 46;
@@ -3608,7 +3611,8 @@
               layer: layer,
               isTarget: false,
               picked: false,
-              openProgress: 0
+              openProgress: 0,
+              isMooncake: (boxIndex % 2 === 0)
             });
             boxIndex++;
           }
@@ -3616,15 +3620,57 @@
           layer++;
         }
 
-        // Tạo dàn đèn dây trang trí trên trần nhà
-        giftCeilingLights = [];
-        const lightColors = ['#f59e0b', '#ef4444', '#10b981', '#38bdf8', '#ec4899', '#fde047'];
-        for (let l = 0; l < 18; l++) {
-          giftCeilingLights.push({
-            x: (w / 17) * l,
-            y: 20 + Math.sin(l * 0.5) * 12,
-            color: lightColors[l % lightColors.length],
-            glowPhase: Math.random() * Math.PI * 2
+        // Sao trời lấp lánh đêm rằm
+        giftStars = [];
+        for (let s = 0; s < 50; s++) {
+          giftStars.push({
+            x: Math.random() * w,
+            y: Math.random() * (groundY * 0.72),
+            size: 0.8 + Math.random() * 2.2,
+            baseAlpha: 0.25 + Math.random() * 0.65,
+            speed: 0.002 + Math.random() * 0.004,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+
+        // Đèn trời / Thiên đăng Trung Thu bay lơ lửng
+        giftSkyLanterns = [];
+        const numSky = Math.min(18, Math.max(8, Math.floor(w / 70)));
+        for (let sk = 0; sk < numSky; sk++) {
+          giftSkyLanterns.push({
+            x: Math.random() * w,
+            y: Math.random() * (groundY - 50),
+            scale: 0.42 + Math.random() * 0.55,
+            speedY: 0.25 + Math.random() * 0.4,
+            swayAmp: 1.5 + Math.random() * 3.0,
+            swaySpeed: 0.0016 + Math.random() * 0.002,
+            phase: Math.random() * Math.PI * 2,
+            colorHue: sk % 2 === 0 ? 'gold' : 'amber'
+          });
+        }
+
+        // Mây bạc trôi quanh vầng trăng rằm
+        giftMoonClouds = [
+          { x: w * 0.74, y: 70, w: 95, h: 22, speed: 0.15 },
+          { x: w * 0.86, y: 105, w: 130, h: 26, speed: 0.22 },
+          { x: w * 0.68, y: 125, w: 85, h: 18, speed: 0.18 }
+        ];
+
+        // Dàn lồng đèn Trung Thu treo dây đung đưa (Đèn ông sao 5 cánh & Đèn lồng tròn đỏ viền vàng)
+        giftLanterns = [];
+        const lanternCount = Math.max(7, Math.min(15, Math.floor(w / 72)));
+        const lTypes = ['star', 'round_red', 'star', 'round_gold', 'carp', 'star', 'round_red'];
+        for (let l = 0; l < lanternCount; l++) {
+          const lx = (w / (lanternCount + 1)) * (l + 1);
+          const sag = Math.sin((lx / w) * Math.PI) * 28;
+          const ly = 18 + sag;
+          giftLanterns.push({
+            x: lx,
+            y: ly,
+            type: lTypes[l % lTypes.length],
+            phase: l * 0.8 + Math.random() * 0.2,
+            swaySpeed: 0.0022 + (l % 3) * 0.0006,
+            radius: (l % 2 === 0) ? 21 : 17
           });
         }
       }
@@ -3645,7 +3691,7 @@
 
       const statusEl = document.getElementById('gift-game-status');
       if (statusEl) {
-        statusEl.innerHTML = `🎁 Đống quà có ${count} hộp quà bí mật! Sẵn sàng bốc!`;
+        statusEl.innerHTML = `🥮 Đêm Hội Trăng Rằm: Có ${count} hộp quà bí mật! Sẵn sàng rước đèn bốc quà!`;
       }
 
       if (!giftGameAnimId) {
@@ -3703,7 +3749,7 @@
 
       const statusEl = document.getElementById('gift-game-status');
       if (statusEl) {
-        statusEl.innerHTML = `👶 Em bé đang lon ton bước đến đống quà...`;
+        statusEl.innerHTML = `🏮 Em bé rước đèn lon ton bước đến đống quà...`;
       }
 
       let lastStepTime = 0;
@@ -3727,7 +3773,7 @@
           // Reached pile -> Thinking state
           toddler.state = 'thinking';
           giftState = 'thinking';
-          if (statusEl) statusEl.innerHTML = `🤔 Em bé đang chọn hộp quà may mắn...`;
+          if (statusEl) statusEl.innerHTML = `🤔 Em bé soi đèn ngắm nghía chọn hộp quà Trung Thu...`;
           GiftAudio.playShimmer();
 
           setTimeout(() => {
@@ -3742,7 +3788,7 @@
               if (giftTarget) {
                 giftTarget.picked = true;
               }
-              if (statusEl) statusEl.innerHTML = `✨ Đang mở hộp quà bí mật...`;
+              if (statusEl) statusEl.innerHTML = `✨ Đang mở hộp quà rước đèn Trung Thu...`;
 
               // Shaking the box then pop open!
               setTimeout(() => {
@@ -3798,7 +3844,7 @@
 
       const statusEl = document.getElementById('gift-game-status');
       if (statusEl) {
-        statusEl.innerHTML = `🎁 Bốc trúng: <b class="text-amber-400">${giftTarget.student.name}</b>!`;
+        statusEl.innerHTML = `🥮 Bốc trúng: <b class="text-amber-400">${giftTarget.student.name}</b>!`;
       }
 
       setTimeout(() => {
@@ -3810,6 +3856,453 @@
       }, 700);
     }
 
+    // Mid-Autumn Visual Helpers
+    function drawMidAutumnMoon(ctx, cx, cy, radius, now, clouds) {
+      ctx.save();
+
+      // Quầng hào quang vàng ấm nhiều tầng
+      const halo3 = ctx.createRadialGradient(cx, cy, radius * 0.8, cx, cy, radius * 3.4);
+      halo3.addColorStop(0, 'rgba(253, 224, 71, 0.26)');
+      halo3.addColorStop(0.35, 'rgba(251, 191, 36, 0.12)');
+      halo3.addColorStop(0.7, 'rgba(245, 158, 11, 0.04)');
+      halo3.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = halo3;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 3.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      const halo2 = ctx.createRadialGradient(cx, cy, radius * 0.5, cx, cy, radius * 1.8);
+      halo2.addColorStop(0, 'rgba(254, 240, 138, 0.45)');
+      halo2.addColorStop(0.6, 'rgba(253, 224, 71, 0.18)');
+      halo2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = halo2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đĩa mặt trăng tròn vành vạnh
+      ctx.shadowColor = '#fde047';
+      ctx.shadowBlur = 24;
+      const moonGrad = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, radius * 0.1, cx, cy, radius);
+      moonGrad.addColorStop(0, '#ffffff');
+      moonGrad.addColorStop(0.25, '#fef9c3');
+      moonGrad.addColorStop(0.75, '#fde047');
+      moonGrad.addColorStop(1, '#f59e0b');
+      ctx.fillStyle = moonGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Bóng Cây Đa Chú Cuội / Thỏ Cung Trăng mờ ảo nghệ thuật trên mặt trăng
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius - 1, 0, Math.PI * 2);
+      ctx.clip();
+
+      ctx.fillStyle = 'rgba(180, 83, 9, 0.16)';
+      // Tán cây đa
+      ctx.beginPath();
+      ctx.arc(cx + radius * 0.28, cy - radius * 0.15, radius * 0.32, 0, Math.PI * 2);
+      ctx.arc(cx + radius * 0.46, cy + radius * 0.05, radius * 0.28, 0, Math.PI * 2);
+      ctx.arc(cx + radius * 0.18, cy + radius * 0.12, radius * 0.24, 0, Math.PI * 2);
+      ctx.fill();
+      // Thân cây đa
+      ctx.beginPath();
+      ctx.moveTo(cx + radius * 0.22, cy + radius * 0.8);
+      ctx.quadraticCurveTo(cx + radius * 0.28, cy + radius * 0.4, cx + radius * 0.3, cy);
+      ctx.quadraticCurveTo(cx + radius * 0.36, cy + radius * 0.4, cx + radius * 0.38, cy + radius * 0.8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Tai thỏ ngọc nhỏ
+      ctx.beginPath();
+      ctx.ellipse(cx - radius * 0.25, cy + radius * 0.08, radius * 0.07, radius * 0.18, -0.2, 0, Math.PI * 2);
+      ctx.ellipse(cx - radius * 0.12, cy + radius * 0.05, radius * 0.07, radius * 0.18, 0.2, 0, Math.PI * 2);
+      ctx.arc(cx - radius * 0.18, cy + radius * 0.25, radius * 0.16, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Mây bạc bồng bềnh trôi qua trăng
+      if (clouds) {
+        clouds.forEach(cl => {
+          cl.x += cl.speed;
+          if (cl.x > cx + radius * 3.5) {
+            cl.x = cx - radius * 3.5 - cl.w;
+          }
+          drawSoftCloud(ctx, cl.x, cl.y, cl.w, cl.h);
+        });
+      }
+
+      ctx.restore();
+    }
+
+    function drawSoftCloud(ctx, x, y, w, h) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(241, 245, 249, 0.28)';
+      ctx.beginPath();
+      const r = h / 2;
+      ctx.arc(x + r, y + r, r, Math.PI * 0.5, Math.PI * 1.5);
+      ctx.arc(x + w * 0.35, y + r * 0.6, r * 1.25, Math.PI * 0.9, Math.PI * 1.85);
+      ctx.arc(x + w * 0.68, y + r * 0.75, r * 1.05, Math.PI * 1.1, Math.PI * 2.1);
+      ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, Math.PI * 0.5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawSkyLantern(ctx, sl, now) {
+      const dx = Math.sin(now * sl.swaySpeed + sl.phase) * sl.swayAmp;
+      const x = sl.x + dx;
+      const y = sl.y;
+      const sc = sl.scale;
+      const w = 18 * sc;
+      const h = 26 * sc;
+
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Hào quang ấm áp của thiên đăng
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 12 * sc;
+
+      // Thân đèn trời hình trụ hơi nở trên, thắt nhẹ dưới
+      const grad = ctx.createLinearGradient(0, -h, 0, 0);
+      grad.addColorStop(0, '#fef08a');
+      grad.addColorStop(0.4, '#fde047');
+      grad.addColorStop(0.8, '#f97316');
+      grad.addColorStop(1, '#ea580c');
+
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.38, 0);
+      ctx.quadraticCurveTo(-w * 0.55, -h * 0.5, -w * 0.48, -h);
+      ctx.quadraticCurveTo(0, -h * 1.08, w * 0.48, -h);
+      ctx.quadraticCurveTo(w * 0.55, -h * 0.5, w * 0.38, 0);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Vành đáy nan tre
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 1.2 * sc;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, w * 0.38, 3 * sc, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Ngọn lửa nhỏ bập bùng ở đáy
+      const flamePulse = Math.sin(now * 0.015 + sl.phase * 3) * 1.5;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(0, -3 * sc, (3 + flamePulse * 0.5) * sc, (4 + flamePulse) * sc, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawLanternTassel(ctx, x, y, length, swing, color1, color2) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(swing);
+
+      // Hạt cườm nhỏ gắn tua rua
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(0, 2, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sợi tua rua buông rủ
+      ctx.strokeStyle = color1;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(-1.5, 3);
+      ctx.lineTo(-2.5, length);
+      ctx.moveTo(0, 3);
+      ctx.lineTo(0, length + 2);
+      ctx.moveTo(1.5, 3);
+      ctx.lineTo(2.5, length);
+      ctx.stroke();
+
+      if (color2) {
+        ctx.strokeStyle = color2;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(-0.8, 4);
+        ctx.lineTo(-1, length - 2);
+        ctx.moveTo(0.8, 4);
+        ctx.lineTo(1, length - 2);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+
+    function drawMidAutumnStarLantern(ctx, cx, cy, radius, swayAngle, now) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 14);
+      ctx.lineTo(cx, cy);
+      ctx.stroke();
+
+      ctx.translate(cx, cy);
+      ctx.rotate(swayAngle);
+
+      // Quầng sáng lồng đèn tỏa ra
+      ctx.save();
+      const glow = ctx.createRadialGradient(0, 0, 4, 0, 0, radius * 1.6);
+      glow.addColorStop(0, 'rgba(251, 191, 36, 0.35)');
+      glow.addColorStop(0.6, 'rgba(239, 68, 68, 0.12)');
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 1.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Vòng tròn tre bọc ngoài sao (Bamboo hoop)
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.88, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Các nan tre đan chéo đặc trưng của đèn ông sao
+      ctx.strokeStyle = 'rgba(180, 83, 9, 0.6)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 5; i++) {
+        const a1 = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        const a2 = -Math.PI / 2 + ((i + 2) * 2 * Math.PI) / 5;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(a1) * radius * 0.88, Math.sin(a1) * radius * 0.88);
+        ctx.lineTo(Math.cos(a2) * radius * 0.88, Math.sin(a2) * radius * 0.88);
+        ctx.stroke();
+      }
+
+      // Ngôi sao 5 cánh lộng lẫy (Đèn Ông Sao)
+      const outerR = radius;
+      const innerR = radius * 0.42;
+      const petalColors = ['#ef4444', '#f59e0b', '#10b981', '#06b6d4', '#ec4899'];
+
+      // Vẽ từng cánh sao với bóng kính màu rực rỡ
+      for (let i = 0; i < 5; i++) {
+        const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        const aInner1 = aOuter - Math.PI / 5;
+        const aInner2 = aOuter + Math.PI / 5;
+
+        const tipX = Math.cos(aOuter) * outerR;
+        const tipY = Math.sin(aOuter) * outerR;
+        const in1X = Math.cos(aInner1) * innerR;
+        const in1Y = Math.sin(aInner1) * innerR;
+        const in2X = Math.cos(aInner2) * innerR;
+        const in2Y = Math.sin(aInner2) * innerR;
+
+        // Cánh sao bên trái
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(in1X, in1Y);
+        ctx.lineTo(tipX, tipY);
+        ctx.closePath();
+        ctx.fillStyle = petalColors[i % petalColors.length];
+        ctx.fill();
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Cánh sao bên phải (đổ bóng màu đậm hơn tạo hiệu ứng 3D gập giấy kính bóng)
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(tipX, tipY);
+        ctx.lineTo(in2X, in2Y);
+        ctx.closePath();
+        ctx.fillStyle = adjustColor(petalColors[i % petalColors.length], -25);
+        ctx.fill();
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+
+      // Vòng tròn trung tâm với ánh nến sáng rực
+      ctx.shadowColor = '#fde047';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.arc(0, 0, innerR * 0.85, 0, Math.PI * 2);
+      ctx.fillStyle = '#fef08a';
+      ctx.fill();
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      // Tâm nến lung linh
+      ctx.beginPath();
+      ctx.arc(0, 0, innerR * 0.45, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Tua rua (Tassels) đung đưa dưới cánh đáy và 2 cánh bên
+      const tasselSwing = Math.sin(now * 0.0035 + swayAngle * 2) * 0.22;
+      const bottomTipY = outerR;
+
+      // Tua rua chính giữa ở đáy
+      drawLanternTassel(ctx, 0, bottomTipY, 22, tasselSwing, '#ef4444', '#fde047');
+
+      // 2 tua rua nhỏ 2 bên cánh
+      const leftTipX = Math.cos(-Math.PI / 2 + (2 * 2 * Math.PI) / 5) * outerR;
+      const leftTipY = Math.sin(-Math.PI / 2 + (2 * 2 * Math.PI) / 5) * outerR;
+      const rightTipX = Math.cos(-Math.PI / 2 + (3 * 2 * Math.PI) / 5) * outerR;
+      const rightTipY = Math.sin(-Math.PI / 2 + (3 * 2 * Math.PI) / 5) * outerR;
+      drawLanternTassel(ctx, leftTipX, leftTipY, 14, tasselSwing * 0.9, '#f59e0b', '#ef4444');
+      drawLanternTassel(ctx, rightTipX, rightTipY, 14, tasselSwing * 0.9, '#f59e0b', '#ef4444');
+
+      ctx.restore();
+    }
+
+    function drawMidAutumnRoundLantern(ctx, cx, cy, rw, rh, colorType, swayAngle, now) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 14);
+      ctx.lineTo(cx, cy);
+      ctx.stroke();
+
+      ctx.translate(cx, cy);
+      ctx.rotate(swayAngle);
+
+      const isGold = (colorType === 'round_gold');
+      const mainCol = isGold ? '#d97706' : '#dc2626';
+      const lightCol = isGold ? '#fde047' : '#f87171';
+      const darkCol = isGold ? '#92400e' : '#991b1b';
+
+      // Quầng sáng ấm áp
+      ctx.save();
+      const glow = ctx.createRadialGradient(0, 0, 2, 0, 0, rw * 1.8);
+      glow.addColorStop(0, isGold ? 'rgba(254, 240, 138, 0.4)' : 'rgba(248, 113, 113, 0.35)');
+      glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(0, 0, rw * 1.8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Nắp trên bằng vàng kim
+      ctx.fillStyle = '#f59e0b';
+      drawBalloonRoundedRect(ctx, -rw * 0.4, -rh * 0.58, rw * 0.8, rh * 0.16, 2, '#f59e0b', '#78350f', 1);
+
+      // Thân lồng đèn tròn lụa
+      ctx.shadowColor = lightCol;
+      ctx.shadowBlur = 12;
+      const grad = ctx.createRadialGradient(0, 0, rw * 0.2, 0, 0, rw);
+      grad.addColorStop(0, lightCol);
+      grad.addColorStop(0.65, mainCol);
+      grad.addColorStop(1, darkCol);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rw, rh * 0.52, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Các đường nan lồng đèn dọc (curved ribs)
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 1.1;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rw * 0.65, rh * 0.52, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.ellipse(0, 0, rw * 0.32, rh * 0.52, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Đai vàng ngang giữa thân đèn
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(-rw * 0.95, 0);
+      ctx.lineTo(rw * 0.95, 0);
+      ctx.stroke();
+
+      // Nắp dưới bằng vàng kim
+      drawBalloonRoundedRect(ctx, -rw * 0.4, rh * 0.44, rw * 0.8, rh * 0.16, 2, '#f59e0b', '#78350f', 1);
+
+      // Tua rua chỉ vàng dài đung đưa
+      const tasselSwing = Math.sin(now * 0.0035 + swayAngle * 2.5) * 0.25;
+      drawLanternTassel(ctx, 0, rh * 0.56, 26, tasselSwing, '#fde047', '#f59e0b');
+
+      ctx.restore();
+    }
+
+    function drawMidAutumnCarpLantern(ctx, cx, cy, radius, swayAngle, now) {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - 14);
+      ctx.lineTo(cx, cy);
+      ctx.stroke();
+
+      ctx.translate(cx, cy);
+      ctx.rotate(swayAngle);
+
+      // Đèn lồng cá chép truyền thống / Đèn xếp Trung Thu
+      const cw = radius * 1.3;
+      const ch = radius * 0.9;
+
+      // Thân cá chép uốn lượn màu cam đỏ
+      const carpGrad = ctx.createLinearGradient(-cw * 0.6, 0, cw * 0.6, 0);
+      carpGrad.addColorStop(0, '#ea580c');
+      carpGrad.addColorStop(0.5, '#f59e0b');
+      carpGrad.addColorStop(1, '#dc2626');
+      ctx.fillStyle = carpGrad;
+
+      ctx.beginPath();
+      ctx.ellipse(0, 0, cw * 0.6, ch * 0.55, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Vảy cá lấp lánh
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.7)';
+      ctx.lineWidth = 1;
+      for (let r = -2; r <= 2; r++) {
+        ctx.beginPath();
+        ctx.arc(r * 5, 0, 4.5, 0, Math.PI);
+        ctx.stroke();
+      }
+
+      // Mắt cá
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-cw * 0.35, -ch * 0.15, 3.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(-cw * 0.35, -ch * 0.15, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đuôi cá đung đưa
+      const tailSwing = Math.sin(now * 0.005 + swayAngle * 2) * 0.3;
+      ctx.save();
+      ctx.translate(cw * 0.55, 0);
+      ctx.rotate(tailSwing);
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(14, -8);
+      ctx.lineTo(10, 0);
+      ctx.lineTo(14, 8);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#fde047';
+      ctx.stroke();
+      ctx.restore();
+
+      // Tua rua treo dưới bụng cá
+      drawLanternTassel(ctx, 0, ch * 0.55, 18, tailSwing * 0.8, '#ef4444', '#fbbf24');
+
+      ctx.restore();
+    }
+
     function renderGiftCanvas(now) {
       const canvas = document.getElementById('gift-canvas');
       if (!canvas) return;
@@ -3818,68 +4311,118 @@
       const h = canvas.height;
       const groundY = h - 65;
 
-      // 1. NỀN PHÒNG LỄ HỘI ẤM ÁP SANG TRỌNG
-      const hallGrad = ctx.createLinearGradient(0, 0, 0, h);
-      hallGrad.addColorStop(0, '#0f172a');
-      hallGrad.addColorStop(0.65, '#1e1b4b');
-      hallGrad.addColorStop(1, '#020617');
-      ctx.fillStyle = hallGrad;
-      ctx.fillRect(0, 0, w, h);
+      // 1. BẦU TRỜI ĐÊM RẰM TRUNG THU HUYỀN ẢO
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
+      skyGrad.addColorStop(0, '#020617'); // Midnight deep blue
+      skyGrad.addColorStop(0.4, '#090d2e'); // Deep indigo
+      skyGrad.addColorStop(0.8, '#1e1b4b'); // Warm festival violet
+      skyGrad.addColorStop(1, '#2e1065');   // Horizon purple glow
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, groundY);
 
-      // 2. DÂY ĐÈN TRANG TRÍ LẤP LÁNH TRÊN TRẦN
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(0, 20);
-      for (let l = 0; l < giftCeilingLights.length; l++) {
-        const light = giftCeilingLights[l];
-        ctx.lineTo(light.x, light.y);
+      // 1.1. SAO TRỜI LẤP LÁNH
+      if (giftStars && giftStars.length > 0) {
+        giftStars.forEach(st => {
+          const alpha = st.baseAlpha + Math.sin(now * st.speed + st.phase) * 0.28;
+          ctx.save();
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(1.0, alpha))})`;
+          ctx.beginPath();
+          ctx.arc(st.x, st.y, st.size, 0, Math.PI * 2);
+          ctx.fill();
+          if (st.size > 1.8) {
+            ctx.strokeStyle = `rgba(254, 240, 138, ${alpha * 0.6})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(st.x - st.size * 2, st.y);
+            ctx.lineTo(st.x + st.size * 2, st.y);
+            ctx.moveTo(st.x, st.y - st.size * 2);
+            ctx.lineTo(st.x, st.y + st.size * 2);
+            ctx.stroke();
+          }
+          ctx.restore();
+        });
       }
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
 
-      giftCeilingLights.forEach(light => {
-        const pulse = (Math.sin(now * 0.005 + light.glowPhase) + 1) * 0.5;
+      // 1.2. MẶT TRĂNG RẰM VÀNG RỰC RỠ & QUẦNG HÀO QUANG
+      const moonX = Math.max(w - 140, w * 0.78);
+      const moonY = 85;
+      const moonR = Math.min(46, Math.max(34, w * 0.055));
+      drawMidAutumnMoon(ctx, moonX, moonY, moonR, now, giftMoonClouds);
+
+      // 1.3. THIÊN ĐĂNG (ĐÈN TRỜI BAY LƠ LỬNG)
+      if (giftSkyLanterns && giftSkyLanterns.length > 0) {
+        giftSkyLanterns.forEach(sl => {
+          sl.y -= sl.speedY;
+          if (sl.y < -35) {
+            sl.y = groundY + Math.random() * 20;
+            sl.x = Math.random() * w;
+          }
+          drawSkyLantern(ctx, sl, now);
+        });
+      }
+
+      // 2. DÂY TREO DÀN LỒNG ĐÈN TRUNG THU ĐUNG ĐƯA
+      if (giftLanterns && giftLanterns.length > 0) {
         ctx.save();
-        ctx.shadowColor = light.color;
-        ctx.shadowBlur = 10 + pulse * 12;
         ctx.beginPath();
-        ctx.arc(light.x, light.y + 3, 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = light.color;
-        ctx.fill();
-        ctx.restore();
-      });
-      ctx.restore();
+        ctx.moveTo(0, 18);
+        for (let l = 0; l < giftLanterns.length; l++) {
+          const lnt = giftLanterns[l];
+          ctx.lineTo(lnt.x, lnt.y);
+        }
+        ctx.lineTo(w, 18);
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
 
-      // 3. SÀN SÂN KHẤU GỖ ẤM ÁP VỚI HÀO QUANG ÁNH SÁNG SPOTLIGHT
+        // Vẽ từng chiếc lồng đèn
+        giftLanterns.forEach(lnt => {
+          const sway = Math.sin(now * lnt.swaySpeed + lnt.phase) * 0.09;
+          if (lnt.type === 'star') {
+            drawMidAutumnStarLantern(ctx, lnt.x, lnt.y, lnt.radius, sway, now);
+          } else if (lnt.type === 'carp') {
+            drawMidAutumnCarpLantern(ctx, lnt.x, lnt.y, lnt.radius, sway, now);
+          } else {
+            drawMidAutumnRoundLantern(ctx, lnt.x, lnt.y, lnt.radius * 0.9, lnt.radius * 1.2, lnt.type, sway, now);
+          }
+        });
+        ctx.restore();
+      }
+
+      // 3. SÂN ĐÌNH ĐÊM TRĂNG RẰM VỚI HÀO QUANG ÁNH TRĂNG VÀNG
       const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
-      floorGrad.addColorStop(0, '#451a03');
-      floorGrad.addColorStop(0.5, '#291102');
-      floorGrad.addColorStop(1, '#1c0a00');
+      floorGrad.addColorStop(0, '#1e293b'); // Dark moonlit stone
+      floorGrad.addColorStop(0.08, '#334155');
+      floorGrad.addColorStop(0.5, '#1e1b4b'); // Indigo festival shadow
+      floorGrad.addColorStop(1, '#0f172a');
       ctx.fillStyle = floorGrad;
       ctx.fillRect(0, groundY, w, h - groundY);
 
-      // Vạch chỉ sàn gỗ
-      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      // Hàng cỏ xanh đêm trăng ven sân
+      ctx.fillStyle = '#065f46';
+      ctx.fillRect(0, groundY - 4, w, 5);
+
+      // Vạch chỉ sân gạch đêm rằm
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.2)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(0, groundY);
       ctx.lineTo(w, groundY);
       ctx.stroke();
 
-      // Ánh đèn rọi Spotlight từ trần xuống đống quà và em bé
+      // Ánh sáng trăng rọi Spotlight và quầng đèn lồng xuống đống quà & em bé
       ctx.save();
-      const spotGrad = ctx.createRadialGradient(w * 0.55, groundY - 120, 20, w * 0.55, groundY, 320);
-      spotGrad.addColorStop(0, 'rgba(254, 240, 138, 0.16)');
-      spotGrad.addColorStop(0.6, 'rgba(254, 240, 138, 0.06)');
+      const spotGrad = ctx.createRadialGradient(w * 0.58, groundY - 60, 20, w * 0.58, groundY + 10, 360);
+      spotGrad.addColorStop(0, 'rgba(254, 240, 138, 0.22)');
+      spotGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.08)');
       spotGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
       ctx.fillStyle = spotGrad;
       ctx.beginPath();
-      ctx.ellipse(w * 0.55, groundY, 320, 90, 0, 0, Math.PI * 2);
+      ctx.ellipse(w * 0.58, groundY + 10, 360, 95, 0, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
 
-      // 4. VẼ ĐỐNG HỘP QUÀ (SẮP XẾP TỪNG TẦNG TỪ CAO XUỐNG THẤP)
+      // 4. VẼ ĐỐNG HỘP QUÀ TRUNG THU (SẮP XẾP TỪNG TẦNG TỪ CAO XUỐNG THẤP)
       const sortedBoxes = [...giftBoxes].sort((a, b) => b.layer - a.layer);
       sortedBoxes.forEach(box => {
         if (box.picked) return;
@@ -3887,7 +4430,7 @@
         drawGiftBoxItem(ctx, box, isGlowing, 0);
       });
 
-      // 5. VẼ EM BÉ LON TON BƯỚC ĐI & BỐC QUÀ
+      // 5. VẼ EM BÉ RƯỚC ĐÈN LON TON BƯỚC ĐI & BỐC QUÀ
       drawToddler(ctx, toddler, now);
 
       // 6. NẾU CÓ HỘP QUÀ ĐANG BỊ BỐC LÊN TAY EM BÉ
@@ -3938,7 +4481,7 @@
         ctx.restore();
       }
 
-      // 8. BẢNG VÀNG HOÀNG GIA HIỆN RA TÊN NGƯỜI ĐƯỢC CHỌN
+      // 8. BẢNG VÀNG HOÀNG GIA - ĐÊM HỘI TRĂNG RẰM
       if (giftWinnerReveal) {
         giftWinnerReveal.scale += (1.0 - giftWinnerReveal.scale) * 0.15;
         giftWinnerReveal.alpha = Math.min(1.0, giftWinnerReveal.alpha + 0.12);
@@ -3963,32 +4506,32 @@
         ctx.restore();
 
         // Khung Bảng Vàng Hoàng Gia
-        const bw = 270;
-        const bh = 78;
-        ctx.shadowColor = 'rgba(245, 158, 11, 0.85)';
-        ctx.shadowBlur = 25;
+        const bw = 290;
+        const bh = 84;
+        ctx.shadowColor = 'rgba(245, 158, 11, 0.9)';
+        ctx.shadowBlur = 28;
 
         // Khung vàng kim ngoài
-        drawBalloonRoundedRect(ctx, -bw / 2, -bh / 2, bw, bh, 18, '#f59e0b', '#fef08a', 2.5);
-        // Lòng đỏ nhung quý phái
-        drawBalloonRoundedRect(ctx, -bw / 2 + 3, -bh / 2 + 3, bw - 6, bh - 6, 15, '#881337', null, 0);
+        drawBalloonRoundedRect(ctx, -bw / 2, -bh / 2, bw, bh, 20, '#f59e0b', '#fef08a', 2.8);
+        // Lòng đỏ nhung hoàng gia sang trọng
+        drawBalloonRoundedRect(ctx, -bw / 2 + 3.5, -bh / 2 + 3.5, bw - 7, bh - 7, 16, '#881337', null, 0);
 
         ctx.shadowBlur = 0;
 
-        // Dòng tiêu đề nhỏ
+        // Dòng tiêu đề Đêm Hội Trăng Rằm
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = '900 11px system-ui, sans-serif';
+        ctx.font = '900 12px system-ui, sans-serif';
         ctx.fillStyle = '#fde047';
-        ctx.fillText('✨ CHÚC MỪNG CHIẾN THẮNG ✨', 0, -bh / 2 + 18);
+        ctx.fillText('🌕 ĐÊM HỘI TRĂNG RẰM 🌕', 0, -bh / 2 + 19);
 
         // TÊN HỌC SINH TO, ĐẬM, SẮC NÉT RỰC RỠ
-        ctx.font = '900 23px system-ui, -apple-system, sans-serif';
+        ctx.font = '900 24px system-ui, -apple-system, sans-serif';
         ctx.strokeStyle = '#0f172a';
-        ctx.lineWidth = 4.5;
-        ctx.strokeText(giftWinnerReveal.student.name, 0, -bh / 2 + 48);
+        ctx.lineWidth = 5;
+        ctx.strokeText(giftWinnerReveal.student.name, 0, -bh / 2 + 51);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(giftWinnerReveal.student.name, 0, -bh / 2 + 48);
+        ctx.fillText(giftWinnerReveal.student.name, 0, -bh / 2 + 51);
 
         ctx.restore();
       }
@@ -4005,30 +4548,30 @@
       // Bóng dưới đáy hộp quà
       ctx.beginPath();
       ctx.ellipse(0, h / 2 + 2, w * 0.5, h * 0.18, 0, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
       ctx.fill();
 
       // Nếu là hộp mục tiêu đang tỏa sáng
       if (isGlowing) {
         ctx.save();
-        ctx.shadowColor = '#f59e0b';
-        ctx.shadowBlur = 22;
-        drawBalloonRoundedRect(ctx, -w / 2 - 3, -h / 2 - 3, w + 6, h + 6, 8, null, 'rgba(251, 191, 36, 0.85)', 2.5);
+        ctx.shadowColor = '#fde047';
+        ctx.shadowBlur = 24;
+        drawBalloonRoundedRect(ctx, -w / 2 - 3, -h / 2 - 3, w + 6, h + 6, 8, null, 'rgba(253, 224, 71, 0.9)', 2.5);
         ctx.restore();
       }
 
-      // Thân hộp quà 3D
+      // Thân hộp quà 3D mang phong cách Trung Thu
       const bodyGrad = ctx.createLinearGradient(-w / 2, -h / 2, w / 2, h / 2);
       bodyGrad.addColorStop(0, adjustColor(box.color, 25));
       bodyGrad.addColorStop(0.7, box.color);
       bodyGrad.addColorStop(1, adjustColor(box.color, -25));
       drawBalloonRoundedRect(ctx, -w / 2, -h / 2, w, h, 6, bodyGrad, adjustColor(box.color, -35), 1.2);
 
-      // Ruy băng dọc
+      // Ruy băng dọc vàng kim
       const rw = Math.max(5, w * 0.18);
       drawBalloonRoundedRect(ctx, -rw / 2, -h / 2, rw, h, 2, box.ribbonColor, null);
 
-      // Ruy băng ngang
+      // Ruy băng ngang vàng kim
       const rh = Math.max(4, h * 0.16);
       drawBalloonRoundedRect(ctx, -w / 2, -rh / 2, w, rh, 2, box.ribbonColor, null);
 
@@ -4087,36 +4630,36 @@
       ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
       ctx.fill();
 
-      // Đôi giày bốt xinh xắn
+      // Đôi giày bốt nhỏ xinh
       const legSwing = isWalking ? Math.sin(walkCycle) * 7 : 0;
-      drawBalloonRoundedRect(ctx, -14 + legSwing, -10, 11, 10, 4, '#f59e0b', '#b45309', 1);
-      drawBalloonRoundedRect(ctx, 3 - legSwing, -10, 11, 10, 4, '#f59e0b', '#b45309', 1);
+      drawBalloonRoundedRect(ctx, -14 + legSwing, -10, 11, 10, 4, '#b45309', '#78350f', 1);
+      drawBalloonRoundedRect(ctx, 3 - legSwing, -10, 11, 10, 4, '#b45309', '#78350f', 1);
 
       // Đôi chân bụ bẫm
       ctx.fillStyle = '#fed7aa';
       ctx.fillRect(-12 + legSwing, -18, 7, 10);
       ctx.fillRect(5 - legSwing, -18, 7, 10);
 
-      // Bộ yếm ấm áp màu xanh
+      // Áo gấm lễ hội Trung Thu đỏ rực viền vàng hoàng gia
       const bodyGrad = ctx.createLinearGradient(0, -48, 0, -16);
-      bodyGrad.addColorStop(0, '#3b82f6');
-      bodyGrad.addColorStop(1, '#1d4ed8');
-      drawBalloonRoundedRect(ctx, -16, -46, 32, 32, 12, bodyGrad, '#1e40af', 1.5);
+      bodyGrad.addColorStop(0, '#dc2626');
+      bodyGrad.addColorStop(1, '#991b1b');
+      drawBalloonRoundedRect(ctx, -16, -46, 32, 32, 12, bodyGrad, '#fbbf24', 1.6);
 
-      // Cúc áo vàng
-      ctx.fillStyle = '#fbbf24';
+      // Cúc áo vàng ngọc
+      ctx.fillStyle = '#fde047';
       ctx.beginPath();
       ctx.arc(-8, -40, 2.5, 0, Math.PI * 2);
       ctx.arc(8, -40, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // Cổ áo len vàng
+      // Cổ áo lụa vàng
       ctx.fillStyle = '#fef08a';
       ctx.beginPath();
       ctx.arc(0, -46, 7, 0, Math.PI * 2);
       ctx.fill();
 
-      // Cánh tay em bé
+      // Cánh tay em bé & Cây Đèn Ông Sao mini trên que tre
       if (state === 'holding' || state === 'celebrating') {
         ctx.strokeStyle = '#fed7aa';
         ctx.lineWidth = 6;
@@ -4133,35 +4676,99 @@
         ctx.arc(16, -56, 4.5, 0, Math.PI * 2);
         ctx.fill();
       } else if (state === 'thinking') {
+        // Tay trái chống cằm suy nghĩ
         ctx.strokeStyle = '#fed7aa';
         ctx.lineWidth = 5.5;
         ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(-12, -36);
         ctx.lineTo(-8, -24);
+        ctx.stroke();
+
+        // Tay phải cầm đèn ông sao soi sáng đống quà
+        ctx.beginPath();
         ctx.moveTo(12, -36);
-        ctx.lineTo(8, -50);
+        ctx.lineTo(18, -44);
         ctx.stroke();
         ctx.fillStyle = '#fed7aa';
         ctx.beginPath();
-        ctx.arc(8, -52, 4.5, 0, Math.PI * 2);
+        ctx.arc(18, -44, 4.5, 0, Math.PI * 2);
         ctx.fill();
+
+        // Cây gậy tre cầm đèn ông sao mini
+        ctx.save();
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(18, -44);
+        ctx.lineTo(34, -58);
+        ctx.stroke();
+
+        // Dây treo đèn mini
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.7)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(34, -58);
+        ctx.lineTo(34, -48);
+        ctx.stroke();
+
+        // Đèn ông sao mini phát sáng soi đống quà
+        drawMiniStarLantern(ctx, 34, -40, 9, Math.sin(now * 0.005) * 0.15, now);
+        ctx.restore();
       } else {
         const armSwing = isWalking ? Math.cos(walkCycle) * 10 : 0;
+        // Tay trái vung vẩy theo bước chân
         ctx.strokeStyle = '#fed7aa';
         ctx.lineWidth = 5.5;
         ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(-14, -36);
         ctx.lineTo(-18 - armSwing * 0.4, -22 + armSwing);
-        ctx.moveTo(14, -36);
-        ctx.lineTo(18 + armSwing * 0.4, -22 - armSwing);
         ctx.stroke();
         ctx.fillStyle = '#fed7aa';
         ctx.beginPath();
         ctx.arc(-18 - armSwing * 0.4, -20 + armSwing, 4.2, 0, Math.PI * 2);
-        ctx.arc(18 + armSwing * 0.4, -20 - armSwing, 4.2, 0, Math.PI * 2);
         ctx.fill();
+
+        // Tay phải cầm cán gậy tre rước đèn ông sao
+        const stickHandX = 16 + armSwing * 0.3;
+        const stickHandY = -28 - armSwing * 0.5;
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 5.5;
+        ctx.beginPath();
+        ctx.moveTo(14, -36);
+        ctx.lineTo(stickHandX, stickHandY);
+        ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(stickHandX, stickHandY, 4.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Cán gậy tre rước đèn
+        ctx.save();
+        const stickAngle = -Math.PI / 3.8 + (isWalking ? Math.sin(walkCycle) * 0.12 : Math.sin(now * 0.003) * 0.05);
+        const stickLen = 26;
+        const tipX = stickHandX + Math.cos(stickAngle) * stickLen;
+        const tipY = stickHandY + Math.sin(stickAngle) * stickLen;
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(stickHandX - 4, stickHandY + 6);
+        ctx.lineTo(tipX, tipY);
+        ctx.stroke();
+
+        // Dây treo đèn mini đung đưa
+        const lanternSway = isWalking ? Math.sin(walkCycle) * 0.3 : Math.sin(now * 0.005) * 0.15;
+        ctx.strokeStyle = 'rgba(254, 240, 138, 0.7)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(tipX, tipY);
+        ctx.lineTo(tipX + lanternSway * 8, tipY + 10);
+        ctx.stroke();
+
+        // Chiếc đèn ông sao mini 5 cánh đang tỏa sáng rực rỡ
+        drawMiniStarLantern(ctx, tipX + lanternSway * 8, tipY + 16, 9.5, lanternSway, now);
+        ctx.restore();
       }
 
       // Khuôn mặt em bé tròn trịa đáng yêu
@@ -4226,44 +4833,56 @@
         ctx.stroke();
       }
 
-      // Nón len ấm áp có tai gấu
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath();
-      ctx.arc(0, headY - 3, 19, Math.PI * 0.85, Math.PI * 2.15);
-      ctx.fill();
-      drawBalloonRoundedRect(ctx, -19, headY - 7, 38, 7, 3, '#ffffff', '#e2e8f0', 1);
+      // BỜM TAI THỎ NGỌC CUNG TRĂNG TRUNG THU
+      const earBounce = isWalking ? Math.sin(walkCycle * 2) * 1.5 : 0;
 
-      // Tai gấu bên trái
-      ctx.fillStyle = '#ef4444';
+      // Băng đô đỏ viền vàng
+      ctx.fillStyle = '#dc2626';
       ctx.beginPath();
-      ctx.arc(-14, headY - 18, 6.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#fecdd3';
-      ctx.beginPath();
-      ctx.arc(-14, headY - 18, 3.5, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.arc(0, headY - 4, 18.5, Math.PI * 0.95, Math.PI * 2.05);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#f59e0b';
+      ctx.stroke();
 
-      // Tai gấu bên phải
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath();
-      ctx.arc(14, headY - 18, 6.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#fecdd3';
-      ctx.beginPath();
-      ctx.arc(14, headY - 18, 3.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Quả bông trên đỉnh nón
+      // Tai thỏ trắng bên trái
+      ctx.save();
+      ctx.translate(-8, headY - 16 + earBounce);
+      ctx.rotate(-0.15);
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(0, headY - 22, 5, 0, Math.PI * 2);
+      ctx.ellipse(0, -10, 6, 13, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fbcfe8';
+      ctx.beginPath();
+      ctx.ellipse(0, -9, 3.2, 8.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Tai thỏ trắng bên phải
+      ctx.save();
+      ctx.translate(8, headY - 16 - earBounce);
+      ctx.rotate(0.15);
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(0, -10, 6, 13, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fbcfe8';
+      ctx.beginPath();
+      ctx.ellipse(0, -9, 3.2, 8.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Ngôi sao nhỏ xinh giữa bờm tai thỏ
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.arc(0, headY - 19, 3.5, 0, Math.PI * 2);
       ctx.fill();
 
       // Bong bóng thoại khi ăn mừng
       if (state === 'celebrating') {
         const bubbleX = 42;
         const bubbleY = headY - 25;
-        drawBalloonRoundedRect(ctx, bubbleX - 45, bubbleY - 18, 92, 26, 12, '#ffffff', '#fbbf24', 2);
+        drawBalloonRoundedRect(ctx, bubbleX - 45, bubbleY - 18, 100, 28, 12, '#ffffff', '#f59e0b', 2.2);
         ctx.beginPath();
         ctx.moveTo(bubbleX - 15, bubbleY + 8);
         ctx.lineTo(bubbleX - 25, bubbleY + 16);
@@ -4271,11 +4890,56 @@
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.font = '900 11px system-ui, sans-serif';
-        ctx.fillStyle = '#0f172a';
+        ctx.fillStyle = '#dc2626';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🎁 BỐC ĐƯỢC RỒI!', bubbleX, bubbleY - 5);
+        ctx.fillText('🥮 RƯỚC ĐÈN BỐC QUÀ!', bubbleX + 5, bubbleY - 4);
       }
+
+      ctx.restore();
+    }
+
+    function drawMiniStarLantern(ctx, cx, cy, radius, sway, now) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(sway);
+
+      // Hào quang nến nhỏ
+      ctx.shadowColor = '#fde047';
+      ctx.shadowBlur = 12;
+
+      // Vòng tre mini
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.88, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 5 cánh sao mini
+      const outerR = radius;
+      const innerR = radius * 0.42;
+      const colors = ['#ef4444', '#f59e0b', '#10b981', '#06b6d4', '#ec4899'];
+      for (let i = 0; i < 5; i++) {
+        const aOuter = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
+        const aInner = aOuter + Math.PI / 5;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(Math.cos(aOuter) * outerR, Math.sin(aOuter) * outerR);
+        ctx.lineTo(Math.cos(aInner) * innerR, Math.sin(aInner) * innerR);
+        ctx.closePath();
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+      }
+
+      // Tâm sao vàng rực
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(0, 0, innerR * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tua rua mini
+      const tSway = Math.sin(now * 0.006) * 0.25;
+      drawLanternTassel(ctx, 0, outerR, 9, tSway, '#ef4444', '#fde047');
 
       ctx.restore();
     }
