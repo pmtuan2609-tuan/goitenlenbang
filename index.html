@@ -1372,12 +1372,16 @@
 
         <!-- STAGE 7: HỘP QUÀ TRUNG THU (EM BÉ RƯỚC ĐÈN BỐC QUÀ) -->
         <div id="gift-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-indigo-950 via-slate-900 to-amber-950/60 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
-          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
-            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-amber-400/30 text-white text-xs font-bold shadow-lg">
+          <!-- Canvas hiển thị toàn bộ không gian Đêm Rằm & Dàn Lồng Đèn thông thoáng ở phía trên -->
+          <canvas id="gift-canvas" class="w-full h-full block"></canvas>
+
+          <!-- Thanh điều khiển & trạng thái đặt ở dưới chân sân khấu để không che lồng đèn -->
+          <div class="absolute bottom-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-950/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-amber-400/40 text-white text-xs font-bold shadow-xl">
               <span class="text-amber-400 font-extrabold text-sm animate-pulse">🏮</span>
               <span id="gift-game-status" class="text-amber-100">Đêm Hội Trăng Rằm: Sẵn sàng rước đèn bốc quà!</span>
             </div>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5 bg-slate-950/70 backdrop-blur-md p-1 rounded-2xl border border-white/10 shadow-xl">
               <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white text-xs font-black px-3.5 py-1.5 rounded-xl border border-amber-300/40 transition flex items-center gap-1.5 shadow-md hover:scale-105 active:scale-95 cursor-pointer">
                 <i class="fa-solid fa-gift text-white"></i> Rước Đèn Bốc Quà
               </button>
@@ -1392,7 +1396,6 @@
               </button>
             </div>
           </div>
-          <canvas id="gift-canvas" class="w-full h-full block"></canvas>
         </div>
 
         <!-- STAGE 8: BẮN BÓNG BAY GỌI TÊN (CẬU BÉ BẮN CUNG) -->
@@ -3571,7 +3574,7 @@
         bh = 34;
       }
 
-      const groundY = h - 65;
+      const groundY = h - 75;
       const pileCenterX = Math.max(w * 0.62, w - 250);
 
       if (resetPositions || giftBoxes.length === 0 || giftBoxes.length !== count) {
@@ -4309,7 +4312,7 @@
       const ctx = canvas.getContext('2d');
       const w = canvas.width;
       const h = canvas.height;
-      const groundY = h - 65;
+      const groundY = h - 75;
 
       // 1. BẦU TRỜI ĐÊM RẰM TRUNG THU HUYỀN ẢO
       const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
