@@ -1000,36 +1000,36 @@
           </div>
         </div>
 
-        <!-- 7. HỘP QUÀ BÍ MẬT 3D -->
-        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-slate-50/80 border border-slate-200 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all opacity-85 hover:opacity-100 group">
+        <!-- 7. HỘP QUÀ BÍ MẬT 3D (EM BÉ BỐC QUÀ) -->
+        <div onclick="launchGame('gift')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-pink-200 hover:border-pink-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-              <div class="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-2xl shadow-xs shrink-0">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center text-2xl text-white shadow-xs shrink-0">
                 🎁
               </div>
-              <span class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[10px] font-black uppercase flex items-center gap-1">
-                <i class="fa-solid fa-clock-rotate-left"></i> Đang Cập Nhật
+              <span class="px-2.5 py-1 rounded-full bg-pink-50 text-pink-700 border border-pink-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-500"></i> Mới & Hot
               </span>
             </div>
             <div>
-              <h3 class="text-base font-black text-slate-900 group-hover:text-amber-600 transition">
+              <h3 class="text-base font-black text-slate-900 group-hover:text-pink-600 transition">
                 Hộp Quà Bí Mật
               </h3>
               <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mt-1">
-                Các hộp quà lung linh lắc lư theo điệu nhạc. Nắp hộp bật mở tung ngôi sao lấp lánh hé lộ tên học sinh.
+                Đống hộp quà bí mật rực rỡ tương ứng sĩ số lớp. Em bé lon ton bước ra bốc 1 hộp bung nở tên học sinh.
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-600">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎁 Hộp Quà</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏳ Đang Làm</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bản Mới</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎁 Đống Quà</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👶 Em Bé Bốc</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">✨ Bất Ngờ</span>
             </div>
           </div>
           <div class="pt-3 border-t border-slate-200 mt-3 flex items-center justify-between text-xs font-bold">
-            <span class="text-amber-600 text-[11px] font-bold flex items-center gap-1">
-              <i class="fa-solid fa-wrench text-[10px]"></i> Tạm khóa
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
             </span>
-            <span class="text-slate-400 font-semibold text-[11px]">Sắp ra mắt</span>
+            <span class="text-indigo-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Bốc Quà Ngay →</span>
           </div>
         </div>
 
@@ -1149,7 +1149,7 @@
               <option value="f1" class="bg-slate-900 text-white font-bold">🏎️ Đua Xe F1 Chuyên Nghiệp</option>
               <option value="horse" class="bg-slate-900 text-white font-bold">🏇 Đua Ngựa Thể Thao</option>
               <option value="wheel_pie" class="bg-slate-900 text-white font-bold">🎡 Vòng Quay May Mắn</option>
-              <option value="gift" class="bg-slate-900 text-slate-400 font-bold">🎁 Hộp Quà Bí Mật (Đang cập nhật)</option>
+              <option value="gift" class="bg-slate-900 text-white font-bold">🎁 Hộp Quà Bí Mật (Em Bé Bốc Quà)</option>
               <option value="balloon" class="bg-slate-900 text-white font-bold">🎈 Bắn Bóng Bay (Cậu Bé Bắn Tên)</option>
               <option value="wheel_slot" class="bg-slate-900 text-slate-400 font-bold">🎰 Máy Kéo Số (Đang cập nhật)</option>
             </select>
@@ -1370,9 +1370,29 @@
           </div>
         </div>
 
-        <!-- STAGE 7: HỘP QUÀ BÍ MẬT 3D -->
-        <div id="gift-stage-container" class="hidden w-full h-full min-h-[440px] flex flex-wrap gap-4 items-center justify-center p-6 overflow-y-auto max-h-[600px] dark-scrollbar">
-          <!-- Populated by JS -->
+        <!-- STAGE 7: HỘP QUÀ BÍ MẬT 3D (EM BÉ BỐC QUÀ) -->
+        <div id="gift-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-indigo-950 via-slate-900 to-amber-950/60 border border-slate-800 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 text-white text-xs font-bold shadow-md">
+              <span class="text-amber-400 font-extrabold text-sm">🎁</span>
+              <span id="gift-game-status">Sẵn sàng bốc hộp quà!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="startSpin()" class="bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white text-xs font-black px-3 py-1.5 rounded-xl border border-white/20 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i class="fa-solid fa-gift text-white"></i> Bốc Quà
+              </button>
+              <button onclick="toggleGiftSound()" id="gift-sound-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleGiftFullscreen()" id="gift-fullscreen-btn" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-300"></i> Phóng to
+              </button>
+              <button onclick="resetGiftGame()" class="bg-slate-900/80 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-white/20 transition shadow-md cursor-pointer">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-300"></i> Xếp Lại Quà
+              </button>
+            </div>
+          </div>
+          <canvas id="gift-canvas" class="w-full h-full block"></canvas>
         </div>
 
         <!-- STAGE 8: BẮN BÓNG BAY GỌI TÊN (CẬU BÉ BẮN CUNG) -->
@@ -2783,6 +2803,7 @@
       else if (mode === 'f1') initF1Race(true);
       else if (mode === 'horse') initHorseRace(true);
       else if (mode === 'balloon') initBalloonGame(true);
+      else if (mode === 'gift') initGiftGame(true);
     }
 
     function renderClassesListTab() {
@@ -3158,9 +3179,8 @@
     }
 
     function launchGame(mode) {
-      if (mode === 'gift' || mode === 'wheel_slot') {
+      if (mode === 'wheel_slot') {
         const names = {
-          gift: 'Hộp Quà Bí Mật',
           wheel_slot: 'Máy Kéo Số Jackpot'
         };
         showUpcomingNotice(names[mode]);
@@ -3189,9 +3209,8 @@
     // ==========================================
     function handleModeChange() {
       const mode = document.getElementById('spin-mode')?.value || 'duck';
-      if (mode === 'gift' || mode === 'wheel_slot') {
+      if (mode === 'wheel_slot') {
         const names = {
-          gift: 'Hộp Quà Bí Mật',
           wheel_slot: 'Máy Kéo Số Jackpot'
         };
         showUpcomingNotice(names[mode]);
@@ -3262,7 +3281,11 @@
         }, 40);
       } else if (mode === 'gift') {
         if (giftContainer) giftContainer.classList.remove('hidden');
-        renderGiftBoxes();
+        initGiftGame(true);
+        setTimeout(() => {
+          resizeGiftCanvas();
+          renderGiftCanvas(performance.now());
+        }, 40);
       } else if (mode === 'balloon') {
         if (bubbleContainer) bubbleContainer.classList.remove('hidden');
         initBalloonGame(true);
@@ -3288,7 +3311,7 @@
         f1: { title: 'Đua Xe F1 Chuyên Nghiệp (Grand Prix Circuit)', icon: '🏎️' },
         horse: { title: 'Đua Ngựa Thể Thao (Vó Ngựa Chạy Ngang)', icon: '🏇' },
         wheel_pie: { title: 'Vòng Quay May Mắn (Cổ Điển 360 Độ)', icon: '🎡' },
-        gift: { title: 'Hộp Quà Bí Mật 3D', icon: '🎁' },
+        gift: { title: 'Hộp Quà Bí Mật 3D (Em Bé Bốc Quà)', icon: '🎁' },
         balloon: { title: 'Bắn Bóng Bay Gọi Tên (Cậu Bé Bắn Cung)', icon: '🎈' },
         wheel_slot: { title: 'Máy Kéo Số May Mắn', icon: '🎰' }
       };
@@ -3301,6 +3324,8 @@
       if (spinBtn) {
         if (mode === 'balloon') {
           spinBtn.innerHTML = '<i class="fa-solid fa-crosshairs"></i> BẮN TÊN GỌI TÊN';
+        } else if (mode === 'gift') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-gift"></i> BỐC HỘP QUÀ';
         } else if (mode === 'wheel_pie') {
           spinBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> QUAY VÒNG';
         } else {
@@ -3363,36 +3388,896 @@
         else if (mode === 'f1') initF1Race(true);
         else if (mode === 'horse') initHorseRace(true);
         else if (mode === 'balloon') initBalloonGame(true);
+        else if (mode === 'gift') initGiftGame(true);
       }
     }
 
     // ==========================================
-    // 9. 3D GIFT STAGE & BUBBLE STAGE LOGIC
+    // 9. MODULE: HỘP QUÀ BÍ MẬT 3D (EM BÉ BỐC QUÀ)
     // ==========================================
-    let giftSpinRunning = false;
-    function renderGiftBoxes() {
+    const GiftAudio = {
+      ctx: null,
+      enabled: true,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      },
+      playStep() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          const t = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(320 + Math.random() * 80, t);
+          osc.frequency.exponentialRampToValueAtTime(140, t + 0.08);
+          gain.gain.setValueAtTime(0.12, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.08);
+        } catch (e) {}
+      },
+      playShimmer() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          const t = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(580, t);
+          osc.frequency.exponentialRampToValueAtTime(880, t + 0.35);
+          gain.gain.setValueAtTime(0.18, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.35);
+        } catch (e) {}
+      },
+      playPop() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          const t = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(650, t);
+          osc.frequency.exponentialRampToValueAtTime(180, t + 0.15);
+          gain.gain.setValueAtTime(0.35, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.15);
+        } catch (e) {}
+      },
+      playFanfare() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            const t = this.ctx.currentTime + idx * 0.08;
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.2, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.45);
+          });
+        } catch (e) {}
+      }
+    };
+
+    function toggleGiftSound() {
+      GiftAudio.enabled = !GiftAudio.enabled;
+      const btn = document.getElementById('gift-sound-btn');
+      if (btn) btn.innerHTML = GiftAudio.enabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleGiftFullscreen() {
       const container = document.getElementById('gift-stage-container');
       if (!container) return;
-      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
-
-      if (visible.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 text-xs font-bold">Chưa có học sinh nào trong lớp!</p>';
-        return;
+      if (!document.fullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
-
-      const giftIcons = ['🎁', '📦', '🎀', '🧸', '🎈', '⭐'];
-      container.innerHTML = visible.map((s, i) => `
-        <div id="gift-box-${s.id}" onclick="openSingleGift('${s.id}')" class="gift-box-item cursor-pointer p-4 bg-gradient-to-b from-pink-950/60 to-slate-900 border border-pink-500/30 hover:border-pink-400 rounded-3xl flex flex-col items-center justify-center gap-2 shadow-lg transition transform hover:scale-105 active:scale-95 w-28 h-32 select-none group">
-          <span class="text-4xl group-hover:animate-bounce">${giftIcons[i % giftIcons.length]}</span>
-          <span class="text-[11px] font-black text-slate-300 text-center truncate w-full px-1">${s.name}</span>
-        </div>
-      `).join('');
     }
 
-    function openSingleGift(id) {
-      const st = students.find(s => s.id === id);
-      if (!st) return;
-      showWinnerResult(st, document.getElementById('spin-btn'));
+    function resetGiftGame() {
+      initGiftGame(true);
+    }
+
+    let giftBoxes = [];
+    let giftGameAnimId = null;
+    let giftState = 'idle'; // 'idle', 'walking', 'thinking', 'reaching', 'holding', 'celebrating'
+    let giftTarget = null;
+    let giftFinishCallback = null;
+    let toddler = {
+      x: 80,
+      y: 400,
+      startX: 80,
+      targetX: 300,
+      state: 'idle',
+      heldBox: null
+    };
+    let giftConfetti = [];
+    let giftWinnerReveal = null;
+    let giftCeilingLights = [];
+
+    function resizeGiftCanvas() {
+      const container = document.getElementById('gift-stage-container');
+      const canvas = document.getElementById('gift-canvas');
+      if (!container || !canvas) return;
+      const rect = container.getBoundingClientRect();
+      let w = Math.floor(rect.width || container.clientWidth || container.offsetWidth || 900);
+      let h = Math.floor(rect.height || container.clientHeight || container.offsetHeight || 560);
+      if (w < 200) w = 900;
+      if (h < 200) h = 560;
+
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    }
+
+    function initGiftGame(resetPositions = true) {
+      resizeGiftCanvas();
+      const canvas = document.getElementById('gift-canvas');
+      if (!canvas) return;
+      const w = canvas.width || 800;
+      const h = canvas.height || 500;
+
+      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+      const studentPool = visible.length > 0 ? visible : Array.from({ length: 25 }, (_, i) => ({ id: 'st-' + i, name: `Học sinh ${i + 1}` }));
+
+      // Số lượng hộp quà = chính xác số học sinh của lớp đó để thành 1 đống
+      const count = studentPool.length;
+      const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4', '#14b8a6', '#d97706'];
+      const ribbonColors = ['#fde047', '#ffffff', '#fed7aa', '#fef08a', '#e2e8f0'];
+
+      // Kích thước hộp quà tự động co giãn theo sĩ số lớp
+      let bw = 46;
+      let bh = 38;
+      if (count > 45) {
+        bw = 36;
+        bh = 30;
+      } else if (count > 25) {
+        bw = 40;
+        bh = 34;
+      }
+
+      const groundY = h - 65;
+      const pileCenterX = Math.max(w * 0.62, w - 250);
+
+      if (resetPositions || giftBoxes.length === 0 || giftBoxes.length !== count) {
+        giftBoxes = [];
+        let baseCount = Math.max(4, Math.ceil(Math.sqrt(count * 2.2)));
+        let remaining = count;
+        let layer = 0;
+        let boxIndex = 0;
+
+        while (remaining > 0) {
+          const curLayerBoxes = Math.min(remaining, Math.max(1, baseCount - layer));
+          const layerWidth = curLayerBoxes * (bw * 0.88);
+          const startX = pileCenterX - layerWidth / 2;
+          const layerY = groundY - layer * (bh * 0.78) - bh;
+
+          for (let k = 0; k < curLayerBoxes; k++) {
+            const st = studentPool[boxIndex % studentPool.length];
+            const col = colors[boxIndex % colors.length];
+            const ribCol = ribbonColors[(boxIndex + layer) % ribbonColors.length];
+            const tilt = Math.sin(boxIndex * 4 + layer * 3) * 0.09;
+            const jitterX = Math.sin(boxIndex * 7) * 4;
+
+            giftBoxes.push({
+              id: 'gift-' + boxIndex,
+              student: st,
+              studentId: st.id,
+              studentName: st.name,
+              x: startX + k * (bw * 0.88) + jitterX,
+              y: layerY,
+              originalX: startX + k * (bw * 0.88) + jitterX,
+              originalY: layerY,
+              bw: bw,
+              bh: bh,
+              color: col,
+              ribbonColor: ribCol,
+              tilt: tilt,
+              layer: layer,
+              isTarget: false,
+              picked: false,
+              openProgress: 0
+            });
+            boxIndex++;
+          }
+          remaining -= curLayerBoxes;
+          layer++;
+        }
+
+        // Tạo dàn đèn dây trang trí trên trần nhà
+        giftCeilingLights = [];
+        const lightColors = ['#f59e0b', '#ef4444', '#10b981', '#38bdf8', '#ec4899', '#fde047'];
+        for (let l = 0; l < 18; l++) {
+          giftCeilingLights.push({
+            x: (w / 17) * l,
+            y: 20 + Math.sin(l * 0.5) * 12,
+            color: lightColors[l % lightColors.length],
+            glowPhase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+
+      toddler = {
+        x: Math.max(60, w * 0.12),
+        y: groundY,
+        startX: Math.max(60, w * 0.12),
+        targetX: pileCenterX - (Math.ceil(Math.sqrt(count * 2.2)) * (bw * 0.88)) / 2 - 32,
+        state: 'idle',
+        heldBox: null
+      };
+
+      giftState = 'idle';
+      giftTarget = null;
+      giftConfetti = [];
+      giftWinnerReveal = null;
+
+      const statusEl = document.getElementById('gift-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🎁 Đống quà có ${count} hộp quà bí mật! Sẵn sàng bốc!`;
+      }
+
+      if (!giftGameAnimId) {
+        giftGameAnimId = requestAnimationFrame(runGiftLoop);
+      }
+    }
+
+    function runGiftLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const giftContainer = document.getElementById('gift-stage-container');
+      if (mode !== 'gift' || !giftContainer || giftContainer.classList.contains('hidden')) {
+        giftGameAnimId = null;
+        return;
+      }
+      try {
+        renderGiftCanvas(now);
+      } catch (err) {
+        console.error("renderGiftCanvas error:", err);
+      }
+      giftGameAnimId = requestAnimationFrame(runGiftLoop);
+    }
+
+    function startGiftPick(winnerStudent, durationMs = 3000, callback) {
+      giftFinishCallback = callback;
+      if (!winnerStudent) {
+        const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+        winnerStudent = visible[Math.floor(Math.random() * visible.length)] || { id: 'demo', name: 'Học sinh' };
+      }
+
+      let target = giftBoxes.find(b => String(b.studentId) === String(winnerStudent.id));
+      if (!target) {
+        target = giftBoxes[Math.floor(Math.random() * giftBoxes.length)] || giftBoxes[0];
+        if (target) {
+          target.student = winnerStudent;
+          target.studentId = winnerStudent.id;
+          target.studentName = winnerStudent.name;
+        }
+      }
+
+      giftBoxes.forEach(b => {
+        b.isTarget = false;
+        b.picked = false;
+        b.openProgress = 0;
+      });
+
+      if (target) {
+        target.isTarget = true;
+        giftTarget = target;
+      }
+
+      giftWinnerReveal = null;
+      giftState = 'walking';
+      toddler.state = 'walking';
+      toddler.x = toddler.startX;
+
+      const statusEl = document.getElementById('gift-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `👶 Em bé đang lon ton bước đến đống quà...`;
+      }
+
+      let lastStepTime = 0;
+      const walkStartTime = performance.now();
+      const walkDuration = 1400; // 1.4s waddle across
+
+      function walkStep(now) {
+        if (giftState !== 'walking') return;
+        const elapsed = now - walkStartTime;
+        const p = Math.min(1.0, elapsed / walkDuration);
+        toddler.x = toddler.startX + (toddler.targetX - toddler.startX) * p;
+
+        if (now - lastStepTime > 260) {
+          GiftAudio.playStep();
+          lastStepTime = now;
+        }
+
+        if (p < 1.0) {
+          requestAnimationFrame(walkStep);
+        } else {
+          // Reached pile -> Thinking state
+          toddler.state = 'thinking';
+          giftState = 'thinking';
+          if (statusEl) statusEl.innerHTML = `🤔 Em bé đang chọn hộp quà may mắn...`;
+          GiftAudio.playShimmer();
+
+          setTimeout(() => {
+            // Reaching & picking the target box
+            toddler.state = 'reaching';
+            giftState = 'reaching';
+
+            setTimeout(() => {
+              // Lifting the box up!
+              toddler.state = 'holding';
+              giftState = 'holding';
+              if (giftTarget) {
+                giftTarget.picked = true;
+              }
+              if (statusEl) statusEl.innerHTML = `✨ Đang mở hộp quà bí mật...`;
+
+              // Shaking the box then pop open!
+              setTimeout(() => {
+                popOpenGiftBox();
+              }, 900);
+            }, 500);
+          }, 700);
+        }
+      }
+
+      requestAnimationFrame(walkStep);
+    }
+
+    function popOpenGiftBox() {
+      if (!giftTarget) return;
+      toddler.state = 'celebrating';
+      giftState = 'celebrating';
+      GiftAudio.playPop();
+      GiftAudio.playFanfare();
+
+      const canvas = document.getElementById('gift-canvas');
+      const cw = canvas ? canvas.width : 800;
+      const ch = canvas ? canvas.height : 500;
+
+      // Confetti burst from box
+      giftConfetti = [];
+      const pColors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f97316', '#06b6d4', '#e11d48', '#fde047'];
+      for (let i = 0; i < 40; i++) {
+        const angle = (Math.PI * 2 * i) / 40 + (Math.random() - 0.5) * 0.4;
+        const speed = 3.0 + Math.random() * 7.0;
+        giftConfetti.push({
+          x: toddler.x + 16,
+          y: toddler.y - 70,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2.8,
+          color: pColors[i % pColors.length],
+          size: 4 + Math.random() * 7,
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.25,
+          alpha: 1.0,
+          isStar: i % 3 === 0
+        });
+      }
+
+      // Grand Winner Banner
+      giftWinnerReveal = {
+        student: giftTarget.student,
+        x: Math.max(160, Math.min(cw - 160, toddler.x + 16)),
+        y: Math.max(110, Math.min(ch - 190, toddler.y - 120)),
+        scale: 0.1,
+        alpha: 0
+      };
+
+      const statusEl = document.getElementById('gift-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🎁 Bốc trúng: <b class="text-amber-400">${giftTarget.student.name}</b>!`;
+      }
+
+      setTimeout(() => {
+        if (typeof giftFinishCallback === 'function') {
+          const cb = giftFinishCallback;
+          giftFinishCallback = null;
+          cb(giftTarget.student);
+        }
+      }, 700);
+    }
+
+    function renderGiftCanvas(now) {
+      const canvas = document.getElementById('gift-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      const groundY = h - 65;
+
+      // 1. NỀN PHÒNG LỄ HỘI ẤM ÁP SANG TRỌNG
+      const hallGrad = ctx.createLinearGradient(0, 0, 0, h);
+      hallGrad.addColorStop(0, '#0f172a');
+      hallGrad.addColorStop(0.65, '#1e1b4b');
+      hallGrad.addColorStop(1, '#020617');
+      ctx.fillStyle = hallGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. DÂY ĐÈN TRANG TRÍ LẤP LÁNH TRÊN TRẦN
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(0, 20);
+      for (let l = 0; l < giftCeilingLights.length; l++) {
+        const light = giftCeilingLights[l];
+        ctx.lineTo(light.x, light.y);
+      }
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      giftCeilingLights.forEach(light => {
+        const pulse = (Math.sin(now * 0.005 + light.glowPhase) + 1) * 0.5;
+        ctx.save();
+        ctx.shadowColor = light.color;
+        ctx.shadowBlur = 10 + pulse * 12;
+        ctx.beginPath();
+        ctx.arc(light.x, light.y + 3, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = light.color;
+        ctx.fill();
+        ctx.restore();
+      });
+      ctx.restore();
+
+      // 3. SÀN SÂN KHẤU GỖ ẤM ÁP VỚI HÀO QUANG ÁNH SÁNG SPOTLIGHT
+      const floorGrad = ctx.createLinearGradient(0, groundY, 0, h);
+      floorGrad.addColorStop(0, '#451a03');
+      floorGrad.addColorStop(0.5, '#291102');
+      floorGrad.addColorStop(1, '#1c0a00');
+      ctx.fillStyle = floorGrad;
+      ctx.fillRect(0, groundY, w, h - groundY);
+
+      // Vạch chỉ sàn gỗ
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.lineTo(w, groundY);
+      ctx.stroke();
+
+      // Ánh đèn rọi Spotlight từ trần xuống đống quà và em bé
+      ctx.save();
+      const spotGrad = ctx.createRadialGradient(w * 0.55, groundY - 120, 20, w * 0.55, groundY, 320);
+      spotGrad.addColorStop(0, 'rgba(254, 240, 138, 0.16)');
+      spotGrad.addColorStop(0.6, 'rgba(254, 240, 138, 0.06)');
+      spotGrad.addColorStop(1, 'rgba(254, 240, 138, 0)');
+      ctx.fillStyle = spotGrad;
+      ctx.beginPath();
+      ctx.ellipse(w * 0.55, groundY, 320, 90, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 4. VẼ ĐỐNG HỘP QUÀ (SẮP XẾP TỪNG TẦNG TỪ CAO XUỐNG THẤP)
+      const sortedBoxes = [...giftBoxes].sort((a, b) => b.layer - a.layer);
+      sortedBoxes.forEach(box => {
+        if (box.picked) return;
+        const isGlowing = (box.isTarget && (giftState === 'thinking' || giftState === 'reaching'));
+        drawGiftBoxItem(ctx, box, isGlowing, 0);
+      });
+
+      // 5. VẼ EM BÉ LON TON BƯỚC ĐI & BỐC QUÀ
+      drawToddler(ctx, toddler, now);
+
+      // 6. NẾU CÓ HỘP QUÀ ĐANG BỊ BỐC LÊN TAY EM BÉ
+      if (giftTarget && giftTarget.picked) {
+        giftTarget.x = toddler.x - giftTarget.bw / 2 + 16;
+        const bob = (giftState === 'celebrating') ? Math.abs(Math.sin(now * 0.015)) * 18 : 0;
+        giftTarget.y = toddler.y - 70 - bob + (giftState === 'holding' ? Math.sin(now * 0.05) * 3 : 0);
+        if (giftState === 'celebrating') {
+          giftTarget.openProgress = Math.min(1.0, (giftTarget.openProgress || 0) + 0.08);
+        }
+        drawGiftBoxItem(ctx, giftTarget, true, giftTarget.openProgress);
+      }
+
+      // 7. HẠT PHÁO HOA CONFETTI KHI NẮP HỘP BẬT MỞ
+      for (let pIdx = giftConfetti.length - 1; pIdx >= 0; pIdx--) {
+        const p = giftConfetti[pIdx];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.14; // Gravity
+        p.rotation += p.vRot;
+        p.alpha -= 0.014;
+
+        if (p.alpha <= 0) {
+          giftConfetti.splice(pIdx, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        if (p.isStar) {
+          ctx.beginPath();
+          ctx.moveTo(0, -p.size);
+          ctx.lineTo(p.size * 0.3, -p.size * 0.3);
+          ctx.lineTo(p.size, 0);
+          ctx.lineTo(p.size * 0.3, p.size * 0.3);
+          ctx.lineTo(0, p.size);
+          ctx.lineTo(-p.size * 0.3, p.size * 0.3);
+          ctx.lineTo(-p.size, 0);
+          ctx.lineTo(-p.size * 0.3, -p.size * 0.3);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+        }
+        ctx.restore();
+      }
+
+      // 8. BẢNG VÀNG HOÀNG GIA HIỆN RA TÊN NGƯỜI ĐƯỢC CHỌN
+      if (giftWinnerReveal) {
+        giftWinnerReveal.scale += (1.0 - giftWinnerReveal.scale) * 0.15;
+        giftWinnerReveal.alpha = Math.min(1.0, giftWinnerReveal.alpha + 0.12);
+
+        ctx.save();
+        ctx.translate(giftWinnerReveal.x, giftWinnerReveal.y);
+        ctx.scale(giftWinnerReveal.scale, giftWinnerReveal.scale);
+
+        // Hào quang tia mặt trời vàng xoay tròn
+        ctx.save();
+        ctx.rotate(now * 0.001);
+        for (let r = 0; r < 12; r++) {
+          ctx.rotate(Math.PI / 6);
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(-12, -80);
+          ctx.lineTo(12, -80);
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.24)';
+          ctx.fill();
+        }
+        ctx.restore();
+
+        // Khung Bảng Vàng Hoàng Gia
+        const bw = 270;
+        const bh = 78;
+        ctx.shadowColor = 'rgba(245, 158, 11, 0.85)';
+        ctx.shadowBlur = 25;
+
+        // Khung vàng kim ngoài
+        drawBalloonRoundedRect(ctx, -bw / 2, -bh / 2, bw, bh, 18, '#f59e0b', '#fef08a', 2.5);
+        // Lòng đỏ nhung quý phái
+        drawBalloonRoundedRect(ctx, -bw / 2 + 3, -bh / 2 + 3, bw - 6, bh - 6, 15, '#881337', null, 0);
+
+        ctx.shadowBlur = 0;
+
+        // Dòng tiêu đề nhỏ
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = '900 11px system-ui, sans-serif';
+        ctx.fillStyle = '#fde047';
+        ctx.fillText('✨ CHÚC MỪNG CHIẾN THẮNG ✨', 0, -bh / 2 + 18);
+
+        // TÊN HỌC SINH TO, ĐẬM, SẮC NÉT RỰC RỠ
+        ctx.font = '900 23px system-ui, -apple-system, sans-serif';
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 4.5;
+        ctx.strokeText(giftWinnerReveal.student.name, 0, -bh / 2 + 48);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(giftWinnerReveal.student.name, 0, -bh / 2 + 48);
+
+        ctx.restore();
+      }
+    }
+
+    function drawGiftBoxItem(ctx, box, isGlowing = false, openProgress = 0) {
+      ctx.save();
+      ctx.translate(box.x + box.bw / 2, box.y + box.bh / 2);
+      ctx.rotate(box.tilt);
+
+      const w = box.bw;
+      const h = box.bh;
+
+      // Bóng dưới đáy hộp quà
+      ctx.beginPath();
+      ctx.ellipse(0, h / 2 + 2, w * 0.5, h * 0.18, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.fill();
+
+      // Nếu là hộp mục tiêu đang tỏa sáng
+      if (isGlowing) {
+        ctx.save();
+        ctx.shadowColor = '#f59e0b';
+        ctx.shadowBlur = 22;
+        drawBalloonRoundedRect(ctx, -w / 2 - 3, -h / 2 - 3, w + 6, h + 6, 8, null, 'rgba(251, 191, 36, 0.85)', 2.5);
+        ctx.restore();
+      }
+
+      // Thân hộp quà 3D
+      const bodyGrad = ctx.createLinearGradient(-w / 2, -h / 2, w / 2, h / 2);
+      bodyGrad.addColorStop(0, adjustColor(box.color, 25));
+      bodyGrad.addColorStop(0.7, box.color);
+      bodyGrad.addColorStop(1, adjustColor(box.color, -25));
+      drawBalloonRoundedRect(ctx, -w / 2, -h / 2, w, h, 6, bodyGrad, adjustColor(box.color, -35), 1.2);
+
+      // Ruy băng dọc
+      const rw = Math.max(5, w * 0.18);
+      drawBalloonRoundedRect(ctx, -rw / 2, -h / 2, rw, h, 2, box.ribbonColor, null);
+
+      // Ruy băng ngang
+      const rh = Math.max(4, h * 0.16);
+      drawBalloonRoundedRect(ctx, -w / 2, -rh / 2, w, rh, 2, box.ribbonColor, null);
+
+      // Nắp hộp quà (Lid)
+      if (openProgress > 0) {
+        ctx.save();
+        ctx.translate(0, -h / 2 - openProgress * 45);
+        ctx.rotate(-openProgress * 0.5);
+        const lidW = w * 1.12;
+        const lidH = h * 0.32;
+        drawBalloonRoundedRect(ctx, -lidW / 2, -lidH / 2, lidW, lidH, 4, adjustColor(box.color, 35), adjustColor(box.color, -30), 1.2);
+        drawBalloonRoundedRect(ctx, -rw / 2, -lidH / 2, rw, lidH, 2, box.ribbonColor, null);
+        ctx.restore();
+      } else {
+        const lidW = w * 1.08;
+        const lidH = h * 0.26;
+        const lidY = -h / 2 - 2;
+        drawBalloonRoundedRect(ctx, -lidW / 2, lidY, lidW, lidH, 4, adjustColor(box.color, 30), adjustColor(box.color, -30), 1.2);
+        drawBalloonRoundedRect(ctx, -rw / 2, lidY, rw, lidH, 2, box.ribbonColor, null);
+
+        // Nơ ruy băng 3D trên nắp
+        const bowY = lidY - 2;
+        ctx.fillStyle = box.ribbonColor;
+        ctx.beginPath();
+        ctx.ellipse(-rw * 0.8, bowY - 3, rw * 0.9, rw * 0.6, -Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(rw * 0.8, bowY - 3, rw * 0.9, rw * 0.6, Math.PI / 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(0, bowY, rw * 0.45, 0, Math.PI * 2);
+        ctx.fillStyle = adjustColor(box.ribbonColor, -15);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    function drawToddler(ctx, toddler, now) {
+      const x = toddler.x;
+      const y = toddler.y;
+      const state = toddler.state;
+      const isWalking = (state === 'walking');
+      const walkCycle = isWalking ? now * 0.014 : 0;
+      const bobY = isWalking ? Math.abs(Math.sin(walkCycle * 2)) * 6 : (state === 'celebrating' ? Math.abs(Math.sin(now * 0.015)) * 18 : Math.sin(now * 0.003) * 2);
+      const currentY = y - bobY;
+      const waddle = isWalking ? Math.sin(walkCycle) * 0.09 : 0;
+
+      ctx.save();
+      ctx.translate(x, currentY);
+      ctx.rotate(waddle);
+
+      // Bóng dưới chân em bé
+      ctx.beginPath();
+      ctx.ellipse(0, bobY + 4, 22 - bobY * 0.4, 7 - bobY * 0.15, 0, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+      ctx.fill();
+
+      // Đôi giày bốt xinh xắn
+      const legSwing = isWalking ? Math.sin(walkCycle) * 7 : 0;
+      drawBalloonRoundedRect(ctx, -14 + legSwing, -10, 11, 10, 4, '#f59e0b', '#b45309', 1);
+      drawBalloonRoundedRect(ctx, 3 - legSwing, -10, 11, 10, 4, '#f59e0b', '#b45309', 1);
+
+      // Đôi chân bụ bẫm
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-12 + legSwing, -18, 7, 10);
+      ctx.fillRect(5 - legSwing, -18, 7, 10);
+
+      // Bộ yếm ấm áp màu xanh
+      const bodyGrad = ctx.createLinearGradient(0, -48, 0, -16);
+      bodyGrad.addColorStop(0, '#3b82f6');
+      bodyGrad.addColorStop(1, '#1d4ed8');
+      drawBalloonRoundedRect(ctx, -16, -46, 32, 32, 12, bodyGrad, '#1e40af', 1.5);
+
+      // Cúc áo vàng
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(-8, -40, 2.5, 0, Math.PI * 2);
+      ctx.arc(8, -40, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Cổ áo len vàng
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(0, -46, 7, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Cánh tay em bé
+      if (state === 'holding' || state === 'celebrating') {
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-12, -38);
+        ctx.lineTo(-16, -55);
+        ctx.moveTo(12, -38);
+        ctx.lineTo(16, -55);
+        ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(-16, -56, 4.5, 0, Math.PI * 2);
+        ctx.arc(16, -56, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (state === 'thinking') {
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 5.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-12, -36);
+        ctx.lineTo(-8, -24);
+        ctx.moveTo(12, -36);
+        ctx.lineTo(8, -50);
+        ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(8, -52, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        const armSwing = isWalking ? Math.cos(walkCycle) * 10 : 0;
+        ctx.strokeStyle = '#fed7aa';
+        ctx.lineWidth = 5.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-14, -36);
+        ctx.lineTo(-18 - armSwing * 0.4, -22 + armSwing);
+        ctx.moveTo(14, -36);
+        ctx.lineTo(18 + armSwing * 0.4, -22 - armSwing);
+        ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(-18 - armSwing * 0.4, -20 + armSwing, 4.2, 0, Math.PI * 2);
+        ctx.arc(18 + armSwing * 0.4, -20 - armSwing, 4.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Khuôn mặt em bé tròn trịa đáng yêu
+      const headY = -62;
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, headY, 18, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Má hồng bầu bĩnh
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.45)';
+      ctx.beginPath();
+      ctx.arc(-9, headY + 4, 4, 0, Math.PI * 2);
+      ctx.arc(9, headY + 4, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mắt & Miệng
+      if (state === 'celebrating') {
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(-6, headY, 4, Math.PI, 0);
+        ctx.arc(6, headY, 4, Math.PI, 0);
+        ctx.stroke();
+        ctx.fillStyle = '#be123c';
+        ctx.beginPath();
+        ctx.arc(0, headY + 6, 5.5, 0, Math.PI);
+        ctx.fill();
+      } else if (state === 'thinking') {
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-6, headY - 1, 3.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-5, headY - 2, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(6, headY - 1, 4, 0.2, Math.PI * 0.8);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(1, headY + 6, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#be123c';
+        ctx.fill();
+      } else {
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-6, headY - 1, 3.2, 0, Math.PI * 2);
+        ctx.arc(6, headY - 1, 3.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-5, headY - 2, 1.3, 0, Math.PI * 2);
+        ctx.arc(7, headY - 2, 1.3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.arc(0, headY + 5, 3.5, 0.2, Math.PI * 0.8);
+        ctx.stroke();
+      }
+
+      // Nón len ấm áp có tai gấu
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, headY - 3, 19, Math.PI * 0.85, Math.PI * 2.15);
+      ctx.fill();
+      drawBalloonRoundedRect(ctx, -19, headY - 7, 38, 7, 3, '#ffffff', '#e2e8f0', 1);
+
+      // Tai gấu bên trái
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(-14, headY - 18, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fecdd3';
+      ctx.beginPath();
+      ctx.arc(-14, headY - 18, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tai gấu bên phải
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(14, headY - 18, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fecdd3';
+      ctx.beginPath();
+      ctx.arc(14, headY - 18, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Quả bông trên đỉnh nón
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, headY - 22, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bong bóng thoại khi ăn mừng
+      if (state === 'celebrating') {
+        const bubbleX = 42;
+        const bubbleY = headY - 25;
+        drawBalloonRoundedRect(ctx, bubbleX - 45, bubbleY - 18, 92, 26, 12, '#ffffff', '#fbbf24', 2);
+        ctx.beginPath();
+        ctx.moveTo(bubbleX - 15, bubbleY + 8);
+        ctx.lineTo(bubbleX - 25, bubbleY + 16);
+        ctx.lineTo(bubbleX - 8, bubbleY + 8);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.font = '900 11px system-ui, sans-serif';
+        ctx.fillStyle = '#0f172a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🎁 BỐC ĐƯỢC RỒI!', bubbleX, bubbleY - 5);
+      }
+
+      ctx.restore();
     }
 
     // ==========================================
@@ -13493,24 +14378,16 @@
         return;
       }
 
-      // 7. Hộp Quà Bí Mật 3D
+      // 7. Hộp Quà Bí Mật 3D (Em Bé Bốc Quà)
       if (mode === 'gift') {
-        btn.innerHTML = "🎁 ĐANG MỞ QUÀ...";
-        const items = document.querySelectorAll('.gift-box-item');
-        let counter = 0;
-        const interval = setInterval(() => {
-          items.forEach(el => el.classList.remove('ring-4', 'ring-pink-400', 'scale-110'));
-          const rand = items[Math.floor(Math.random() * items.length)];
-          if (rand) rand.classList.add('ring-4', 'ring-pink-400', 'scale-110');
-          counter++;
-          if (counter > 20) {
-            clearInterval(interval);
-            items.forEach(el => el.classList.remove('ring-4', 'ring-pink-400', 'scale-110'));
-            const target = document.getElementById('gift-box-' + selected.id);
-            if (target) target.classList.add('ring-4', 'ring-amber-400', 'scale-110');
-            showWinnerResult(selected, btn);
-          }
-        }, 100);
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const durationMs = durationSec * 1000;
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ĐANG BỐC QUÀ...';
+        startGiftPick(selected, durationMs, (winnerStudent) => {
+          showWinnerResult(winnerStudent || selected, btn);
+        });
         return;
       }
 
@@ -13574,6 +14451,8 @@
         const mode = document.getElementById('spin-mode')?.value;
         if (mode === 'balloon') {
           btnElement.innerHTML = '<i class="fa-solid fa-crosshairs"></i> TIẾP TỤC BẮN';
+        } else if (mode === 'gift') {
+          btnElement.innerHTML = '<i class="fa-solid fa-gift"></i> TIẾP TỤC BỐC';
         } else if (mode === 'wheel_pie') {
           btnElement.innerHTML = '<i class="fa-solid fa-rotate"></i> TIẾP TỤC QUAY';
         } else {
@@ -13625,6 +14504,7 @@
         else if (mode === 'f1') initF1Race(true);
         else if (mode === 'horse') initHorseRace(true);
         else if (mode === 'balloon') initBalloonGame(true);
+        else if (mode === 'gift') initGiftGame(true);
       }
     }
 
