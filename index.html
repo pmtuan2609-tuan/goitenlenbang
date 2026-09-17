@@ -6411,6 +6411,7 @@
     let skiSceneryElements = [];
     let skiGiftStations = [];
     let skiWhooshTimer = 0;
+    let skiAllFinishedTime = 0;
 
     function toggleSkiSound() {
       SkiAudio.enabled = !SkiAudio.enabled;
@@ -6462,9 +6463,11 @@
       skiTrackLength = Math.max(w * 5.2, frontX + 4800);
       skiFinishX = skiTrackLength - 280;
 
-      // Cập nhật vị trí các trạm quà
+      // Cập nhật vị trí 10 trạm quà từ 7.2% đến 72% của quãng đường đua
+      // Chừa 28% quãng đường cuối từ trạm #10 tới vạch đích để toàn bộ đoàn đua bứt tốc về đích!
       const usableDist = skiFinishX - skiStartX;
-      const stationGap = usableDist / (SKI_TOTAL_GIFT_STATIONS + 1);
+      const giftZoneDist = usableDist * 0.72;
+      const stationGap = giftZoneDist / SKI_TOTAL_GIFT_STATIONS;
       if (skiGiftStations && skiGiftStations.length > 0) {
         skiGiftStations.forEach(st => {
           st.x = Math.round(skiStartX + st.index * stationGap);
@@ -6676,6 +6679,7 @@
       skiRaceWinner = null;
       skiCameraX = 0;
       skiSparkles = [];
+      skiAllFinishedTime = 0;
 
       const btn = document.getElementById('spin-btn');
       if (btn) {
@@ -6702,10 +6706,11 @@
       skiRaceRunning = true;
       skiRaceState = 'countdown';
       skiRaceWinner = winner;
-      skiRaceDuration = Math.max(7500, durationMs || 7500);
+      skiRaceDuration = Math.max(9000, durationMs || 9000);
       skiRaceCallback = callback;
       skiCameraX = 0;
       skiSparkles = [];
+      skiAllFinishedTime = 0;
 
       // Phân bổ trước điểm số 10 trạm hộp quà cho từng học sinh (1 đến 5 điểm mỗi trạm)
       // Học sinh chiến thắng nhận nhiều điểm 4 và 5, đạt tổng 45-48 điểm
@@ -6730,6 +6735,8 @@
         r.overtakeTimer = 25 + Math.floor(Math.random() * 45);
         r.overtakeBoost = 0;
         r.overtakeDodging = 0;
+        r.hasFinished = false;
+        r.finishTime = 0;
         r.trail = [];
         r.lastTrailTime = 0;
         r.points = 0;
@@ -6888,22 +6895,27 @@
           let targetProgress = 0;
 
           if (r.isWinner) {
-            if (p < 0.68) {
-              targetProgress = Math.pow(p, 1.06) * 0.66 + Math.sin(p * 8 + r.wobbleOffset) * 0.025;
+            if (p < 0.72) {
+              targetProgress = Math.pow(p, 1.05) * 0.74 + Math.sin(p * 8 + r.wobbleOffset) * 0.02;
             } else {
-              const sprintP = (p - 0.68) / 0.32;
-              const eased = Math.pow(sprintP, 1.25);
-              targetProgress = 0.66 + eased * 0.38;
+              // Quán quân bứt tốc cán đích khoảng p = 0.85 - 0.88, trượt qua vạch đích tới 1.05
+              const sprintP = Math.min(1.0, (p - 0.72) / 0.16);
+              const eased = Math.pow(sprintP, 1.22);
+              targetProgress = 0.74 + eased * 0.31; // 0.74 + 0.31 = 1.05
             }
           } else {
-            const laneVar = 0.88 + (Math.sin(r.lane * 13) * 0.08);
-            if (p < 0.68) {
-              const surge = Math.sin(p * 6 + r.wobbleOffset) * 0.04;
-              targetProgress = Math.pow(p, 1.05) * 0.64 * laneVar + surge;
+            const laneVar = 0.92 + (Math.sin(r.lane * 13) * 0.05);
+            // Độ trễ về đích ngẫu nhiên của các thí sinh khác: hoàn tất từ p = 0.89 đến p = 0.97
+            const finishStagger = 0.18 + (Math.abs(Math.sin(r.lane * 17 + 1)) * 0.08); // 0.18 -> 0.26
+            if (p < 0.72) {
+              const surge = Math.sin(p * 6 + r.wobbleOffset) * 0.03;
+              targetProgress = Math.pow(p, 1.04) * 0.72 * laneVar + surge;
             } else {
-              const sprintP = (p - 0.68) / 0.32;
-              const maxNonWinner = 0.96 - (Math.abs(Math.sin(r.lane * 7)) * 0.06);
-              targetProgress = 0.60 + sprintP * (maxNonWinner - 0.60);
+              const sprintP = Math.min(1.0, (p - 0.72) / finishStagger);
+              const eased = Math.pow(sprintP, 1.15);
+              // TẤT CẢ thí sinh đều vượt qua vạch đích 1.0 (từ 1.01 đến 1.04)
+              const overFinish = 1.01 + (r.lane % 6) * 0.006;
+              targetProgress = 0.70 * laneVar + eased * (overFinish - 0.70 * laneVar);
             }
           }
 
@@ -7054,11 +7066,32 @@
               r.floatingTexts.splice(ftIdx, 1);
             }
           }
+
+          // Kiểm tra từng thí sinh lần lượt cán mốc vạch đích
+          if (r.x >= skiFinishX - 10) {
+            if (!r.hasFinished) {
+              r.hasFinished = true;
+              r.finishTime = now;
+              if (r.isWinner || Math.random() < 0.20) {
+                SkiAudio.playWhoosh();
+              }
+            }
+          }
         });
 
-        // Camera bám theo tốp dẫn đầu
-        const leadX = Math.max(...skiRacers.map(r => r.x));
-        const targetCamX = Math.max(0, Math.min(skiTrackLength - w, leadX - w * 0.42));
+        // Đếm số lượng thí sinh đã cán đích
+        const finishedCount = skiRacers.filter(r => r.hasFinished || r.x >= skiFinishX - 10).length;
+        const totalCount = skiRacers.length;
+
+        // Camera bám theo đoàn đua:
+        // Khi đoàn bắt đầu về đích, camera giữ khung hình bao quát cả vạch đích và các thí sinh
+        let targetCamX = 0;
+        if (finishedCount > 0) {
+          targetCamX = Math.max(0, Math.min(skiTrackLength - w, skiFinishX - w * 0.52));
+        } else {
+          const leadX = Math.max(...skiRacers.map(r => r.x));
+          targetCamX = Math.max(0, Math.min(skiTrackLength - w, leadX - w * 0.42));
+        }
         skiCameraX += (targetCamX - skiCameraX) * 0.08;
 
         // Xếp hạng bảng dẫn đầu theo ĐIỂM SỐ giảm dần, sau đó theo khoảng cách X
@@ -7081,36 +7114,57 @@
         if (lb2 && rank2) lb2.innerText = `🥈 ${rank2.displayName}: ${rank2.points}đ`;
         if (lb3 && rank3) lb3.innerText = `🥉 ${rank3.displayName}: ${rank3.points}đ`;
 
-        // Kiểm tra về đích
-        const hasWinnerFinished = (p >= 1.0 || (skiRaceWinner && skiRacers.some(r => r.isWinner && r.x >= skiFinishX - 10)));
+        // Cập nhật trạng thái hiển thị theo từng giai đoạn
+        const statusEl = document.getElementById('ski-race-status');
+        const st10 = skiGiftStations.find(st => st.index === SKI_TOTAL_GIFT_STATIONS);
+        const minX = Math.min(...skiRacers.map(r => r.x));
 
-        if (hasWinnerFinished) {
-          skiRaceState = 'finished';
-          skiRaceRunning = false;
-
-          SkiAudio.playFanfare();
-          SkiAudio.playBell();
-
-          if (typeof confetti === 'function') {
-            confetti({ particleCount: 180, spread: 95, origin: { y: 0.55 } });
+        if (statusEl && !skiAllFinishedTime) {
+          if (finishedCount > 0 && finishedCount < totalCount) {
+            statusEl.innerHTML = `🏁 Đang về đích: <b class="text-amber-300">${finishedCount}/${totalCount}</b> vận động viên đã cán đích!`;
+          } else if (st10 && minX >= st10.x - 30) {
+            statusEl.innerHTML = `🚩 Đã qua trạm cuối #10! Toàn đoàn đua đang bứt tốc về đích...`;
+          } else {
+            statusEl.innerText = `❄️ Đang săn 10 hộp quà Giáng Sinh tính điểm!`;
           }
+        }
 
-          // Học sinh có tổng điểm cao nhất giành chiến thắng
-          const actualLead = sorted[0];
-          const leadStudent = (students && students.find(s => String(s.id) === String(actualLead.id))) || skiRaceWinner;
-          leadStudent.skiPoints = actualLead.points;
+        // ĐIỀU KIỆN KẾT THÚC: CHỈ KHI TẤT CẢ VẬN ĐỘNG VIÊN ĐỀU ĐÃ VỀ ĐÍCH (100% CÁN ĐÍCH)
+        const allRacersFinished = (finishedCount >= totalCount) || (p >= 1.0 && minX >= skiFinishX - 30);
 
-          const statusEl = document.getElementById('ski-race-status');
-          if (statusEl) {
-            statusEl.innerHTML = `🏆 Quán quân: <b class="text-amber-400">${leadStudent.name}</b> đạt kỷ lục <b class="text-emerald-400">${actualLead.points} điểm</b> (10 hộp quà)!`;
-          }
+        if (allRacersFinished) {
+          if (!skiAllFinishedTime) {
+            skiAllFinishedTime = now;
+            SkiAudio.playFanfare();
+            SkiAudio.playBell();
+            if (statusEl) {
+              statusEl.innerHTML = `🎉 <b class="text-emerald-300">Tất cả ${totalCount} vận động viên đã về đích an toàn!</b> Đang công bố Quán quân...`;
+            }
+          } else if (now - skiAllFinishedTime > 850) {
+            skiRaceState = 'finished';
+            skiRaceRunning = false;
+            skiAllFinishedTime = 0;
 
-          if (skiRaceCallback) {
-            const cb = skiRaceCallback;
-            skiRaceCallback = null;
-            setTimeout(() => {
-              cb(leadStudent);
-            }, 300);
+            if (typeof confetti === 'function') {
+              confetti({ particleCount: 190, spread: 95, origin: { y: 0.55 } });
+            }
+
+            // Học sinh có tổng điểm cao nhất giành chiến thắng
+            const actualLead = sorted[0];
+            const leadStudent = (students && students.find(s => String(s.id) === String(actualLead.id))) || skiRaceWinner;
+            leadStudent.skiPoints = actualLead.points;
+
+            if (statusEl) {
+              statusEl.innerHTML = `🏆 Quán quân: <b class="text-amber-400">${leadStudent.name}</b> đạt kỷ lục <b class="text-emerald-400">${actualLead.points} điểm</b> (10 hộp quà)!`;
+            }
+
+            if (skiRaceCallback) {
+              const cb = skiRaceCallback;
+              skiRaceCallback = null;
+              setTimeout(() => {
+                cb(leadStudent);
+              }, 300);
+            }
           }
         }
       } else if (skiRaceState === 'finished') {
