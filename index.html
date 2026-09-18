@@ -15057,23 +15057,19 @@
       const hipX = 0;
       const hipY = 2 - bobY;
 
-      // Tính toán khớp chân có đầu gối gập duỗi linh hoạt
+      // Tính toán khớp chân có đầu gối gập duỗi linh hoạt mượt mà (C1 continuous)
       function getLegJoints(phase) {
         const sinP = Math.sin(phase);
         const cosP = Math.cos(phase);
-        let thighAngle, kneeBend;
-        if (sinP > 0) {
-          // Nâng cao đùi (High knee drive)
-          thighAngle = sinP * 0.95 + leanAngle * 0.4;
-          kneeBend = 0.5 + (1 - cosP) * 0.6;
-        } else {
-          // Đạp sau hết biên độ & gót gấp sát đùi sau (Heel recovery)
-          thighAngle = sinP * 0.75 + leanAngle * 0.3;
-          kneeBend = 1.35 + sinP * 0.4;
-        }
+        // Góc đùi mượt mà liên tục (High knee drive -> backward hip extension)
+        const thighAngle = sinP * 0.82 + leanAngle * 0.35;
+        // Khớp gối gập tự nhiên không có bất kỳ điểm gián đoạn hay co giật
+        const kneeBend = 1.15 - cosP * 0.55 + Math.sin(2 * phase - 0.4) * 0.45;
+        const clampedBend = Math.max(0.32, Math.min(2.05, kneeBend));
+
         const kneeX = hipX + Math.sin(thighAngle) * 13;
         const kneeY = hipY + Math.cos(thighAngle) * 13;
-        const shinAngle = thighAngle - kneeBend;
+        const shinAngle = thighAngle - clampedBend;
         const footX = kneeX + Math.sin(shinAngle) * 12;
         const footY = kneeY + Math.cos(shinAngle) * 12;
         return { kneeX, kneeY, footX, footY };
@@ -15082,7 +15078,7 @@
       const legFar = getLegJoints(p + Math.PI);
       const legNear = getLegJoints(p);
 
-      // Tính toán khớp tay gập góc 85-90 độ
+      // Tính toán khớp tay gập góc 85-90 độ chuẩn vận động viên nước rút Olympic
       const shoulderX = 2;
       const shoulderY = -14 - bobY;
 
@@ -15097,13 +15093,13 @@
           return { elX, elY, handX, handY };
         }
 
-        const sinA = Math.sin(phase);
-        const bicepAngle = sinA * 0.85;
-        const elX = shoulderX + Math.sin(bicepAngle) * 11;
-        const elY = shoulderY + Math.cos(bicepAngle) * 11;
-        const forearmAngle = bicepAngle + (sinA > 0 ? -1.45 : 1.35);
-        const handX = elX + Math.sin(forearmAngle) * 10;
-        const handY = elY + Math.cos(forearmAngle) * 10;
+        // Đánh tay đối xứng nhịp nhàng, khuỷu tay gập góc 85 độ cố định, không giật lùi
+        const swingAngle = Math.sin(phase) * 0.88;
+        const elX = shoulderX + Math.sin(swingAngle) * 11;
+        const elY = shoulderY + Math.cos(swingAngle) * 11;
+        const forearmAngle = swingAngle - 1.48;
+        const handX = elX + Math.sin(forearmAngle) * 10.5;
+        const handY = elY + Math.cos(forearmAngle) * 10.5;
         return { elX, elY, handX, handY };
       }
 
@@ -15378,12 +15374,13 @@
 
     let swimmers = [];
     let swimRaceState = 'idle'; // 'idle' | 'countdown' | 'running' | 'finished'
-    let swimTrackLength = 3400;
-    let swimStartX = 180;
-    let swimFinishX = 3150;
+    let swimPoolStartX = 180; // Bờ A: Mép xuất phát của hồ bơi
+    let swimTrackLength = 2600;
+    let swimStartX = 200;
+    let swimFinishX = 2450; // Bờ B: Mép đích đến của hồ bơi (Touchpad)
     let swimCameraX = 0;
     let swimStartTime = 0;
-    let swimRaceDuration = 6500;
+    let swimRaceDuration = 6200;
     let swimTargetWinner = null;
     let swimFinishCallback = null;
     let swimAnimId = null;
@@ -15413,14 +15410,16 @@
       const usableLanes = Math.max(4, Math.min(count, 14));
       const laneH = Math.max(28, Math.min(54, poolH / usableLanes));
 
-      swimStartX = 160;
-      swimTrackLength = Math.max((rect.width || 800) * 3.6, 3200);
-      swimFinishX = swimTrackLength - 240;
+      swimPoolStartX = 180;
+      const poolLength = Math.max((rect.width || 800) * 2.6, 2300);
+      swimTrackLength = swimPoolStartX + poolLength + 260;
+      swimFinishX = swimPoolStartX + poolLength; // Thành hồ đích (Bờ B)
+      swimStartX = swimPoolStartX + 22; // Vị trí xuất phát mép hồ A
 
       if (resetPositions || swimmers.length !== count) {
         swimmers = visible.map((st, i) => {
           const laneIdx = i % usableLanes;
-          const startX = swimStartX - Math.floor(i / usableLanes) * 55;
+          const startX = swimStartX - Math.floor(i / usableLanes) * 45;
           const baseY = topPoolDeckH + laneIdx * laneH + laneH * 0.5;
           const palette = SWIM_COLOR_PALETTES[i % SWIM_COLOR_PALETTES.length];
 
@@ -15441,6 +15440,7 @@
             speedFactor: 0.94 + (Math.sin(i * 31) * 0.06),
             strokePhase: Math.random() * Math.PI * 2,
             isWinner: false,
+            hasFinished: false,
             rank: i + 1,
             finishTime: null,
             ...palette
@@ -15458,7 +15458,7 @@
       swimLastFrameTime = 0;
 
       const statusEl = document.getElementById('swimming-race-status');
-      if (statusEl) statusEl.innerText = "🏊 Kình ngư sẵn sàng trên bục xuất phát 200m!";
+      if (statusEl) statusEl.innerText = "🏊 Kình ngư sẵn sàng tại Bờ A xuất phát 200m!";
       const boardEl = document.getElementById('swimming-leaderboard');
       if (boardEl) boardEl.classList.remove('hidden');
 
@@ -15526,6 +15526,7 @@
         s.isWinner = (s.id === winnerStudent.id);
         s.x = s.startX;
         s.vx = 0;
+        s.hasFinished = false;
         s.finishTime = null;
       });
       swimCameraX = 0;
@@ -15539,7 +15540,7 @@
 
       let count = 3;
       if (countText) countText.innerText = count;
-      if (statusEl) statusEl.innerText = "⏳ Kình ngư vào bục xuất phát: " + count;
+      if (statusEl) statusEl.innerText = "⏳ Kình ngư vào bục xuất phát Bờ A: " + count;
 
       const timer = setInterval(() => {
         count--;
@@ -15548,27 +15549,171 @@
           if (statusEl) statusEl.innerText = "⏳ Chuẩn bị: " + count;
         } else if (count === 0) {
           if (countText) countText.innerText = "BÍP!";
-          if (statusEl) statusEl.innerText = "💥 LAO XUỐNG NƯỚC!";
+          if (statusEl) statusEl.innerText = "💥 LAO XUỐNG HỒ!";
           SwimAudio.playBuzzer();
         } else {
           clearInterval(timer);
           if (overlay) overlay.classList.add('hidden');
           swimRaceState = 'running';
           swimStartTime = performance.now();
-          if (statusEl) statusEl.innerText = "🏊 Các kình ngư đang sải tay rẽ sóng 200m!";
+          if (statusEl) statusEl.innerText = "🏊 Các kình ngư đang sải tay bơi từ Bờ A sang Bờ B!";
         }
       }, 750);
     }
 
-    // Vẽ 1 kình ngư bơi trườn sấp đúng chuẩn Olympic
+    // Vẽ 1 kình ngư bơi trườn sấp đúng chuẩn Olympic & tư thế bám thành hồ khi chạm đích
     function drawSwimmer(ctx, s, now) {
       ctx.save();
       ctx.translate(s.x, s.y);
 
       const p = s.strokePhase;
-      const isWinnerTouching = (swimWinnerDecelerating && s.isWinner);
+      const isTouchingWall = s.hasFinished;
 
-      // 1. VỆT BỌT NƯỚC CUỘN TRÀO PHÍA SAU (Dynamic Churning Foam Wake)
+      // 1. TRẠNG THÁI 1: KÌNH NGƯ ĐÃ CHẠM BỜ B (DỪNG TẠI THÀNH HỒ, TAY BÁM TẤM CẢM ỨNG)
+      if (isTouchingWall) {
+        // Gợn sóng êm dịu quanh người đang thả lỏng
+        const idleWave = Math.sin(now * 0.005 + s.lane) * 2;
+
+        // Vệt sóng nước nhẹ quanh thành hồ
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 24, 10, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Thân kình ngư nổi ngang trên mặt nước
+        ctx.fillStyle = s.suit;
+        ctx.beginPath();
+        ctx.roundRect(-16, -5 + idleWave * 0.3, 16, 10, [3, 1, 1, 3]);
+        ctx.fill();
+
+        ctx.fillStyle = s.skin;
+        ctx.beginPath();
+        ctx.ellipse(0, idleWave * 0.3, 16, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Đôi chân nổi thư giãn sau lưng
+        ctx.strokeStyle = s.skin;
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(-16, -2);
+        ctx.lineTo(-28, -3 + idleWave);
+        ctx.moveTo(-16, 2);
+        ctx.lineTo(-28, 3 - idleWave);
+        ctx.stroke();
+
+        // Tay vươn bám chặt vào mép thành hồ Bờ B (Touchpad)
+        ctx.strokeStyle = s.skin;
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(8, 4);
+        ctx.lineTo(20, 2); // Chạm chuẩn vào mép thành hồ (x = swimFinishX)
+        ctx.stroke();
+
+        // Bàn tay bám thành hồ
+        ctx.fillStyle = s.skin;
+        ctx.beginPath();
+        ctx.arc(20, 2, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tay còn lại: Nếu là người thắng -> Giơ tay đấm lên không trung ăn mừng (Fist pump)!
+        if (s.isWinner) {
+          ctx.strokeStyle = s.skin;
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(6, -4);
+          ctx.lineTo(14, -16);
+          ctx.lineTo(18, -26);
+          ctx.stroke();
+
+          // Nắm đấm ăn mừng
+          ctx.fillStyle = s.skin;
+          ctx.beginPath();
+          ctx.arc(18, -26, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Giọt nước bắn tung tóe quanh tay ăn mừng
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+          for (let sp = 0; sp < 4; sp++) {
+            const dropX = 18 + Math.sin(now * 0.01 + sp) * 7;
+            const dropY = -26 + Math.cos(now * 0.01 + sp) * 7;
+            ctx.fillRect(dropX, dropY, 2, 2);
+          }
+        } else {
+          // Kình ngư khác: tay gác lên dây phao bên cạnh
+          ctx.strokeStyle = s.skin;
+          ctx.lineWidth = 3.5;
+          ctx.beginPath();
+          ctx.moveTo(6, -4);
+          ctx.lineTo(10, -12);
+          ctx.stroke();
+          ctx.fillStyle = s.skin;
+          ctx.beginPath();
+          ctx.arc(10, -12, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Đầu nhô hẳn lên khỏi mặt nước, mắt nhìn lên bảng điện tử
+        const headX = 11;
+        const headY = -3 + idleWave * 0.2;
+
+        ctx.fillStyle = s.skin;
+        ctx.beginPath();
+        ctx.ellipse(headX, headY, 7.5, 6.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Mũ bơi
+        ctx.fillStyle = s.cap;
+        ctx.beginPath();
+        ctx.ellipse(headX - 1.5, headY - 1, 6.5, 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Kính bơi kéo lên trán khi đã về đích
+        ctx.fillStyle = s.goggles;
+        ctx.fillRect(headX - 1, headY - 5, 5, 2.5);
+
+        // Mắt mở to nhìn bảng điểm
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(headX + 4, headY - 0.5, 1.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Nụ cười thở phào sau cuộc đua
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(headX + 4, headY + 3, 2, 0.2, Math.PI - 0.2);
+        ctx.stroke();
+
+        // Nhãn tên học sinh
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+        ctx.strokeStyle = s.isWinner ? '#38bdf8' : '#ffffff';
+        ctx.lineWidth = s.isWinner ? 2 : 1;
+        const nameW = Math.max(50, s.displayName.length * 7 + 14);
+        ctx.beginPath();
+        ctx.roundRect(-nameW * 0.5, -34, nameW, 16, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = s.isWinner ? '#a5f3fc' : '#ffffff';
+        ctx.font = 'bold 10px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(s.displayName, 0, -26);
+
+        if (s.isWinner) {
+          ctx.font = '13px Arial';
+          ctx.fillText('👑', 0, -42);
+        }
+
+        ctx.restore();
+        return;
+      }
+
+      // 2. TRẠNG THÁI 2: ĐANG BƠI NƯỚC RÚT TRƯỜN SẤP (FREESTYLE) TỪ A SANG B
+      // Bọt nước cuộn trào do đôi chân đạp nước (6-beat kick)
       const kickRate = 2.8;
       const kickOffset1 = Math.sin(p * kickRate) * 5.5;
       const kickOffset2 = -Math.sin(p * kickRate) * 5.5;
@@ -15588,13 +15733,13 @@
       }
       ctx.restore();
 
-      // 2. ĐỘ LẮC THÂN (Body Roll dọc trục bơi trườn sấp: 12-14 độ)
-      const bodyRoll = isWinnerTouching ? 0 : Math.sin(p) * 0.24;
+      // Độ lắc thân mượt mà theo trục dọc cơ thể (Body Roll 12-14 độ)
+      const bodyRoll = Math.sin(p) * 0.22;
 
       ctx.save();
-      ctx.rotate(bodyRoll * 0.3);
+      ctx.rotate(bodyRoll * 0.35);
 
-      // ĐÔI CHÂN ĐẠP NƯỚC (6-Beat Flutter Kick)
+      // Đôi chân đạp nước nhịp nhàng (Flutter kick)
       ctx.strokeStyle = s.skin;
       ctx.lineWidth = 3.8;
       ctx.lineCap = 'round';
@@ -15621,7 +15766,7 @@
       ctx.ellipse(-30, 2 + kickOffset2, 3.5, 2, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // THÂN KÌNH NGƯ CHỮ V (V-Taper Athletic Body)
+      // Thân kình ngư chữ V lực lưỡng
       ctx.fillStyle = s.suit;
       ctx.beginPath();
       ctx.roundRect(-14, -6, 14, 12, [3, 1, 1, 3]);
@@ -15638,36 +15783,11 @@
       ctx.ellipse(-2, 0, 10, 5, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // 3. SẢI TAY BƠI TRƯỜN SẤP ĐÚNG DÁNG OLYMPIC (High-Elbow Freestyle Recovery)
+      // Sải tay bơi trườn sấp đúng dáng Olympic (High-Elbow Recovery + S-Pull)
       const arm1Phase = p;
       const arm2Phase = p + Math.PI;
 
       function drawFreestyleArm(phase, sideSign) {
-        if (isWinnerTouching) {
-          if (sideSign > 0) {
-            ctx.strokeStyle = s.skin;
-            ctx.lineWidth = 3.5;
-            ctx.beginPath();
-            ctx.moveTo(8, 4);
-            ctx.lineTo(24, 6);
-            ctx.stroke();
-            return;
-          } else {
-            ctx.strokeStyle = s.skin;
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.moveTo(8, -4);
-            ctx.lineTo(16, -14);
-            ctx.lineTo(22, -22);
-            ctx.stroke();
-            ctx.fillStyle = s.skin;
-            ctx.beginPath();
-            ctx.arc(22, -22, 3, 0, Math.PI * 2);
-            ctx.fill();
-            return;
-          }
-        }
-
         const sinArm = Math.sin(phase);
         const cosArm = Math.cos(phase);
 
@@ -15692,10 +15812,11 @@
           ctx.arc(handX, handY, 2.5, 0, Math.PI * 2);
           ctx.fill();
 
+          // Giọt nước vung theo đầu ngón tay
           if (sinArm < 0.25) {
             ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
             ctx.beginPath();
-            ctx.arc(handX + 3, handY, 3.5, 0, Math.PI * 2);
+            ctx.arc(handX + 3, handY, 3.2, 0, Math.PI * 2);
             ctx.fill();
           }
         } else {
@@ -15704,14 +15825,12 @@
           const handX = 18 - pullDist * 26;
           const handY = sideSign * (5 - pullDist * 2);
 
-          ctx.save();
           ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)';
           ctx.lineWidth = 3.5;
           ctx.beginPath();
           ctx.moveTo(6, sideSign * 4);
           ctx.lineTo(handX, handY);
           ctx.stroke();
-          ctx.restore();
 
           ctx.strokeStyle = s.skin;
           ctx.lineWidth = 3.5;
@@ -15725,10 +15844,10 @@
       drawFreestyleArm(arm1Phase, -1);
       drawFreestyleArm(arm2Phase, 1);
 
-      // 4. ĐẦU, MŨ BƠI VÀ NHỊP THỞ (Head, Swim Cap, Goggles & Breathing)
+      // Đầu, mũ bơi và nhịp thở nghiêng đầu (Breathing roll)
       const breatheCycle = Math.floor(p / (Math.PI * 2));
       const phaseInCycle = (p % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-      const isBreathing = !isWinnerTouching && (breatheCycle % 3 === 0) && (phaseInCycle > 0.5 && phaseInCycle < 2.5);
+      const isBreathing = (breatheCycle % 3 === 0) && (phaseInCycle > 0.5 && phaseInCycle < 2.5);
 
       const headTilt = isBreathing ? Math.sin(phaseInCycle) * 4.5 : 0;
       const headX = 12;
@@ -15739,13 +15858,13 @@
       ctx.ellipse(headX, headY, 7.5, 6, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Mũ bơi silicon
+      // Mũ bơi silicon ôm sát đầu
       ctx.fillStyle = s.cap;
       ctx.beginPath();
       ctx.ellipse(headX - 1.5, headY, 6.5, 6.2, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Kính bơi bảo hộ
+      // Kính bơi
       ctx.fillStyle = s.goggles;
       if (isBreathing) {
         ctx.beginPath();
@@ -15760,7 +15879,7 @@
         ctx.fillRect(headX + 2, headY + 1.5, 3.5, 2.5);
       }
 
-      // Vệt sóng rẽ nước trước đầu
+      // Sóng rẽ nước mũi trước
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
@@ -15772,7 +15891,7 @@
 
       ctx.restore();
 
-      // 5. NHÃN TÊN KÌNH NGƯ NỔI TRÊN MẶT NƯỚC
+      // Nhãn tên kình ngư nổi trên mặt nước
       ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
       ctx.strokeStyle = s.isWinner ? '#38bdf8' : '#ffffff';
       ctx.lineWidth = s.isWinner ? 2 : 1;
@@ -15796,7 +15915,7 @@
       ctx.restore();
     }
 
-    // --- HÀM VẼ TOÀN BỘ BỂ BƠI OLYMPIC 200M ---
+    // --- HÀM VẼ TOÀN BỘ BỂ BƠI OLYMPIC TỪ BỜ A ĐẾN BỜ B ---
     function renderSwimRaceCanvas(now) {
       const canvas = document.getElementById('swimming-race-canvas');
       if (!canvas) {
@@ -15807,11 +15926,10 @@
       const cw = canvas.width;
       const ch = canvas.height;
 
-      // Delta-time mượt mà 60fps
       const dt = swimLastFrameTime ? Math.min((now - swimLastFrameTime) / 1000, 0.04) : 0.016;
       swimLastFrameTime = now;
 
-      // 1. CẬP NHẬT VẬT LÝ BƠI TRƯỜN SẤP (FREESTYLE)
+      // 1. CẬP NHẬT VẬT LÝ BƠI TRƯỜN SẤP VÀ XỬ LÝ CHẠM ĐÍCH BỜ B (TOUCHPAD)
       if (swimRaceState === 'running') {
         const elapsed = now - swimStartTime;
         const timeProgress = elapsed / swimRaceDuration;
@@ -15825,7 +15943,7 @@
         const nominalSpeed = totalDist / (swimRaceDuration / 1000);
 
         swimmers.forEach(s => {
-          if (!swimWinnerDecelerating) {
+          if (!s.hasFinished) {
             const accel = Math.min(1, elapsed / 800);
             const strokeSurge = 1.0 + Math.sin(s.strokePhase * 2) * 0.12;
 
@@ -15850,50 +15968,58 @@
             s.x += s.vx * dt;
             s.strokePhase += (s.vx / nominalSpeed) * 12.5 * dt;
 
-            // KIỂM TRA CHẠM TẤM CẢM ỨNG ĐIỆN TỬ (TOUCHPAD VẬT LÝ): Tay phải vươn chạm đích mới thắng!
-            if (s.x + 22 >= swimFinishX && !swimTouchpadHit) {
-              swimTouchpadHit = true;
-              swimWinner = s;
-              swimWinnerDecelerating = true;
-              swimDecelStartTime = now;
-              s.finishTime = ((now - swimStartTime) / 1000).toFixed(2);
-              SwimAudio.playTouchpad();
-              SwimAudio.playFanfare();
+            // KIỂM TRA CHẠM THÀNH HỒ BỜ B: TAY CHẠM ĐÍCH LÀ DỪNG NGAY LẬP TỨC TẠI THÀNH HỒ!
+            if (s.x + 20 >= swimFinishX) {
+              s.hasFinished = true;
+              s.x = swimFinishX - 20; // Khóa chặt vị trí ngay tại Bờ B!
+              s.vx = 0; // Dừng bơi tuyệt đối, không bơi tiếp!
 
-              // Tạo các gợn sóng xung kích mạnh tại tấm cảm ứng thành hồ
+              // Tạo vòng sóng nước va chạm thành hồ
               for (let k = 0; k < 6; k++) {
                 swimWaterRipples.push({
                   x: swimFinishX,
-                  y: s.y + (Math.random() * 20 - 10),
-                  r: 4,
-                  maxR: 35 + Math.random() * 25,
+                  y: s.y + (Math.random() * 18 - 9),
+                  r: 3,
+                  maxR: 32 + Math.random() * 22,
                   alpha: 0.9,
-                  speed: 45 + Math.random() * 30
+                  speed: 45 + Math.random() * 25
                 });
               }
 
-              const statusEl = document.getElementById('swimming-race-status');
-              if (statusEl) {
-                statusEl.innerHTML = `🏆 Kình ngư vô địch 200m: <b class="text-cyan-300">${s.fullName}</b> chạm thành hồ (${s.finishTime}s)!`;
+              // Nếu là người đầu tiên chạm đích -> Vô địch!
+              if (!swimTouchpadHit) {
+                swimTouchpadHit = true;
+                swimWinner = s;
+                swimWinnerDecelerating = true;
+                swimDecelStartTime = now;
+                s.finishTime = ((now - swimStartTime) / 1000).toFixed(2);
+                SwimAudio.playTouchpad();
+                SwimAudio.playFanfare();
+
+                const statusEl = document.getElementById('swimming-race-status');
+                if (statusEl) {
+                  statusEl.innerHTML = `🏆 Kình ngư vô địch 200m: <b class="text-cyan-300">${s.fullName}</b> chạm thành Bờ B (${s.finishTime}s)!`;
+                }
               }
             }
           } else {
-            // Giảm tốc và bám thành hồ ăn mừng
-            s.vx *= Math.pow(0.15, dt);
-            s.x += s.vx * dt;
-
-            if (now - swimDecelStartTime > 1100 && swimRaceState === 'running') {
-              swimRaceState = 'finished';
-              setTimeout(() => {
-                if (typeof swimFinishCallback === 'function') {
-                  const cb = swimFinishCallback;
-                  swimFinishCallback = null;
-                  cb(swimWinner.student);
-                }
-              }, 400);
-            }
+            // Đã chạm đích: cố định tay bám thành hồ Bờ B
+            s.x = swimFinishX - 20;
+            s.vx = 0;
           }
         });
+
+        // Hoàn tất cuộc đua và kích hoạt vinh danh sau khi người thắng chạm thành hồ 1.2s
+        if (swimTouchpadHit && now - swimDecelStartTime > 1200 && swimRaceState === 'running') {
+          swimRaceState = 'finished';
+          setTimeout(() => {
+            if (typeof swimFinishCallback === 'function') {
+              const cb = swimFinishCallback;
+              swimFinishCallback = null;
+              cb(swimWinner.student);
+            }
+          }, 350);
+        }
 
         const sorted = [...swimmers].sort((a, b) => b.x - a.x);
         sorted.forEach((swimmer, idx) => { swimmer.rank = idx + 1; });
@@ -15907,9 +16033,10 @@
           if (rip.alpha <= 0 || rip.r >= rip.maxR) swimWaterRipples.splice(i, 1);
         }
 
-        // Camera bám sát theo kình ngư dẫn đầu
+        // Camera bám sát theo kình ngư dẫn đầu, KHÔNG CUỘN VƯỢT QUÁ BỜ B CỦA HỒ BƠI
         const leaderX = sorted[0]?.x || 0;
-        const targetCameraX = Math.min(Math.max(0, leaderX - cw * 0.44), swimFinishX - cw * 0.32);
+        const maxCameraX = (swimFinishX + 160) - cw;
+        const targetCameraX = Math.min(Math.max(0, leaderX - cw * 0.44), maxCameraX);
         swimCameraX += (targetCameraX - swimCameraX) * Math.min(1, dt * 8);
       }
 
@@ -15920,37 +16047,72 @@
       const botDeckH = Math.max(45, Math.floor(ch * 0.11));
       const poolH = ch - topDeckH - botDeckH;
 
-      ctx.fillStyle = '#0f172a';
+      ctx.fillStyle = '#0a0f1d';
       ctx.fillRect(0, 0, cw, ch);
 
       ctx.save();
       ctx.translate(-swimCameraX, 0);
 
-      // Bờ trên và bờ dưới hồ bơi
+      // Bờ trên và bờ dưới hồ bơi (hành lang lát gạch chống trượt)
       const deckPattern = ctx.createLinearGradient(0, 0, 0, topDeckH);
       deckPattern.addColorStop(0, '#1e293b');
       deckPattern.addColorStop(1, '#334155');
       ctx.fillStyle = deckPattern;
-      ctx.fillRect(0, 0, swimTrackLength + 400, topDeckH);
-      ctx.fillRect(0, topDeckH + poolH, swimTrackLength + 400, botDeckH);
+      ctx.fillRect(-200, 0, swimTrackLength + 400, topDeckH);
+      ctx.fillRect(-200, topDeckH + poolH, swimTrackLength + 400, botDeckH);
 
-      // 3. LÀN NƯỚC XANH NGỌC BÍCH (TURQUOISE WATER)
+      // Kẻ gạch lát bờ hồ trên & dưới
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let x = -200; x < swimTrackLength + 400; x += 28) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, topDeckH);
+        ctx.moveTo(x, topDeckH + poolH);
+        ctx.lineTo(x, ch);
+        ctx.stroke();
+      }
+
+      // 3. BỜ A (START WALL) & BỜ B (FINISH WALL): GIỚI HẠN VẬT LÝ TUYỆT ĐỐI CỦA HỒ
+      // Mặt sàn Bờ A (Bên trái ngoài hồ: x < swimPoolStartX)
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(-200, topDeckH, swimPoolStartX + 200, poolH);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      for (let x = -200; x < swimPoolStartX; x += 28) {
+        ctx.beginPath();
+        ctx.moveTo(x, topDeckH);
+        ctx.lineTo(x, topDeckH + poolH);
+        ctx.stroke();
+      }
+
+      // Mặt sàn Bờ B (Bên phải ngoài hồ: x > swimFinishX)
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(swimFinishX, topDeckH, swimTrackLength + 400 - swimFinishX, poolH);
+      for (let x = swimFinishX + 28; x < swimTrackLength + 400; x += 28) {
+        ctx.beginPath();
+        ctx.moveTo(x, topDeckH);
+        ctx.lineTo(x, topDeckH + poolH);
+        ctx.stroke();
+      }
+
+      // 4. LÒNG HỒ BƠI: NƯỚC XANH BIỂN CHỈ NẰM TRONG KHOẢNG TỪ BỜ A ĐẾN BỜ B
+      const poolWidth = swimFinishX - swimPoolStartX;
       const waterGrad = ctx.createLinearGradient(0, topDeckH, 0, topDeckH + poolH);
       waterGrad.addColorStop(0, '#0284c7');
       waterGrad.addColorStop(0.5, '#0ea5e9');
       waterGrad.addColorStop(1, '#0369a1');
       ctx.fillStyle = waterGrad;
-      ctx.fillRect(0, topDeckH, swimTrackLength + 400, poolH);
+      ctx.fillRect(swimPoolStartX, topDeckH, poolWidth, poolH);
 
-      // Gợn sóng phản chiếu ánh sáng (Water Caustics)
+      // Gợn sóng phản chiếu ánh sáng (Water Caustics) trong lòng hồ
       ctx.save();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
       ctx.lineWidth = 1.5;
       for (let y = topDeckH + 10; y < topDeckH + poolH; y += 16) {
         ctx.beginPath();
-        for (let x = 0; x < swimTrackLength + 400; x += 35) {
-          const waveY = Math.sin(now * 0.003 + x * 0.04 + y * 0.05) * 3.5;
-          if (x === 0) ctx.moveTo(x, y + waveY);
+        for (let x = swimPoolStartX; x <= swimFinishX; x += 32) {
+          const waveY = Math.sin(now * 0.003 + x * 0.04 + y * 0.05) * 3.2;
+          if (x === swimPoolStartX) ctx.moveTo(x, y + waveY);
           else ctx.lineTo(x, y + waveY);
         }
         ctx.stroke();
@@ -15966,24 +16128,24 @@
       for (let l = 0; l < laneCount; l++) {
         const ly = topDeckH + l * laneH + laneH * 0.5;
         ctx.beginPath();
-        ctx.moveTo(swimStartX, ly);
-        ctx.lineTo(swimFinishX - 30, ly);
+        ctx.moveTo(swimPoolStartX + 12, ly);
+        ctx.lineTo(swimFinishX - 18, ly);
         ctx.stroke();
 
-        // Chữ T chỉ hướng ở 2 đầu hồ
+        // Chữ T chỉ hướng ở 2 đầu hồ theo luật FINA
         ctx.beginPath();
-        ctx.moveTo(swimStartX + 35, ly - 8);
-        ctx.lineTo(swimStartX + 35, ly + 8);
+        ctx.moveTo(swimPoolStartX + 35, ly - 8);
+        ctx.lineTo(swimPoolStartX + 35, ly + 8);
         ctx.moveTo(swimFinishX - 45, ly - 8);
         ctx.lineTo(swimFinishX - 45, ly + 8);
         ctx.stroke();
       }
 
-      // 4. DÂY PHAO CHIA LÀN 3 MÀU (FLOAT LANE DIVIDERS)
+      // DÂY PHAO CHIA LÀN 3 MÀU: NỐI CHÍNH XÁC TỪ BỜ A ĐẾN BỜ B
       const floatColors = ['#ef4444', '#ffffff', '#0284c7'];
       for (let l = 0; l <= laneCount; l++) {
         const ly = topDeckH + l * laneH;
-        for (let x = 20; x < swimTrackLength + 360; x += 11) {
+        for (let x = swimPoolStartX + 4; x <= swimFinishX - 4; x += 11) {
           const waveBob = Math.sin(now * 0.004 + x * 0.08) * 1.5;
           ctx.fillStyle = floatColors[(Math.floor(x / 11)) % floatColors.length];
           ctx.beginPath();
@@ -15992,15 +16154,21 @@
         }
       }
 
-      // Bục xuất phát bơi (Starting Blocks) ở đầu hồ
+      // THÀNH HỒ BỜ A (Start Wall Coping) & BỤC XUẤT PHÁT
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(swimPoolStartX - 10, topDeckH - 4, 12, poolH + 8);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(swimPoolStartX - 10, topDeckH - 4, 12, poolH + 8);
+
+      // Bục xuất phát bơi trên Bờ A
       for (let l = 0; l < laneCount; l++) {
         const ly = topDeckH + l * laneH + laneH * 0.5;
-        // Bục bơi kim loại
         ctx.fillStyle = '#0284c7';
         ctx.strokeStyle = '#ffffff';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.roundRect(swimStartX - 65, ly - 12, 26, 24, 4);
+        ctx.roundRect(swimPoolStartX - 55, ly - 12, 26, 24, 4);
         ctx.fill();
         ctx.stroke();
 
@@ -16008,20 +16176,38 @@
         ctx.font = '900 11px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText((l + 1).toString(), swimStartX - 52, ly);
+        ctx.fillText((l + 1).toString(), swimPoolStartX - 42, ly);
       }
 
-      // Tấm cảm ứng điện tử (Touchpad) ở cuối hồ
+      // Biển báo BỜ A XUẤT PHÁT
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 12px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText("BỜ A: XUẤT PHÁT", swimPoolStartX - 28, topDeckH - 12);
+
+      // THÀNH HỒ BỜ B (Finish Wall Coping) & TẤM CẢM ỨNG ĐIỆN TỬ (TOUCHPAD)
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(swimFinishX, topDeckH - 4, 14, poolH + 8);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(swimFinishX, topDeckH - 4, 14, poolH + 8);
+
+      // Tấm cảm ứng điện tử (Touchpad FINA màu vàng gắn chìm trên mặt nước thành Bờ B)
       for (let l = 0; l < laneCount; l++) {
         const ly = topDeckH + l * laneH + 3;
-        ctx.fillStyle = swimTouchpadHit ? '#fde047' : '#f59e0b';
-        ctx.strokeStyle = swimTouchpadHit ? '#ffffff' : '#fef08a';
-        ctx.lineWidth = swimTouchpadHit ? 3.5 : 2;
-        ctx.fillRect(swimFinishX, ly, 10, laneH - 6);
-        ctx.strokeRect(swimFinishX, ly, 10, laneH - 6);
+        const laneFinished = swimmers.some(s => s.lane === (l + 1) && s.hasFinished);
+        ctx.fillStyle = laneFinished ? '#fde047' : '#f59e0b';
+        ctx.fillRect(swimFinishX - 7, ly, 8, laneH - 6);
+        ctx.strokeStyle = laneFinished ? '#ffffff' : '#fef08a';
+        ctx.lineWidth = laneFinished ? 2.5 : 1.5;
+        ctx.strokeRect(swimFinishX - 7, ly, 8, laneH - 6);
+
+        // Vạch cảm biến đen trên touchpad
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(swimFinishX - 4, ly + 4, 2, laneH - 14);
       }
 
-      // Vòng sóng nước xung kích tại vạch đích
+      // Vòng sóng nước xung kích tại thành Bờ B khi kình ngư chạm tay
       swimWaterRipples.forEach(rip => {
         ctx.strokeStyle = `rgba(255, 255, 255, ${rip.alpha})`;
         ctx.lineWidth = 2.2;
@@ -16030,13 +16216,19 @@
         ctx.stroke();
       });
 
-      // Biển báo 200M FINISH TOUCHPAD
-      ctx.fillStyle = '#fef08a';
+      // Biển báo BỜ B ĐÍCH ĐẾN (TOUCHPAD)
+      ctx.fillStyle = '#fde047';
       ctx.font = '900 12px Inter, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText("TOUCHPAD 200M", swimFinishX + 5, topDeckH - 8);
+      ctx.fillText("BỜ B: VẠCH ĐÍCH (TOUCHPAD)", swimFinishX + 45, topDeckH - 12);
 
-      // 5. VẼ CÁC KÌNH NGƯ BƠI TRƯỜN SẤP & BỌT NƯỚC RẼ SÓNG
+      // Thang leo lên bờ ở 2 góc hồ
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(swimFinishX - 16, topDeckH + 2, 12, 10);
+      ctx.strokeRect(swimFinishX - 16, topDeckH + poolH - 12, 12, 10);
+
+      // 5. VẼ CÁC KÌNH NGƯ TRONG HỒ
       const sortedByY = [...swimmers].sort((a, b) => a.y - b.y);
       sortedByY.forEach(s => {
         drawSwimmer(ctx, s, now);
