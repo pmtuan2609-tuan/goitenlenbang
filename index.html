@@ -14771,13 +14771,27 @@
       athleticsLastFrameTime = 0;
       AthleticsAudio.init();
 
-      // Đánh dấu vận động viên chiến thắng và đưa về vạch xuất phát
+      // Đánh dấu vận động viên chiến thắng và tuyển chọn 2 kình địch tạo Top 3 so kè khúc cuối
+      const nonWinners = athleticsRunners.filter(r => r.id !== winnerStudent.id);
+      const shuffledOthers = [...nonWinners].sort(() => Math.random() - 0.5);
+      const chaser1 = shuffledOthers[0] || null;
+      const chaser2 = shuffledOthers[1] || null;
+
       athleticsRunners.forEach(r => {
         r.isWinner = (r.id === winnerStudent.id);
         r.x = r.startX;
         r.vx = 0;
         r.finishTime = null;
         r.armsUp = 0;
+
+        if (r.isWinner) {
+          r.raceRole = 'winner';
+        } else if (r === chaser1 || r === chaser2) {
+          r.raceRole = 'top_chaser';
+        } else {
+          const otherIdx = shuffledOthers.indexOf(r);
+          r.raceRole = (otherIdx % 2 === 0) ? 'rear_pack' : 'mid_pack';
+        }
       });
       athleticsCameraX = 0;
 
@@ -14844,24 +14858,56 @@
 
         athleticsRunners.forEach(r => {
           if (!athleticsWinnerDecelerating) {
-            // Gia tốc xuất phát 0.8s đầu
-            const accel = Math.min(1, elapsed / 850);
+            const accel = Math.min(1, elapsed / 750);
+            const naturalWave = Math.sin(timeProgress * 14 + r.lane * 1.7) * 0.035;
 
-            // Chiến thuật tốc độ: Người thắng bứt phá ngoạn mục ở 45% chặng cuối
             let speedRatio = 1.0;
-            if (r.isWinner) {
-              if (timeProgress < 0.55) {
-                speedRatio = 0.99 + Math.sin(r.lane) * 0.02;
+            if (timeProgress < 0.50) {
+              // GIAI ĐOẠN 1 (0% -> 50% ĐẦU): ĐẦY ĐỦ VẬN ĐỘNG VIÊN TRANH TÀI
+              // Toàn bộ đoàn đua chạy thành khối thống nhất, chưa ai bị bỏ rơi
+              if (r.raceRole === 'winner') {
+                speedRatio = 0.995 + Math.sin(timeProgress * 8) * 0.02;
+              } else if (r.raceRole === 'top_chaser') {
+                speedRatio = 1.02 + naturalWave;
+              } else if (r.raceRole === 'mid_pack') {
+                speedRatio = 1.00 + naturalWave;
               } else {
-                const sprintBoost = Math.min(0.42, (timeProgress - 0.55) * 0.85);
-                speedRatio = 1.04 + sprintBoost;
+                speedRatio = 0.985 + naturalWave;
+              }
+            } else if (timeProgress < 0.75) {
+              // GIAI ĐOẠN 2 (50% -> 75%): PHÂN TỐP - 60% BẮT ĐẦU GIẢM TỪ TỪ XUỐNG
+              // Phân nửa đoàn đua đuối sức rớt dần lại phía sau
+              const splitProgress = (timeProgress - 0.50) / 0.25;
+              if (r.raceRole === 'winner') {
+                speedRatio = 1.00 + splitProgress * 0.07 + naturalWave * 0.5;
+              } else if (r.raceRole === 'top_chaser') {
+                speedRatio = 1.03 + splitProgress * 0.04 + naturalWave * 0.5;
+              } else if (r.raceRole === 'mid_pack') {
+                speedRatio = 0.99 - splitProgress * 0.09 + naturalWave;
+              } else {
+                speedRatio = 0.97 - splitProgress * 0.22 + naturalWave;
               }
             } else {
-              const earlyBurst = (r.lane % 3 === 0);
-              if (earlyBurst && timeProgress < 0.45) {
-                speedRatio = 1.04;
+              // GIAI ĐOẠN 3 (75% -> 100%): KHÚC CUỐI CHỈ CÒN 2-3 NGƯỜI SO KÈ NGHẸT THỞ!
+              const finalSprintProgress = (timeProgress - 0.75) / 0.25;
+              if (r.raceRole === 'winner') {
+                if (timeProgress < 0.88) {
+                  speedRatio = 1.08 + Math.sin(timeProgress * 20) * 0.02;
+                } else {
+                  // 12% cuối: tung nước rút tối thượng vượt lên cán đích về nhất!
+                  const hyperKick = (timeProgress - 0.88) / 0.12;
+                  speedRatio = 1.10 + hyperKick * 0.26;
+                }
+              } else if (r.raceRole === 'top_chaser') {
+                if (timeProgress < 0.88) {
+                  speedRatio = 1.085 + Math.cos(timeProgress * 20) * 0.02;
+                } else {
+                  speedRatio = 1.06 + Math.random() * 0.02;
+                }
+              } else if (r.raceRole === 'mid_pack') {
+                speedRatio = 0.88 - finalSprintProgress * 0.05;
               } else {
-                speedRatio = r.speedFactor * (0.95 - (timeProgress > 0.6 ? (timeProgress - 0.6) * 0.08 : 0));
+                speedRatio = 0.72 - finalSprintProgress * 0.04;
               }
             }
 
@@ -15383,25 +15429,26 @@
       ctx.arc(armNear.handX, armNear.handY, 2.8, 0, Math.PI * 2);
       ctx.fill();
 
-      // 6. NHÃN TÊN HỌC SINH NỔI BẬT
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-      ctx.strokeStyle = r.isWinner ? '#f59e0b' : '#ffffff';
-      ctx.lineWidth = r.isWinner ? 2 : 1;
+      // 6. NHÃN TÊN HỌC SINH NỔI BẬT (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+      const isWinnerFinished = (r.isWinner && (athleticsRaceState === 'finished' || r.finishTime));
+      ctx.fillStyle = isWinnerFinished ? 'rgba(234, 88, 12, 0.95)' : 'rgba(15, 23, 42, 0.88)';
+      ctx.strokeStyle = isWinnerFinished ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
+      ctx.lineWidth = isWinnerFinished ? 2.5 : 1;
       const nameW = Math.max(50, r.displayName.length * 7 + 14);
       ctx.beginPath();
       ctx.roundRect(-nameW * 0.5, -50 - bobY, nameW, 16, 6);
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = r.isWinner ? '#fef08a' : '#ffffff';
-      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillStyle = isWinnerFinished ? '#fef08a' : '#ffffff';
+      ctx.font = isWinnerFinished ? '900 11px Inter, sans-serif' : 'bold 10px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(r.displayName, 0, -42 - bobY);
 
-      if (r.rank === 1) {
-        ctx.font = '12px Arial';
-        ctx.fillText('👑', 0, -58 - bobY);
+      if (isWinnerFinished) {
+        ctx.font = '14px Arial';
+        ctx.fillText('👑', 0, -60 - bobY);
       }
 
       ctx.restore();
@@ -15734,12 +15781,27 @@
       swimLastFrameTime = 0;
       SwimAudio.init();
 
+      // Đánh dấu kình ngư chiến thắng và tuyển chọn 2 kình địch tạo Top 3 kèn cựa ở khúc cuối
+      const nonWinners = swimmers.filter(s => s.id !== winnerStudent.id);
+      const shuffledOthers = [...nonWinners].sort(() => Math.random() - 0.5);
+      const chaser1 = shuffledOthers[0] || null;
+      const chaser2 = shuffledOthers[1] || null;
+
       swimmers.forEach(s => {
         s.isWinner = (s.id === winnerStudent.id);
         s.x = s.startX;
         s.vx = 0;
         s.hasFinished = false;
         s.finishTime = null;
+
+        if (s.isWinner) {
+          s.raceRole = 'winner';
+        } else if (s === chaser1 || s === chaser2) {
+          s.raceRole = 'top_chaser';
+        } else {
+          const otherIdx = shuffledOthers.indexOf(s);
+          s.raceRole = (otherIdx % 2 === 0) ? 'rear_pack' : 'mid_pack';
+        }
       });
       swimCameraX = 0;
 
@@ -15899,25 +15961,26 @@
         ctx.arc(headX + 4, headY + 3, 2, 0.2, Math.PI - 0.2);
         ctx.stroke();
 
-        // Nhãn tên học sinh
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
-        ctx.strokeStyle = s.isWinner ? '#38bdf8' : '#ffffff';
-        ctx.lineWidth = s.isWinner ? 2 : 1;
+        // Nhãn tên học sinh (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+        const isWinnerFinished = (s.isWinner && (swimRaceState === 'finished' || s.finishTime || s.hasFinished));
+        ctx.fillStyle = isWinnerFinished ? 'rgba(8, 145, 178, 0.95)' : 'rgba(15, 23, 42, 0.9)';
+        ctx.strokeStyle = isWinnerFinished ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
+        ctx.lineWidth = isWinnerFinished ? 2.5 : 1;
         const nameW = Math.max(50, s.displayName.length * 7 + 14);
         ctx.beginPath();
         ctx.roundRect(-nameW * 0.5, -34, nameW, 16, 6);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = s.isWinner ? '#a5f3fc' : '#ffffff';
-        ctx.font = 'bold 10px Inter, sans-serif';
+        ctx.fillStyle = isWinnerFinished ? '#fde047' : '#ffffff';
+        ctx.font = isWinnerFinished ? '900 11px Inter, sans-serif' : 'bold 10px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(s.displayName, 0, -26);
 
-        if (s.isWinner) {
-          ctx.font = '13px Arial';
-          ctx.fillText('👑', 0, -42);
+        if (isWinnerFinished) {
+          ctx.font = '14px Arial';
+          ctx.fillText('👑', 0, -44);
         }
 
         ctx.restore();
@@ -16103,25 +16166,26 @@
 
       ctx.restore();
 
-      // Nhãn tên kình ngư nổi trên mặt nước
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-      ctx.strokeStyle = s.isWinner ? '#38bdf8' : '#ffffff';
-      ctx.lineWidth = s.isWinner ? 2 : 1;
+      // Nhãn tên kình ngư nổi trên mặt nước (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+      const isWinnerFinished = (s.isWinner && (swimRaceState === 'finished' || s.hasFinished));
+      ctx.fillStyle = isWinnerFinished ? 'rgba(8, 145, 178, 0.95)' : 'rgba(15, 23, 42, 0.88)';
+      ctx.strokeStyle = isWinnerFinished ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
+      ctx.lineWidth = isWinnerFinished ? 2.5 : 1;
       const nameW = Math.max(50, s.displayName.length * 7 + 14);
       ctx.beginPath();
       ctx.roundRect(-nameW * 0.5, -32, nameW, 16, 6);
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = s.isWinner ? '#a5f3fc' : '#ffffff';
-      ctx.font = 'bold 10px Inter, sans-serif';
+      ctx.fillStyle = isWinnerFinished ? '#fde047' : '#ffffff';
+      ctx.font = isWinnerFinished ? '900 11px Inter, sans-serif' : 'bold 10px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(s.displayName, 0, -24);
 
-      if (s.rank === 1) {
-        ctx.font = '12px Arial';
-        ctx.fillText('👑', 0, -40);
+      if (isWinnerFinished) {
+        ctx.font = '14px Arial';
+        ctx.fillText('👑', 0, -42);
       }
 
       ctx.restore();
@@ -16156,23 +16220,57 @@
 
         swimmers.forEach(s => {
           if (!s.hasFinished) {
-            const accel = Math.min(1, elapsed / 800);
-            const strokeSurge = 1.0 + Math.sin(s.strokePhase * 2) * 0.12;
+            const accel = Math.min(1, elapsed / 750);
+            const strokeSurge = 1.0 + Math.sin(s.strokePhase * 2) * 0.10;
+            const naturalWave = Math.sin(timeProgress * 14 + s.lane * 1.7) * 0.035;
 
             let speedRatio = 1.0;
-            if (s.isWinner) {
-              if (timeProgress < 0.52) {
-                speedRatio = 0.99 + Math.sin(s.lane) * 0.02;
+            if (timeProgress < 0.50) {
+              // GIAI ĐOẠN 1 (0% -> 50% ĐẦU): ĐẦY ĐỦ KÌNH NGƯ TRANH TÀI
+              // Toàn bộ các làn bơi bám đuổi sát nhau, so kè kịch liệt
+              if (s.raceRole === 'winner') {
+                speedRatio = 0.995 + Math.sin(timeProgress * 8) * 0.02;
+              } else if (s.raceRole === 'top_chaser') {
+                speedRatio = 1.02 + naturalWave;
+              } else if (s.raceRole === 'mid_pack') {
+                speedRatio = 1.00 + naturalWave;
               } else {
-                const boost = Math.min(0.42, (timeProgress - 0.52) * 0.85);
-                speedRatio = 1.04 + boost;
+                speedRatio = 0.985 + naturalWave;
+              }
+            } else if (timeProgress < 0.75) {
+              // GIAI ĐOẠN 2 (50% -> 75%): PHÂN TỐP - 60% BẮT ĐẦU GIẢM TỪ TỪ XUỐNG
+              // Phân nửa kình ngư đuối sức tụt dần lại sau
+              const splitProgress = (timeProgress - 0.50) / 0.25;
+              if (s.raceRole === 'winner') {
+                speedRatio = 1.00 + splitProgress * 0.07 + naturalWave * 0.5;
+              } else if (s.raceRole === 'top_chaser') {
+                speedRatio = 1.03 + splitProgress * 0.04 + naturalWave * 0.5;
+              } else if (s.raceRole === 'mid_pack') {
+                speedRatio = 0.99 - splitProgress * 0.09 + naturalWave;
+              } else {
+                speedRatio = 0.97 - splitProgress * 0.22 + naturalWave;
               }
             } else {
-              const earlySprinter = (s.lane % 2 === 0);
-              if (earlySprinter && timeProgress < 0.45) {
-                speedRatio = 1.03;
+              // GIAI ĐOẠN 3 (75% -> 100%): KHÚC CUỐI CHỈ CÒN 2-3 KÌNH NGƯ SO KÈ NGHẸT THỞ!
+              const finalSprintProgress = (timeProgress - 0.75) / 0.25;
+              if (s.raceRole === 'winner') {
+                if (timeProgress < 0.88) {
+                  speedRatio = 1.08 + Math.sin(timeProgress * 20) * 0.02;
+                } else {
+                  // 12% cuối: tung cú quẫy bọt nước rút tối thượng chạm thành hồ đầu tiên!
+                  const hyperKick = (timeProgress - 0.88) / 0.12;
+                  speedRatio = 1.10 + hyperKick * 0.26;
+                }
+              } else if (s.raceRole === 'top_chaser') {
+                if (timeProgress < 0.88) {
+                  speedRatio = 1.085 + Math.cos(timeProgress * 20) * 0.02;
+                } else {
+                  speedRatio = 1.06 + Math.random() * 0.02;
+                }
+              } else if (s.raceRole === 'mid_pack') {
+                speedRatio = 0.88 - finalSprintProgress * 0.05;
               } else {
-                speedRatio = s.speedFactor * (0.95 - (timeProgress > 0.6 ? (timeProgress - 0.6) * 0.08 : 0));
+                speedRatio = 0.72 - finalSprintProgress * 0.04;
               }
             }
 
