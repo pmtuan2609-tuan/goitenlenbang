@@ -771,7 +771,7 @@
         <div>
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-            DANH SÁCH 9 PHƯƠNG PHÁP ĐUA & GỌI TÊN
+            DANH SÁCH 13 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
           <p class="text-xs text-slate-600 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
@@ -779,18 +779,18 @@
         <!-- Filter Buttons -->
         <div class="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 transition">
-            Tất Cả (9)
+            Tất Cả (13)
           </button>
           <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
-            🏎️ Đường Đua Tốc Độ (5)
+            🏎️ Đường Đua Tốc Độ (8)
           </button>
           <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
-            🎁 May Mắn & Vòng Quay (4)
+            🎁 May Mắn & Hồi Hộp (5)
           </button>
         </div>
       </div>
 
-      <!-- Game Cards Grid: 3x3 layout (9 games) - Gọn hơn, Chi tiết hơn, Nền trắng Chữ đen -->
+      <!-- Game Cards Grid: 13 games - Gọn gàng, Chi tiết, Nền trắng Chữ đen -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="home-game-cards-container">
         
         <!-- 1. ĐUA VỊT TRÊN SÔNG -->
@@ -813,7 +813,7 @@
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 60s</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌊 Lướt Sóng</span>
             </div>
@@ -848,7 +848,7 @@
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 60s</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🚴 Núp Gió</span>
             </div>
@@ -883,7 +883,7 @@
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 60s</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔥 Lửa Nitro</span>
             </div>
@@ -953,7 +953,7 @@
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 60s</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌸 4 Cảnh Đua</span>
             </div>
@@ -988,7 +988,7 @@
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 15s</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⏱️ 3s - 60s</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">👥 5 - 60+ HS</span>
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎯 Kim Chỉ Chuẩn</span>
             </div>
@@ -1169,7 +1169,7 @@
         </div>
 
         <!-- 11. ĐƯỜNG ĐUA ĐIỀN KINH 200M -->
-        <div onclick="launchGame('athletics')" data-category="racing" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-amber-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all group">
+        <div onclick="launchGame('athletics')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-amber-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all group">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
               <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-red-600 border border-amber-300/40 flex items-center justify-center text-2xl shadow-xs shrink-0 text-white">
@@ -1202,7 +1202,7 @@
         </div>
 
         <!-- 12. ĐƯỜNG ĐUA BƠI LỘI 200M -->
-        <div onclick="launchGame('swimming')" data-category="racing" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-cyan-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all group">
+        <div onclick="launchGame('swimming')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200 hover:border-cyan-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all group">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
               <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 border border-cyan-300/40 flex items-center justify-center text-2xl shadow-xs shrink-0 text-white">
@@ -15144,21 +15144,36 @@
 
       // 6. ĐỒNG HỒ ĐIỆN TỬ BẤM GIỜ OLYMPIC GÓC TRÊN TRÁI
       if (athleticsRaceState === 'running' || athleticsRaceState === 'finished') {
-        const timeSec = athleticsWinnerRunner?.finishTime 
+        const rawSec = parseFloat(athleticsWinnerRunner?.finishTime 
           ? athleticsWinnerRunner.finishTime 
-          : ((now - athleticsStartTime) / 1000).toFixed(2);
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+          : ((now - athleticsStartTime) / 1000).toFixed(2));
+        const m = Math.floor(rawSec / 60);
+        const s = (rawSec % 60).toFixed(2);
+        const timeStr = `${m.toString().padStart(2, '0')}:${s.padStart(5, '0')}`;
+
+        const boxX = 16, boxY = 48, boxW = 150, boxH = 34;
+        ctx.save();
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
         ctx.strokeStyle = '#f59e0b';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.roundRect(16, 52, 130, 32, 10);
+        ctx.roundRect(boxX, boxY, boxW, boxH, 10);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#fde047';
-        ctx.font = '900 16px Courier New, monospace';
+        // Icon đồng hồ bấm giờ
+        ctx.font = '16px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(`⏱️ 00:${timeSec.toString().padStart(5, '0')}`, 81, 73);
+        ctx.textBaseline = 'middle';
+        ctx.fillText('⏱️', boxX + 22, boxY + boxH * 0.5);
+
+        // Số điện tử LED màu vàng
+        ctx.fillStyle = '#fde047';
+        ctx.font = '900 16px "Courier New", Courier, monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(timeStr, boxX + 42, boxY + boxH * 0.5 + 1);
+        ctx.restore();
       }
 
       ctx.restore();
@@ -16441,21 +16456,36 @@
 
       // 6. ĐỒNG HỒ ĐIỆN TỬ BẤM GIỜ BƠI GÓC TRÊN TRÁI
       if (swimRaceState === 'running' || swimRaceState === 'finished') {
-        const timeSec = swimWinner?.finishTime
+        const rawSec = parseFloat(swimWinner?.finishTime
           ? swimWinner.finishTime
-          : ((now - swimStartTime) / 1000).toFixed(2);
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+          : ((now - swimStartTime) / 1000).toFixed(2));
+        const m = Math.floor(rawSec / 60);
+        const s = (rawSec % 60).toFixed(2);
+        const timeStr = `${m.toString().padStart(2, '0')}:${s.padStart(5, '0')}`;
+
+        const boxX = 16, boxY = 46, boxW = 150, boxH = 34;
+        ctx.save();
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
         ctx.strokeStyle = '#38bdf8';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.roundRect(16, 48, 130, 32, 10);
+        ctx.roundRect(boxX, boxY, boxW, boxH, 10);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#a5f3fc';
-        ctx.font = '900 16px Courier New, monospace';
+        // Icon đồng hồ bấm giờ
+        ctx.font = '16px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(`⏱️ 00:${timeSec.toString().padStart(5, '0')}`, 81, 69);
+        ctx.textBaseline = 'middle';
+        ctx.fillText('⏱️', boxX + 22, boxY + boxH * 0.5);
+
+        // Số điện tử LED màu xanh cyan
+        ctx.fillStyle = '#a5f3fc';
+        ctx.font = '900 16px "Courier New", Courier, monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(timeStr, boxX + 42, boxY + boxH * 0.5 + 1);
+        ctx.restore();
       }
 
       ctx.restore();
