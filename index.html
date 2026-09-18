@@ -15233,26 +15233,33 @@
       ctx.translate(r.x, r.y);
 
       const isRunning = (athleticsRaceState === 'running' || athleticsWinnerDecelerating);
-      const bobY = isRunning ? Math.abs(Math.sin(r.stridePhase)) * 4.2 : 0;
-      const leanAngle = isRunning ? 0.30 : 0.05; // Nghiêng người về phía trước
+      // Độ nhấp nhô cơ thể khi chạy: 2 bước chạy / 1 chu kỳ sải chân
+      const bobY = isRunning ? Math.abs(Math.sin(r.stridePhase)) * 4.8 : 0;
+      // Góc nghiêng khí động học: dốc về phía trước khi bứt tốc, đứng thẳng hơn khi giảm tốc
+      const leanAngle = isRunning ? 0.32 : 0.08;
 
-      // 0. Đổ bóng vận động viên
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      // 0. ĐỔ BÓNG TRÊN MẶT ĐƯỜNG TARTAN (Chân thực theo độ cao nhấp nhô)
+      const shadowScale = Math.max(0.65, 1 - (bobY / 12));
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
       ctx.beginPath();
-      ctx.ellipse(0, 18, 16 - (bobY * 0.8), 5.5, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 18, 17 * shadowScale, 5.5 * shadowScale, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Vệt gió lướt sau lưng khi bứt tốc cao
-      if (isRunning && r.vx > 260) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
-        ctx.lineWidth = 1.3;
+      // Vệt khí động học xé gió khi bứt tốc cao
+      if (isRunning && r.vx > 250) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.lineWidth = 1.4;
+        ctx.lineCap = 'round';
         for (let w = 0; w < 3; w++) {
-          const lineY = -18 + w * 11 - bobY;
+          const lineY = -22 + w * 12 - bobY;
+          const len = 20 + w * 10 + Math.sin(now * 0.05 + w) * 6;
           ctx.beginPath();
-          ctx.moveTo(-18 - w * 6, lineY);
-          ctx.lineTo(-42 - w * 12, lineY);
+          ctx.moveTo(-16 - w * 6, lineY);
+          ctx.lineTo(-16 - w * 6 - len, lineY);
           ctx.stroke();
         }
+        ctx.restore();
       }
 
       const p = r.stridePhase;
@@ -15260,174 +15267,316 @@
       const hipX = 0;
       const hipY = 2 - bobY;
 
-      // Tính toán khớp chân có đầu gối gập duỗi linh hoạt mượt mà (C1 continuous)
+      // HÀM VẼ ĐOẠN CHI CƠ BẮP CÓ ĐỘ DÀY THON GỌN (TAPERED MUSCLE LIMB)
+      function drawMuscularLimb(x1, y1, x2, y2, r1, r2, fillColor, strokeColor = 'rgba(0,0,0,0.18)', strokeW = 1.2) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len = Math.hypot(dx, dy);
+        if (len < 0.001) return;
+        const nx = -dy / len;
+        const ny = dx / len;
+
+        ctx.save();
+        ctx.fillStyle = fillColor;
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = strokeW;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(x1 + nx * r1, y1 + ny * r1);
+        ctx.lineTo(x2 + nx * r2, y2 + ny * r2);
+        ctx.arc(x2, y2, r2, Math.atan2(ny, nx), Math.atan2(-ny, -nx), false);
+        ctx.lineTo(x1 - nx * r1, y1 - ny * r1);
+        ctx.arc(x1, y1, r1, Math.atan2(-ny, -nx), Math.atan2(ny, nx), false);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // ĐỘNG HỌC KHỚP CHÂN CHẠY NƯỚC RÚT OLYMPIC (TRIPLE EXTENSION & HIGH KNEE DRIVE)
       function getLegJoints(phase) {
         const sinP = Math.sin(phase);
         const cosP = Math.cos(phase);
-        // Góc đùi mượt mà liên tục (High knee drive -> backward hip extension)
-        const thighAngle = sinP * 0.82 + leanAngle * 0.35;
-        // Khớp gối gập tự nhiên không có bất kỳ điểm gián đoạn hay co giật
-        const kneeBend = 1.15 - cosP * 0.55 + Math.sin(2 * phase - 0.4) * 0.45;
-        const clampedBend = Math.max(0.32, Math.min(2.05, kneeBend));
+        
+        // Góc đùi: khi tiến lên phía trước vung gối cao (high knee), khi đạp sau duỗi căng hông (hip extension)
+        const thighAngle = sinP * 0.86 + leanAngle * 0.40;
+        
+        // Góc gập đầu gối sinh học:
+        // Khi vung ra sau (recovery): gót gập sát mông (heel to buttock) để giảm mô-men quán tính
+        // Khi đạp đất (push-off): đầu gối duỗi thẳng hết cỡ (triple extension)
+        const isBackPhase = (sinP < 0);
+        let kneeBend = 1.18 - cosP * 0.65;
+        if (isBackPhase) {
+          kneeBend += Math.abs(sinP) * 0.75; // Gập sâu khi thu chân về sau
+        }
+        const clampedBend = Math.max(0.20, Math.min(2.15, kneeBend));
 
-        const kneeX = hipX + Math.sin(thighAngle) * 13;
-        const kneeY = hipY + Math.cos(thighAngle) * 13;
+        const thighLen = 13.5;
+        const kneeX = hipX + Math.sin(thighAngle) * thighLen;
+        const kneeY = hipY + Math.cos(thighAngle) * thighLen;
+
+        const shinLen = 13.0;
         const shinAngle = thighAngle - clampedBend;
-        const footX = kneeX + Math.sin(shinAngle) * 12;
-        const footY = kneeY + Math.cos(shinAngle) * 12;
-        return { kneeX, kneeY, footX, footY };
+        const footX = kneeX + Math.sin(shinAngle) * shinLen;
+        const footY = kneeY + Math.cos(shinAngle) * shinLen;
+
+        return { kneeX, kneeY, footX, footY, thighAngle, shinAngle };
       }
 
       const legFar = getLegJoints(p + Math.PI);
       const legNear = getLegJoints(p);
 
-      // Tính toán khớp tay gập góc 85-90 độ chuẩn vận động viên nước rút Olympic
+      // ĐỘNG HỌC ĐÁNH TAY NƯỚC RÚT (ARM DRIVE - KHUỶU TAY GẬP ~90 ĐỘ CỐ ĐỊNH)
       const shoulderX = 2;
       const shoulderY = -14 - bobY;
 
       function getArmJoints(phase, isFar) {
         if (armsUp > 0) {
-          const spread = isFar ? -0.32 : 0.32;
+          const spread = isFar ? -0.35 : 0.35;
           const upAngle = -Math.PI * 0.85 + spread;
           const elX = shoulderX + Math.sin(upAngle) * 11;
           const elY = shoulderY - Math.cos(upAngle) * 11;
-          const handX = elX + Math.sin(upAngle + 0.1) * 11;
-          const handY = elY - Math.cos(upAngle + 0.1) * 11;
+          const handX = elX + Math.sin(upAngle + 0.12) * 10.5;
+          const handY = elY - Math.cos(upAngle + 0.12) * 10.5;
           return { elX, elY, handX, handY };
         }
 
-        // Đánh tay đối xứng nhịp nhàng, khuỷu tay gập góc 85 độ cố định, không giật lùi
-        const swingAngle = Math.sin(phase) * 0.88;
-        const elX = shoulderX + Math.sin(swingAngle) * 11;
-        const elY = shoulderY + Math.cos(swingAngle) * 11;
-        const forearmAngle = swingAngle - 1.48;
-        const handX = elX + Math.sin(forearmAngle) * 10.5;
-        const handY = elY + Math.cos(forearmAngle) * 10.5;
+        // Đánh tay đối xứng biên độ lớn: tay trước lên ngang cằm, tay sau quá hông
+        const swingAngle = Math.sin(phase) * 0.95;
+        const elX = shoulderX + Math.sin(swingAngle) * 11.5;
+        const elY = shoulderY + Math.cos(swingAngle) * 11.5;
+        // Khuỷu tay gập góc 85-90 độ
+        const forearmAngle = swingAngle - 1.45;
+        const handX = elX + Math.sin(forearmAngle) * 11.0;
+        const handY = elY + Math.cos(forearmAngle) * 11.0;
         return { elX, elY, handX, handY };
       }
 
       const armFar = getArmJoints(p, true);
       const armNear = getArmJoints(p + Math.PI, false);
 
-      // 1. TAY XA
-      ctx.strokeStyle = r.skin;
-      ctx.lineWidth = 3.5;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.beginPath();
-      ctx.moveTo(shoulderX, shoulderY);
-      ctx.lineTo(armFar.elX, armFar.elY);
-      ctx.lineTo(armFar.handX, armFar.handY);
-      ctx.stroke();
+      // HÀM VẼ GIÀY ĐINH NƯỚC RÚT CHUYÊN NGHIỆP (TRACK SPIKES)
+      function drawTrackSpike(footX, footY, angle, isFar) {
+        ctx.save();
+        ctx.translate(footX, footY);
+        ctx.rotate(angle);
+
+        // Đế carbon đen
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.ellipse(2, 2.5, 7.5, 2.2, 0.15, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Thân giày sáng màu thể thao
+        ctx.fillStyle = isFar ? '#e2e8f0' : '#ffffff';
+        ctx.beginPath();
+        ctx.roundRect(-4, -2.5, 11, 5, [2, 4, 3, 2]);
+        ctx.fill();
+
+        // Sọc nhấn thể thao theo màu áo đấu của học sinh
+        ctx.fillStyle = r.jersey || '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(1, -2);
+        ctx.lineTo(5, -2);
+        ctx.lineTo(3, 1.5);
+        ctx.lineTo(-1, 1.5);
+        ctx.closePath();
+        ctx.fill();
+
+        // Đinh giày kim loại nhỏ ở mũi giày
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(5.5, 3.2, 1.2, 1.4);
+        ctx.fillRect(3.5, 3.2, 1.2, 1.4);
+
+        ctx.restore();
+      }
+
+      // ==========================================
+      // 1. VẼ TAY XA & CƠ BẮP TAY XA
+      // ==========================================
+      // Bắp tay xa (Upper Arm)
+      drawMuscularLimb(shoulderX, shoulderY, armFar.elX, armFar.elY, 3.4, 2.7, r.skin);
+      // Cẳng tay xa (Forearm)
+      drawMuscularLimb(armFar.elX, armFar.elY, armFar.handX, armFar.handY, 2.7, 2.1, r.skin);
+      // Nắm đấm tay xa (Clenched fist)
       ctx.fillStyle = r.skin;
       ctx.beginPath();
-      ctx.arc(armFar.handX, armFar.handY, 2.6, 0, Math.PI * 2);
+      ctx.arc(armFar.handX, armFar.handY, 2.8, 0, Math.PI * 2);
       ctx.fill();
-
-      // 2. CHÂN XA
-      ctx.strokeStyle = r.skin;
-      ctx.lineWidth = 4.5;
-      ctx.beginPath();
-      ctx.moveTo(hipX, hipY);
-      ctx.lineTo(legFar.kneeX, legFar.kneeY);
-      ctx.lineTo(legFar.footX, legFar.footY);
+      ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+      ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Giày chân xa
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.roundRect(legFar.footX - 3, legFar.footY - 2, 9, 4.5, 2);
-      ctx.fill();
-      ctx.fillStyle = r.jersey;
-      ctx.fillRect(legFar.footX + 2, legFar.footY - 1.5, 3, 3);
+      // ==========================================
+      // 2. VẼ CHÂN XA & CƠ ĐÙI/BẮP CHÂN XA
+      // ==========================================
+      // Cơ đùi xa (Thigh)
+      drawMuscularLimb(hipX, hipY, legFar.kneeX, legFar.kneeY, 5.0, 3.6, r.skin);
+      // Bắp chuối chân xa (Calf & Shin)
+      drawMuscularLimb(legFar.kneeX, legFar.kneeY, legFar.footX, legFar.footY, 3.6, 2.4, r.skin);
+      // Giày đinh xa
+      drawTrackSpike(legFar.footX, legFar.footY, legFar.shinAngle, true);
 
-      // 3. THÂN NGƯỜI & TRANG PHỤC (Singlet & Shorts)
+      // ==========================================
+      // 3. THÂN NGƯỜI & ĐỒ THI ĐẤU CHUYÊN NGHIỆP (SINGLET & SPLIT SHORTS)
+      // ==========================================
       ctx.save();
       ctx.translate(0, -bobY);
       ctx.rotate(leanAngle);
 
+      // Cơ bắp ngực và lưng hình chữ V nở nang
+      const chestW = 16.5;
+      const waistW = 12.0;
+
+      // Áo thi đấu Singlet
       ctx.fillStyle = r.jersey;
-      ctx.strokeStyle = r.trim;
-      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.roundRect(-7.5, -19, 15, 18, [5, 5, 2, 2]);
+      ctx.moveTo(-chestW * 0.48, -19);
+      ctx.lineTo(chestW * 0.52, -19);
+      ctx.lineTo(waistW * 0.52, 0);
+      ctx.lineTo(-waistW * 0.48, 0);
+      ctx.closePath();
+      ctx.fill();
+
+      // Viền áo thể thao (Trim)
+      ctx.strokeStyle = r.trim || '#ffffff';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      // Sọc khí động học chạy dọc sườn áo
+      ctx.strokeStyle = r.trim || '#ffffff';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(-chestW * 0.42, -18);
+      ctx.lineTo(-waistW * 0.42, -1);
+      ctx.stroke();
+
+      // Quần đùi chạy cự ly ngắn (Split shorts)
+      ctx.fillStyle = r.shorts;
+      ctx.beginPath();
+      ctx.moveTo(-waistW * 0.48, 0);
+      ctx.lineTo(waistW * 0.52, 0);
+      ctx.lineTo(waistW * 0.55, 9.5);
+      ctx.lineTo(-waistW * 0.52, 9.5);
+      ctx.closePath();
+      ctx.fill();
+      // Đường xẻ tà bên hông quần (Athletic side split)
+      ctx.strokeStyle = r.trim || '#ffffff';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(-waistW * 0.48, 2);
+      ctx.lineTo(-waistW * 0.48, 9.5);
+      ctx.stroke();
+
+      // Số đeo ngực BIB chuẩn Olympic
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.roundRect(-5.5, -14.5, 11.5, 8.5, 1.8);
       ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = r.shorts;
-      ctx.beginPath();
-      ctx.roundRect(-7.5, -1, 15, 8.5, [1, 1, 3, 3]);
-      ctx.fill();
-
-      // BIB số đeo ngực
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.roundRect(-5.5, -14, 11, 8, 2);
-      ctx.fill();
+      // Chữ số BIB sắc nét
       ctx.fillStyle = '#0f172a';
       ctx.font = '900 7px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(r.bibNumber.toString(), 0, -10);
+      ctx.fillText(r.bibNumber.toString(), 0.2, -10.2);
 
-      // Cổ & Đầu
+      // Cổ cơ bắp vươn về phía trước
       ctx.fillStyle = r.skin;
-      ctx.fillRect(-2.5, -23, 5, 5);
       ctx.beginPath();
-      ctx.arc(2, -27, 7.5, 0, Math.PI * 2);
+      ctx.moveTo(-3, -19);
+      ctx.lineTo(3.5, -19);
+      ctx.lineTo(4.2, -24);
+      ctx.lineTo(-2.2, -24);
+      ctx.closePath();
       ctx.fill();
 
-      // Mắt
+      // Đầu & Gương mặt quyết tâm hướng về đích
+      ctx.fillStyle = r.skin;
+      ctx.beginPath();
+      ctx.arc(2.5, -28.5, 8.0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sống mũi & Quai hàm thể thao
+      ctx.beginPath();
+      ctx.moveTo(9, -29);
+      ctx.lineTo(11, -27.5);
+      ctx.lineTo(9, -25.5);
+      ctx.lineTo(7.5, -23);
+      ctx.lineTo(3, -23);
+      ctx.closePath();
+      ctx.fill();
+
+      // Tai
+      ctx.beginPath();
+      ctx.arc(-1.5, -28, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mắt tập trung cao độ nhìn về đích
       ctx.fillStyle = '#0f172a';
       ctx.beginPath();
-      ctx.arc(5.5, -28, 1.2, 0, Math.PI * 2);
+      ctx.ellipse(6.5, -29.2, 1.6, 1.2, 0.2, 0, Math.PI * 2);
       ctx.fill();
+      // Ánh mắt sắc sảo
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(7.0, -29.6, 0.8, 0.8);
 
-      // Tóc
+      // Lông mày dốc quyết tâm
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.4;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(5.0, -31.5);
+      ctx.lineTo(8.5, -30.8);
+      ctx.stroke();
+
+      // Tóc thể thao vuốt ngược khí động học
       ctx.fillStyle = '#1e293b';
       ctx.beginPath();
-      ctx.arc(0.5, -29, 7.5, Math.PI * 0.8, Math.PI * 2.1);
+      ctx.arc(1.2, -30, 8.2, Math.PI * 0.75, Math.PI * 2.05);
+      ctx.lineTo(3.5, -34);
+      ctx.lineTo(0.5, -33.5);
+      ctx.lineTo(-4.5, -31);
+      ctx.closePath();
       ctx.fill();
 
-      // Băng đô thể thao
+      // Băng đô thể thao (Headband)
       ctx.strokeStyle = r.jersey;
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.6;
       ctx.beginPath();
-      ctx.arc(2, -27, 7.7, -Math.PI * 0.65, Math.PI * 0.25);
+      ctx.arc(2.5, -28.5, 8.2, -Math.PI * 0.68, Math.PI * 0.18);
       ctx.stroke();
 
       ctx.restore();
 
-      // 4. CHÂN GẦN
-      ctx.strokeStyle = r.skin;
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.moveTo(hipX, hipY);
-      ctx.lineTo(legNear.kneeX, legNear.kneeY);
-      ctx.lineTo(legNear.footX, legNear.footY);
-      ctx.stroke();
+      // ==========================================
+      // 4. VẼ CHÂN GẦN & CƠ ĐÙI/BẮP CHÂN GẦN (NỔI BẬT)
+      // ==========================================
+      // Cơ đùi trước gần (Quadriceps & Hamstrings)
+      drawMuscularLimb(hipX, hipY, legNear.kneeX, legNear.kneeY, 5.6, 4.0, r.skin);
+      // Khớp gối & Bắp chuối chân gần (Calf)
+      drawMuscularLimb(legNear.kneeX, legNear.kneeY, legNear.footX, legNear.footY, 4.0, 2.6, r.skin);
+      // Giày đinh gần
+      drawTrackSpike(legNear.footX, legNear.footY, legNear.shinAngle, false);
 
-      // Giày chân gần
-      ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.roundRect(legNear.footX - 3, legNear.footY - 2, 9, 4.5, 2);
-      ctx.fill();
-      ctx.fillStyle = r.jersey;
-      ctx.fillRect(legNear.footX + 2, legNear.footY - 1.5, 3, 3);
-
-      // 5. TAY GẦN
-      ctx.strokeStyle = r.skin;
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.moveTo(shoulderX, shoulderY);
-      ctx.lineTo(armNear.elX, armNear.elY);
-      ctx.lineTo(armNear.handX, armNear.handY);
-      ctx.stroke();
-
+      // ==========================================
+      // 5. VẼ TAY GẦN & BẮP TAY GẦN (PHÍA TRƯỚC)
+      // ==========================================
+      // Bắp tay trước (Biceps & Deltoids)
+      drawMuscularLimb(shoulderX, shoulderY, armNear.elX, armNear.elY, 3.8, 3.0, r.skin);
+      // Cẳng tay trước (Forearm)
+      drawMuscularLimb(armNear.elX, armNear.elY, armNear.handX, armNear.handY, 3.0, 2.3, r.skin);
+      // Nắm đấm tay trước (Clenched fist)
       ctx.fillStyle = r.skin;
       ctx.beginPath();
-      ctx.arc(armNear.handX, armNear.handY, 2.8, 0, Math.PI * 2);
+      ctx.arc(armNear.handX, armNear.handY, 3.0, 0, Math.PI * 2);
       ctx.fill();
+      ctx.strokeStyle = 'rgba(0,0,0,0.30)';
+      ctx.lineWidth = 1.1;
+      ctx.stroke();
 
       // 6. NHÃN TÊN HỌC SINH NỔI BẬT (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
       const isWinnerFinished = (r.isWinner && (athleticsRaceState === 'finished' || r.finishTime));
@@ -15843,7 +15992,9 @@
       const p = s.strokePhase;
       const isTouchingWall = s.hasFinished;
 
+      // ========================================================
       // 1. TRẠNG THÁI 1: KÌNH NGƯ ĐÃ CHẠM BỜ B (DỪNG TẠI THÀNH HỒ, TAY BÁM TẤM CẢM ỨNG)
+      // ========================================================
       if (isTouchingWall) {
         // Gợn sóng êm dịu quanh người đang thả lỏng
         const idleWave = Math.sin(now * 0.005 + s.lane) * 2;
@@ -15852,34 +16003,49 @@
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
         ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.ellipse(0, 0, 24, 10, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, 26, 11, 0, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Thân kình ngư nổi ngang trên mặt nước
+        // Thân kình ngư chữ V nổi ngang trên mặt nước
+        // Quần bơi Jammer
         ctx.fillStyle = s.suit;
         ctx.beginPath();
-        ctx.roundRect(-16, -5 + idleWave * 0.3, 16, 10, [3, 1, 1, 3]);
+        ctx.roundRect(-18, -6 + idleWave * 0.3, 16, 12, [4, 1, 1, 4]);
         ctx.fill();
 
+        // Lưng xô nổi trên mặt nước
         ctx.fillStyle = s.skin;
         ctx.beginPath();
-        ctx.ellipse(0, idleWave * 0.3, 16, 7, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, idleWave * 0.3, 18, 8.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Rãnh cơ sống lưng
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.beginPath();
+        ctx.ellipse(-2, idleWave * 0.3, 11, 4.5, 0, 0, Math.PI * 2);
         ctx.fill();
 
         // Đôi chân nổi thư giãn sau lưng
         ctx.strokeStyle = s.skin;
-        ctx.lineWidth = 3.5;
+        ctx.lineWidth = 3.8;
         ctx.lineCap = 'round';
         ctx.beginPath();
-        ctx.moveTo(-16, -2);
-        ctx.lineTo(-28, -3 + idleWave);
-        ctx.moveTo(-16, 2);
-        ctx.lineTo(-28, 3 - idleWave);
+        ctx.moveTo(-18, -2.5);
+        ctx.lineTo(-30, -3.5 + idleWave);
+        ctx.moveTo(-18, 2.5);
+        ctx.lineTo(-30, 3.5 - idleWave);
         ctx.stroke();
+
+        // Bàn chân thả lỏng duỗi nhẹ
+        ctx.fillStyle = s.skin;
+        ctx.beginPath();
+        ctx.ellipse(-30, -3.5 + idleWave, 3.5, 2, 0.2, 0, Math.PI * 2);
+        ctx.ellipse(-30, 3.5 - idleWave, 3.5, 2, -0.2, 0, Math.PI * 2);
+        ctx.fill();
 
         // Tay vươn bám chặt vào mép thành hồ Bờ B (Touchpad)
         ctx.strokeStyle = s.skin;
-        ctx.lineWidth = 4;
+        ctx.lineWidth = 4.2;
         ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(8, 4);
@@ -15889,13 +16055,13 @@
         // Bàn tay bám thành hồ
         ctx.fillStyle = s.skin;
         ctx.beginPath();
-        ctx.arc(20, 2, 2.8, 0, Math.PI * 2);
+        ctx.arc(20, 2, 3.0, 0, Math.PI * 2);
         ctx.fill();
 
         // Tay còn lại: Nếu là người thắng -> Giơ tay đấm lên không trung ăn mừng (Fist pump)!
         if (s.isWinner) {
           ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 4;
+          ctx.lineWidth = 4.2;
           ctx.beginPath();
           ctx.moveTo(6, -4);
           ctx.lineTo(14, -16);
@@ -15905,60 +16071,60 @@
           // Nắm đấm ăn mừng
           ctx.fillStyle = s.skin;
           ctx.beginPath();
-          ctx.arc(18, -26, 3.5, 0, Math.PI * 2);
+          ctx.arc(18, -26, 3.8, 0, Math.PI * 2);
           ctx.fill();
 
           // Giọt nước bắn tung tóe quanh tay ăn mừng
           ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-          for (let sp = 0; sp < 4; sp++) {
-            const dropX = 18 + Math.sin(now * 0.01 + sp) * 7;
-            const dropY = -26 + Math.cos(now * 0.01 + sp) * 7;
-            ctx.fillRect(dropX, dropY, 2, 2);
+          for (let sp = 0; sp < 5; sp++) {
+            const dropX = 18 + Math.sin(now * 0.01 + sp) * 8;
+            const dropY = -26 + Math.cos(now * 0.01 + sp) * 8;
+            ctx.fillRect(dropX, dropY, 2.2, 2.2);
           }
         } else {
           // Kình ngư khác: tay gác lên dây phao bên cạnh
           ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 3.5;
+          ctx.lineWidth = 3.6;
           ctx.beginPath();
           ctx.moveTo(6, -4);
           ctx.lineTo(10, -12);
           ctx.stroke();
           ctx.fillStyle = s.skin;
           ctx.beginPath();
-          ctx.arc(10, -12, 2.5, 0, Math.PI * 2);
+          ctx.arc(10, -12, 2.6, 0, Math.PI * 2);
           ctx.fill();
         }
 
         // Đầu nhô hẳn lên khỏi mặt nước, mắt nhìn lên bảng điện tử
-        const headX = 11;
+        const headX = 12;
         const headY = -3 + idleWave * 0.2;
 
         ctx.fillStyle = s.skin;
         ctx.beginPath();
-        ctx.ellipse(headX, headY, 7.5, 6.5, 0, 0, Math.PI * 2);
+        ctx.ellipse(headX, headY, 8.0, 7.0, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // Mũ bơi
+        // Mũ bơi silicon
         ctx.fillStyle = s.cap;
         ctx.beginPath();
-        ctx.ellipse(headX - 1.5, headY - 1, 6.5, 6, 0, 0, Math.PI * 2);
+        ctx.ellipse(headX - 1.5, headY - 1, 7.0, 6.5, 0, 0, Math.PI * 2);
         ctx.fill();
 
         // Kính bơi kéo lên trán khi đã về đích
         ctx.fillStyle = s.goggles;
-        ctx.fillRect(headX - 1, headY - 5, 5, 2.5);
+        ctx.fillRect(headX - 1, headY - 5.5, 5.5, 2.8);
 
         // Mắt mở to nhìn bảng điểm
         ctx.fillStyle = '#0f172a';
         ctx.beginPath();
-        ctx.arc(headX + 4, headY - 0.5, 1.4, 0, Math.PI * 2);
+        ctx.arc(headX + 4.5, headY - 0.5, 1.5, 0, Math.PI * 2);
         ctx.fill();
 
         // Nụ cười thở phào sau cuộc đua
         ctx.strokeStyle = '#0f172a';
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.3;
         ctx.beginPath();
-        ctx.arc(headX + 4, headY + 3, 2, 0.2, Math.PI - 0.2);
+        ctx.arc(headX + 4.5, headY + 3, 2.2, 0.2, Math.PI - 0.2);
         ctx.stroke();
 
         // Nhãn tên học sinh (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
@@ -15987,19 +16153,22 @@
         return;
       }
 
+      // ========================================================
       // 2. TRẠNG THÁI 2: ĐANG BƠI NƯỚC RÚT TRƯỜN SẤP (FREESTYLE) TỪ A SANG B
-      // Bọt nước cuộn trào do đôi chân đạp nước (6-beat kick)
+      // ========================================================
+      // Đôi chân đạp nước nhịp nhàng hình roi da mềm mại (6-beat flutter kick)
       const kickRate = 2.8;
-      const kickOffset1 = Math.sin(p * kickRate) * 5.5;
-      const kickOffset2 = -Math.sin(p * kickRate) * 5.5;
+      const kickOffset1 = Math.sin(p * kickRate) * 6.5;
+      const kickOffset2 = -Math.sin(p * kickRate) * 6.5;
 
+      // 2.1. ĐUÔI BỌT NƯỚC TRẮNG XÓA (WHITEWATER BUBBLE WAKE)
       ctx.save();
-      for (let i = 0; i < 9; i++) {
-        const bubbleX = -18 - i * 6.5 + (Math.sin(now * 0.025 + i * 2) * 2.5);
-        const spread = 2.5 + i * 1.2;
-        const bubbleY = (i % 2 === 0 ? kickOffset1 : kickOffset2) * 0.6 + (Math.sin(now * 0.03 + i) * spread);
-        const bubbleR = 2.0 + (i * 0.5) + (Math.random() * 1.5);
-        const alpha = Math.max(0, 0.75 - i * 0.08);
+      for (let i = 0; i < 11; i++) {
+        const bubbleX = -18 - i * 6.8 + (Math.sin(now * 0.025 + i * 2) * 2.8);
+        const spread = 2.8 + i * 1.3;
+        const bubbleY = (i % 2 === 0 ? kickOffset1 : kickOffset2) * 0.55 + (Math.sin(now * 0.03 + i) * spread);
+        const bubbleR = 2.2 + (i * 0.45) + (Math.random() * 1.6);
+        const alpha = Math.max(0, 0.80 - i * 0.07);
 
         ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         ctx.beginPath();
@@ -16008,57 +16177,84 @@
       }
       ctx.restore();
 
-      // Độ lắc thân mượt mà theo trục dọc cơ thể (Body Roll 12-14 độ)
-      const bodyRoll = Math.sin(p) * 0.22;
+      // 2.2. TRỤC LĂN CƠ THỂ THEO NHỊP QUẠT TAY (BODY ROLL 14-16 ĐỘ)
+      const bodyRoll = Math.sin(p) * 0.26;
 
       ctx.save();
-      ctx.rotate(bodyRoll * 0.35);
+      ctx.rotate(bodyRoll * 0.40);
 
-      // Đôi chân đạp nước nhịp nhàng (Flutter kick)
-      ctx.strokeStyle = s.skin;
-      ctx.lineWidth = 3.8;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(-15, -2);
-      ctx.lineTo(-24, -2 + kickOffset1 * 0.8);
-      ctx.lineTo(-30, -2 + kickOffset1);
-      ctx.stroke();
+      // HÀM VẼ CHÂN QUẪY NƯỚC UỐN LƯỢN DẠNG ROI DA MỀM (WHIP-LIKE FLUTTER KICK)
+      function drawWhipLeg(sideSign, kickOffset) {
+        const hipX = -14;
+        const hipY = sideSign * 2.8;
 
-      ctx.fillStyle = s.skin;
-      ctx.beginPath();
-      ctx.ellipse(-30, -2 + kickOffset1, 3.5, 2, 0, 0, Math.PI * 2);
-      ctx.fill();
+        // Đùi cong nhẹ theo khớp hông
+        const kneeX = -25;
+        const kneeY = hipY + kickOffset * 0.45;
 
-      ctx.strokeStyle = s.skin;
-      ctx.lineWidth = 3.8;
-      ctx.beginPath();
-      ctx.moveTo(-15, 2);
-      ctx.lineTo(-24, 2 + kickOffset2 * 0.8);
-      ctx.lineTo(-30, 2 + kickOffset2);
-      ctx.stroke();
+        // Cẳng chân và bàn chân duỗi căng mũi chân (pointed toes)
+        const footX = -36;
+        const footY = hipY + kickOffset;
 
-      ctx.beginPath();
-      ctx.ellipse(-30, 2 + kickOffset2, 3.5, 2, 0, 0, Math.PI * 2);
-      ctx.fill();
+        ctx.save();
+        // Cơ đùi (Thigh)
+        ctx.strokeStyle = s.skin;
+        ctx.lineWidth = 4.6;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(hipX, hipY);
+        ctx.quadraticCurveTo((hipX + kneeX) * 0.5, (hipY + kneeY) * 0.5 + kickOffset * 0.1, kneeX, kneeY);
+        ctx.stroke();
 
-      // Thân kình ngư chữ V lực lưỡng
+        // Bắp chuối & Cẳng chân (Calf)
+        ctx.lineWidth = 3.6;
+        ctx.beginPath();
+        ctx.moveTo(kneeX, kneeY);
+        ctx.quadraticCurveTo((kneeX + footX) * 0.5, (kneeY + footY) * 0.5 + kickOffset * 0.15, footX, footY);
+        ctx.stroke();
+
+        // Bàn chân thon nhọn duỗi thẳng mũi chân chém nước
+        ctx.fillStyle = s.skin;
+        ctx.beginPath();
+        ctx.ellipse(footX, footY, 4.2, 2.2, kickOffset * 0.05, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Vẽ đôi chân quẫy nước so le
+      drawWhipLeg(-1, kickOffset1);
+      drawWhipLeg(1, kickOffset2);
+
+      // 2.3. THÂN KÌNH NGƯ HÌNH CHỮ V LỰC LƯỠNG (V-TAPER OLYMPIC TORSO)
+      // Quần bơi Jammer chuyên nghiệp (dài ôm tới gối)
       ctx.fillStyle = s.suit;
       ctx.beginPath();
-      ctx.roundRect(-14, -6, 14, 12, [3, 1, 1, 3]);
+      ctx.roundRect(-16, -6.8, 16, 13.6, [4, 1, 1, 4]);
       ctx.fill();
 
+      // Sọc khí động học phản quang hai bên hông quần bơi
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(-15, -6.0);
+      ctx.lineTo(-2, -6.2);
+      ctx.moveTo(-15, 6.0);
+      ctx.lineTo(-2, 6.2);
+      ctx.stroke();
+
+      // Thân mình cơ bắp nở nang (Shoulders & Torso)
       ctx.fillStyle = s.skin;
       ctx.beginPath();
-      ctx.ellipse(0, 0, 16, 7.5, 0, 0, Math.PI * 2);
+      ctx.ellipse(1, 0, 18, 8.5, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Cơ bắp lưng xô
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+      // Cơ lưng xô và rãnh sống lưng 3D
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.10)';
       ctx.beginPath();
-      ctx.ellipse(-2, 0, 10, 5, 0, 0, Math.PI * 2);
+      ctx.ellipse(-1, 0, 12, 5.0, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Sải tay bơi trườn sấp đúng dáng Olympic (High-Elbow Recovery + S-Pull)
+      // 2.4. KỸ THUẬT SẢI TAY FREESTYLE OLYMPIC (HIGH-ELBOW RECOVERY + POWERFUL S-PULL)
       const arm1Phase = p;
       const arm2Phase = p + Math.PI;
 
@@ -16068,105 +16264,148 @@
 
         if (sinArm >= 0) {
           // GIAI ĐOẠN 1: VUNG TRÊN KHÔNG KHUỶU TAY CAO (High-Elbow Aerial Recovery)
-          const elX = 4 + cosArm * 9;
-          const elY = sideSign * (10 + sinArm * 6);
-          const handX = 14 + (1 - sinArm) * 10;
-          const handY = sideSign * (3 + sinArm * 2);
+          // Khuỷu tay nhô cao vươn cong hình cánh cung
+          const elX = 4 + cosArm * 9.5;
+          const elY = sideSign * (11 + sinArm * 6.8);
+          // Cẳng tay và bàn tay thả lỏng lướt sát mặt nước vươn dài ra trước
+          const handX = 16 + (1 - sinArm) * 11.5;
+          const handY = sideSign * (3.5 + sinArm * 2.2);
 
+          // Bắp tay trên không (Upper arm)
+          ctx.save();
           ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 4;
+          ctx.lineWidth = 4.4;
           ctx.lineCap = 'round';
           ctx.beginPath();
-          ctx.moveTo(6, sideSign * 4);
+          ctx.moveTo(6, sideSign * 4.2);
           ctx.lineTo(elX, elY);
+          ctx.stroke();
+
+          // Cẳng tay (Forearm)
+          ctx.lineWidth = 3.6;
+          ctx.beginPath();
+          ctx.moveTo(elX, elY);
           ctx.lineTo(handX, handY);
           ctx.stroke();
 
+          // Bàn tay chụm ngón hình mũi giáo xé nước
           ctx.fillStyle = s.skin;
           ctx.beginPath();
-          ctx.arc(handX, handY, 2.5, 0, Math.PI * 2);
+          ctx.ellipse(handX, handY, 3.2, 2.0, Math.atan2(handY - elY, handX - elX), 0, Math.PI * 2);
           ctx.fill();
 
-          // Giọt nước vung theo đầu ngón tay
-          if (sinArm < 0.25) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+          // Giọt nước lóng lánh văng khỏi khuỷu tay và ngón tay
+          if (sinArm < 0.35) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
             ctx.beginPath();
-            ctx.arc(handX + 3, handY, 3.2, 0, Math.PI * 2);
+            ctx.arc(handX + 3.5, handY, 2.8, 0, Math.PI * 2);
+            ctx.arc(elX + 1.5, elY, 2.2, 0, Math.PI * 2);
             ctx.fill();
           }
+          ctx.restore();
         } else {
-          // GIAI ĐOẠN 2: QUẠT NƯỚC DƯỚI LÒNG HỒ (Underwater Pull)
+          // GIAI ĐOẠN 2: QUẠT NƯỚC DƯỚI LÒNG HỒ (Underwater S-Pull & Push-off)
           const pullDist = -sinArm;
-          const handX = 18 - pullDist * 26;
-          const handY = sideSign * (5 - pullDist * 2);
+          // Quạt cong hình chữ S ôm nước
+          const handX = 20 - pullDist * 28;
+          const handY = sideSign * (5.5 - Math.sin(pullDist * Math.PI) * 3.5);
 
+          ctx.save();
+          // Cánh tay chìm dưới nước có màu khúc xạ qua làn nước xanh
           ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)';
-          ctx.lineWidth = 3.5;
+          ctx.lineWidth = 4.0;
+          ctx.lineCap = 'round';
           ctx.beginPath();
-          ctx.moveTo(6, sideSign * 4);
+          ctx.moveTo(6, sideSign * 4.2);
           ctx.lineTo(handX, handY);
           ctx.stroke();
 
           ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 3.5;
+          ctx.lineWidth = 3.6;
           ctx.beginPath();
-          ctx.moveTo(6, sideSign * 4);
+          ctx.moveTo(6, sideSign * 4.2);
           ctx.lineTo(handX, handY);
           ctx.stroke();
+
+          // Lòng bàn tay đẩy nước tạo lực phản lực
+          ctx.fillStyle = s.skin;
+          ctx.beginPath();
+          ctx.arc(handX, handY, 2.8, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Vệt bọt xoáy nước dưới bàn tay
+          if (pullDist > 0.4 && pullDist < 0.85) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.beginPath();
+            ctx.arc(handX - 4, handY + sideSign * 2, 2.4, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
         }
       }
 
       drawFreestyleArm(arm1Phase, -1);
       drawFreestyleArm(arm2Phase, 1);
 
-      // Đầu, mũ bơi và nhịp thở nghiêng đầu (Breathing roll)
+      // 2.5. ĐẦU, MŨ BƠI VÀ NHỊP THỞ CHUYÊN NGHIỆP (BILATERAL BREATHING ROLL)
       const breatheCycle = Math.floor(p / (Math.PI * 2));
       const phaseInCycle = (p % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
       const isBreathing = (breatheCycle % 3 === 0) && (phaseInCycle > 0.5 && phaseInCycle < 2.5);
 
-      const headTilt = isBreathing ? Math.sin(phaseInCycle) * 4.5 : 0;
-      const headX = 12;
+      const headTilt = isBreathing ? Math.sin(phaseInCycle) * 4.8 : 0;
+      const headX = 13;
       const headY = headTilt;
 
+      // Hộp sọ & Khuôn mặt
       ctx.fillStyle = s.skin;
       ctx.beginPath();
-      ctx.ellipse(headX, headY, 7.5, 6, 0, 0, Math.PI * 2);
+      ctx.ellipse(headX, headY, 8.2, 6.5, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Mũ bơi silicon ôm sát đầu
+      // Mũ bơi silicon ôm khít đầu
       ctx.fillStyle = s.cap;
       ctx.beginPath();
-      ctx.ellipse(headX - 1.5, headY, 6.5, 6.2, 0, 0, Math.PI * 2);
+      ctx.ellipse(headX - 1.8, headY, 7.2, 6.8, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Kính bơi
+      // Kính bơi tráng gương (Mirrored goggles) óng ánh
       ctx.fillStyle = s.goggles;
       if (isBreathing) {
+        // Mắt hé ra thở trong hõm sóng
         ctx.beginPath();
-        ctx.ellipse(headX + 2.5, headY - 2.5, 3.5, 2.2, -0.3, 0, Math.PI * 2);
+        ctx.ellipse(headX + 2.8, headY - 2.8, 3.8, 2.4, -0.3, 0, Math.PI * 2);
         ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(headX + 3.2, headY - 3.2, 1.2, 1.2); // Ánh sáng phản quang
+        // Miệng mở hé hít thở
         ctx.fillStyle = '#0f172a';
         ctx.beginPath();
-        ctx.arc(headX + 5, headY + 1.5, 1.5, 0, Math.PI * 2);
+        ctx.arc(headX + 5.5, headY + 1.8, 1.6, 0, Math.PI * 2);
         ctx.fill();
       } else {
-        ctx.fillRect(headX + 2, headY - 4, 3.5, 2.5);
-        ctx.fillRect(headX + 2, headY + 1.5, 3.5, 2.5);
+        // Úp mặt xuống nước
+        ctx.fillRect(headX + 2.2, headY - 4.5, 4.0, 2.8);
+        ctx.fillRect(headX + 2.2, headY + 1.8, 4.0, 2.8);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillRect(headX + 3.2, headY - 4.0, 1.4, 1.4);
+        ctx.fillRect(headX + 3.2, headY + 2.3, 1.4, 1.4);
       }
 
-      // Sóng rẽ nước mũi trước
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-      ctx.lineWidth = 1.5;
+      // Sóng rẽ nước mũi trước (Bow wave) sáng lóa hình chữ V
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
-      ctx.moveTo(headX + 8, headY);
-      ctx.lineTo(headX - 6, headY - 10);
-      ctx.moveTo(headX + 8, headY);
-      ctx.lineTo(headX - 6, headY + 10);
+      ctx.moveTo(headX + 9, headY);
+      ctx.lineTo(headX - 8, headY - 12);
+      ctx.moveTo(headX + 9, headY);
+      ctx.lineTo(headX - 8, headY + 12);
       ctx.stroke();
 
       ctx.restore();
 
-      // Nhãn tên kình ngư nổi trên mặt nước (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+      // ========================================================
+      // 3. NHÃN TÊN KÌNH NGƯ NỔI TRÊN MẶT NƯỚC (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+      // ========================================================
       const isWinnerFinished = (s.isWinner && (swimRaceState === 'finished' || s.hasFinished));
       ctx.fillStyle = isWinnerFinished ? 'rgba(8, 145, 178, 0.95)' : 'rgba(15, 23, 42, 0.88)';
       ctx.strokeStyle = isWinnerFinished ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
