@@ -746,11 +746,14 @@
         <!-- Middle: Duration selector -->
         <div class="flex items-center gap-2 md:border-l md:border-slate-200 md:pl-4 shrink-0">
           <span class="text-[10px] font-black uppercase text-slate-500 tracking-wider whitespace-nowrap">Thời gian:</span>
-          <div class="flex items-center gap-1" id="homeDurationButtons">
-            <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn px-2.5 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="3">3s</button>
-            <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn px-2.5 py-1 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 transition cursor-pointer" data-sec="5">5s</button>
-            <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn px-2.5 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="10">10s</button>
-            <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn px-2.5 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="15">15s</button>
+          <div class="flex items-center gap-1 flex-wrap" id="homeDurationButtons">
+            <button type="button" onclick="setAppDuration(3)" class="duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="3">3s</button>
+            <button type="button" onclick="setAppDuration(5)" class="duration-quick-btn px-2 py-1 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 transition cursor-pointer" data-sec="5">5s</button>
+            <button type="button" onclick="setAppDuration(10)" class="duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="10">10s</button>
+            <button type="button" onclick="setAppDuration(15)" class="duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="15">15s</button>
+            <button type="button" onclick="setAppDuration(20)" class="duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="20">20s</button>
+            <button type="button" onclick="setAppDuration(30)" class="duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="30">30s</button>
+            <button type="button" onclick="setAppDuration(60)" class="duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer" data-sec="60">60s</button>
           </div>
         </div>
 
@@ -1299,6 +1302,10 @@
               <option value="5" selected class="bg-slate-900 text-white font-bold">5 giây</option>
               <option value="10" class="bg-slate-900 text-white font-bold">10 giây</option>
               <option value="15" class="bg-slate-900 text-white font-bold">15 giây</option>
+              <option value="20" class="bg-slate-900 text-white font-bold">20 giây</option>
+              <option value="30" class="bg-slate-900 text-white font-bold">30 giây</option>
+              <option value="45" class="bg-slate-900 text-white font-bold">45 giây</option>
+              <option value="60" class="bg-slate-900 text-white font-bold">60 giây</option>
             </select>
           </div>
 
@@ -3498,14 +3505,35 @@
 
     function setAppDuration(sec) {
       const select = document.getElementById('spin-duration');
-      if (select) select.value = sec;
+      if (select) {
+        select.value = sec;
+        select.dispatchEvent(new Event('change'));
+      }
       document.querySelectorAll('.duration-quick-btn').forEach(btn => {
         if (parseInt(btn.getAttribute('data-sec')) === sec) {
-          btn.className = "duration-quick-btn py-2 text-xs font-black rounded-xl border border-amber-400 bg-amber-100 text-amber-800 shadow-xs transition";
+          btn.className = "duration-quick-btn px-2 py-1 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 shadow-xs transition cursor-pointer";
         } else {
-          btn.className = "duration-quick-btn py-2 text-xs font-bold rounded-xl border border-slate-200 bg-slate-100 text-slate-700 hover:border-amber-400 transition";
+          btn.className = "duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer";
         }
       });
+      syncTrackLengthToDuration();
+    }
+
+    function syncTrackLengthToDuration() {
+      const mode = document.getElementById('spin-mode')?.value || 'duck';
+      if (mode === 'athletics' && (typeof athleticsRaceState !== 'undefined' && (athleticsRaceState === 'idle' || athleticsRaceState === 'countdown'))) {
+        if (typeof initAthleticsRace === 'function') initAthleticsRace(false);
+      } else if (mode === 'swimming' && (typeof swimRaceState !== 'undefined' && (swimRaceState === 'idle' || swimRaceState === 'countdown'))) {
+        if (typeof initSwimRace === 'function') initSwimRace(false);
+      } else if (mode === 'duck' && (typeof duckRaceState !== 'undefined' && (duckRaceState === 'idle' || duckRaceState === 'countdown'))) {
+        if (typeof resizeDuckCanvas === 'function') resizeDuckCanvas();
+      } else if (mode === 'bike' && (typeof bikeRaceState !== 'undefined' && (bikeRaceState === 'idle' || bikeRaceState === 'countdown'))) {
+        if (typeof resizeBikeCanvas === 'function') resizeBikeCanvas();
+      } else if (mode === 'motogp' && (typeof motogpRaceState !== 'undefined' && (motogpRaceState === 'idle' || motogpRaceState === 'countdown'))) {
+        if (typeof resizeMotoGPCanvas === 'function') resizeMotoGPCanvas();
+      } else if (mode === 'ski' && (typeof skiRaceState !== 'undefined' && (skiRaceState === 'idle' || skiRaceState === 'countdown'))) {
+        if (typeof resizeSkiCanvas === 'function') resizeSkiCanvas();
+      }
     }
 
     // ==========================================
@@ -9275,7 +9303,10 @@
       const frontX = Math.max(180, 100 + (numCols - 1) * colSpacingX);
 
       skiStartX = frontX;
-      skiTrackLength = Math.max(w * 5.2, frontX + 4800);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(w * 4.5, 4500);
+      skiTrackLength = frontX + Math.round(baseDist * durationFactor) + 280;
       skiFinishX = skiTrackLength - 280;
 
       // Cập nhật vị trí 10 trạm quà từ 7.2% đến 72% của quãng đường đua
@@ -9521,11 +9552,29 @@
       skiRaceRunning = true;
       skiRaceState = 'countdown';
       skiRaceWinner = winner;
-      skiRaceDuration = Math.max(9000, durationMs || 9000);
+      skiRaceDuration = Math.max(3000, durationMs || 5000);
       skiRaceCallback = callback;
       skiCameraX = 0;
       skiSparkles = [];
       skiAllFinishedTime = 0;
+
+      const durationSec = skiRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const canvas = document.getElementById('ski-race-canvas');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas ? (canvas.width / dpr) : 800;
+      const baseDist = Math.max(w * 4.5, 4500);
+      skiTrackLength = skiStartX + Math.round(baseDist * durationFactor) + 280;
+      skiFinishX = skiTrackLength - 280;
+
+      const usableDist = skiFinishX - skiStartX;
+      const giftZoneDist = usableDist * 0.72;
+      const stationGap = giftZoneDist / SKI_TOTAL_GIFT_STATIONS;
+      if (skiGiftStations && skiGiftStations.length > 0) {
+        skiGiftStations.forEach(st => {
+          st.x = Math.round(skiStartX + st.index * stationGap);
+        });
+      }
 
       // Phân bổ trước điểm số 10 trạm hộp quà cho từng học sinh (1 đến 5 điểm mỗi trạm)
       // Học sinh chiến thắng nhận nhiều điểm 4 và 5, đạt tổng 45-48 điểm
@@ -12057,7 +12106,9 @@
         'motogp-race-container',
         'f1-race-container',
         'horse-race-container',
-        'ski-race-container'
+        'ski-race-container',
+        'athletics-race-container',
+        'swimming-race-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -12253,7 +12304,10 @@
       const frontX = Math.max(180, 90 + (numCols - 1) * colSpacingX);
 
       duckStartX = frontX;
-      duckTrackLength = Math.max(w * 3.2, frontX + 2400);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(w * 2.8, 2400);
+      duckTrackLength = frontX + Math.round(baseDist * durationFactor) + 200;
       duckFinishX = duckTrackLength - 200;
 
       const totalRowsInCol = Math.ceil(count / numCols);
@@ -12304,7 +12358,10 @@
       const frontX = Math.max(180, 90 + (numCols - 1) * colSpacingX);
 
       duckStartX = frontX;
-      duckTrackLength = Math.max(w * 3.2, frontX + 2400);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(w * 2.8, 2400);
+      duckTrackLength = frontX + Math.round(baseDist * durationFactor) + 200;
       duckFinishX = duckTrackLength - 200;
 
       const totalRowsInCol = Math.ceil(count / numCols);
@@ -12410,9 +12467,32 @@
       duckRaceRunning = true;
       duckRaceState = 'countdown';
       duckRaceWinner = winner;
-      duckRaceDuration = durationMs || 6000;
+      duckRaceDuration = Math.max(3000, durationMs || 5000);
       duckRaceCallback = callback;
       duckCameraX = 0;
+
+      const durationSec = duckRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const canvas = document.getElementById('duck-race-canvas');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas ? (canvas.width / dpr) : 800;
+      const baseDist = Math.max(w * 2.8, 2400);
+      duckTrackLength = duckStartX + Math.round(baseDist * durationFactor) + 200;
+      duckFinishX = duckTrackLength - 200;
+
+      const topBankH = Math.min(110, Math.max(50, Math.floor(((canvas?.height ? (canvas.height / dpr) : 450)) * 0.14)));
+      const waterH = ((canvas?.height ? (canvas.height / dpr) : 450)) - topBankH * 2;
+      duckRiverDecorations = [];
+      for (let rx = 120; rx < duckTrackLength - 100; rx += 140 + Math.floor(Math.abs(Math.sin(rx)) * 60)) {
+        duckRiverDecorations.push({
+          x: rx,
+          y: topBankH + 20 + Math.abs(Math.sin(rx * 17)) * (waterH - 40),
+          type: (rx % 3 === 0) ? 'lotus' : ((rx % 2 === 0) ? 'lily' : 'pebble'),
+          size: 14 + (rx % 5) * 3,
+          rot: (rx % 7) * 0.9,
+          phase: (rx % 9)
+        });
+      }
 
       duckList.forEach(d => {
         d.isWinner = (String(d.id) === String(winner.id));
@@ -14504,6 +14584,47 @@
     let athleticsDecelStartTime = 0;
     let athleticsDustParticles = [];
 
+    function calculateAthleticsLayout(h, count) {
+      const stadiumTopH = Math.max(70, Math.floor(h * 0.18));
+      const infieldBottomH = Math.max(50, Math.floor(h * 0.14));
+      const trackH = Math.max(200, h - stadiumTopH - infieldBottomH);
+
+      // Phân bổ số làn tối ưu:
+      // Phóng to (h >= 700): ~14-18 làn phủ trọn màn hình
+      // Thu nhỏ (h < 700): ~8-10 làn vừa vặn không chen chúc
+      const targetLaneH = h > 700 ? 46 : 34;
+      const maxLanesByHeight = Math.max(4, Math.floor(trackH / targetLaneH));
+      const usableLanes = Math.max(4, Math.min(count, Math.min(18, maxLanesByHeight)));
+      const laneH = trackH / usableLanes;
+
+      return { stadiumTopH, infieldBottomH, trackH, usableLanes, laneH };
+    }
+
+    function updateAthleticsRunnerPositions(h) {
+      if (!athleticsRunners || athleticsRunners.length === 0) return;
+      const count = athleticsRunners.length;
+      const layout = calculateAthleticsLayout(h, count);
+
+      if (athleticsRaceState === 'idle') {
+        athleticsRunners.forEach((r, i) => {
+          const laneIdx = i % layout.usableLanes;
+          r.lane = laneIdx + 1;
+          const staggerOffset = (layout.usableLanes - 1 - laneIdx) * 18;
+          r.startX = athleticsStartX + staggerOffset - Math.floor(i / layout.usableLanes) * 55;
+          r.x = r.startX;
+          r.baseY = layout.stadiumTopH + (laneIdx + 0.5) * layout.laneH;
+          r.y = r.baseY;
+        });
+      } else {
+        const laneCount = Math.max(...athleticsRunners.map(r => r.lane), 1);
+        const laneH = layout.trackH / laneCount;
+        athleticsRunners.forEach(r => {
+          r.baseY = layout.stadiumTopH + (r.lane - 0.5) * laneH;
+          r.y = r.baseY;
+        });
+      }
+    }
+
     function initAthleticsRace(resetPositions = true) {
       const container = document.getElementById('athletics-race-container');
       const canvas = document.getElementById('athletics-race-canvas');
@@ -14514,25 +14635,23 @@
       resizeAthleticsCanvas();
 
       const rect = container.getBoundingClientRect();
-      const h = rect.height || 480;
-      const stadiumTopH = Math.max(70, Math.floor(h * 0.18));
-      const infieldBottomH = Math.max(50, Math.floor(h * 0.14));
-      const trackH = h - stadiumTopH - infieldBottomH;
-
-      // Tính toán khoảng cách làn chạy
-      const usableLanes = Math.max(4, Math.min(count, 16));
-      const laneH = Math.max(26, Math.min(52, trackH / usableLanes));
+      const h = canvas.height || rect.height || 480;
+      const layout = calculateAthleticsLayout(h, count);
 
       athleticsStartX = 200;
-      athleticsTrackLength = Math.max((rect.width || 800) * 3.6, 3100);
-      athleticsFinishX = athleticsTrackLength - 260;
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max((canvas.width || rect.width || 800) * 3.4, 2800);
+      const raceDist = Math.round(baseDist * durationFactor);
+      athleticsFinishX = athleticsStartX + raceDist;
+      athleticsTrackLength = athleticsFinishX + 300;
 
       if (resetPositions || athleticsRunners.length !== count) {
         athleticsRunners = visible.map((st, i) => {
-          const laneIdx = i % usableLanes;
-          const staggerOffset = (usableLanes - 1 - laneIdx) * 18; // Làn ngoài xuất phát trước (staggered 200m)
-          const startX = athleticsStartX + staggerOffset - Math.floor(i / usableLanes) * 55;
-          const baseY = stadiumTopH + laneIdx * laneH + laneH * 0.5;
+          const laneIdx = i % layout.usableLanes;
+          const staggerOffset = (layout.usableLanes - 1 - laneIdx) * 18;
+          const startX = athleticsStartX + staggerOffset - Math.floor(i / layout.usableLanes) * 55;
+          const baseY = layout.stadiumTopH + (laneIdx + 0.5) * layout.laneH;
           const palette = ATHLETICS_COLOR_PALETTES[i % ATHLETICS_COLOR_PALETTES.length];
 
           const nameParts = (st.name || '').trim().split(/\s+/);
@@ -14559,6 +14678,8 @@
             ...palette
           };
         });
+      } else {
+        updateAthleticsRunnerPositions(h);
       }
 
       athleticsCameraX = 0;
@@ -14590,8 +14711,12 @@
       const height = Math.floor(rect.height);
 
       if (width > 0 && height > 0) {
+        const changed = (canvas.width !== width || canvas.height !== height);
         canvas.width = width;
         canvas.height = height;
+        if (changed) {
+          updateAthleticsRunnerPositions(height);
+        }
       }
     }
 
@@ -14604,11 +14729,14 @@
     function toggleAthleticsFullscreen() {
       const container = document.getElementById('athletics-race-container');
       if (!container) return;
-      if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(err => alert('Không thể phóng to: ' + err.message));
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen().catch(err => alert('Không thể phóng to: ' + err.message));
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
     function resetAthleticsRacePositions() {
@@ -14626,7 +14754,15 @@
 
       athleticsTargetWinner = winnerStudent;
       athleticsFinishCallback = callback;
-      athleticsRaceDuration = Math.max(4500, durationMs);
+      athleticsRaceDuration = Math.max(3000, durationMs);
+      const durationSec = athleticsRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const canvas = document.getElementById('athletics-race-canvas');
+      const baseDist = Math.max((canvas?.width || 800) * 3.4, 2800);
+      const raceDist = Math.round(baseDist * durationFactor);
+      athleticsFinishX = athleticsStartX + raceDist;
+      athleticsTrackLength = athleticsFinishX + 300;
+
       athleticsTapeBroken = false;
       athleticsWinnerRunner = null;
       athleticsWinnerDecelerating = false;
@@ -14865,8 +15001,14 @@
       ctx.fillRect(0, stadiumH, athleticsTrackLength + 400, trackH);
 
       // Vẽ các làn chạy màu trắng (White Lane Lines)
-      const laneCount = Math.max(...athleticsRunners.map(r => r.lane), 6);
+      const laneCount = Math.max(...athleticsRunners.map(r => r.lane), 1);
       const laneH = trackH / laneCount;
+
+      // Luôn đồng bộ Y của VĐV khớp 100% với tâm làn chạy hiện tại theo chiều cao canvas
+      athleticsRunners.forEach(r => {
+        r.baseY = stadiumH + (r.lane - 0.5) * laneH;
+        r.y = r.baseY;
+      });
 
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
       ctx.lineWidth = 2.5;
@@ -15392,6 +15534,46 @@
     let swimDecelStartTime = 0;
     let swimWaterRipples = [];
 
+    function calculateSwimLayout(h, count) {
+      const topPoolDeckH = Math.max(50, Math.floor(h * 0.12));
+      const botPoolDeckH = Math.max(45, Math.floor(h * 0.11));
+      const poolH = Math.max(200, h - topPoolDeckH - botPoolDeckH);
+
+      // Phân bổ số làn bơi tối ưu theo chiều cao màn hình:
+      // Phóng to (h >= 700): ~14-16 làn phủ kín từ trên xuống dưới
+      // Thu nhỏ (h < 700): ~8-10 làn vừa vặn
+      const targetLaneH = h > 700 ? 52 : 36;
+      const maxLanesByHeight = Math.max(4, Math.floor(poolH / targetLaneH));
+      const usableLanes = Math.max(4, Math.min(count, Math.min(16, maxLanesByHeight)));
+      const laneH = poolH / usableLanes;
+
+      return { topPoolDeckH, botPoolDeckH, poolH, usableLanes, laneH };
+    }
+
+    function updateSwimmerPositions(h) {
+      if (!swimmers || swimmers.length === 0) return;
+      const count = swimmers.length;
+      const layout = calculateSwimLayout(h, count);
+
+      if (swimRaceState === 'idle') {
+        swimmers.forEach((s, i) => {
+          const laneIdx = i % layout.usableLanes;
+          s.lane = laneIdx + 1;
+          s.startX = swimStartX - Math.floor(i / layout.usableLanes) * 45;
+          s.x = s.startX;
+          s.baseY = layout.topPoolDeckH + (laneIdx + 0.5) * layout.laneH;
+          s.y = s.baseY;
+        });
+      } else {
+        const laneCount = Math.max(...swimmers.map(s => s.lane), 1);
+        const laneH = layout.poolH / laneCount;
+        swimmers.forEach(s => {
+          s.baseY = layout.topPoolDeckH + (s.lane - 0.5) * laneH;
+          s.y = s.baseY;
+        });
+      }
+    }
+
     function initSwimRace(resetPositions = true) {
       const container = document.getElementById('swimming-race-container');
       const canvas = document.getElementById('swimming-race-canvas');
@@ -15402,25 +15584,23 @@
       resizeSwimCanvas();
 
       const rect = container.getBoundingClientRect();
-      const h = rect.height || 480;
-      const topPoolDeckH = Math.max(50, Math.floor(h * 0.12));
-      const botPoolDeckH = Math.max(45, Math.floor(h * 0.11));
-      const poolH = h - topPoolDeckH - botPoolDeckH;
-
-      const usableLanes = Math.max(4, Math.min(count, 14));
-      const laneH = Math.max(28, Math.min(54, poolH / usableLanes));
+      const h = canvas.height || rect.height || 480;
+      const layout = calculateSwimLayout(h, count);
 
       swimPoolStartX = 180;
-      const poolLength = Math.max((rect.width || 800) * 2.6, 2300);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const basePoolLength = Math.max((canvas.width || rect.width || 800) * 2.6, 2200);
+      const poolLength = Math.round(basePoolLength * durationFactor);
       swimTrackLength = swimPoolStartX + poolLength + 260;
       swimFinishX = swimPoolStartX + poolLength; // Thành hồ đích (Bờ B)
       swimStartX = swimPoolStartX + 22; // Vị trí xuất phát mép hồ A
 
       if (resetPositions || swimmers.length !== count) {
         swimmers = visible.map((st, i) => {
-          const laneIdx = i % usableLanes;
-          const startX = swimStartX - Math.floor(i / usableLanes) * 45;
-          const baseY = topPoolDeckH + laneIdx * laneH + laneH * 0.5;
+          const laneIdx = i % layout.usableLanes;
+          const startX = swimStartX - Math.floor(i / layout.usableLanes) * 45;
+          const baseY = layout.topPoolDeckH + (laneIdx + 0.5) * layout.laneH;
           const palette = SWIM_COLOR_PALETTES[i % SWIM_COLOR_PALETTES.length];
 
           const nameParts = (st.name || '').trim().split(/\s+/);
@@ -15446,6 +15626,8 @@
             ...palette
           };
         });
+      } else {
+        updateSwimmerPositions(h);
       }
 
       swimCameraX = 0;
@@ -15477,8 +15659,12 @@
       const height = Math.floor(rect.height);
 
       if (width > 0 && height > 0) {
+        const changed = (canvas.width !== width || canvas.height !== height);
         canvas.width = width;
         canvas.height = height;
+        if (changed) {
+          updateSwimmerPositions(height);
+        }
       }
     }
 
@@ -15491,11 +15677,14 @@
     function toggleSwimFullscreen() {
       const container = document.getElementById('swimming-race-container');
       if (!container) return;
-      if (!document.fullscreenElement) {
-        container.requestFullscreen().catch(err => alert('Không thể phóng to: ' + err.message));
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen().catch(err => alert('Không thể phóng to: ' + err.message));
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       }
+      scheduleRaceResizes();
     }
 
     function resetSwimRacePositions() {
@@ -15513,7 +15702,15 @@
 
       swimTargetWinner = winnerStudent;
       swimFinishCallback = callback;
-      swimRaceDuration = Math.max(5000, durationMs);
+      swimRaceDuration = Math.max(3000, durationMs);
+      const durationSec = swimRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const canvas = document.getElementById('swimming-race-canvas');
+      const basePoolLength = Math.max((canvas?.width || 800) * 2.6, 2200);
+      const poolLength = Math.round(basePoolLength * durationFactor);
+      swimTrackLength = swimPoolStartX + poolLength + 260;
+      swimFinishX = swimPoolStartX + poolLength;
+
       swimTouchpadHit = false;
       swimWinner = null;
       swimWinnerDecelerating = false;
@@ -16120,8 +16317,14 @@
       ctx.restore();
 
       // Vạch gạch chỉ hướng dưới đáy hồ (Tile Guide Lines)
-      const laneCount = Math.max(...swimmers.map(s => s.lane), 6);
+      const laneCount = Math.max(...swimmers.map(s => s.lane), 1);
       const laneH = poolH / laneCount;
+
+      // Luôn đồng bộ Y của kình ngư khớp 100% với tâm làn bơi hiện tại theo chiều cao canvas
+      swimmers.forEach(s => {
+        s.baseY = topDeckH + (s.lane - 0.5) * laneH;
+        s.y = s.baseY;
+      });
 
       ctx.strokeStyle = 'rgba(15, 23, 42, 0.55)';
       ctx.lineWidth = 3;
@@ -21624,7 +21827,10 @@
       const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
 
       bikeStartX = frontX;
-      bikeTrackLength = Math.max(w * 3.4, frontX + 2600);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(w * 3.0, 2600);
+      bikeTrackLength = frontX + Math.round(baseDist * durationFactor) + 220;
       bikeFinishX = bikeTrackLength - 220;
 
       const totalRowsInCol = Math.ceil(count / numCols);
@@ -21674,7 +21880,10 @@
       const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
 
       bikeStartX = frontX;
-      bikeTrackLength = Math.max((rect.width || 800) * 3.4, frontX + 2600);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max((rect.width || 800) * 3.0, 2600);
+      bikeTrackLength = frontX + Math.round(baseDist * durationFactor) + 220;
       bikeFinishX = bikeTrackLength - 220;
 
       const totalRowsInCol = Math.ceil(count / numCols);
@@ -21770,9 +21979,31 @@
       bikeRaceRunning = true;
       bikeRaceState = 'countdown';
       bikeRaceWinner = winner;
-      bikeRaceDuration = durationMs || 6500;
+      bikeRaceDuration = Math.max(3000, durationMs || 5000);
       bikeRaceCallback = callback;
       bikeCameraX = 0;
+
+      const durationSec = bikeRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const canvas = document.getElementById('bike-race-canvas');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas ? (canvas.width / dpr) : 800;
+      const baseDist = Math.max(w * 3.0, 2600);
+      bikeTrackLength = bikeStartX + Math.round(baseDist * durationFactor) + 220;
+      bikeFinishX = bikeTrackLength - 220;
+
+      // Re-populate road decorations
+      bikeRoadDecorations = [];
+      const sponsors = ['TOUR DE FRANCE', 'SHIMANO RACING', 'TREK FACTORY', 'SPECIALIZED S-WORKS', 'GIANT PRO BIKES', 'PINARELLO DOGMA', 'COLNAGO', 'CERVELO SPEED'];
+      for (let x = 300; x < bikeTrackLength - 300; x += 220) {
+        bikeRoadDecorations.push({
+          x: x,
+          type: (Math.sin(x) > 0) ? 'banner' : 'tree',
+          sponsor: sponsors[Math.floor(Math.abs(Math.sin(x * 13)) * sponsors.length)],
+          bgColor: (Math.sin(x * 7) > 0) ? '#dc2626' : '#2563eb',
+          textColor: '#ffffff'
+        });
+      }
 
       // Phân chia vai trò đua xe kịch tính:
       // 1. Winner: Giữ sức, bám đuổi và nước rút thần tốc ở 50m cuối!
@@ -22904,7 +23135,10 @@
       const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
 
       motogpStartX = frontX;
-      motogpTrackLength = Math.max(w * 3.4, frontX + 2600);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(w * 3.0, 2600);
+      motogpTrackLength = frontX + Math.round(baseDist * durationFactor) + 220;
       motogpFinishX = motogpTrackLength - 220;
 
       const totalRowsInCol = Math.ceil(count / numCols);
@@ -22954,7 +23188,10 @@
       const frontX = Math.max(220, 110 + (numCols - 1) * colSpacingX);
 
       motogpStartX = frontX;
-      motogpTrackLength = Math.max((rect.width || 800) * 3.4, frontX + 2600);
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max((rect.width || 800) * 3.0, 2600);
+      motogpTrackLength = frontX + Math.round(baseDist * durationFactor) + 220;
       motogpFinishX = motogpTrackLength - 220;
 
       const totalRowsInCol = Math.ceil(count / numCols);
@@ -23037,9 +23274,18 @@
       motogpRaceRunning = true;
       motogpRaceState = 'countdown';
       motogpRaceWinner = winner;
-      motogpRaceDuration = durationMs || 6500;
+      motogpRaceDuration = Math.max(3000, durationMs || 5000);
       motogpRaceCallback = callback;
       motogpCameraX = 0;
+
+      const durationSec = motogpRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const canvas = document.getElementById('motogp-race-canvas');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas ? (canvas.width / dpr) : 800;
+      const baseDist = Math.max(w * 3.0, 2600);
+      motogpTrackLength = motogpStartX + Math.round(baseDist * durationFactor) + 220;
+      motogpFinishX = motogpTrackLength - 220;
 
       // Phân chia vai trò đua Moto GP kịch tính:
       const nonWinners = motogpList.filter(m => String(m.id) !== String(winner.id));
@@ -23983,8 +24229,8 @@
 
       // 1. Đua Vịt Trên Sông (Chạy ngang)
       if (mode === 'duck') {
-        const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
-        const raceDuration = Math.max(4000, durationSec * 1100);
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3000, durationSec * 1000);
         btn.innerHTML = "🦆 ĐANG ĐUA VỊT...";
         startDuckRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -23996,8 +24242,8 @@
 
       // 2. Đua Xe Đạp Thể Thao (Sprint Tour Chạy Ngang)
       if (mode === 'bike') {
-        const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
-        const raceDuration = Math.max(4000, durationSec * 1100);
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3000, durationSec * 1000);
         btn.innerHTML = "🚴 ĐANG ĐUA XE ĐẠP...";
         startBikeRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24009,8 +24255,8 @@
 
       // 3. Đua Xe Moto GP (Chạy Ngang 350 km/h)
       if (mode === 'motogp') {
-        const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
-        const raceDuration = Math.max(4000, durationSec * 1100);
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3000, durationSec * 1000);
         btn.innerHTML = "🏍️ ĐANG ĐUA MOTO GP...";
         startMotoGPRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24022,8 +24268,8 @@
 
       // 4. Đua Xe F1 Chuyên Nghiệp
       if (mode === 'f1') {
-        const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
-        const raceDuration = Math.max(4500, durationSec * 1200);
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3500, durationSec * 1000);
         btn.innerHTML = "🏎️ ĐANG ĐUA F1...";
         startF1Race(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24035,8 +24281,8 @@
 
       // 5. Đua Ngựa Thể Thao
       if (mode === 'horse') {
-        const durationSec = parseInt(document.getElementById('spin-duration').value || 5);
-        const raceDuration = Math.max(4500, durationSec * 1200);
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3500, durationSec * 1000);
         btn.innerHTML = "🏇 ĐANG ĐUA NGỰA...";
         startHorseRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24085,7 +24331,7 @@
       // 9. Trượt Tuyết Giáng Sinh (Ski Race)
       if (mode === 'ski') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
-        const raceDuration = Math.max(7500, durationSec * 1500);
+        const raceDuration = Math.max(3000, durationSec * 1000);
         btn.innerHTML = "⛷️ ĐANG SĂN QUÀ NOEL...";
         startSkiRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24124,7 +24370,7 @@
       // 12. Điền Kinh 200m (Vận Động Viên Nước Rút)
       if (mode === 'athletics') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
-        const raceDuration = Math.max(5000, durationSec * 1100);
+        const raceDuration = Math.max(3000, durationSec * 1000);
         btn.innerHTML = "🏃 ĐANG CHẠY 200M...";
         startAthleticsRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24137,7 +24383,7 @@
       // 13. Bơi Lội 200m (Kình Ngư Olympic)
       if (mode === 'swimming') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
-        const raceDuration = Math.max(5500, durationSec * 1150);
+        const raceDuration = Math.max(3000, durationSec * 1000);
         btn.innerHTML = "🏊 ĐANG BƠI 200M...";
         startSwimRace(selected, raceDuration, (actualWinner) => {
           const finalWinner = actualWinner || selected;
@@ -24324,6 +24570,22 @@
       // Kích hoạt ResizeObserver để tự động thích ứng với mọi kích thước màn hình
       if (typeof setupRaceResizeObservers === 'function') {
         setupRaceResizeObservers();
+      }
+
+      // Tự động đồng bộ thời gian và mở rộng đường đua thẳng khi thay đổi thời gian
+      const spinDurEl = document.getElementById('spin-duration');
+      if (spinDurEl) {
+        spinDurEl.addEventListener('change', () => {
+          const sec = parseInt(spinDurEl.value || 5);
+          document.querySelectorAll('.duration-quick-btn').forEach(btn => {
+            if (parseInt(btn.getAttribute('data-sec')) === sec) {
+              btn.className = "duration-quick-btn px-2 py-1 text-xs font-black rounded-xl border border-amber-500 bg-amber-100 text-amber-900 shadow-xs transition cursor-pointer";
+            } else {
+              btn.className = "duration-quick-btn px-2 py-1 text-xs font-bold rounded-xl border border-slate-300 bg-slate-100 text-slate-900 hover:border-amber-400 transition cursor-pointer";
+            }
+          });
+          syncTrackLengthToDuration();
+        });
       }
 
       // Tự động khởi tạo canvas và render ngay khi tải trang
