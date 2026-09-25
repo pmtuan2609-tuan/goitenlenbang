@@ -410,29 +410,40 @@
   [id*="-race-container"] [class*="bg-slate-900"],
   [id*="-race-container"] [class*="bg-slate-950"],
   [id*="-race-container"] [class*="bg-slate-800"],
+  [id*="-stage-container"] [class*="bg-slate-900"],
+  [id*="-stage-container"] [class*="bg-slate-950"],
+  [id*="-stage-container"] [class*="bg-slate-800"],
   [id*="-race-container"] button,
+  [id*="-stage-container"] button,
   [id*="-race-container"] .text-white,
+  [id*="-stage-container"] .text-white,
   [id*="-race-container"] #horse-race-status,
   [id*="-race-container"] #duck-race-status,
   [id*="-race-container"] #bike-race-status,
   [id*="-race-container"] #motogp-race-status,
   [id*="-race-container"] #f1-race-status,
-  [id*="-race-container"] #wheel-status {
+  [id*="-race-container"] #wheel-status,
+  [id*="-stage-container"] #frog-game-status,
+  [id*="-stage-container"] #fishing-game-status {
     color: #ffffff !important;
   }
 
-  [id*="-race-container"] button {
+  [id*="-race-container"] button,
+  [id*="-stage-container"] button {
     background-color: rgba(15, 23, 42, 0.88) !important;
     border: 1px solid rgba(255, 255, 255, 0.22) !important;
     color: #ffffff !important;
   }
-  [id*="-race-container"] button:hover {
+  [id*="-race-container"] button:hover,
+  [id*="-stage-container"] button:hover {
     background-color: rgba(30, 41, 59, 0.98) !important;
     border-color: rgba(255, 255, 255, 0.4) !important;
     color: #ffffff !important;
   }
   [id*="-race-container"] button i,
-  [id*="-race-container"] button svg {
+  [id*="-race-container"] button svg,
+  [id*="-stage-container"] button i,
+  [id*="-stage-container"] button svg {
     color: #fbbf24 !important;
   }
 
@@ -692,6 +703,9 @@
         <button id="nav-btn-classes" onclick="switchAppTab('tab-classes')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
           <i class="fa-solid fa-users text-cyan-600"></i> <span class="whitespace-nowrap">Quản Lý Lớp</span>
         </button>
+        <button id="nav-btn-gradebook" onclick="switchAppTab('tab-gradebook')" class="tab-nav-btn whitespace-nowrap px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i class="fa-solid fa-book-bookmark text-emerald-600"></i> <span class="whitespace-nowrap">Sổ Điểm</span>
+        </button>
       </nav>
 
       <!-- Right Controls: Audio, Fullscreen, User Info & Settings -->
@@ -771,7 +785,7 @@
         <div>
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-            DANH SÁCH 13 PHƯƠNG PHÁP ĐUA & GỌI TÊN
+            DANH SÁCH 15 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
           <p class="text-xs text-slate-600 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
@@ -779,18 +793,18 @@
         <!-- Filter Buttons -->
         <div class="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 transition">
-            Tất Cả (13)
+            Tất Cả (15)
           </button>
           <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
             🏎️ Đường Đua Tốc Độ (8)
           </button>
           <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
-            🎁 May Mắn & Hồi Hộp (5)
+            🎁 May Mắn & Hồi Hộp (7)
           </button>
         </div>
       </div>
 
-      <!-- Game Cards Grid: 13 games - Gọn gàng, Chi tiết, Nền trắng Chữ đen -->
+      <!-- Game Cards Grid: 15 games - Gọn gàng, Chi tiết, Nền trắng Chữ đen -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="home-game-cards-container">
         
         <!-- 1. ĐUA VỊT TRÊN SÔNG -->
@@ -1234,6 +1248,72 @@
           </div>
         </div>
 
+        <!-- 14. ĐẬP ẾCH BẮT TÊN (WHACK-A-FROG) -->
+        <div onclick="launchGame('frog')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-emerald-300 hover:border-emerald-500 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-lime-400 flex items-center justify-center text-2xl text-white shadow-xs shrink-0 group-hover:scale-105 transition">
+                🐸
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-500"></i> Siêu Vui & Mới
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-emerald-600 transition">
+                Đập Ếch Bắt Tên
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Đầm sen sôi động! Các chú ếch thò đầu lên xuống liên tục từ các lỗ đất. Vung búa đập trúng ếch để vinh danh gọi tên học sinh!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔨 Vung Búa</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🐸 9-12 Lỗ Ếch</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⭐ Đập Bắt Tên</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-emerald-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Đập Ếch →</span>
+          </div>
+        </div>
+
+        <!-- 15. BÉ CÂU CÁ BẮT TÊN (FISHING) -->
+        <div onclick="launchGame('fishing')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-teal-300 hover:border-teal-500 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-sky-400 flex items-center justify-center text-2xl text-white shadow-xs shrink-0 group-hover:scale-105 transition">
+                🎣
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-[10px] font-black uppercase flex items-center gap-1">
+                <i class="fa-solid fa-sparkles text-amber-500"></i> Siêu Dễ Thương
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-black text-slate-900 group-hover:text-teal-600 transition">
+                Bé Câu Cá Bắt Tên
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Hồ nước trong xanh với 50 chú cá đủ sắc màu! Em bé buông cần câu, đúng giờ cá cắn câu giật lên tung bọt nước hiện tên học sinh!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🐠 50 Con Cá</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎣 Thả Cần Câu</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⭐ Giật Bắt Tên</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-teal-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-teal-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Câu Cá →</span>
+          </div>
+        </div>
+
       </div>
 
     </section>
@@ -1291,6 +1371,8 @@
               <option value="wheel_slot" class="bg-slate-900 text-amber-300 font-bold">🔮 Lồng Cầu Quay Số (Đập Bóng Gọi Tên)</option>
               <option value="athletics" class="bg-slate-900 text-amber-300 font-bold">🏃 Điền Kinh 200m (Chạy Nước Rút)</option>
               <option value="swimming" class="bg-slate-900 text-cyan-300 font-bold">🏊 Bơi Lội 200m (Kình Ngư Olympic)</option>
+              <option value="frog" class="bg-slate-900 text-emerald-300 font-bold">🐸 Đập Ếch Bắt Tên (Whack-a-Frog)</option>
+              <option value="fishing" class="bg-slate-900 text-teal-300 font-bold">🎣 Bé Câu Cá Bắt Tên (50 Con Cá)</option>
             </select>
           </div>
 
@@ -1733,6 +1815,54 @@
           </div>
         </div>
 
+        <!-- STAGE 14: ĐẬP ẾCH BẮT TÊN (WHACK-A-FROG) -->
+        <div id="frog-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-sky-400 via-teal-700 to-emerald-900 border border-emerald-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-emerald-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-emerald-400 font-extrabold text-sm">🐸</span>
+              <span id="frog-game-status">Vung búa đập 1 chú ếch đang thò đầu lên để gọi tên!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleFrogSound()" id="frog-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleFrogFullscreen()" id="frog-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-emerald-400"></i> Phóng to
+              </button>
+              <button onclick="resetFrogGame()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Khởi động lại đầm ếch">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <!-- Bảng hướng dẫn & thông báo đập trúng / hụt -->
+          <div id="frog-hit-notice" class="hidden absolute top-14 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-2xl bg-amber-500/90 text-slate-950 font-black text-xs sm:text-sm shadow-xl border-2 border-white pointer-events-none transition-all duration-200 transform scale-95">
+            💥 Hụt rồi! Chú ếch đã lặn mất tiêu! Đập lại nào!
+          </div>
+          <canvas id="frog-canvas" class="w-full h-full block cursor-none"></canvas>
+        </div>
+
+        <!-- STAGE 15: BÉ CÂU CÁ BẮT TÊN (FISHING) -->
+        <div id="fishing-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-sky-400 via-sky-600 to-blue-950 border border-teal-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-teal-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-teal-400 font-extrabold text-sm">🎣</span>
+              <span id="fishing-game-status">Bé đang cầm cần câu ngắm 50 chú cá bơi lội... Bấm THẢ CẦN CÂU CÁ!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleFishingSound()" id="fishing-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleFishingFullscreen()" id="fishing-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-teal-400"></i> Phóng to
+              </button>
+              <button onclick="resetFishingGame()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Thả lại đàn cá">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> Thả Lại Đàn Cá
+              </button>
+            </div>
+          </div>
+          <canvas id="fishing-canvas" class="w-full h-full block"></canvas>
+        </div>
+
       </div>
 
     </section>
@@ -1750,7 +1880,10 @@
           <p class="text-xs text-slate-400 mt-1">Tải lên file Excel (.xlsx), dán danh sách hoặc chỉnh sửa tên học sinh trực tiếp</p>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="openAddClassModal()" class="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs font-black rounded-2xl shadow-lg transition flex items-center gap-2">
+          <button onclick="switchAppTab('tab-gradebook')" class="px-4 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white text-xs font-black rounded-2xl shadow-lg transition flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-book-bookmark"></i> Mở Sổ Điểm Điện Tử
+          </button>
+          <button onclick="openAddClassModal()" class="px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs font-black rounded-2xl shadow-lg transition flex items-center gap-2 cursor-pointer">
             <i data-lucide="plus" class="w-4 h-4"></i> Thêm Lớp / Tải File Excel
           </button>
         </div>
@@ -1759,6 +1892,92 @@
       <!-- Classes Grid -->
       <div id="classes-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         <!-- Populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- 3B. TAB: SỔ ĐIỂM ĐIỆN TỬ GIÁO VIÊN (GRADEBOOK)           -->
+    <!-- ======================================================= -->
+    <section id="tab-gradebook" class="tab-section hidden max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      
+      <!-- Gradebook Header & Toolbar -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold tracking-wide uppercase mb-1.5">
+              <i class="fa-solid fa-graduation-cap text-emerald-600"></i> Sổ Điểm Điện Tử Giáo Viên
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-book-bookmark text-emerald-600"></i> Bảng Điểm Đánh Giá Học Sinh
+            </h2>
+            <p class="text-xs text-slate-600 mt-1">Ghi nhận điểm miệng, kiểm tra, thi cử, tự động tính ĐTB và xuất file Excel (.xlsx) chuẩn</p>
+          </div>
+          
+          <!-- Actions & Excel Export -->
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Xuất Excel -->
+            <button onclick="exportGradebookToExcel()" class="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black rounded-2xl shadow-md shadow-emerald-950/20 transition-all flex items-center gap-2 hover:scale-105 active:scale-95 cursor-pointer" title="Tải sổ điểm về máy bằng file Excel">
+              <i class="fa-solid fa-file-excel text-emerald-200 text-sm"></i> Xuất File Excel (.xlsx)
+            </button>
+            <!-- Nhập Excel -->
+            <label class="px-3.5 py-2.5 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-bold rounded-2xl shadow-xs transition flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-file-import text-amber-500"></i> Nhập Điểm Excel
+              <input type="file" accept=".xlsx, .xls, .csv" onchange="importGradebookFromExcel(event)" class="hidden">
+            </label>
+            <!-- Thêm cột điểm mới -->
+            <button onclick="openAddGradeColumnModal()" class="px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-2xl shadow-xs transition flex items-center gap-1.5 cursor-pointer">
+              <i class="fa-solid fa-plus text-amber-400"></i> Thêm Cột Điểm
+            </button>
+          </div>
+        </div>
+
+        <!-- Class Selector & Quick Stats -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <div class="flex flex-wrap items-center gap-3">
+            <div class="flex items-center gap-2 bg-slate-50 px-3 py-2 rounded-2xl border border-slate-200">
+              <label for="gradebook-class-select" class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-users text-cyan-600"></i> Lớp Học:
+              </label>
+              <select id="gradebook-class-select" onchange="onGradebookClassChange(this.value)" class="bg-transparent text-xs font-black text-slate-900 outline-none cursor-pointer pr-2">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            
+            <div id="gradebook-class-stats" class="text-xs text-slate-600 font-semibold flex items-center gap-3">
+              <!-- Sĩ số, Đã có điểm, ĐTB cả lớp -->
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 text-[11px] font-bold">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Đã tự động lưu theo thời gian thực
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gradebook Interactive Table Container -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-4 sm:p-5 shadow-sm space-y-3">
+        <div class="overflow-x-auto rounded-2xl border border-slate-200">
+          <table id="gradebook-table" class="w-full text-left text-xs border-collapse">
+            <!-- Populated dynamically by renderGradebookTab() -->
+          </table>
+        </div>
+
+        <!-- Gradebook Quick Guide & Summary Footer -->
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-bold text-slate-700 flex items-center gap-1"><i class="fa-solid fa-keyboard text-indigo-500"></i> Phím tắt:</span>
+            <span><kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono">Enter</kbd> Xuống dòng</span>
+            <span><kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono">Tab</kbd> Sang ô tiếp</span>
+            <span><kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono">↑ / ↓</kbd> Di chuyển</span>
+          </div>
+          <div class="text-[11px] text-slate-500 font-medium">
+            Điểm Trung Bình (ĐTB) tính tự động theo hệ số thông tư: Miệng/15p (hs 1), Giữa kỳ (hs 2), Cuối kỳ (hs 3).
+          </div>
+        </div>
       </div>
 
     </section>
@@ -2189,6 +2408,55 @@
     </div>
   </div>
 
+  <!-- ================= MODAL: THÊM CỘT ĐIỂM TÙY CHỈNH ================= -->
+  <div id="grade-column-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-[500] p-4 opacity-0 transition-opacity duration-300">
+    <div id="grade-column-content" class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-plus-circle text-emerald-600"></i> Thêm Cột Điểm Mới
+          </h3>
+          <p class="text-xs text-slate-500">Tạo thêm cột đánh giá, kiểm tra theo nhu cầu</p>
+        </div>
+        <button onclick="closeAddGradeColumnModal()" class="p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 hover:text-slate-800 transition cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tên Cột Điểm *</label>
+          <input type="text" id="modal-col-name" placeholder="Ví dụ: Kiểm tra 1 tiết, Thuyết trình, Điểm bài tập..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Loại Cột *</label>
+          <select id="modal-col-type" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
+            <option value="number">Điểm số (0 - 10, tính vào ĐTB)</option>
+            <option value="text">Chữ / Nhận xét / Đạt - Chưa đạt</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Hệ Số Trọng Số (nếu là điểm số)</label>
+          <select id="modal-col-weight" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-xs text-slate-900 font-bold outline-none focus:ring-2 focus:ring-emerald-500">
+            <option value="1">Hệ số 1 (Đánh giá thường xuyên / 15p)</option>
+            <option value="2">Hệ số 2 (Đánh giá giữa kỳ / 1 tiết)</option>
+            <option value="3">Hệ số 3 (Đánh giá cuối kỳ)</option>
+            <option value="0">Không tính vào ĐTB (Điểm cộng / tham khảo)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2.5">
+        <button type="button" onclick="closeAddGradeColumnModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs hover:bg-slate-200 transition cursor-pointer">Hủy</button>
+        <button type="button" onclick="saveNewGradeColumn()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-xs hover:from-emerald-500 hover:to-teal-500 transition shadow-md flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-check"></i> Tạo Cột Điểm
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= MODAL: KẾT QUẢ NGƯỜI THẮNG CUỘC ================= -->
   <div id="result-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-[700] p-4 opacity-0 transition-opacity duration-300">
     <div id="result-modal-content" class="bg-slate-900 border-2 border-amber-400 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-[0_0_50px_rgba(245,158,11,0.3)] transform scale-95 transition-transform duration-300 text-center space-y-5">
@@ -2205,14 +2473,17 @@
         <p id="winner-class-display" class="text-xs text-slate-400 mt-1 font-bold">Lớp 10A1</p>
       </div>
 
-      <div class="pt-3 border-t border-slate-800 flex items-center justify-center gap-2">
+      <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-center gap-2">
         <button onclick="speakCurrentWinner()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
           <i class="fa-solid fa-volume-high text-amber-400"></i> Đọc Tên
         </button>
-        <button onclick="closeResultModal(false)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-black transition shadow-lg">
+        <button onclick="addBonusPointToCurrentWinner()" id="winner-bonus-btn" class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow" title="Cộng 1 điểm vào Sổ Điểm">
+          <i class="fa-solid fa-plus-circle text-amber-300"></i> +1 Sổ Điểm
+        </button>
+        <button onclick="closeResultModal(false)" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-black transition shadow-lg">
           Đóng (Giữ Tên)
         </button>
-        <button onclick="closeResultModal(true)" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-rose-950/60 text-slate-300 hover:text-rose-300 border border-slate-700 text-xs font-bold transition" title="Tạm ẩn học sinh này để không bị gọi lại">
+        <button onclick="closeResultModal(true)" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-rose-950/60 text-slate-300 hover:text-rose-300 border border-slate-700 text-xs font-bold transition" title="Tạm ẩn học sinh này để không bị gọi lại">
           Ẩn Khỏi Vòng
         </button>
       </div>
@@ -3122,6 +3393,8 @@
       else if (mode === 'wheel_slot' || mode === 'bingo') initBingoGame(true);
       else if (mode === 'athletics') initAthleticsRace(true);
       else if (mode === 'swimming') initSwimRace(true);
+      else if (mode === 'frog') initFrogGame(true);
+      else if (mode === 'fishing') initFishingGame(true);
     }
 
     function renderClassesListTab() {
@@ -3159,14 +3432,19 @@
             ${c.students.slice(0, 8).join(', ')}...
           </p>
           <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2">
-            <button onclick="selectAndRaceClass('${c.id}')" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black rounded-xl shadow transition">
-              🏁 Đua Ngay
-            </button>
             <div class="flex items-center gap-1.5">
-              <button onclick="editClass('${c.id}')" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition text-xs" title="Sửa danh sách">
+              <button onclick="selectAndRaceClass('${c.id}')" class="px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-black rounded-xl shadow transition">
+                🏁 Đua Ngay
+              </button>
+              <button onclick="openGradebookForClass('${c.id}')" class="px-2.5 py-1.5 bg-emerald-600/80 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1 cursor-pointer" title="Mở sổ điểm của lớp này">
+                <i class="fa-solid fa-book-bookmark text-emerald-200"></i> Sổ Điểm
+              </button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="editClass('${c.id}')" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition text-xs cursor-pointer" title="Sửa danh sách">
                 <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
               </button>
-              <button onclick="deleteClass('${c.id}')" class="p-2 bg-slate-800 hover:bg-rose-950/60 text-slate-400 hover:text-rose-400 rounded-xl transition text-xs" title="Xóa lớp">
+              <button onclick="deleteClass('${c.id}')" class="p-2 bg-slate-800 hover:bg-rose-950/60 text-slate-400 hover:text-rose-400 rounded-xl transition text-xs cursor-pointer" title="Xóa lớp">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               </button>
             </div>
@@ -3313,6 +3591,539 @@
       populateClassDropdowns();
       loadClassIntoStage(currentClassId);
       showCloudToast('Đã xóa lớp học!');
+    }
+
+    // ==========================================
+    // 6B. SỔ ĐIỂM ĐIỆN TỬ GIÁO VIÊN (GRADEBOOK MODULE)
+    // ==========================================
+    const DEFAULT_GRADE_COLUMNS = [
+      { id: 'col_mieng', title: 'Điểm Miệng', type: 'number', weight: 1 },
+      { id: 'col_15p_1', title: '15 Phút 1', type: 'number', weight: 1 },
+      { id: 'col_15p_2', title: '15 Phút 2', type: 'number', weight: 1 },
+      { id: 'col_gk', title: 'Giữa Kỳ', type: 'number', weight: 2 },
+      { id: 'col_ck', title: 'Cuối Kỳ', type: 'number', weight: 3 },
+      { id: 'col_plus', title: 'Điểm Cộng (+)', type: 'text', weight: 0 },
+      { id: 'col_note', title: 'Ghi Chú', type: 'text', weight: 0 }
+    ];
+
+    function getGradebookStorageKey(classId) {
+      const u = (currentUser && currentUser.username) ? currentUser.username.toLowerCase() : 'local';
+      return `gradebook_${u}_${classId}`;
+    }
+
+    function getGradebookData(classId) {
+      if (!classId) return { columns: [...DEFAULT_GRADE_COLUMNS], scores: {} };
+      const key = getGradebookStorageKey(classId);
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.columns) && typeof parsed.scores === 'object') {
+            return parsed;
+          }
+        }
+      } catch (e) {}
+      return { columns: [...DEFAULT_GRADE_COLUMNS], scores: {} };
+    }
+
+    function saveGradebookData(classId, data) {
+      if (!classId) return;
+      const key = getGradebookStorageKey(classId);
+      try {
+        localStorage.setItem(key, JSON.stringify(data));
+      } catch (e) {}
+
+      // Tự động sao lưu đám mây Supabase nếu giáo viên đã đăng nhập
+      if (currentUser && currentUser.username) {
+        callSupabaseRest('POST', `gradebook_${currentUser.username.toLowerCase()}_${classId}`, {
+          user: currentUser,
+          classId: classId,
+          data: data,
+          updated_at: new Date().toISOString()
+        }).catch(() => {});
+      }
+    }
+
+    function openGradebookForClass(classId) {
+      currentClassId = classId;
+      switchAppTab('tab-gradebook');
+    }
+
+    function onGradebookClassChange(newClassId) {
+      currentClassId = newClassId;
+      renderGradebookTab();
+    }
+
+    function calculateStudentGPA(scoreMap, columns) {
+      if (!scoreMap) return '-';
+      let totalWeighted = 0;
+      let totalWeight = 0;
+
+      columns.forEach(col => {
+        if (col.type === 'number' && col.weight > 0) {
+          const valStr = scoreMap[col.id];
+          if (valStr !== undefined && valStr !== null && valStr !== '') {
+            const num = parseFloat(String(valStr).replace(',', '.'));
+            if (!isNaN(num) && num >= 0 && num <= 10) {
+              totalWeighted += num * col.weight;
+              totalWeight += col.weight;
+            }
+          }
+        }
+      });
+
+      if (totalWeight === 0) return '-';
+      const gpa = totalWeighted / totalWeight;
+      return gpa.toFixed(1);
+    }
+
+    function renderGradebookTab() {
+      const selectEl = document.getElementById('gradebook-class-select');
+      const tableEl = document.getElementById('gradebook-table');
+      const statsEl = document.getElementById('gradebook-class-stats');
+      if (!tableEl) return;
+
+      const classes = getAllSavedClasses();
+      if (!classes || classes.length === 0) {
+        if (selectEl) selectEl.innerHTML = '<option value="">(Chưa có lớp)</option>';
+        tableEl.innerHTML = `
+          <tbody>
+            <tr>
+              <td class="p-8 text-center text-slate-500 font-bold">
+                Chưa có lớp học nào trong hệ thống. Thầy/Cô vui lòng vào tab "Quản Lý Lớp" để tạo lớp hoặc tải file Excel danh sách học sinh nhé!
+              </td>
+            </tr>
+          </tbody>
+        `;
+        if (statsEl) statsEl.innerHTML = '';
+        return;
+      }
+
+      if (!currentClassId || !classes.some(c => c.id === currentClassId)) {
+        currentClassId = classes[0].id;
+      }
+
+      // Populate class dropdown
+      if (selectEl) {
+        selectEl.innerHTML = classes.map(c => `
+          <option value="${c.id}" ${c.id === currentClassId ? 'selected' : ''}>
+            ${c.name} (${c.students.length} HS)
+          </option>
+        `).join('');
+      }
+
+      const activeClass = classes.find(c => c.id === currentClassId) || classes[0];
+      const gbData = getGradebookData(activeClass.id);
+      const columns = gbData.columns || DEFAULT_GRADE_COLUMNS;
+      const scores = gbData.scores || {};
+
+      // Calculate stats
+      let studentWithScores = 0;
+      let gpaSum = 0;
+      let gpaCount = 0;
+
+      activeClass.students.forEach(stName => {
+        const sMap = scores[stName] || {};
+        const gpaStr = calculateStudentGPA(sMap, columns);
+        if (gpaStr !== '-') {
+          studentWithScores++;
+          gpaSum += parseFloat(gpaStr);
+          gpaCount++;
+        }
+      });
+
+      const avgClassGPA = gpaCount > 0 ? (gpaSum / gpaCount).toFixed(1) : '-';
+
+      if (statsEl) {
+        statsEl.innerHTML = `
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 font-bold border border-slate-200">
+            👥 Sĩ số: <b class="text-indigo-600 font-black">${activeClass.students.length}</b> HS
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 font-bold border border-slate-200">
+            📝 Đã có điểm: <b class="text-emerald-600 font-black">${studentWithScores}</b> HS
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 font-bold border border-slate-200">
+            📊 ĐTB lớp: <b class="${avgClassGPA !== '-' && parseFloat(avgClassGPA) >= 6.5 ? 'text-emerald-600' : 'text-amber-600'} font-black">${avgClassGPA}</b>
+          </span>
+        `;
+      }
+
+      // Render Header
+      let theadHtml = `
+        <thead class="bg-slate-100/90 text-slate-700 uppercase font-black text-[11px] border-b border-slate-200 sticky top-0 z-10 shadow-2xs">
+          <tr>
+            <th class="p-3 text-center w-12 sticky left-0 bg-slate-100 z-20">STT</th>
+            <th class="p-3 min-w-[170px] sticky left-12 bg-slate-100 z-20 border-r border-slate-200">Họ và Tên Học Sinh</th>
+      `;
+
+      columns.forEach(col => {
+        const isCustom = !DEFAULT_GRADE_COLUMNS.some(d => d.id === col.id);
+        const weightBadge = col.weight > 0 ? `<span class="ml-1 text-[9px] text-slate-400 font-normal">x${col.weight}</span>` : '';
+        theadHtml += `
+          <th class="p-3 text-center min-w-[95px] relative group border-r border-slate-200/60">
+            <div class="flex items-center justify-center gap-1">
+              <span>${col.title}</span>${weightBadge}
+              ${isCustom ? `
+                <button onclick="deleteGradeColumn('${col.id}')" class="text-slate-400 hover:text-rose-500 ml-1 opacity-0 group-hover:opacity-100 transition" title="Xóa cột này">
+                  <i class="fa-solid fa-times text-[10px]"></i>
+                </button>
+              ` : ''}
+            </div>
+          </th>
+        `;
+      });
+
+      theadHtml += `
+            <th class="p-3 text-center min-w-[85px] bg-amber-50 text-amber-900 border-r border-amber-200/80">ĐTB</th>
+            <th class="p-3 text-center w-24">Thao Tác</th>
+          </tr>
+        </thead>
+      `;
+
+      // Render Rows
+      let tbodyHtml = '<tbody class="divide-y divide-slate-100">';
+      activeClass.students.forEach((stName, idx) => {
+        const sMap = scores[stName] || {};
+        const gpa = calculateStudentGPA(sMap, columns);
+        const gpaColor = gpa === '-' ? 'text-slate-400' :
+          parseFloat(gpa) >= 8.0 ? 'text-emerald-700 bg-emerald-100/80 ring-1 ring-emerald-300' :
+          parseFloat(gpa) >= 6.5 ? 'text-blue-700 bg-blue-100/80 ring-1 ring-blue-300' :
+          parseFloat(gpa) >= 5.0 ? 'text-amber-800 bg-amber-100/80 ring-1 ring-amber-300' :
+          'text-rose-700 bg-rose-100/80 ring-1 ring-rose-300';
+
+        tbodyHtml += `
+          <tr class="hover:bg-slate-50/80 transition-colors group">
+            <td class="p-2.5 text-center text-slate-500 font-bold sticky left-0 bg-white group-hover:bg-slate-50">${idx + 1}</td>
+            <td class="p-2.5 font-bold text-slate-900 sticky left-12 bg-white group-hover:bg-slate-50 border-r border-slate-200 truncate max-w-[200px]" title="${stName}">
+              ${stName}
+            </td>
+        `;
+
+        columns.forEach(col => {
+          const val = sMap[col.id] !== undefined ? sMap[col.id] : '';
+          tbodyHtml += `
+            <td class="p-1.5 text-center border-r border-slate-100">
+              <input type="text"
+                value="${val}"
+                data-class-id="${activeClass.id}"
+                data-student="${encodeURIComponent(stName)}"
+                data-col="${col.id}"
+                data-col-type="${col.type}"
+                onfocus="this.select()"
+                onchange="handleGradeCellChange(this)"
+                onkeydown="handleGradeCellKeydown(event, this)"
+                placeholder="-"
+                class="w-full text-center px-1.5 py-1 text-xs font-bold text-slate-900 bg-transparent rounded-lg border border-transparent hover:border-slate-300 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-200 outline-none transition" />
+            </td>
+          `;
+        });
+
+        tbodyHtml += `
+            <td class="p-1.5 text-center border-r border-amber-200/60 bg-amber-50/30">
+              <span id="gpa-cell-${idx}" class="inline-block px-2 py-0.5 rounded-md font-black text-xs ${gpaColor}">
+                ${gpa}
+              </span>
+            </td>
+            <td class="p-1.5 text-center">
+              <button onclick="awardDirectBonusPoint('${activeClass.id}', '${encodeURIComponent(stName)}')" class="px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-[10px] font-black transition cursor-pointer shadow-2xs" title="Cộng 1 điểm thưởng">
+                +1 Điểm
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      tbodyHtml += '</tbody>';
+
+      tableEl.innerHTML = theadHtml + tbodyHtml;
+    }
+
+    function handleGradeCellChange(input) {
+      const classId = input.getAttribute('data-class-id');
+      const studentName = decodeURIComponent(input.getAttribute('data-student'));
+      const colId = input.getAttribute('data-col');
+      const colType = input.getAttribute('data-col-type');
+      let val = input.value.trim();
+
+      if (colType === 'number' && val !== '') {
+        val = val.replace(',', '.');
+        const num = parseFloat(val);
+        if (isNaN(num) || num < 0 || num > 10) {
+          showModal('warning', 'Điểm không hợp lệ', 'Điểm số phải là số từ 0 đến 10!');
+          input.value = '';
+          val = '';
+        } else {
+          val = String(num);
+          input.value = val;
+        }
+      }
+
+      const gbData = getGradebookData(classId);
+      if (!gbData.scores[studentName]) gbData.scores[studentName] = {};
+      gbData.scores[studentName][colId] = val;
+      saveGradebookData(classId, gbData);
+
+      // Cập nhật lại GPA cho hàng này
+      const row = input.closest('tr');
+      if (row) {
+        const gpaCell = row.querySelector('[id^="gpa-cell-"]');
+        if (gpaCell) {
+          const gpa = calculateStudentGPA(gbData.scores[studentName], gbData.columns);
+          gpaCell.innerText = gpa;
+          gpaCell.className = `inline-block px-2 py-0.5 rounded-md font-black text-xs ${
+            gpa === '-' ? 'text-slate-400' :
+            parseFloat(gpa) >= 8.0 ? 'text-emerald-700 bg-emerald-100/80 ring-1 ring-emerald-300' :
+            parseFloat(gpa) >= 6.5 ? 'text-blue-700 bg-blue-100/80 ring-1 ring-blue-300' :
+            parseFloat(gpa) >= 5.0 ? 'text-amber-800 bg-amber-100/80 ring-1 ring-amber-300' :
+            'text-rose-700 bg-rose-100/80 ring-1 ring-rose-300'
+          }`;
+        }
+      }
+    }
+
+    function handleGradeCellKeydown(e, input) {
+      const row = input.closest('tr');
+      if (!row) return;
+
+      if (e.key === 'Enter' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const nextRow = row.nextElementSibling;
+        if (nextRow) {
+          const colIndex = Array.from(row.children).indexOf(input.closest('td'));
+          const nextCell = nextRow.children[colIndex];
+          const nextInput = nextCell ? nextCell.querySelector('input') : null;
+          if (nextInput) nextInput.focus();
+        }
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevRow = row.previousElementSibling;
+        if (prevRow) {
+          const colIndex = Array.from(row.children).indexOf(input.closest('td'));
+          const prevCell = prevRow.children[colIndex];
+          const prevInput = prevCell ? prevCell.querySelector('input') : null;
+          if (prevInput) prevInput.focus();
+        }
+      }
+    }
+
+    function awardDirectBonusPoint(classId, encodedName) {
+      const studentName = decodeURIComponent(encodedName);
+      const gbData = getGradebookData(classId);
+      if (!gbData.scores[studentName]) gbData.scores[studentName] = {};
+      const curPlus = gbData.scores[studentName]['col_plus'] || '0';
+      const curNum = parseFloat(curPlus) || 0;
+      gbData.scores[studentName]['col_plus'] = String(curNum + 1);
+      saveGradebookData(classId, gbData);
+      renderGradebookTab();
+      showCloudToast(`🎉 Đã cộng +1 điểm thưởng cho em ${studentName}!`);
+    }
+
+    function addBonusPointToCurrentWinner() {
+      if (!currentWinner || !currentWinner.name) return;
+      if (!currentClassId) return showModal('warning', 'Chưa chọn lớp', 'Vui lòng chọn lớp học trước!');
+      awardDirectBonusPoint(currentClassId, encodeURIComponent(currentWinner.name));
+      const btn = document.getElementById('winner-bonus-btn');
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-300"></i> Đã Cộng!';
+        btn.disabled = true;
+        btn.classList.add('opacity-70');
+      }
+    }
+
+    let isAddingGradeCol = false;
+    function openAddGradeColumnModal() {
+      document.getElementById('modal-col-name').value = '';
+      document.getElementById('modal-col-type').value = 'number';
+      document.getElementById('modal-col-weight').value = '1';
+      openModalUi('grade-column-modal', 'grade-column-content');
+    }
+
+    function closeAddGradeColumnModal() {
+      closeModalUi('grade-column-modal', 'grade-column-content');
+    }
+
+    function saveNewGradeColumn() {
+      const name = document.getElementById('modal-col-name').value.trim();
+      const type = document.getElementById('modal-col-type').value;
+      const weight = parseInt(document.getElementById('modal-col-weight').value || '1');
+
+      if (!name) return showModal('warning', 'Thiếu tên cột', 'Vui lòng nhập tên cột điểm!');
+
+      if (!currentClassId) return showModal('warning', 'Chưa chọn lớp', 'Vui lòng chọn một lớp học trước!');
+      const gbData = getGradebookData(currentClassId);
+      const colId = 'col_custom_' + Date.now();
+
+      gbData.columns.push({
+        id: colId,
+        title: name,
+        type: type,
+        weight: weight
+      });
+
+      saveGradebookData(currentClassId, gbData);
+      closeAddGradeColumnModal();
+      renderGradebookTab();
+      showCloudToast(`Đã thêm cột điểm "${name}" thành công!`);
+    }
+
+    function deleteGradeColumn(colId) {
+      if (!confirm('Thầy/Cô có chắc chắn muốn xóa cột điểm này không?')) return;
+      const gbData = getGradebookData(currentClassId);
+      gbData.columns = gbData.columns.filter(c => c.id !== colId);
+      saveGradebookData(currentClassId, gbData);
+      renderGradebookTab();
+      showCloudToast('Đã xóa cột điểm!');
+    }
+
+    function exportGradebookToExcel() {
+      const classes = getAllSavedClasses();
+      const activeClass = classes.find(c => c.id === currentClassId);
+      if (!activeClass || activeClass.students.length === 0) {
+        return showModal('warning', 'Danh sách trống', 'Lớp học hiện tại chưa có học sinh để xuất sổ điểm!');
+      }
+
+      if (typeof XLSX === 'undefined') {
+        return showModal('error', 'Lỗi thư viện', 'Thư viện Excel chưa được tải xong. Thầy/Cô vui lòng thử lại sau vài giây nhé!');
+      }
+
+      const gbData = getGradebookData(activeClass.id);
+      const columns = gbData.columns || DEFAULT_GRADE_COLUMNS;
+      const scores = gbData.scores || {};
+
+      // Tạo cấu trúc hàng cho SheetJS
+      const sheetData = [];
+      sheetData.push([`BẢNG ĐIỂM ĐÁNH GIÁ HỌC SINH - ${activeClass.name.toUpperCase()}`]);
+      sheetData.push([`Ngày xuất: ${new Date().toLocaleDateString('vi-VN')} | Sĩ số: ${activeClass.students.length} học sinh | Phần mềm Trường Đua Gọi Tên - Thầy Tuấn`]);
+      sheetData.push([]); // Dòng trống
+
+      // Dòng tiêu đề các cột
+      const headerRow = ['STT', 'Họ và Tên'];
+      columns.forEach(col => {
+        const wStr = col.weight > 0 ? ` (x${col.weight})` : '';
+        headerRow.push(`${col.title}${wStr}`);
+      });
+      headerRow.push('Điểm TB (ĐTB)');
+      sheetData.push(headerRow);
+
+      // Các dòng học sinh
+      activeClass.students.forEach((stName, idx) => {
+        const sMap = scores[stName] || {};
+        const gpa = calculateStudentGPA(sMap, columns);
+        const row = [idx + 1, stName];
+
+        columns.forEach(col => {
+          const val = sMap[col.id] !== undefined ? sMap[col.id] : '';
+          row.push(val);
+        });
+
+        row.push(gpa === '-' ? '' : parseFloat(gpa));
+        sheetData.push(row);
+      });
+
+      // Tạo Workbook và Worksheet
+      const ws = XLSX.utils.aoa_to_sheet(sheetData);
+
+      // Căn chỉnh độ rộng cột
+      const colWidths = [
+        { wch: 6 },  // STT
+        { wch: 25 }, // Họ và tên
+      ];
+      columns.forEach(() => colWidths.push({ wch: 15 }));
+      colWidths.push({ wch: 14 }); // ĐTB
+      ws['!cols'] = colWidths;
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sổ Điểm");
+
+      const cleanClassName = activeClass.name.replace(/[\\/*?:"<>|]/g, "_").trim();
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const filename = `So_Diem_${cleanClassName}_${dateStr}.xlsx`;
+
+      XLSX.writeFile(wb, filename);
+      showCloudToast(`📥 Đã tải về file Excel "${filename}"!`);
+    }
+
+    function importGradebookFromExcel(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (!currentClassId) return showModal('warning', 'Chưa chọn lớp', 'Vui lòng chọn lớp học trước khi nhập điểm!');
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+          if (!json || json.length < 2) {
+            return showModal('warning', 'File rỗng', 'File Excel không có dữ liệu hợp lệ!');
+          }
+
+          const gbData = getGradebookData(currentClassId);
+          let matchedCount = 0;
+
+          // Tìm dòng header
+          let headerRowIdx = -1;
+          for (let r = 0; r < Math.min(json.length, 10); r++) {
+            const rowStr = JSON.stringify(json[r] || []).toLowerCase();
+            if (rowStr.includes('họ và tên') || rowStr.includes('họ tên') || rowStr.includes('stt')) {
+              headerRowIdx = r;
+              break;
+            }
+          }
+
+          if (headerRowIdx === -1) headerRowIdx = 0;
+          const headers = json[headerRowIdx] || [];
+
+          // Map column names to existing gbData columns
+          const colIndexMap = {};
+          headers.forEach((h, cIdx) => {
+            if (!h) return;
+            const hStr = String(h).toLowerCase().trim();
+            gbData.columns.forEach(col => {
+              if (hStr.includes(col.title.toLowerCase()) || col.title.toLowerCase().includes(hStr)) {
+                colIndexMap[cIdx] = col.id;
+              }
+            });
+          });
+
+          // Quét từng dòng học sinh
+          for (let r = headerRowIdx + 1; r < json.length; r++) {
+            const row = json[r];
+            if (!row || row.length === 0) continue;
+
+            // Tìm tên học sinh trong các ô đầu tiên
+            let foundName = '';
+            for (let c = 0; c < Math.min(row.length, 4); c++) {
+              const val = String(row[c] || '').trim();
+              if (val.length > 2 && val.includes(' ') && isNaN(val)) {
+                foundName = val;
+                break;
+              }
+            }
+
+            if (foundName) {
+              if (!gbData.scores[foundName]) gbData.scores[foundName] = {};
+              Object.keys(colIndexMap).forEach(cIdx => {
+                const colId = colIndexMap[cIdx];
+                const rawVal = row[cIdx];
+                if (rawVal !== undefined && rawVal !== null && rawVal !== '') {
+                  gbData.scores[foundName][colId] = String(rawVal);
+                }
+              });
+              matchedCount++;
+            }
+          }
+
+          saveGradebookData(currentClassId, gbData);
+          renderGradebookTab();
+          showCloudToast(`✅ Đã nạp điểm thành công cho ${matchedCount} học sinh từ Excel!`);
+        } catch (err) {
+          showModal('error', 'Lỗi đọc file', 'Không thể nhập điểm từ file Excel này: ' + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+      event.target.value = '';
     }
 
     function deleteTeacherAccount(username) {
@@ -3477,6 +4288,9 @@
       } else if (tabId === 'tab-classes') {
         document.getElementById('nav-btn-classes')?.classList.add('tab-nav-active');
         renderClassesListTab();
+      } else if (tabId === 'tab-gradebook') {
+        document.getElementById('nav-btn-gradebook')?.classList.add('tab-nav-active');
+        renderGradebookTab();
       } else if (tabId === 'tab-admin') {
         openAdminHubModal('teachers');
         return;
@@ -3533,11 +4347,15 @@
         if (typeof resizeMotoGPCanvas === 'function') resizeMotoGPCanvas();
       } else if (mode === 'ski' && (typeof skiRaceState !== 'undefined' && (skiRaceState === 'idle' || skiRaceState === 'countdown'))) {
         if (typeof resizeSkiCanvas === 'function') resizeSkiCanvas();
+      } else if (mode === 'frog') {
+        if (typeof resizeFrogCanvas === 'function') resizeFrogCanvas();
+      } else if (mode === 'fishing') {
+        if (typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
       }
     }
 
     // ==========================================
-    // 7. UNIFIED MODE CHANGER (CONTROLS ALL 10 MODES)
+    // 7. UNIFIED MODE CHANGER (CONTROLS ALL 14 MODES)
     // ==========================================
     function handleModeChange() {
       const mode = document.getElementById('spin-mode')?.value || 'duck';
@@ -3555,6 +4373,8 @@
       const bingoContainer = document.getElementById('bingo-stage-container');
       const athleticsContainer = document.getElementById('athletics-race-container');
       const swimmingContainer = document.getElementById('swimming-race-container');
+      const frogContainer = document.getElementById('frog-stage-container');
+      const fishingContainer = document.getElementById('fishing-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -3570,6 +4390,8 @@
       if (bingoContainer) bingoContainer.classList.add('hidden');
       if (athleticsContainer) athleticsContainer.classList.add('hidden');
       if (swimmingContainer) swimmingContainer.classList.add('hidden');
+      if (frogContainer) frogContainer.classList.add('hidden');
+      if (fishingContainer) fishingContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -3660,6 +4482,20 @@
           resizeSwimCanvas();
           renderSwimRaceCanvas(performance.now());
         }, 40);
+      } else if (mode === 'frog') {
+        if (frogContainer) frogContainer.classList.remove('hidden');
+        if (typeof initFrogGame === 'function') initFrogGame(true);
+        setTimeout(() => {
+          if (typeof resizeFrogCanvas === 'function') resizeFrogCanvas();
+          if (typeof renderFrogCanvas === 'function') renderFrogCanvas(performance.now());
+        }, 40);
+      } else if (mode === 'fishing') {
+        if (fishingContainer) fishingContainer.classList.remove('hidden');
+        if (typeof initFishingGame === 'function') initFishingGame(true);
+        setTimeout(() => {
+          if (typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
+          if (typeof renderFishingCanvas === 'function') renderFishingCanvas(performance.now());
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -3685,7 +4521,9 @@
         wheel_slot: { title: 'Lồng Cầu Quay Số (Đập Bóng Gọi Tên)', icon: '🔮' },
         bingo: { title: 'Lồng Cầu Quay Số (Đập Bóng Gọi Tên)', icon: '🔮' },
         athletics: { title: 'Đua Điền Kinh 200m (Vận Động Viên Nước Rút)', icon: '🏃' },
-        swimming: { title: 'Đua Bơi Lội 200m (Kình Ngư Olympic)', icon: '🏊' }
+        swimming: { title: 'Đua Bơi Lội 200m (Kình Ngư Olympic)', icon: '🏊' },
+        frog: { title: 'Đập Ếch Bắt Tên (Whack-a-Frog)', icon: '🐸' },
+        fishing: { title: 'Bé Câu Cá Bắt Tên (50 Con Cá Đa Sắc Màu)', icon: '🎣' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -3710,6 +4548,10 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-person-running"></i> XUẤT PHÁT CHẠY 200M';
         } else if (mode === 'swimming') {
           spinBtn.innerHTML = '<i class="fa-solid fa-person-swimming"></i> XUẤT PHÁT BƠI 200M';
+        } else if (mode === 'frog') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-hammer"></i> BẮT ĐẦU ĐẬP ẾCH';
+        } else if (mode === 'fishing') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-fish"></i> THẢ CẦN CÂU CÁ';
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -12022,6 +12864,8 @@
       else if ((mode === 'wheel_slot' || mode === 'bingo') && typeof resizeBingoCanvas === 'function') resizeBingoCanvas();
       else if (mode === 'athletics' && typeof resizeAthleticsCanvas === 'function') resizeAthleticsCanvas();
       else if (mode === 'swimming' && typeof resizeSwimCanvas === 'function') resizeSwimCanvas();
+      else if (mode === 'frog' && typeof resizeFrogCanvas === 'function') resizeFrogCanvas();
+      else if (mode === 'fishing' && typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -12040,7 +12884,9 @@
         { id: 'lixi-fullscreen-btn', color: 'text-amber-400' },
         { id: 'bingo-fullscreen-btn', color: 'text-amber-400' },
         { id: 'athletics-fullscreen-btn', color: 'text-amber-400' },
-        { id: 'swimming-fullscreen-btn', color: 'text-cyan-400' }
+        { id: 'swimming-fullscreen-btn', color: 'text-cyan-400' },
+        { id: 'frog-fullscreen-btn', color: 'text-emerald-400' },
+        { id: 'fishing-fullscreen-btn', color: 'text-teal-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -12108,7 +12954,9 @@
         'horse-race-container',
         'ski-race-container',
         'athletics-race-container',
-        'swimming-race-container'
+        'swimming-race-container',
+        'frog-stage-container',
+        'fishing-stage-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -12133,6 +12981,8 @@
       if (mode === 'horse') return horseRaceRunning || horseRaceState === 'racing' || horseRaceState === 'countdown';
       if (mode === 'athletics') return athleticsRaceState === 'running' || athleticsRaceState === 'countdown';
       if (mode === 'swimming') return swimRaceState === 'running' || swimRaceState === 'countdown';
+      if (mode === 'frog') return frogGameState === 'hit_celebrating' || frogGameState === 'auto_whacking';
+      if (mode === 'fishing') return fishingGameState === 'biting' || fishingGameState === 'reeling' || fishingGameState === 'waiting';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -16846,6 +17696,2249 @@
           <span class="text-[10px] font-mono text-cyan-200">L${swimmer.lane}</span>
         </div>
       `).join('');
+    }
+
+    // ==========================================
+    // MODULE: ĐẬP ẾCH BẮT TÊN (WHACK-A-FROG GAME)
+    // ==========================================
+    const FrogAudio = {
+      ctx: null,
+      getCtx() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        return this.ctx;
+      },
+      playPop() {
+        if (!isAppSoundActive) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(260, now);
+        osc.frequency.exponentialRampToValueAtTime(700, now + 0.12);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      },
+      playWhack() {
+        if (!isAppSoundActive) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        // Bonk transient
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(75, now + 0.18);
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+
+        // Comic squeak
+        const squeak = ctx.createOscillator();
+        const sqGain = ctx.createGain();
+        squeak.type = 'sine';
+        squeak.frequency.setValueAtTime(800, now + 0.05);
+        squeak.frequency.linearRampToValueAtTime(1400, now + 0.12);
+        sqGain.gain.setValueAtTime(0.2, now + 0.05);
+        sqGain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        squeak.connect(sqGain);
+        sqGain.connect(ctx.destination);
+        squeak.start(now + 0.05);
+        squeak.stop(now + 0.2);
+      },
+      playMiss() {
+        if (!isAppSoundActive) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        // Whoosh sound
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(120, now + 0.16);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.19);
+      },
+      playFanfare() {
+        if (!isAppSoundActive) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [440, 554.37, 659.25, 880];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.22, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.38);
+        });
+      }
+    };
+
+    let frogHoles = [];
+    let frogGameState = 'playing'; // 'playing' | 'hit_celebrating' | 'auto_whacking'
+    let frogAnimId = null;
+    let frogLastTime = 0;
+    let frogTargetWinner = null;
+    let frogFinishCallback = null;
+    let frogShakeX = 0;
+    let frogShakeY = 0;
+    let frogShakeTimer = 0;
+    let frogHammer = {
+      x: 400,
+      y: 300,
+      targetX: 400,
+      targetY: 300,
+      isSwinging: false,
+      swingProgress: 0,
+      swingDuration: 0.16
+    };
+    let frogDustPuffs = [];
+    let frogHitBursts = [];
+    let frogLilyPads = [];
+    let frogWaterRipples = [];
+
+    function initFrogGame(resetPositions = true) {
+      resizeFrogCanvas();
+      const canvas = document.getElementById('frog-canvas');
+      if (!canvas) return;
+      const w = canvas.width || 800;
+      const h = canvas.height || 520;
+
+      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+      const pool = visible.length > 0 ? visible : Array.from({ length: 15 }, (_, i) => ({ id: `hs_${i + 1}`, name: `Học sinh ${i + 1}` }));
+
+      // Setup 3 hàng x 3 hoặc 4 cột lỗ
+      const cols = w > 720 ? 4 : 3;
+      const rows = 3;
+      const totalHoles = cols * rows;
+
+      const startX = w * 0.16;
+      const endX = w * 0.84;
+      const startY = h * 0.34;
+      const endY = h * 0.88;
+
+      const stepX = (endX - startX) / (cols - 1);
+      const stepY = (endY - startY) / (rows - 1);
+
+      frogHoles = [];
+      let studentIdx = 0;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const hx = startX + c * stepX + (Math.random() - 0.5) * 14;
+          const hy = startY + r * stepY + (Math.random() - 0.5) * 8;
+          const st = pool[studentIdx % pool.length];
+          studentIdx++;
+
+          frogHoles.push({
+            id: `hole_${r}_${c}`,
+            x: hx,
+            y: hy,
+            rx: 52,
+            ry: 26,
+            student: st,
+            state: 'hidden', // 'hidden' | 'popping' | 'peeking' | 'ducking' | 'whacked'
+            height: 0,       // 0 to 1
+            peekTimer: 0,
+            nextPopDelay: 0.4 + Math.random() * 2.2,
+            speed: 3.2 + Math.random() * 1.5,
+            blinkTimer: 1 + Math.random() * 3,
+            isBlinking: false,
+            wobble: 0,
+            dizzyAngle: 0
+          });
+        }
+      }
+
+      // Khởi tạo lá sen & hoa sen trang trí nền
+      frogLilyPads = [];
+      for (let i = 0; i < 18; i++) {
+        frogLilyPads.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          radius: 28 + Math.random() * 36,
+          notchAngle: Math.random() * Math.PI * 2,
+          color: i % 2 === 0 ? '#15803d' : '#166534',
+          hasFlower: i % 4 === 0
+        });
+      }
+
+      frogGameState = 'playing';
+      frogDustPuffs = [];
+      frogHitBursts = [];
+      frogTargetWinner = null;
+      frogFinishCallback = null;
+
+      const statusEl = document.getElementById('frog-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `Vung búa đập 1 chú ếch đang thò đầu lên để gọi tên!`;
+      }
+      const noticeEl = document.getElementById('frog-hit-notice');
+      if (noticeEl) noticeEl.classList.add('hidden');
+
+      // Bind canvas mouse & touch events if not bound
+      bindFrogCanvasEvents(canvas);
+
+      if (frogAnimId) cancelAnimationFrame(frogAnimId);
+      frogLastTime = performance.now();
+      frogAnimId = requestAnimationFrame(renderFrogCanvas);
+    }
+
+    function resizeFrogCanvas() {
+      const container = document.getElementById('frog-stage-container');
+      const canvas = document.getElementById('frog-canvas');
+      if (!container || !canvas) return;
+      const rect = container.getBoundingClientRect();
+      const w = Math.floor(rect.width || 800);
+      const h = Math.floor(rect.height || 540);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    }
+
+    let isFrogCanvasEventBound = false;
+    function bindFrogCanvasEvents(canvas) {
+      if (isFrogCanvasEventBound) return;
+      isFrogCanvasEventBound = true;
+
+      const updatePos = (clientX, clientY) => {
+        const rect = canvas.getBoundingClientRect();
+        frogHammer.targetX = clientX - rect.left;
+        frogHammer.targetY = clientY - rect.top;
+      };
+
+      canvas.addEventListener('mousemove', (e) => {
+        updatePos(e.clientX, e.clientY);
+      });
+
+      canvas.addEventListener('mousedown', (e) => {
+        updatePos(e.clientX, e.clientY);
+        handleFrogWhackClick(frogHammer.targetX, frogHammer.targetY);
+      });
+
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches[0]) {
+          const t = e.touches[0];
+          updatePos(t.clientX, t.clientY);
+          frogHammer.x = frogHammer.targetX;
+          frogHammer.y = frogHammer.targetY;
+          handleFrogWhackClick(frogHammer.targetX, frogHammer.targetY);
+        }
+      }, { passive: true });
+    }
+
+    function handleFrogWhackClick(clickX, clickY) {
+      if (frogGameState !== 'playing') return;
+
+      // Kích hoạt vung búa
+      frogHammer.isSwinging = true;
+      frogHammer.swingProgress = 0;
+
+      // Kiểm tra va chạm với các chú ếch đang thò đầu lên
+      let hitHole = null;
+
+      for (let i = 0; i < frogHoles.length; i++) {
+        const hole = frogHoles[i];
+        if (hole.state === 'peeking' || (hole.state === 'popping' && hole.height > 0.35) || (hole.state === 'ducking' && hole.height > 0.45)) {
+          // Vị trí đầu ếch nằm phía trên miệng lỗ
+          const frogHeadY = hole.y - hole.height * 55;
+          const dx = clickX - hole.x;
+          const dy = clickY - frogHeadY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist <= 48) {
+            hitHole = hole;
+            break;
+          }
+        }
+      }
+
+      if (hitHole) {
+        // ĐẬP TRÚNG ẾCH!
+        triggerFrogHit(hitHole);
+      } else {
+        // ĐẬP TRẬT / HỤT!
+        triggerFrogMiss(clickX, clickY);
+      }
+    }
+
+    function triggerFrogHit(hole) {
+      frogGameState = 'hit_celebrating';
+      hole.state = 'whacked';
+      hole.dizzyAngle = 0;
+
+      // Âm thanh đập trúng & kèn thắng cuộc
+      FrogAudio.playWhack();
+      setTimeout(() => FrogAudio.playFanfare(), 100);
+
+      // Hiệu ứng rung màn hình
+      frogShakeTimer = 0.35;
+
+      // Tạo hiệu ứng sao & tia nổ BAM!
+      for (let i = 0; i < 16; i++) {
+        const angle = (Math.PI * 2 * i) / 16 + (Math.random() - 0.5) * 0.3;
+        const spd = 3.5 + Math.random() * 5.5;
+        frogHitBursts.push({
+          x: hole.x,
+          y: hole.y - hole.height * 55,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd - 1.5,
+          size: 5 + Math.random() * 6,
+          color: ['#facc15', '#f59e0b', '#fbbf24', '#ffffff', '#22c55e'][i % 5],
+          life: 0.65,
+          maxLife: 0.65
+        });
+      }
+
+      // Xác định học sinh được gọi tên
+      const winner = hole.student;
+      frogWinner = winner;
+
+      const statusEl = document.getElementById('frog-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🎉 <b class="text-amber-300">ĐẬP TRÚNG RỒI!</b> Chúc mừng bạn <b class="text-emerald-300 text-sm">${winner.name}</b>! 👑`;
+      }
+
+      // Ẩn bảng hụt nếu đang hiện
+      const noticeEl = document.getElementById('frog-hit-notice');
+      if (noticeEl) noticeEl.classList.add('hidden');
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.5 }
+        });
+      }
+
+      // Sau 1.3s, mở modal vinh danh
+      setTimeout(() => {
+        const btn = document.getElementById('spin-btn');
+        if (frogFinishCallback) {
+          frogFinishCallback(winner);
+        } else {
+          showWinnerResult(winner, btn);
+        }
+      }, 1300);
+    }
+
+    function triggerFrogMiss(clickX, clickY) {
+      FrogAudio.playMiss();
+
+      // Bụi bay lên tại vị trí đập
+      for (let i = 0; i < 10; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = 1.5 + Math.random() * 3.5;
+        frogDustPuffs.push({
+          x: clickX,
+          y: clickY,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd - 1.2,
+          radius: 6 + Math.random() * 8,
+          alpha: 0.7,
+          life: 0.45,
+          maxLife: 0.45
+        });
+      }
+
+      // Thông báo vui nhộn đập hụt
+      const noticeEl = document.getElementById('frog-hit-notice');
+      if (noticeEl) {
+        const missMessages = [
+          '💥 Hụt rồi! Chú ếch đã lặn mất tiêu! Đập lại nào! 🐸',
+          '💨 Trượt rồi! Ếch nhanh như chớp! Nhanh tay lên nhé! 🐸',
+          '🤣 Ếch thụt đầu mất rồi! Cố lên bạn ơi, gõ lại nào! 🔨',
+          '⚡ Hụt trong gang tấc! Chú ý con ếch vừa ngó đầu lên kìa! 🐸'
+        ];
+        noticeEl.innerText = missMessages[Math.floor(Math.random() * missMessages.length)];
+        noticeEl.classList.remove('hidden');
+        noticeEl.classList.remove('scale-95');
+        noticeEl.classList.add('scale-100');
+
+        setTimeout(() => {
+          if (noticeEl) {
+            noticeEl.classList.add('scale-95');
+            noticeEl.classList.remove('scale-100');
+            setTimeout(() => noticeEl.classList.add('hidden'), 200);
+          }
+        }, 1600);
+      }
+    }
+
+    function startFrogGame(winnerStudent, callback) {
+      initFrogGame(false);
+      frogGameState = 'auto_whacking';
+      frogTargetWinner = winnerStudent;
+      frogFinishCallback = callback;
+
+      const statusEl = document.getElementById('frog-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🌀 Đầm sen đang đại náo... Búa thần đang ngắm chuẩn chú ếch may mắn!`;
+      }
+
+      // Chọn 1 lỗ bất kỳ làm mục tiêu chiến thắng
+      const chosenHole = frogHoles[Math.floor(Math.random() * frogHoles.length)];
+      if (winnerStudent) chosenHole.student = winnerStudent;
+
+      // Làm các chú ếch nhảy lên xuống dồn dập
+      frogHoles.forEach((h, idx) => {
+        h.nextPopDelay = 0.1 + idx * 0.15;
+      });
+
+      // Sau 2.2 giây, búa tự động bay đến gõ trúng chú ếch
+      setTimeout(() => {
+        chosenHole.state = 'peeking';
+        chosenHole.height = 1;
+        chosenHole.peekTimer = 2.0;
+
+        // Di chuyển búa đến lỗ mục tiêu
+        frogHammer.targetX = chosenHole.x;
+        frogHammer.targetY = chosenHole.y - 50;
+
+        setTimeout(() => {
+          handleFrogWhackClick(chosenHole.x, chosenHole.y - 50);
+        }, 350);
+      }, 2200);
+    }
+
+    function toggleFrogSound() {
+      toggleGlobalAppSound();
+      const btn = document.getElementById('frog-sound-btn');
+      if (btn) btn.innerHTML = isAppSoundActive ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleFrogFullscreen() {
+      const container = document.getElementById('frog-stage-container');
+      if (!container) return;
+      if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    function resetFrogGame() {
+      initFrogGame(true);
+      showCloudToast('Đã đặt lại trò chơi Đập Ếch!');
+    }
+
+    // ==========================================
+    // RENDER VÒNG LẶP CANVAS ĐẬP ẾCH (60 FPS)
+    // ==========================================
+    function renderFrogCanvas(now) {
+      const canvas = document.getElementById('frog-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const dt = Math.min((now - frogLastTime) / 1000, 0.05);
+      frogLastTime = now;
+
+      const cw = canvas.width;
+      const ch = canvas.height;
+
+      // 1. Cập nhật trạng thái ếch trong các lỗ
+      frogHoles.forEach(h => {
+        // Cập nhật chớp mắt
+        h.blinkTimer -= dt;
+        if (h.blinkTimer <= 0) {
+          h.isBlinking = true;
+          if (h.blinkTimer <= -0.15) {
+            h.isBlinking = false;
+            h.blinkTimer = 1.8 + Math.random() * 3.5;
+          }
+        }
+
+        if (h.state === 'hidden') {
+          h.height = 0;
+          h.nextPopDelay -= dt;
+          if (h.nextPopDelay <= 0 && frogGameState === 'playing') {
+            h.state = 'popping';
+            h.height = 0;
+            FrogAudio.playPop();
+          }
+        } else if (h.state === 'popping') {
+          h.height += h.speed * dt;
+          if (h.height >= 1) {
+            h.height = 1;
+            h.state = 'peeking';
+            h.peekTimer = 1.1 + Math.random() * 1.4; // Đứng ngó 1.1s - 2.5s
+          }
+        } else if (h.state === 'peeking') {
+          h.wobble = Math.sin(now * 0.006 + h.x) * 0.08;
+          h.peekTimer -= dt;
+          if (h.peekTimer <= 0 && frogGameState === 'playing') {
+            h.state = 'ducking';
+          }
+        } else if (h.state === 'ducking') {
+          h.height -= h.speed * 1.3 * dt;
+          if (h.height <= 0) {
+            h.height = 0;
+            h.state = 'hidden';
+            h.nextPopDelay = 0.8 + Math.random() * 2.8;
+          }
+        } else if (h.state === 'whacked') {
+          h.dizzyAngle += dt * 6.5;
+        }
+      });
+
+      // 2. Cập nhật vị trí búa
+      frogHammer.x += (frogHammer.targetX - frogHammer.x) * Math.min(1, dt * 18);
+      frogHammer.y += (frogHammer.targetY - frogHammer.y) * Math.min(1, dt * 18);
+
+      if (frogHammer.isSwinging) {
+        frogHammer.swingProgress += dt / frogHammer.swingDuration;
+        if (frogHammer.swingProgress >= 1) {
+          frogHammer.isSwinging = false;
+          frogHammer.swingProgress = 0;
+        }
+      }
+
+      // 3. Rung màn hình khi đập trúng
+      let renderOffsetX = 0;
+      let renderOffsetY = 0;
+      if (frogShakeTimer > 0) {
+        frogShakeTimer -= dt;
+        const mag = frogShakeTimer * 18;
+        renderOffsetX = (Math.random() - 0.5) * mag;
+        renderOffsetY = (Math.random() - 0.5) * mag;
+      }
+
+      ctx.save();
+      ctx.translate(renderOffsetX, renderOffsetY);
+
+      // 4. VẼ NỀN ĐẦM SEN BỜ NƯỚC (WATER POND BACKGROUND)
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, ch);
+      bgGrad.addColorStop(0, '#0284c7'); // Bầu trời xanh biếc
+      bgGrad.addColorStop(0.35, '#0d9488'); // Mặt nước đầm sâu
+      bgGrad.addColorStop(0.7, '#047857'); // Đáy cỏ đầm bùn
+      bgGrad.addColorStop(1, '#064e3b'); // Bờ đất ẩm mát
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, cw, ch);
+
+      // Gợn sóng lăn tăn
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.lineWidth = 2;
+      for (let y = 40; y < ch; y += 36) {
+        ctx.beginPath();
+        for (let x = 0; x < cw; x += 40) {
+          const wy = y + Math.sin(now * 0.0025 + x * 0.03 + y * 0.04) * 3;
+          if (x === 0) ctx.moveTo(x, wy);
+          else ctx.lineTo(x, wy);
+        }
+        ctx.stroke();
+      }
+
+      // Vẽ lá sen bồng bềnh
+      frogLilyPads.forEach(pad => {
+        ctx.save();
+        ctx.translate(pad.x, pad.y);
+        ctx.fillStyle = pad.color;
+        ctx.beginPath();
+        ctx.arc(0, 0, pad.radius, pad.notchAngle + 0.35, pad.notchAngle + Math.PI * 2 - 0.35);
+        ctx.lineTo(0, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        // Gân lá sen
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+        ctx.lineWidth = 1.2;
+        for (let a = 0; a < Math.PI * 2; a += Math.PI / 4) {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(Math.cos(a) * (pad.radius - 4), Math.sin(a) * (pad.radius - 4));
+          ctx.stroke();
+        }
+
+        // Bông hoa sen hồng
+        if (pad.hasFlower) {
+          ctx.fillStyle = '#f472b6';
+          for (let p = 0; p < 6; p++) {
+            const pa = (Math.PI * 2 * p) / 6;
+            ctx.beginPath();
+            ctx.ellipse(Math.cos(pa) * 8, Math.sin(pa) * 8, 7, 4, pa, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.fillStyle = '#fef08a';
+          ctx.beginPath();
+          ctx.arc(0, 0, 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+
+      // 5. VẼ CÁC LỖ ĐẤT & CÁC CHÚ ẾCH
+      // Sắp xếp các lỗ theo Y từ trên xuống dưới để lỗ trước che chân lỗ sau tự nhiên
+      const sortedHoles = [...frogHoles].sort((a, b) => a.y - b.y);
+
+      sortedHoles.forEach(h => {
+        // VẼ MẶT ĐẤT & LỖ (HOLE RIM & CAVITY)
+        ctx.save();
+
+        // Đổ bóng dưới miệng lỗ
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        ctx.beginPath();
+        ctx.ellipse(h.x, h.y + 6, h.rx + 8, h.ry + 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Viền đất gò nổi xung quanh lỗ
+        const rimGrad = ctx.createLinearGradient(h.x, h.y - h.ry, h.x, h.y + h.ry);
+        rimGrad.addColorStop(0, '#78350f'); // Nâu đất nổi
+        rimGrad.addColorStop(0.6, '#92400e');
+        rimGrad.addColorStop(1, '#14532d'); // Cỏ viền xanh
+        ctx.fillStyle = rimGrad;
+        ctx.beginPath();
+        ctx.ellipse(h.x, h.y, h.rx + 5, h.ry + 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Lòng lỗ sâu hun hút
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.ellipse(h.x, h.y, h.rx, h.ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // CLIP MASK: Chỉ hiển thị phần ếch ngoi lên trên lỗ
+        ctx.beginPath();
+        ctx.rect(h.x - h.rx - 15, h.y - 120, (h.rx + 15) * 2, 120 + h.ry * 0.8);
+        ctx.clip();
+
+        // VẼ CHÚ ẾCH (NẾU ĐANG NGOI LÊN)
+        if (h.height > 0.02) {
+          drawKawaiiFrog(ctx, h);
+        }
+
+        ctx.restore();
+
+        // VẼ MÔ ĐẤT PHÍA TRƯỚC LỖ ĐỂ CHE PHẦN THÂN THẤP CỦA ẾCH KHI LẶN
+        ctx.save();
+        ctx.fillStyle = '#451a03';
+        ctx.beginPath();
+        ctx.ellipse(h.x, h.y + 4, h.rx * 0.95, h.ry * 0.55, 0, 0, Math.PI);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // 6. CẬP NHẬT & VẼ CÁC BỤI BỤI VĂNG RA KHI ĐẬP HỤT
+      for (let i = frogDustPuffs.length - 1; i >= 0; i--) {
+        const p = frogDustPuffs[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= dt;
+        p.alpha = Math.max(0, p.life / p.maxLife);
+        p.radius += dt * 12;
+
+        ctx.save();
+        ctx.fillStyle = `rgba(245, 158, 11, ${p.alpha * 0.6})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (p.life <= 0) frogDustPuffs.splice(i, 1);
+      }
+
+      // 7. CẬP NHẬT & VẼ TIA NỔ BAM! & NGÔI SAO KHI ĐẬP TRÚNG
+      for (let i = frogHitBursts.length - 1; i >= 0; i--) {
+        const b = frogHitBursts[i];
+        b.x += b.vx;
+        b.y += b.vy;
+        b.life -= dt;
+        const alpha = Math.max(0, b.life / b.maxLife);
+
+        ctx.save();
+        ctx.fillStyle = b.color;
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        if (b.life <= 0) frogHitBursts.splice(i, 1);
+      }
+
+      // 8. VẼ CÂY BÚA HOẠT HÌNH (ANIMATED MALLET)
+      drawCartoonHammer(ctx, frogHammer.x, frogHammer.y, frogHammer.isSwinging, frogHammer.swingProgress);
+
+      ctx.restore();
+
+      frogAnimId = requestAnimationFrame(renderFrogCanvas);
+    }
+
+    // HÀM VẼ CHÚ ẾCH KAWAII SINH ĐỘNG
+    function drawKawaiiFrog(ctx, hole) {
+      const frogY = hole.y - hole.height * 55;
+      const isWhacked = hole.state === 'whacked';
+
+      ctx.save();
+      ctx.translate(hole.x, frogY);
+      ctx.rotate(hole.wobble);
+
+      // Thân ếch bầu bĩnh màu xanh ngọc
+      const bodyGrad = ctx.createLinearGradient(0, -35, 0, 25);
+      bodyGrad.addColorStop(0, '#4ade80');
+      bodyGrad.addColorStop(0.5, '#22c55e');
+      bodyGrad.addColorStop(1, '#16a34a');
+      ctx.fillStyle = bodyGrad;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 36, 30, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bụng ếch màu kem vàng tươi
+      ctx.fillStyle = '#fef9c3';
+      ctx.beginPath();
+      ctx.ellipse(0, 8, 22, 16, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mắt trái & Mắt phải lồi to tròn
+      const eyeOffsetX = 20;
+      const eyeOffsetY = -22;
+      const eyeR = 14;
+
+      // Hốc mắt xanh
+      ctx.fillStyle = '#22c55e';
+      ctx.beginPath();
+      ctx.arc(-eyeOffsetX, eyeOffsetY, eyeR + 2, 0, Math.PI * 2);
+      ctx.arc(eyeOffsetX, eyeOffsetY, eyeR + 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tròng trắng mắt
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-eyeOffsetX, eyeOffsetY, eyeR, 0, Math.PI * 2);
+      ctx.arc(eyeOffsetX, eyeOffsetY, eyeR, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (isWhacked) {
+        // Mắt xoắn ốc khi bị đập choáng @_@
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.2;
+        [-eyeOffsetX, eyeOffsetX].forEach(ex => {
+          ctx.beginPath();
+          for (let a = 0; a < Math.PI * 4; a += 0.25) {
+            const r = (a / (Math.PI * 4)) * (eyeR - 3);
+            const sx = ex + Math.cos(a + hole.dizzyAngle) * r;
+            const sy = eyeOffsetY + Math.sin(a + hole.dizzyAngle) * r;
+            if (a === 0) ctx.moveTo(sx, sy);
+            else ctx.lineTo(sx, sy);
+          }
+          ctx.stroke();
+        });
+      } else if (hole.isBlinking) {
+        // Mắt nhắm khi chớp mắt
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(-eyeOffsetX, eyeOffsetY + 2, 7, Math.PI * 0.1, Math.PI * 0.9);
+        ctx.arc(eyeOffsetX, eyeOffsetY + 2, 7, Math.PI * 0.1, Math.PI * 0.9);
+        ctx.stroke();
+      } else {
+        // Đồng tử đen to tròn long lanh
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-eyeOffsetX, eyeOffsetY, 7.5, 0, Math.PI * 2);
+        ctx.arc(eyeOffsetX, eyeOffsetY, 7.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Đốm sáng lấp lánh (catchlights)
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-eyeOffsetX - 2.5, eyeOffsetY - 2.5, 3, 0, Math.PI * 2);
+        ctx.arc(eyeOffsetX - 2.5, eyeOffsetY - 2.5, 3, 0, Math.PI * 2);
+        ctx.arc(-eyeOffsetX + 2.5, eyeOffsetY + 2.5, 1.2, 0, Math.PI * 2);
+        ctx.arc(eyeOffsetX + 2.5, eyeOffsetY + 2.5, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Má hồng dễ thương
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(-23, -3, 6, 4, 0, 0, Math.PI * 2);
+      ctx.ellipse(23, -3, 6, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Miệng cười
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      if (isWhacked) {
+        // Miệng méo chữ O
+        ctx.fillStyle = '#dc2626';
+        ctx.ellipse(0, 0, 7, 10, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      } else {
+        ctx.arc(0, -4, 15, Math.PI * 0.2, Math.PI * 0.8);
+        ctx.stroke();
+      }
+
+      // Mũ lá sen nhỏ xinh trên đỉnh đầu
+      ctx.fillStyle = '#15803d';
+      ctx.beginPath();
+      ctx.ellipse(0, -32, 14, 5, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.arc(0, -34, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // NẾU BỊ ĐẬP TRÚNG: VẼ SAO XOAY VÒNG VÀ CUỘN THIỆP VÀNG HIỆN TÊN HỌC SINH
+      if (isWhacked) {
+        // Vòng hào quang sao xoay trên đầu
+        const haloR = 28;
+        for (let s = 0; s < 4; s++) {
+          const sa = hole.dizzyAngle + (Math.PI * 2 * s) / 4;
+          const sx = Math.cos(sa) * haloR;
+          const sy = -45 + Math.sin(sa) * 8;
+          ctx.fillStyle = '#facc15';
+          ctx.font = '16px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('⭐', sx, sy);
+        }
+
+        // BẢNG VÀNG CUỘN THƯ MANG TÊN HỌC SINH
+        const stName = hole.student ? hole.student.name : 'Học sinh';
+        ctx.save();
+        ctx.translate(0, -78);
+
+        // Nền thiệp vàng kim
+        const tagW = Math.max(130, stName.length * 11 + 30);
+        const tagH = 34;
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 12);
+        ctx.fill();
+        ctx.stroke();
+
+        // Tên học sinh nổi bật màu vàng óng
+        ctx.fillStyle = '#fde047';
+        ctx.font = '900 13px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`👑 ${stName}`, 0, 1);
+        ctx.restore();
+      }
+
+      ctx.restore();
+    }
+
+    // HÀM VẼ CÂY BÚA HOẠT HÌNH
+    function drawCartoonHammer(ctx, x, y, isSwinging, progress) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Tính góc xoay khi vung búa
+      let angle = -0.4; // Góc nghỉ bình thường
+      if (isSwinging) {
+        // Vung ngược về sau rồi dộng mạnh xuống
+        if (progress < 0.4) {
+          angle = -0.4 - (progress / 0.4) * 0.7; // Xoay giơ cao
+        } else {
+          const p = (progress - 0.4) / 0.6;
+          angle = -1.1 + p * 1.5; // Đập mạnh xuống góc +0.4 rad
+        }
+      }
+      ctx.rotate(angle);
+
+      // Cán búa gỗ
+      const handleGrad = ctx.createLinearGradient(-5, 0, 5, 0);
+      handleGrad.addColorStop(0, '#d97706');
+      handleGrad.addColorStop(0.5, '#fde68a');
+      handleGrad.addColorStop(1, '#b45309');
+      ctx.fillStyle = handleGrad;
+      ctx.fillRect(-5, 0, 10, 65);
+
+      // Đai bọc kim loại trên cán
+      ctx.fillStyle = '#64748b';
+      ctx.fillRect(-6, 8, 12, 6);
+      ctx.fillRect(-6, 55, 12, 7);
+
+      // Đầu búa đồ chơi sắc sỡ (sọc đỏ vàng)
+      const headW = 55;
+      const headH = 36;
+      ctx.save();
+      ctx.translate(0, -8);
+
+      // Đổ bóng đầu búa
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.beginPath();
+      ctx.roundRect(-headW / 2 + 3, -headH / 2 + 3, headW, headH, 8);
+      ctx.fill();
+
+      // Khối đầu búa đỏ
+      ctx.fillStyle = '#dc2626';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(-headW / 2, -headH / 2, headW, headH, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      // Sọc vàng kim ở giữa
+      ctx.fillStyle = '#facc15';
+      ctx.fillRect(-headW / 2 + 14, -headH / 2, 27, headH);
+
+      // Ngôi sao trang trí trên đầu búa
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '14px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', 0, 0);
+
+      // Mặt đập 2 bên có đệm cao su xanh
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.roundRect(-headW / 2 - 5, -headH / 2 + 2, 6, headH - 4, 3);
+      ctx.roundRect(headW / 2 - 1, -headH / 2 + 2, 6, headH - 4, 3);
+      ctx.fill();
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    // ==========================================
+    // MODULE 15: BÉ CÂU CÁ BẮT TÊN (FISHING MINIGAME)
+    // 50 Chú Cá Đa Sắc Màu - Em Bé Buông Cần - Cá Cắn Câu - Giật Lên Hiện Tên HS
+    // ==========================================
+    const FISH_COLORS = [
+      { name: 'Vàng Kim', body: '#f59e0b', belly: '#fef08a', fin: '#d97706', stripe: null },
+      { name: 'Cá Hề Nemo', body: '#f97316', belly: '#ffedd5', fin: '#ea580c', stripe: '#ffffff' },
+      { name: 'Xanh Lam', body: '#0284c7', belly: '#e0f2fe', fin: '#0369a1', stripe: '#38bdf8' },
+      { name: 'Đỏ Ruby', body: '#e11d48', belly: '#ffe4e6', fin: '#be123c', stripe: null },
+      { name: 'Tím Hoa Cà', body: '#8b5cf6', belly: '#f3e8ff', fin: '#6d28d9', stripe: '#c4b5fd' },
+      { name: 'Xanh Lục Ngọc', body: '#10b981', belly: '#d1fae5', fin: '#059669', stripe: null },
+      { name: 'Hồng Phấn', body: '#ec4899', belly: '#fce7f3', fin: '#be185d', stripe: '#f472b6' },
+      { name: 'Xanh Neon', body: '#06b6d4', belly: '#cffafe', fin: '#0891b2', stripe: '#a5f3fc' },
+      { name: 'Cam Cháy', body: '#ea580c', belly: '#fed7aa', fin: '#c2410c', stripe: null },
+      { name: 'Xanh Lá Mạ', body: '#84cc16', belly: '#ecfccb', fin: '#65a30d', stripe: '#bef264' },
+      { name: 'Cầu Vồng VIP', body: '#6366f1', belly: '#fef08a', fin: '#ec4899', stripe: '#38bdf8' }
+    ];
+
+    const FishingAudio = {
+      ctx: null,
+      enabled: true,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+      playCast() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          const now = this.ctx.currentTime;
+          osc.frequency.setValueAtTime(350, now);
+          osc.frequency.exponentialRampToValueAtTime(750, now + 0.18);
+          osc.frequency.exponentialRampToValueAtTime(400, now + 0.35);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } catch (e) {}
+      },
+      playBite() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          // Âm plop nước khi phao bị giật chìm
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(500, now);
+          osc.frequency.exponentialRampToValueAtTime(160, now + 0.15);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.18);
+
+          // Âm cắn câu rung dây
+          const osc2 = this.ctx.createOscillator();
+          const gain2 = this.ctx.createGain();
+          osc2.type = 'sawtooth';
+          osc2.frequency.setValueAtTime(220, now + 0.05);
+          osc2.frequency.setValueAtTime(280, now + 0.12);
+          osc2.frequency.setValueAtTime(190, now + 0.22);
+          gain2.gain.setValueAtTime(0.12, now + 0.05);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc2.connect(gain2);
+          gain2.connect(this.ctx.destination);
+          osc2.start(now + 0.05);
+          osc2.stop(now + 0.3);
+        } catch (e) {}
+      },
+      playReel() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          // Âm quay ống cước rít rít giật mạnh
+          for (let i = 0; i < 4; i++) {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            const t = now + i * 0.07;
+            osc.frequency.setValueAtTime(600 + i * 120, t);
+            osc.frequency.exponentialRampToValueAtTime(950 + i * 150, t + 0.05);
+            gain.gain.setValueAtTime(0.18, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.06);
+          }
+        } catch (e) {}
+      },
+      playSplashLeap() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          // Tiếng nước nổ tung tóe
+          const bufferSize = this.ctx.sampleRate * 0.4;
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.09));
+          }
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(1100, now);
+          filter.frequency.exponentialRampToValueAtTime(300, now + 0.35);
+          const gain = this.ctx.createGain();
+          gain.gain.setValueAtTime(0.35, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          noise.start(now);
+          noise.stop(now + 0.4);
+        } catch (e) {}
+      },
+      playFanfare() {
+        if (!this.enabled) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const notes = [440, 554.37, 659.25, 880]; // A4, C#5, E5, A5
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            const t = this.ctx.currentTime + idx * 0.12;
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.25, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.42);
+          });
+        } catch (e) {}
+      }
+    };
+
+    function toggleFishingSound() {
+      FishingAudio.enabled = !FishingAudio.enabled;
+      const btn = document.getElementById('fishing-sound-btn');
+      if (btn) {
+        btn.innerHTML = FishingAudio.enabled ? '🔊 Bật' : '🔇 Tắt';
+      }
+    }
+
+    function toggleFishingFullscreen() {
+      const container = document.getElementById('fishing-stage-container');
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+      setTimeout(resizeFishingCanvas, 150);
+    }
+
+    // GAME STATE & VARIABLES
+    let fishingFish = [];
+    let fishingBubbles = [];
+    let fishingWaterRipples = [];
+    let fishingSplashes = [];
+    let fishingConfetti = [];
+    let fishingGameState = 'idle'; // 'idle' | 'waiting' | 'biting' | 'reeling' | 'celebrating'
+    let fishingAnimId = null;
+    let fishingLastTime = 0;
+    let fishingStartTime = 0;
+    let fishingTargetWinner = null;
+    let fishingFinishCallback = null;
+    let fishingTotalDuration = 5000;
+    let fishingRodTension = 0; // 0 to 1
+    let fishingChildPullBack = 0; // 0 to 1
+    let fishingHookPos = { x: 0, y: 0 };
+    let fishingBobberPos = { x: 0, y: 0 };
+    let fishingLeapFish = null;
+    let fishingScrollProgress = 0; // 0 to 1
+    let fishingWaterY = 0;
+
+    function initFishingGame(forceReset = false) {
+      const canvas = document.getElementById('fishing-canvas');
+      if (!canvas) return;
+      resizeFishingCanvas();
+
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || canvas.width || 800;
+      const h = rect.height || canvas.height || 550;
+      fishingWaterY = Math.round(h * 0.42);
+
+      // Tạo đủ 50 con cá bơi tự nhiên khắp hồ nước
+      fishingFish = [];
+      const totalFish = 50;
+      const minX = Math.max(160, w * 0.22);
+      const maxX = w - 40;
+      const minY = fishingWaterY + 35;
+      const maxY = h - 25;
+
+      for (let i = 0; i < totalFish; i++) {
+        const colorObj = FISH_COLORS[i % FISH_COLORS.length];
+        const size = 18 + (i % 6) * 3.5; // Kích thước cá từ 18px đến 36px
+        const depth = 0.35 + Math.random() * 0.65; // Độ sâu 3D (nhỏ/lợt ở xa, to/rõ ở gần)
+        const dir = Math.random() > 0.5 ? 1 : -1;
+        const speed = (0.45 + Math.random() * 0.75) * (0.8 + depth * 0.4);
+
+        fishingFish.push({
+          id: i,
+          x: minX + Math.random() * (maxX - minX),
+          y: minY + Math.random() * (maxY - minY),
+          vx: dir * speed,
+          vy: (Math.random() - 0.5) * 0.3,
+          baseVy: (Math.random() - 0.5) * 0.2,
+          size: size * (0.75 + depth * 0.35),
+          depth: depth,
+          color: colorObj.body,
+          bellyColor: colorObj.belly,
+          finColor: colorObj.fin,
+          stripeColor: colorObj.stripe,
+          tailPhase: Math.random() * Math.PI * 2,
+          tailSpeed: 0.12 + Math.random() * 0.08,
+          turnCooldown: 60 + Math.random() * 120,
+          bubbleCooldown: 100 + Math.random() * 300,
+          isTarget: false,
+          isHooked: false
+        });
+      }
+
+      fishingBubbles = [];
+      fishingWaterRipples = [];
+      fishingSplashes = [];
+      fishingConfetti = [];
+      fishingGameState = 'idle';
+      fishingRodTension = 0;
+      fishingChildPullBack = 0;
+      fishingLeapFish = null;
+      fishingScrollProgress = 0;
+
+      // Vị trí phao câu mặc định
+      fishingBobberPos = {
+        x: Math.min(w * 0.52, minX + 180),
+        y: fishingWaterY + 3
+      };
+      fishingHookPos = {
+        x: fishingBobberPos.x,
+        y: fishingBobberPos.y + 65
+      };
+
+      const statusEl = document.getElementById('fishing-game-status');
+      if (statusEl) {
+        statusEl.innerText = 'Bé đang cầm cần câu ngắm 50 chú cá bơi lội... Bấm THẢ CẦN CÂU CÁ!';
+      }
+
+      if (fishingAnimId) cancelAnimationFrame(fishingAnimId);
+      fishingLastTime = performance.now();
+      fishingAnimId = requestAnimationFrame(renderFishingCanvas);
+    }
+
+    function resetFishingGame() {
+      initFishingGame(true);
+      const spinBtn = document.getElementById('spin-btn');
+      if (spinBtn) {
+        spinBtn.disabled = false;
+        spinBtn.innerHTML = '<i class="fa-solid fa-fish"></i> THẢ CẦN CÂU CÁ';
+      }
+    }
+
+    function resizeFishingCanvas() {
+      const canvas = document.getElementById('fishing-canvas');
+      if (!canvas) return;
+      const rect = canvas.parentElement?.getBoundingClientRect();
+      const w = rect && rect.width > 0 ? rect.width : (canvas.clientWidth || 800);
+      const h = rect && rect.height > 0 ? rect.height : (canvas.clientHeight || 550);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.resetTransform();
+        ctx.scale(dpr, dpr);
+      }
+      fishingWaterY = Math.round(h * 0.42);
+    }
+
+    function startFishingGame(selectedStudent, onFinishCallback) {
+      if (!selectedStudent) return;
+      fishingTargetWinner = selectedStudent;
+      fishingFinishCallback = onFinishCallback;
+
+      // Lấy thời gian từ dropdown (ví dụ 3s, 5s, 10s...)
+      const durationSelect = document.getElementById('spin-duration');
+      const seconds = durationSelect ? (parseInt(durationSelect.value, 10) || 5) : 5;
+      fishingTotalDuration = Math.max(3000, seconds * 1000);
+
+      // Chỉ định 1 chú cá trong hồ làm chú cá trúng giải may mắn
+      const eligibleFish = fishingFish.filter(f => f.depth > 0.5);
+      const chosen = eligibleFish.length > 0 
+        ? eligibleFish[Math.floor(Math.random() * eligibleFish.length)]
+        : fishingFish[0];
+
+      fishingFish.forEach(f => {
+        f.isTarget = false;
+        f.isHooked = false;
+      });
+      chosen.isTarget = true;
+      chosen.color = '#f59e0b'; // Chú cá vàng óng ánh
+      chosen.finColor = '#ea580c';
+      chosen.bellyColor = '#fef08a';
+
+      fishingGameState = 'waiting';
+      fishingStartTime = performance.now();
+      fishingRodTension = 0;
+      fishingChildPullBack = 0;
+      fishingScrollProgress = 0;
+      fishingLeapFish = null;
+
+      FishingAudio.playCast();
+
+      const statusEl = document.getElementById('fishing-game-status');
+      if (statusEl) {
+        statusEl.innerText = `🎣 Bé đã buông cần câu xuống hồ... Đang chờ cá cắn câu (${seconds} giây)!`;
+      }
+
+      // Tạo sóng tròn khi buông phao
+      createWaterRipple(fishingBobberPos.x, fishingWaterY, 28);
+    }
+
+    function createWaterRipple(x, y, maxR = 24) {
+      fishingWaterRipples.push({
+        x: x,
+        y: y,
+        r: 4,
+        maxR: maxR,
+        alpha: 0.85
+      });
+    }
+
+    function createWaterSplash(x, y, count = 18) {
+      for (let i = 0; i < count; i++) {
+        const angle = -Math.PI * 0.85 + Math.random() * Math.PI * 0.7;
+        const speed = 2.5 + Math.random() * 5.5;
+        fishingSplashes.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          radius: 2 + Math.random() * 3.5,
+          alpha: 1,
+          gravity: 0.22
+        });
+      }
+    }
+
+    // MAIN RENDER LOOP
+    function renderFishingCanvas(timestamp) {
+      const canvas = document.getElementById('fishing-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || (canvas.width / (window.devicePixelRatio || 1)) || 800;
+      const h = rect.height || (canvas.height / (window.devicePixelRatio || 1)) || 550;
+
+      const dt = Math.min(32, timestamp - (fishingLastTime || timestamp));
+      fishingLastTime = timestamp;
+
+      // 1. CẬP NHẬT TRẠNG THÁI GAME THEO THỜI GIAN CÀI ĐẶT
+      updateFishingGameState(timestamp, dt, w, h);
+
+      // 2. XÓA CANVAS & VẼ NỀN TRỜI & NƯỚC
+      ctx.clearRect(0, 0, w, h);
+      drawFishingBackground(ctx, w, h, timestamp);
+
+      // 3. VẼ RONG BIỂN / CỎ NƯỚC DƯỚI ĐÁY
+      drawAquaticPlants(ctx, w, h, timestamp);
+
+      // 4. CẬP NHẬT & VẼ 50 CON CÁ BƠI LỘI
+      drawAndSimulateFish(ctx, w, h, timestamp, dt);
+
+      // 5. VẼ CẦU GỖ & EM BÉ CÂU CÁ
+      const pierWidth = Math.max(140, w * 0.22);
+      drawWoodenPier(ctx, pierWidth, fishingWaterY, h);
+      drawFishingChild(ctx, pierWidth * 0.72, fishingWaterY - 14, timestamp);
+
+      // 6. VẼ DÂY CÂU, PHAO CÂU & HIỆU ỨNG SÓNG NƯỚC
+      drawFishingLineAndBobber(ctx, pierWidth * 0.72, fishingWaterY - 14, timestamp);
+
+      // 7. VẼ CÁ NHẢY LÊN & BẢNG TÊN CUỘN THƯ (REELING / CELEBRATING)
+      if (fishingGameState === 'reeling' || fishingGameState === 'celebrating') {
+        drawLeapingFishAndNameScroll(ctx, w, h, timestamp);
+      }
+
+      // 8. HIỆU ỨNG HẠT BỌT NƯỚC & TIA NƯỚC VĂNG
+      drawWaterSplashesAndRipples(ctx);
+
+      fishingAnimId = requestAnimationFrame(renderFishingCanvas);
+    }
+
+    function updateFishingGameState(timestamp, dt, w, h) {
+      if (fishingGameState === 'waiting') {
+        const elapsed = timestamp - fishingStartTime;
+        const timeLeft = Math.max(0, (fishingTotalDuration - elapsed) / 1000);
+
+        // Khi còn khoảng 1.2s cuối cùng -> Chuyển sang cắn câu (Biting)
+        if (elapsed >= fishingTotalDuration - 1200) {
+          fishingGameState = 'biting';
+          FishingAudio.playBite();
+          createWaterRipple(fishingBobberPos.x, fishingWaterY, 32);
+          createWaterSplash(fishingBobberPos.x, fishingWaterY, 8);
+          const statusEl = document.getElementById('fishing-game-status');
+          if (statusEl) {
+            statusEl.innerText = '⚡ CÁ ĐÃ CẮN CÂU! PHAO BỊ GIẬT CHÌM! CHUẨN BỊ GIẬT LÊN!';
+          }
+        } else {
+          const statusEl = document.getElementById('fishing-game-status');
+          if (statusEl) {
+            statusEl.innerText = `🎣 Đang kiên nhẫn câu cá... Chờ cắn câu: ${timeLeft.toFixed(1)}s`;
+          }
+        }
+      } else if (fishingGameState === 'biting') {
+        const elapsed = timestamp - fishingStartTime;
+        // Phao bị giật liên tục
+        fishingRodTension = Math.min(1, fishingRodTension + 0.08);
+
+        // Hết thời gian duration -> Giật mạnh lên (Reeling)
+        if (elapsed >= fishingTotalDuration) {
+          fishingGameState = 'reeling';
+          FishingAudio.playReel();
+          FishingAudio.playSplashLeap();
+          createWaterSplash(fishingBobberPos.x, fishingWaterY, 35);
+          createWaterRipple(fishingBobberPos.x, fishingWaterY, 45);
+
+          // Khởi tạo quỹ đạo chú cá nhảy lên vòng cung
+          fishingLeapFish = {
+            startX: fishingBobberPos.x,
+            startY: fishingWaterY,
+            targetX: Math.max(220, w * 0.48),
+            targetY: fishingWaterY - 110,
+            progress: 0,
+            studentName: fishingTargetWinner ? fishingTargetWinner.name : 'Học sinh may mắn'
+          };
+
+          const statusEl = document.getElementById('fishing-game-status');
+          if (statusEl) {
+            statusEl.innerText = `🎉 GIẬT CẦN! ĐÃ BẮT ĐƯỢC CHÚ CÁ MAY MẮN: ${fishingLeapFish.studentName}!`;
+          }
+        }
+      } else if (fishingGameState === 'reeling') {
+        // Bé ngả người giật cần câu
+        fishingChildPullBack = Math.min(1, fishingChildPullBack + 0.05);
+
+        if (fishingLeapFish) {
+          fishingLeapFish.progress += dt / 900; // Nhảy trong ~0.9s
+          if (fishingLeapFish.progress >= 1) {
+            fishingLeapFish.progress = 1;
+            fishingGameState = 'celebrating';
+            FishingAudio.playFanfare();
+
+            // Mở bung bảng tên
+            fishingScrollProgress = 1;
+
+            // Gọi callback kết quả sau 1.2s chiêm ngưỡng
+            setTimeout(() => {
+              if (typeof fishingFinishCallback === 'function') {
+                fishingFinishCallback(fishingTargetWinner);
+              }
+            }, 1200);
+          }
+        }
+      } else if (fishingGameState === 'celebrating') {
+        fishingScrollProgress = Math.min(1, fishingScrollProgress + 0.04);
+      }
+    }
+
+    // VẼ NỀN BẦU TRỜI & HỒ NƯỚC
+    function drawFishingBackground(ctx, w, h, timestamp) {
+      // 1. Bầu trời xanh biếc mùa hè
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, fishingWaterY);
+      skyGrad.addColorStop(0, '#38bdf8'); // Sky blue
+      skyGrad.addColorStop(0.7, '#7dd3fc');
+      skyGrad.addColorStop(1, '#bae6fd');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, fishingWaterY);
+
+      // Ông mặt trời tỏa sáng góc trên phải
+      const sunX = w - 80;
+      const sunY = 55;
+      const sunGrad = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, 65);
+      sunGrad.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+      sunGrad.addColorStop(0.4, 'rgba(253, 224, 71, 0.55)');
+      sunGrad.addColorStop(1, 'rgba(253, 224, 71, 0)');
+      ctx.fillStyle = sunGrad;
+      ctx.beginPath();
+      ctx.arc(sunX, sunY, 65, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Những đám mây trắng bồng bềnh
+      drawPuffyCloud(ctx, (w * 0.28 + timestamp * 0.012) % (w + 160) - 80, 40, 0.85);
+      drawPuffyCloud(ctx, (w * 0.65 + timestamp * 0.008) % (w + 160) - 80, 65, 0.65);
+
+      // Núi đồi xanh xa xăm ven hồ
+      ctx.fillStyle = '#0d9488';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.15, fishingWaterY);
+      ctx.quadraticCurveTo(w * 0.35, fishingWaterY - 45, w * 0.55, fishingWaterY);
+      ctx.quadraticCurveTo(w * 0.75, fishingWaterY - 55, w * 0.95, fishingWaterY);
+      ctx.lineTo(w, fishingWaterY);
+      ctx.lineTo(0, fishingWaterY);
+      ctx.fill();
+
+      // 2. Mặt nước & lòng hồ xanh ngọc bích sâu thẳm
+      const waterGrad = ctx.createLinearGradient(0, fishingWaterY, 0, h);
+      waterGrad.addColorStop(0, '#06b6d4'); // Cyan nước mặt
+      waterGrad.addColorStop(0.35, '#0284c7'); // Xanh lam
+      waterGrad.addColorStop(0.8, '#0369a1');
+      waterGrad.addColorStop(1, '#082f49'); // Đáy sâu đậm
+      ctx.fillStyle = waterGrad;
+      ctx.fillRect(0, fishingWaterY, w, h - fishingWaterY);
+
+      // Tia nắng chiếu xiên dưới nước (Caustics light rays)
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.fillStyle = '#ffffff';
+      for (let i = 0; i < 6; i++) {
+        const rayX = w * (0.3 + i * 0.12) + Math.sin(timestamp * 0.001 + i) * 15;
+        ctx.beginPath();
+        ctx.moveTo(rayX, fishingWaterY);
+        ctx.lineTo(rayX + 35, fishingWaterY);
+        ctx.lineTo(rayX - 30 + i * 25, h);
+        ctx.lineTo(rayX - 65 + i * 25, h);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // Đường gợn sóng mặt nước lăn tăn
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let x = 0; x <= w; x += 15) {
+        const wave = Math.sin(x * 0.03 + timestamp * 0.003) * 2.5;
+        if (x === 0) ctx.moveTo(x, fishingWaterY + wave);
+        else ctx.lineTo(x, fishingWaterY + wave);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // Lớp bãi cát vàng ở đáy hồ
+      const sandGrad = ctx.createLinearGradient(0, h - 22, 0, h);
+      sandGrad.addColorStop(0, '#d97706');
+      sandGrad.addColorStop(1, '#78350f');
+      ctx.fillStyle = sandGrad;
+      ctx.fillRect(0, h - 22, w, 22);
+
+      // Sỏi đá dưới đáy
+      ctx.fillStyle = 'rgba(120, 53, 15, 0.4)';
+      for (let i = 0; i < 20; i++) {
+        const px = (i * 55 + 20) % w;
+        ctx.beginPath();
+        ctx.ellipse(px, h - 8, 7, 4, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function drawPuffyCloud(ctx, x, y, scale = 1) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+      ctx.beginPath();
+      ctx.arc(0, 0, 20, 0, Math.PI * 2);
+      ctx.arc(18, -8, 24, 0, Math.PI * 2);
+      ctx.arc(42, -5, 20, 0, Math.PI * 2);
+      ctx.arc(60, 2, 16, 0, Math.PI * 2);
+      ctx.arc(26, 10, 18, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawAquaticPlants(ctx, w, h, timestamp) {
+      // Rong biển mềm mại lắc lư dưới đáy hồ
+      const plantPositions = [0.26, 0.38, 0.52, 0.68, 0.82, 0.94];
+      plantPositions.forEach((pos, idx) => {
+        const baseX = w * pos;
+        const baseY = h - 18;
+        const stemHeight = 65 + (idx % 3) * 28;
+        ctx.save();
+        ctx.strokeStyle = idx % 2 === 0 ? '#10b981' : '#059669';
+        ctx.lineWidth = 4.5;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(baseX, baseY);
+        const sway = Math.sin(timestamp * 0.002 + idx) * 16;
+        ctx.quadraticCurveTo(baseX + sway * 0.5, baseY - stemHeight * 0.5, baseX + sway, baseY - stemHeight);
+        ctx.stroke();
+
+        // Lá rong 2 bên
+        ctx.fillStyle = '#34d399';
+        ctx.beginPath();
+        ctx.ellipse(baseX + sway * 0.6 - 7, baseY - stemHeight * 0.4, 7, 3, -0.4, 0, Math.PI * 2);
+        ctx.ellipse(baseX + sway * 0.8 + 8, baseY - stemHeight * 0.7, 8, 3.5, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    // VẼ CẦU GỖ (WOODEN PIER)
+    function drawWoodenPier(ctx, pierW, waterY, h) {
+      // Cột trụ gỗ chống xuống đáy hồ
+      const pillarGrad = ctx.createLinearGradient(0, 0, 18, 0);
+      pillarGrad.addColorStop(0, '#593009');
+      pillarGrad.addColorStop(0.5, '#854d0e');
+      pillarGrad.addColorStop(1, '#3b1f04');
+
+      const pillarX1 = pierW * 0.35;
+      const pillarX2 = pierW * 0.82;
+
+      [pillarX1, pillarX2].forEach(px => {
+        ctx.save();
+        ctx.fillStyle = pillarGrad;
+        ctx.fillRect(px - 10, waterY - 5, 20, h - waterY + 5);
+
+        // Vòng đai ốc vít trên cọc gỗ
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(px - 11, waterY + 30, 22, 5);
+        ctx.fillRect(px - 11, waterY + 90, 22, 5);
+
+        // Rong rêu bám dưới chân cột gỗ trong nước
+        ctx.fillStyle = '#065f46';
+        ctx.fillRect(px - 11, h - 35, 22, 20);
+        ctx.restore();
+      });
+
+      // Mặt sàn cầu gỗ bên trên bờ
+      const deckH = 22;
+      const deckY = waterY - deckH;
+
+      const deckGrad = ctx.createLinearGradient(0, deckY, 0, waterY);
+      deckGrad.addColorStop(0, '#a16207'); // Gỗ sáng
+      deckGrad.addColorStop(0.6, '#854d0e');
+      deckGrad.addColorStop(1, '#593009'); // Bóng đổ dưới mép sàn
+      ctx.fillStyle = deckGrad;
+      ctx.fillRect(0, deckY, pierW, deckH);
+
+      // Vân gỗ & rãnh giữa các thanh ván ghép
+      ctx.strokeStyle = '#3b1f04';
+      ctx.lineWidth = 1.8;
+      for (let x = 20; x < pierW; x += 26) {
+        ctx.beginPath();
+        ctx.moveTo(x, deckY);
+        ctx.lineTo(x, deckY + deckH);
+        ctx.stroke();
+      }
+
+      // Đinh tán trên ván gỗ
+      ctx.fillStyle = '#1c1917';
+      for (let x = 12; x < pierW; x += 26) {
+        ctx.beginPath();
+        ctx.arc(x, deckY + 5, 2, 0, Math.PI * 2);
+        ctx.arc(x, deckY + deckH - 5, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Mép bo đầu cầu gỗ
+      ctx.fillStyle = '#ca8a04';
+      ctx.beginPath();
+      ctx.roundRect(pierW - 6, deckY - 2, 8, deckH + 4, 3);
+      ctx.fill();
+    }
+
+    // VẼ EM BÉ CÂU CÁ (ANGLER CHILD)
+    function drawFishingChild(ctx, childX, childY, timestamp) {
+      ctx.save();
+      ctx.translate(childX, childY);
+
+      // Hiệu ứng thở nhẹ và giật lùi khi kéo cá
+      const breathe = Math.sin(timestamp * 0.004) * 1.5;
+      const pullTilt = (fishingGameState === 'reeling' || fishingGameState === 'celebrating')
+        ? -0.22 * fishingChildPullBack
+        : (fishingGameState === 'biting' ? 0.08 : 0);
+
+      ctx.rotate(pullTilt);
+
+      // 1. Chân bé ngồi thõng xuống sàn cầu gỗ
+      ctx.fillStyle = '#0284c7'; // Quần lửng jeans xanh
+      ctx.beginPath();
+      ctx.roundRect(-16, 5, 26, 15, 4);
+      ctx.fill();
+
+      // Bắp chân & dép đáng yêu
+      ctx.fillStyle = '#fed7aa'; // Da chân
+      ctx.fillRect(-12, 18, 9, 12);
+      ctx.fillRect(2, 18, 9, 12);
+
+      ctx.fillStyle = '#ef4444'; // Dép đỏ
+      ctx.beginPath();
+      ctx.roundRect(-14, 28, 13, 6, 3);
+      ctx.roundRect(0, 28, 13, 6, 3);
+      ctx.fill();
+
+      // 2. Thân bé & Áo thun vàng rực rỡ
+      const shirtGrad = ctx.createLinearGradient(-15, -28, 15, 0);
+      shirtGrad.addColorStop(0, '#facc15');
+      shirtGrad.addColorStop(1, '#eab308');
+      ctx.fillStyle = shirtGrad;
+      ctx.beginPath();
+      ctx.roundRect(-16, -26 + breathe, 30, 32, 8);
+      ctx.fill();
+
+      // Hình chú vịt con dễ thương in trên ngực áo
+      ctx.fillStyle = '#f97316';
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🐣', 0, -8 + breathe);
+
+      // 3. Đầu và khuôn mặt tròn trịa bầu bĩnh
+      const headY = -42 + breathe;
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, headY, 17, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Má hồng baby
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.45)';
+      ctx.beginPath();
+      ctx.arc(-8, headY + 4, 4.5, 0, Math.PI * 2);
+      ctx.arc(8, headY + 4, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mắt & Miệng
+      if (fishingGameState === 'reeling' || fishingGameState === 'celebrating') {
+        // Cười tít mắt hân hoan (^_^)
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(-6, headY - 2, 4, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.arc(6, headY - 2, 4, Math.PI * 1.1, Math.PI * 1.9);
+        ctx.stroke();
+
+        // Miệng cười toe toét
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(0, headY + 6, 5.5, 0, Math.PI);
+        ctx.fill();
+      } else if (fishingGameState === 'biting') {
+        // Mắt tròn xoe ngạc nhiên (O_O)
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-6, headY - 2, 3, 0, Math.PI * 2);
+        ctx.arc(6, headY - 2, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-5, headY - 3, 1.2, 0, Math.PI * 2);
+        ctx.arc(7, headY - 3, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Miệng chữ O ngạc nhiên
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, headY + 6, 3, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        // Mắt đen láy lúng liếng hiền hòa
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-6, headY - 1, 2.5, 0, Math.PI * 2);
+        ctx.arc(6, headY - 1, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-5, headY - 2, 1, 0, Math.PI * 2);
+        ctx.arc(7, headY - 2, 1, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Miệng mỉm cười nhẹ
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.arc(0, headY + 5, 3.5, 0.2, Math.PI * 0.8);
+        ctx.stroke();
+      }
+
+      // 4. Mũ cói vành tròn rộng (Straw Hat)
+      const hatY = headY - 12;
+      ctx.fillStyle = '#eab308'; // Vành nón
+      ctx.beginPath();
+      ctx.ellipse(0, hatY, 26, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ca8a04';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Chóp nón cói
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.ellipse(0, hatY - 7, 15, 10, 0, Math.PI, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Dải ruy băng đỏ quanh nón
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(-14, hatY - 5, 28, 4);
+
+      // 5. Tay bé nắm cần câu
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(14, -12 + breathe, 4.5, 0, Math.PI * 2);
+      ctx.arc(10, -8 + breathe, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // VẼ CẦN CÂU TRE, DÂY CÂU & PHAO NƯỚC
+    function drawFishingLineAndBobber(ctx, childX, childY, timestamp) {
+      const rodAngle = (fishingGameState === 'reeling' || fishingGameState === 'celebrating')
+        ? -0.65 // Cần vút dựng đứng lên trời
+        : (fishingGameState === 'biting' ? 0.35 : 0.08); // Cần uốn cong gập xuống khi cắn câu
+
+      // Gốc cần câu tại tay em bé
+      const handX = childX + 12;
+      const handY = childY - 10;
+      const rodLength = 115;
+
+      // Tính ngọn cần câu
+      const tipX = handX + Math.cos(-0.55 + rodAngle) * rodLength;
+      const tipY = handY + Math.sin(-0.55 + rodAngle) * rodLength;
+
+      // 1. Thân cần câu tre (Bamboo Rod) uốn cong dẻo dai
+      ctx.save();
+      const rodGrad = ctx.createLinearGradient(handX, handY, tipX, tipY);
+      rodGrad.addColorStop(0, '#78350f');
+      rodGrad.addColorStop(0.5, '#d97706');
+      rodGrad.addColorStop(1, '#fef08a');
+      ctx.strokeStyle = rodGrad;
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+
+      // Vẽ đường cong cần câu
+      const ctrlX = handX + (tipX - handX) * 0.5 + (fishingGameState === 'biting' ? 18 : 6);
+      const ctrlY = handY + (tipY - handY) * 0.5 + (fishingGameState === 'biting' ? 22 : 0);
+      ctx.beginPath();
+      ctx.moveTo(handX, handY);
+      ctx.quadraticCurveTo(ctrlX, ctrlY, tipX, tipY);
+      ctx.stroke();
+
+      // Đốt tre
+      ctx.strokeStyle = '#451a03';
+      ctx.lineWidth = 2.5;
+      for (let p = 0.2; p < 0.9; p += 0.2) {
+        const segX = handX + (tipX - handX) * p;
+        const segY = handY + (tipY - handY) * p;
+        ctx.beginPath();
+        ctx.arc(segX, segY, 3, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 2. Dây câu (Fishing Line) nối từ ngọn cần tới phao câu
+      // Khi cắn câu, phao rung giật
+      let bobberShake = 0;
+      if (fishingGameState === 'biting') {
+        bobberShake = (Math.random() - 0.5) * 4;
+        fishingBobberPos.y = fishingWaterY + 12 + Math.sin(timestamp * 0.05) * 6; // Bị kéo chìm sâu
+      } else if (fishingGameState === 'waiting' || fishingGameState === 'idle') {
+        fishingBobberPos.y = fishingWaterY + Math.sin(timestamp * 0.003) * 2;
+      }
+
+      ctx.save();
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(tipX, tipY);
+      if (fishingGameState === 'reeling' || fishingGameState === 'celebrating') {
+        // Dây câu kéo thẳng lên chú cá đang nhảy
+        if (fishingLeapFish) {
+          ctx.lineTo(fishingLeapFish.startX + (fishingLeapFish.targetX - fishingLeapFish.startX) * fishingLeapFish.progress,
+                     fishingLeapFish.startY + (fishingLeapFish.targetY - fishingLeapFish.startY) * fishingLeapFish.progress);
+        }
+      } else {
+        // Dây câu rủ cong nhẹ tự nhiên
+        const lineCtrlX = (tipX + fishingBobberPos.x) * 0.5 + bobberShake;
+        const lineCtrlY = Math.max(tipY, fishingBobberPos.y) - 15;
+        ctx.quadraticCurveTo(lineCtrlX, lineCtrlY, fishingBobberPos.x + bobberShake, fishingBobberPos.y);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // 3. Phao câu màu Đỏ - Trắng (Bobber)
+      if (fishingGameState !== 'reeling' && fishingGameState !== 'celebrating') {
+        const bx = fishingBobberPos.x + bobberShake;
+        const by = fishingBobberPos.y;
+
+        ctx.save();
+        ctx.translate(bx, by);
+
+        // Nửa dưới màu trắng
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, 0, 7.5, 0, Math.PI);
+        ctx.fill();
+
+        // Nửa trên màu đỏ nổi bật
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(0, 0, 7.5, Math.PI, Math.PI * 2);
+        ctx.fill();
+
+        // Viền bóng phao câu
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Cột cờ phao nhỏ bên trên
+        ctx.fillStyle = '#facc15';
+        ctx.fillRect(-1.2, -14, 2.4, 7);
+
+        ctx.restore();
+
+        // Sóng nước lăn tăn quanh phao
+        if (Math.random() < 0.08) {
+          createWaterRipple(bx, fishingWaterY, 18);
+        }
+      }
+    }
+
+    // VẼ VÀ MÔ PHỎNG 50 CON CÁ BƠI LỘI TRONG NƯỚC
+    function drawAndSimulateFish(ctx, w, h, timestamp, dt) {
+      const minX = Math.max(160, w * 0.22);
+      const maxX = w - 30;
+      const minY = fishingWaterY + 30;
+      const maxY = h - 25;
+
+      fishingFish.forEach(fish => {
+        // Khi đang reeling/celebrating, chú cá trúng giải sẽ nhảy lên nên ẩn trong đàn cá
+        if (fish.isTarget && (fishingGameState === 'reeling' || fishingGameState === 'celebrating')) {
+          return;
+        }
+
+        // Nếu là chú cá trúng giải và đang ở trạng thái 'biting': Cá bơi nhanh lại đớp phao!
+        if (fish.isTarget && fishingGameState === 'biting') {
+          const dx = (fishingBobberPos.x) - fish.x;
+          const dy = (fishingBobberPos.y + 20) - fish.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > 8) {
+            fish.vx = (dx / dist) * 2.8;
+            fish.vy = (dy / dist) * 2.2;
+          } else {
+            fish.x = fishingBobberPos.x;
+            fish.y = fishingBobberPos.y + 20;
+          }
+        } else {
+          // Bơi lội tự nhiên
+          fish.turnCooldown--;
+          if (fish.turnCooldown <= 0) {
+            fish.turnCooldown = 80 + Math.random() * 140;
+            if (Math.random() < 0.45) {
+              fish.vx = -fish.vx;
+            }
+            fish.vy = (Math.random() - 0.5) * 0.4;
+          }
+
+          // Tránh va chạm biên hồ
+          if (fish.x < minX) {
+            fish.x = minX;
+            fish.vx = Math.abs(fish.vx);
+          } else if (fish.x > maxX) {
+            fish.x = maxX;
+            fish.vx = -Math.abs(fish.vx);
+          }
+
+          if (fish.y < minY) {
+            fish.y = minY;
+            fish.vy = Math.abs(fish.vy);
+          } else if (fish.y > maxY) {
+            fish.y = maxY;
+            fish.vy = -Math.abs(fish.vy);
+          }
+        }
+
+        fish.x += fish.vx;
+        fish.y += fish.vy;
+        fish.tailPhase += fish.tailSpeed;
+
+        // Nhả bọt khí thỉnh thoảng
+        fish.bubbleCooldown--;
+        if (fish.bubbleCooldown <= 0) {
+          fish.bubbleCooldown = 120 + Math.random() * 260;
+          fishingBubbles.push({
+            x: fish.x,
+            y: fish.y,
+            r: 1.5 + Math.random() * 3,
+            vy: 0.6 + Math.random() * 0.9,
+            wobble: Math.random() * Math.PI * 2
+          });
+        }
+
+        // VẼ TỪNG CHÚ CÁ
+        drawSingleFish(ctx, fish, timestamp);
+      });
+    }
+
+    function drawSingleFish(ctx, fish, timestamp) {
+      ctx.save();
+      ctx.translate(fish.x, fish.y);
+
+      // Độ mờ 3D theo độ sâu
+      ctx.globalAlpha = 0.5 + fish.depth * 0.5;
+
+      // Hướng quay mặt (Trái hay Phải)
+      const facing = fish.vx >= 0 ? 1 : -1;
+      ctx.scale(facing, 1);
+
+      // Cá may mắn đang cắn câu phát hào quang vàng lấp lánh
+      if (fish.isTarget && (fishingGameState === 'biting' || fishingGameState === 'waiting')) {
+        const glow = ctx.createRadialGradient(0, 0, fish.size * 0.5, 0, 0, fish.size * 2);
+        glow.addColorStop(0, 'rgba(253, 224, 71, 0.7)');
+        glow.addColorStop(1, 'rgba(253, 224, 71, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(0, 0, fish.size * 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      const s = fish.size;
+      const tailWag = Math.sin(fish.tailPhase) * (s * 0.28);
+
+      // 1. Đuôi cá vẫy uốn lượn nhịp nhàng
+      ctx.fillStyle = fish.finColor;
+      ctx.beginPath();
+      ctx.moveTo(-s * 0.5, 0);
+      ctx.lineTo(-s * 0.95, -s * 0.38 + tailWag);
+      ctx.quadraticCurveTo(-s * 0.75, tailWag, -s * 0.95, s * 0.38 + tailWag);
+      ctx.closePath();
+      ctx.fill();
+
+      // 2. Vây lưng
+      ctx.fillStyle = fish.finColor;
+      ctx.beginPath();
+      ctx.moveTo(-s * 0.1, -s * 0.28);
+      ctx.quadraticCurveTo(s * 0.1, -s * 0.52, s * 0.25, -s * 0.15);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Vây bụng dưới
+      ctx.beginPath();
+      ctx.moveTo(-s * 0.05, s * 0.25);
+      ctx.lineTo(s * 0.08, s * 0.42);
+      ctx.lineTo(s * 0.22, s * 0.2);
+      ctx.closePath();
+      ctx.fill();
+
+      // 4. Thân cá hình bầu dục thuôn mượt
+      ctx.fillStyle = fish.color;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, s * 0.58, s * 0.32, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bụng cá sáng màu
+      ctx.fillStyle = fish.bellyColor;
+      ctx.beginPath();
+      ctx.ellipse(0, s * 0.1, s * 0.45, s * 0.18, 0, 0, Math.PI);
+      ctx.fill();
+
+      // Sọc trang trí (nếu có - như cá hề Nemo)
+      if (fish.stripeColor) {
+        ctx.fillStyle = fish.stripeColor;
+        ctx.beginPath();
+        ctx.roundRect(-s * 0.12, -s * 0.26, s * 0.12, s * 0.52, 2);
+        ctx.roundRect(s * 0.18, -s * 0.22, s * 0.09, s * 0.44, 2);
+        ctx.fill();
+      }
+
+      // 5. Mắt cá to tròn ngơ ngác đáng yêu
+      const eyeX = s * 0.32;
+      const eyeY = -s * 0.08;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(eyeX, eyeY, s * 0.12, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(eyeX + 1, eyeY, s * 0.065, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đốm sáng trong mắt
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(eyeX + 0.5, eyeY - 1, s * 0.025, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mang cá
+      ctx.strokeStyle = fish.finColor;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(s * 0.14, 0, s * 0.2, -0.6, 0.6);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    // VẼ CÁ NHẢY LÊN MẶT NƯỚC & BẢNG CUỘN THƯ VÀNG HIỆN TÊN HỌC SINH
+    function drawLeapingFishAndNameScroll(ctx, w, h, timestamp) {
+      if (!fishingLeapFish) return;
+
+      const p = fishingLeapFish.progress;
+      // Đường cong Parabol vút lên bầu trời
+      const curX = fishingLeapFish.startX + (fishingLeapFish.targetX - fishingLeapFish.startX) * p;
+      const heightArc = Math.sin(p * Math.PI) * 170;
+      const curY = fishingWaterY - heightArc;
+
+      ctx.save();
+      ctx.translate(curX, curY);
+
+      // Chú cá nhảy uốn cong
+      const angle = (p - 0.5) * 1.6;
+      ctx.rotate(angle);
+
+      // Hào quang lấp lánh xung quanh chú cá vàng may mắn
+      const aura = ctx.createRadialGradient(0, 0, 15, 0, 0, 85);
+      aura.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+      aura.addColorStop(0.5, 'rgba(245, 158, 11, 0.45)');
+      aura.addColorStop(1, 'rgba(245, 158, 11, 0)');
+      ctx.fillStyle = aura;
+      ctx.beginPath();
+      ctx.arc(0, 0, 85, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Vẽ chú cá vàng siêu to khổng lồ đang ngậm lưỡi câu
+      const bigFish = {
+        size: 56,
+        depth: 1,
+        color: '#f59e0b',
+        bellyColor: '#fef08a',
+        finColor: '#ea580c',
+        stripeColor: '#ffffff',
+        tailPhase: timestamp * 0.02,
+        tailSpeed: 0.2,
+        vx: 1
+      };
+      drawSingleFish(ctx, bigFish, timestamp);
+
+      // Lưỡi câu bạc lấp lánh ở mép miệng cá
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(32, 6, 8, Math.PI * 0.3, Math.PI * 1.6);
+      ctx.stroke();
+
+      ctx.restore();
+
+      // BẢNG VÀNG CUỘN THƯ TỰ ĐỘNG BUNG RA MANG TÊN HỌC SINH
+      if (p > 0.45 || fishingGameState === 'celebrating') {
+        const scrollScale = Math.min(1, (p - 0.45) / 0.35);
+        const scrollX = curX;
+        const scrollY = Math.min(curY + 75, fishingWaterY - 35);
+
+        ctx.save();
+        ctx.translate(scrollX, scrollY);
+        ctx.scale(scrollScale, scrollScale);
+
+        const stName = fishingLeapFish.studentName || 'Học sinh may mắn';
+        const tagW = Math.max(220, stName.length * 15 + 70);
+        const tagH = 55;
+
+        // Đổ bóng nổi khối
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        ctx.beginPath();
+        ctx.roundRect(-tagW / 2 + 5, -tagH / 2 + 5, tagW, tagH, 16);
+        ctx.fill();
+
+        // Nền thiệp kim sắc hoàng gia
+        const cardGrad = ctx.createLinearGradient(0, -tagH / 2, 0, tagH / 2);
+        cardGrad.addColorStop(0, '#0f172a');
+        cardGrad.addColorStop(1, '#1e293b');
+        ctx.fillStyle = cardGrad;
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 16);
+        ctx.fill();
+        ctx.stroke();
+
+        // 2 đầu trục cuộn thư hoàng gia màu đỏ vàng
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.roundRect(-tagW / 2 - 8, -tagH / 2 - 4, 12, tagH + 8, 5);
+        ctx.roundRect(tagW / 2 - 4, -tagH / 2 - 4, 12, tagH + 8, 5);
+        ctx.fill();
+        ctx.fillStyle = '#fde047';
+        ctx.beginPath();
+        ctx.arc(-tagW / 2 - 2, -tagH / 2 - 4, 5, 0, Math.PI * 2);
+        ctx.arc(-tagW / 2 - 2, tagH / 2 + 4, 5, 0, Math.PI * 2);
+        ctx.arc(tagW / 2 + 2, -tagH / 2 - 4, 5, 0, Math.PI * 2);
+        ctx.arc(tagW / 2 + 2, tagH / 2 + 4, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tiêu đề nhỏ bên trên
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '800 11px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('✨ HỌC SINH ĐƯỢC CÂU LÊN ✨', 0, -11);
+
+        // Tên học sinh màu vàng kim rực rỡ
+        ctx.fillStyle = '#fde047';
+        ctx.font = '900 19px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`👑 ${stName}`, 0, 9);
+
+        // Ngôi sao lấp lánh 2 bên
+        const starTime = Math.sin(timestamp * 0.008);
+        ctx.font = '16px sans-serif';
+        ctx.fillText('⭐', -tagW / 2 + 25, 9 + starTime * 2);
+        ctx.fillText('⭐', tagW / 2 - 25, 9 - starTime * 2);
+
+        ctx.restore();
+      }
+    }
+
+    // HIỆU ỨNG NƯỚC (BỌT KHÍ, SÓNG TRÒN, GIỌT NƯỚC VĂNG)
+    function drawWaterSplashesAndRipples(ctx) {
+      // 1. Bọt khí dưới hồ nổi lên
+      for (let i = fishingBubbles.length - 1; i >= 0; i--) {
+        const b = fishingBubbles[i];
+        b.y -= b.vy;
+        b.wobble += 0.05;
+        b.x += Math.sin(b.wobble) * 0.4;
+
+        if (b.y <= fishingWaterY) {
+          fishingBubbles.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 2. Vòng sóng lan tỏa trên mặt nước
+      for (let i = fishingWaterRipples.length - 1; i >= 0; i--) {
+        const rp = fishingWaterRipples[i];
+        rp.r += 0.8;
+        rp.alpha -= 0.015;
+
+        if (rp.alpha <= 0 || rp.r >= rp.maxR) {
+          fishingWaterRipples.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.strokeStyle = `rgba(255, 255, 255, ${rp.alpha})`;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.ellipse(rp.x, rp.y, rp.r * 1.8, rp.r * 0.6, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 3. Giọt nước tung tóe khi cá cắn và giật lên
+      for (let i = fishingSplashes.length - 1; i >= 0; i--) {
+        const sp = fishingSplashes[i];
+        sp.x += sp.vx;
+        sp.y += sp.vy;
+        sp.vy += sp.gravity;
+        sp.alpha -= 0.018;
+
+        if (sp.alpha <= 0 || sp.y > fishingWaterY + 15) {
+          fishingSplashes.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.fillStyle = `rgba(224, 242, 254, ${sp.alpha})`;
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, sp.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
     }
 
     // ==========================================
@@ -24760,7 +27853,33 @@
         return;
       }
 
-      // 14. Máy Kéo Số (Slot) hoặc Card Grid fallback
+      // 14. Đập Ếch Bắt Tên (Whack-a-Frog)
+      if (mode === 'frog') {
+        btn.innerHTML = "🐸 ĐANG ĐẬP ẾCH...";
+        if (typeof startFrogGame === 'function') {
+          startFrogGame(selected, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
+      // 15. Bé Câu Cá Bắt Tên (Fishing)
+      if (mode === 'fishing') {
+        btn.innerHTML = "🎣 ĐANG CÂU CÁ...";
+        if (typeof startFishingGame === 'function') {
+          startFishingGame(selected, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
+      // 15. Máy Kéo Số (Slot) hoặc Card Grid fallback
       btn.innerHTML = "🎰 ĐANG CHỌN...";
       let spinCount = 0;
       const allCards = document.querySelectorAll('.student-card');
@@ -24821,6 +27940,10 @@
           btnElement.innerHTML = '<i class="fa-solid fa-person-running"></i> TIẾP TỤC ĐUA ĐIỀN KINH';
         } else if (mode === 'swimming') {
           btnElement.innerHTML = '<i class="fa-solid fa-person-swimming"></i> TIẾP TỤC ĐUA BƠI LỘI';
+        } else if (mode === 'frog') {
+          btnElement.innerHTML = '<i class="fa-solid fa-hammer"></i> TIẾP TỤC ĐẬP ẾCH';
+        } else if (mode === 'fishing') {
+          btnElement.innerHTML = '<i class="fa-solid fa-fish"></i> TIẾP TỤC CÂU CÁ';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
