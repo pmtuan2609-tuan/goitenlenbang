@@ -424,7 +424,8 @@
   [id*="-race-container"] #f1-race-status,
   [id*="-race-container"] #wheel-status,
   [id*="-stage-container"] #frog-game-status,
-  [id*="-stage-container"] #fishing-game-status {
+  [id*="-stage-container"] #fishing-game-status,
+  [id*="-stage-container"] #lion-game-status {
     color: #ffffff !important;
   }
 
@@ -785,7 +786,7 @@
         <div>
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-            DANH SÁCH 15 PHƯƠNG PHÁP ĐUA & GỌI TÊN
+            DANH SÁCH 16 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
           <p class="text-xs text-slate-600 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
@@ -793,13 +794,13 @@
         <!-- Filter Buttons -->
         <div class="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 transition">
-            Tất Cả (15)
+            Tất Cả (16)
           </button>
           <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
             🏎️ Đường Đua Tốc Độ (8)
           </button>
           <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
-            🎁 May Mắn & Hồi Hộp (7)
+            🎁 May Mắn & Hồi Hộp (8)
           </button>
         </div>
       </div>
@@ -1314,6 +1315,39 @@
           </div>
         </div>
 
+        <!-- 16. MÚA LÂN HÁI LỘC -->
+        <div onclick="launchGame('lion')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-amber-200 hover:border-amber-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-amber-100/80 border border-amber-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🦁
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500/10 text-amber-700 border border-amber-500/20">
+                May Mắn
+              </span>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 group-hover:text-amber-600 transition-colors">
+                16. Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà)
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Lân Sư Rồng rộn ràng tiếng trống phèng la, Ông Địa phe phẩy quạt mo! Chú Lân nhảy cao hái phần thưởng (lồng đèn, lì xì, quà Noel...) mở ra tên học sinh!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🦁 Múa Lân</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🧧 Hái Lộc</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🏮 Lễ Hội</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-amber-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-amber-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Múa Lân →</span>
+          </div>
+        </div>
+
       </div>
 
     </section>
@@ -1373,6 +1407,7 @@
               <option value="swimming" class="bg-slate-900 text-cyan-300 font-bold">🏊 Bơi Lội 200m (Kình Ngư Olympic)</option>
               <option value="frog" class="bg-slate-900 text-emerald-300 font-bold">🐸 Đập Ếch Bắt Tên (Whack-a-Frog)</option>
               <option value="fishing" class="bg-slate-900 text-teal-300 font-bold">🎣 Bé Câu Cá Bắt Tên (50 Con Cá)</option>
+              <option value="lion" class="bg-slate-900 text-amber-300 font-bold">🦁 Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà)</option>
             </select>
           </div>
 
@@ -1861,6 +1896,28 @@
             </div>
           </div>
           <canvas id="fishing-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 16: MÚA LÂN HÁI LỘC (LION DANCE) -->
+        <div id="lion-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-gradient-to-b from-indigo-950 via-slate-900 to-amber-950 border border-amber-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-amber-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-amber-400 font-extrabold text-sm">🦁</span>
+              <span id="lion-game-status">Lân Sư Rồng & Ông Địa đang chờ tiếng trống... Bấm BẮT ĐẦU MÚA LÂN!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleLionSound()" id="lion-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleLionFullscreen()" id="lion-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-400"></i> Phóng to
+              </button>
+              <button onclick="resetLionGame()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới sân khấu">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> Diễn Lại
+              </button>
+            </div>
+          </div>
+          <canvas id="lion-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -3395,6 +3452,7 @@
       else if (mode === 'swimming') initSwimRace(true);
       else if (mode === 'frog') initFrogGame(true);
       else if (mode === 'fishing') initFishingGame(true);
+      else if (mode === 'lion') initLionGame(true);
     }
 
     function renderClassesListTab() {
@@ -4351,6 +4409,8 @@
         if (typeof resizeFrogCanvas === 'function') resizeFrogCanvas();
       } else if (mode === 'fishing') {
         if (typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
+      } else if (mode === 'lion') {
+        if (typeof resizeLionCanvas === 'function') resizeLionCanvas();
       }
     }
 
@@ -4375,6 +4435,7 @@
       const swimmingContainer = document.getElementById('swimming-race-container');
       const frogContainer = document.getElementById('frog-stage-container');
       const fishingContainer = document.getElementById('fishing-stage-container');
+      const lionContainer = document.getElementById('lion-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -4392,6 +4453,7 @@
       if (swimmingContainer) swimmingContainer.classList.add('hidden');
       if (frogContainer) frogContainer.classList.add('hidden');
       if (fishingContainer) fishingContainer.classList.add('hidden');
+      if (lionContainer) lionContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -4496,6 +4558,13 @@
           if (typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
           if (typeof renderFishingCanvas === 'function') renderFishingCanvas(performance.now());
         }, 40);
+      } else if (mode === 'lion') {
+        if (lionContainer) lionContainer.classList.remove('hidden');
+        if (typeof initLionGame === 'function') initLionGame(true);
+        setTimeout(() => {
+          if (typeof resizeLionCanvas === 'function') resizeLionCanvas();
+          if (typeof renderLionCanvas === 'function') renderLionCanvas(performance.now());
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -4523,7 +4592,8 @@
         athletics: { title: 'Đua Điền Kinh 200m (Vận Động Viên Nước Rút)', icon: '🏃' },
         swimming: { title: 'Đua Bơi Lội 200m (Kình Ngư Olympic)', icon: '🏊' },
         frog: { title: 'Đập Ếch Bắt Tên (Whack-a-Frog)', icon: '🐸' },
-        fishing: { title: 'Bé Câu Cá Bắt Tên (50 Con Cá Đa Sắc Màu)', icon: '🎣' }
+        fishing: { title: 'Bé Câu Cá Bắt Tên (50 Con Cá Đa Sắc Màu)', icon: '🎣' },
+        lion: { title: 'Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà Giáng Sinh)', icon: '🦁' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -4552,6 +4622,8 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-hammer"></i> BẮT ĐẦU ĐẬP ẾCH';
         } else if (mode === 'fishing') {
           spinBtn.innerHTML = '<i class="fa-solid fa-fish"></i> THẢ CẦN CÂU CÁ';
+        } else if (mode === 'lion') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-drum"></i> MÚA LÂN HÁI LỘC';
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -12866,6 +12938,7 @@
       else if (mode === 'swimming' && typeof resizeSwimCanvas === 'function') resizeSwimCanvas();
       else if (mode === 'frog' && typeof resizeFrogCanvas === 'function') resizeFrogCanvas();
       else if (mode === 'fishing' && typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
+      else if (mode === 'lion' && typeof resizeLionCanvas === 'function') resizeLionCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -12886,7 +12959,8 @@
         { id: 'athletics-fullscreen-btn', color: 'text-amber-400' },
         { id: 'swimming-fullscreen-btn', color: 'text-cyan-400' },
         { id: 'frog-fullscreen-btn', color: 'text-emerald-400' },
-        { id: 'fishing-fullscreen-btn', color: 'text-teal-400' }
+        { id: 'fishing-fullscreen-btn', color: 'text-teal-400' },
+        { id: 'lion-fullscreen-btn', color: 'text-amber-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -12956,7 +13030,8 @@
         'athletics-race-container',
         'swimming-race-container',
         'frog-stage-container',
-        'fishing-stage-container'
+        'fishing-stage-container',
+        'lion-stage-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -12983,6 +13058,7 @@
       if (mode === 'swimming') return swimRaceState === 'running' || swimRaceState === 'countdown';
       if (mode === 'frog') return frogGameState === 'hit_celebrating' || frogGameState === 'auto_whacking';
       if (mode === 'fishing') return fishingGameState === 'biting' || fishingGameState === 'reeling' || fishingGameState === 'waiting';
+      if (mode === 'lion') return lionGameState === 'dancing' || lionGameState === 'aiming' || lionGameState === 'leaping' || lionGameState === 'celebrating';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -17876,6 +17952,16 @@
         }
       }
 
+      // Khởi tạo ngay 4 - 5 chú ếch cùng ngó đầu lên đầm sen
+      const initialHoles = [...frogHoles];
+      for (let i = 0; i < 5 && initialHoles.length > 0; i++) {
+        const rIdx = Math.floor(Math.random() * initialHoles.length);
+        const h = initialHoles.splice(rIdx, 1)[0];
+        h.state = 'peeking';
+        h.height = 1;
+        h.peekTimer = 1.8 + i * 0.4;
+      }
+
       // Khởi tạo lá sen & hoa sen trang trí nền
       frogLilyPads = [];
       for (let i = 0; i < 18; i++) {
@@ -17897,7 +17983,7 @@
 
       const statusEl = document.getElementById('frog-game-status');
       if (statusEl) {
-        statusEl.innerHTML = `Vung búa đập 1 chú ếch đang thò đầu lên để gọi tên!`;
+        statusEl.innerHTML = `🐸 4-5 chú ếch đang ngó đầu lên liên tục! Bấm BẮT ĐẦU ĐẬP ẾCH để đập ngẫu nhiên!`;
       }
       const noticeEl = document.getElementById('frog-hit-notice');
       if (noticeEl) noticeEl.classList.add('hidden');
@@ -17955,7 +18041,7 @@
     }
 
     function handleFrogWhackClick(clickX, clickY) {
-      if (frogGameState !== 'playing') return;
+      if (frogGameState !== 'playing' && frogGameState !== 'auto_whacking') return;
 
       // Kích hoạt vung búa
       frogHammer.isSwinging = true;
@@ -17966,16 +18052,37 @@
 
       for (let i = 0; i < frogHoles.length; i++) {
         const hole = frogHoles[i];
-        if (hole.state === 'peeking' || (hole.state === 'popping' && hole.height > 0.35) || (hole.state === 'ducking' && hole.height > 0.45)) {
+        if (hole.state === 'peeking' || (hole.state === 'popping' && hole.height > 0.3) || (hole.state === 'ducking' && hole.height > 0.35)) {
           // Vị trí đầu ếch nằm phía trên miệng lỗ
           const frogHeadY = hole.y - hole.height * 55;
           const dx = clickX - hole.x;
           const dy = clickY - frogHeadY;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist <= 48) {
+          if (dist <= 65) {
             hitHole = hole;
             break;
+          }
+        }
+      }
+
+      // Nếu click bất kỳ khi đang playing: tìm chú ếch đang hiển thị gần nhất để đập
+      if (!hitHole && frogGameState === 'playing') {
+        const active = frogHoles.filter(h => h.state === 'peeking' || (h.state === 'popping' && h.height > 0.4));
+        if (active.length > 0) {
+          let closest = active[0];
+          let minDist = 999999;
+          active.forEach(h => {
+            const d = Math.hypot(clickX - h.x, clickY - (h.y - 45));
+            if (d < minDist) {
+              minDist = d;
+              closest = h;
+            }
+          });
+          if (minDist <= 180) {
+            hitHole = closest;
+            frogHammer.targetX = hitHole.x;
+            frogHammer.targetY = hitHole.y - 45;
           }
         }
       }
@@ -18002,18 +18109,18 @@
       frogShakeTimer = 0.35;
 
       // Tạo hiệu ứng sao & tia nổ BAM!
-      for (let i = 0; i < 16; i++) {
-        const angle = (Math.PI * 2 * i) / 16 + (Math.random() - 0.5) * 0.3;
-        const spd = 3.5 + Math.random() * 5.5;
+      for (let i = 0; i < 20; i++) {
+        const angle = (Math.PI * 2 * i) / 20 + (Math.random() - 0.5) * 0.3;
+        const spd = 3.5 + Math.random() * 6.5;
         frogHitBursts.push({
           x: hole.x,
           y: hole.y - hole.height * 55,
           vx: Math.cos(angle) * spd,
-          vy: Math.sin(angle) * spd - 1.5,
-          size: 5 + Math.random() * 6,
+          vy: Math.sin(angle) * spd - 1.8,
+          size: 5 + Math.random() * 7,
           color: ['#facc15', '#f59e0b', '#fbbf24', '#ffffff', '#22c55e'][i % 5],
-          life: 0.65,
-          maxLife: 0.65
+          life: 0.75,
+          maxLife: 0.75
         });
       }
 
@@ -18023,7 +18130,7 @@
 
       const statusEl = document.getElementById('frog-game-status');
       if (statusEl) {
-        statusEl.innerHTML = `🎉 <b class="text-amber-300">ĐẬP TRÚNG RỒI!</b> Chúc mừng bạn <b class="text-emerald-300 text-sm">${winner.name}</b>! 👑`;
+        statusEl.innerHTML = `🎉 <b class="text-amber-300">ĐẬP TRÚNG RỒI!</b> Chúc mừng bạn <b class="text-emerald-300 text-sm font-black">${winner.name}</b>! 👑`;
       }
 
       // Ẩn bảng hụt nếu đang hiện
@@ -18032,13 +18139,13 @@
 
       if (typeof confetti === 'function') {
         confetti({
-          particleCount: 100,
-          spread: 70,
+          particleCount: 110,
+          spread: 75,
           origin: { y: 0.5 }
         });
       }
 
-      // Sau 1.3s, mở modal vinh danh
+      // Sau 1.6s, mở modal vinh danh
       setTimeout(() => {
         const btn = document.getElementById('spin-btn');
         if (frogFinishCallback) {
@@ -18046,7 +18153,7 @@
         } else {
           showWinnerResult(winner, btn);
         }
-      }, 1300);
+      }, 1600);
     }
 
     function triggerFrogMiss(clickX, clickY) {
@@ -18093,39 +18200,47 @@
     }
 
     function startFrogGame(winnerStudent, callback) {
-      initFrogGame(false);
       frogGameState = 'auto_whacking';
       frogTargetWinner = winnerStudent;
       frogFinishCallback = callback;
 
-      const statusEl = document.getElementById('frog-game-status');
-      if (statusEl) {
-        statusEl.innerHTML = `🌀 Đầm sen đang đại náo... Búa thần đang ngắm chuẩn chú ếch may mắn!`;
+      // 1. Đảm bảo luôn có 4-5 con ếch đang ngó đầu lên
+      const activeHoles = frogHoles.filter(h => h.state === 'peeking' || h.state === 'popping' || h.state === 'ducking');
+      if (activeHoles.length < 4) {
+        const hiddenHoles = frogHoles.filter(h => h.state === 'hidden');
+        const needed = 5 - activeHoles.length;
+        for (let k = 0; k < needed && hiddenHoles.length > 0; k++) {
+          const randIdx = Math.floor(Math.random() * hiddenHoles.length);
+          const h = hiddenHoles.splice(randIdx, 1)[0];
+          h.state = 'peeking';
+          h.height = 1;
+          h.peekTimer = 3.5;
+          activeHoles.push(h);
+        }
       }
 
-      // Chọn 1 lỗ bất kỳ làm mục tiêu chiến thắng
-      const chosenHole = frogHoles[Math.floor(Math.random() * frogHoles.length)];
+      // 2. CHỌN NGẪU NHIÊN 1 CON TRONG SỐ CÁC CON ĐANG HIỂN THỊ
+      const chosenHole = activeHoles[Math.floor(Math.random() * activeHoles.length)] || frogHoles[0];
       if (winnerStudent) chosenHole.student = winnerStudent;
 
-      // Làm các chú ếch nhảy lên xuống dồn dập
-      frogHoles.forEach((h, idx) => {
-        h.nextPopDelay = 0.1 + idx * 0.15;
-      });
+      // Giữ cho chú ếch được chọn ngó đầu cao chờ búa đập
+      chosenHole.state = 'peeking';
+      chosenHole.height = 1;
+      chosenHole.peekTimer = 4.0;
 
-      // Sau 2.2 giây, búa tự động bay đến gõ trúng chú ếch
+      const statusEl = document.getElementById('frog-game-status');
+      if (statusEl) {
+        statusEl.innerHTML = `🔨 <b class="text-amber-300">BÚA THẦN ĐANG VUNG ĐẬP NGẪU NHIÊN 1 TRONG 5 CHÚ ẾCH...!</b>`;
+      }
+
+      // Di chuyển búa đến phía trên chú ếch được chọn
+      frogHammer.targetX = chosenHole.x;
+      frogHammer.targetY = chosenHole.y - 45;
+
+      // Sau 550ms, búa vung đập mạnh xuống
       setTimeout(() => {
-        chosenHole.state = 'peeking';
-        chosenHole.height = 1;
-        chosenHole.peekTimer = 2.0;
-
-        // Di chuyển búa đến lỗ mục tiêu
-        frogHammer.targetX = chosenHole.x;
-        frogHammer.targetY = chosenHole.y - 50;
-
-        setTimeout(() => {
-          handleFrogWhackClick(chosenHole.x, chosenHole.y - 50);
-        }, 350);
-      }, 2200);
+        handleFrogWhackClick(chosenHole.x, chosenHole.y - 45);
+      }, 550);
     }
 
     function toggleFrogSound() {
@@ -18179,7 +18294,7 @@
         if (h.state === 'hidden') {
           h.height = 0;
           h.nextPopDelay -= dt;
-          if (h.nextPopDelay <= 0 && frogGameState === 'playing') {
+          if (h.nextPopDelay <= 0 && (frogGameState === 'playing' || frogGameState === 'auto_whacking')) {
             h.state = 'popping';
             h.height = 0;
             FrogAudio.playPop();
@@ -18189,7 +18304,7 @@
           if (h.height >= 1) {
             h.height = 1;
             h.state = 'peeking';
-            h.peekTimer = 1.1 + Math.random() * 1.4; // Đứng ngó 1.1s - 2.5s
+            h.peekTimer = 1.4 + Math.random() * 1.6; // Đứng ngó 1.4s - 3.0s
           }
         } else if (h.state === 'peeking') {
           h.wobble = Math.sin(now * 0.006 + h.x) * 0.08;
@@ -18202,12 +18317,30 @@
           if (h.height <= 0) {
             h.height = 0;
             h.state = 'hidden';
-            h.nextPopDelay = 0.8 + Math.random() * 2.8;
+            h.nextPopDelay = 0.5 + Math.random() * 1.8;
           }
         } else if (h.state === 'whacked') {
           h.dizzyAngle += dt * 6.5;
         }
       });
+
+      // LUÔN DUY TRÌ KHOẢNG 4 - 5 CON ẾCH CÙNG NGÓ ĐẦU LÊN ĐỒNG THỜI
+      if (frogGameState === 'playing' || frogGameState === 'auto_whacking') {
+        const activeCount = frogHoles.filter(h => h.state === 'popping' || h.state === 'peeking' || h.state === 'ducking').length;
+        if (activeCount < 4) {
+          const hiddenHoles = frogHoles.filter(h => h.state === 'hidden');
+          const needed = (4 + Math.floor(Math.random() * 2)) - activeCount;
+          for (let k = 0; k < needed && hiddenHoles.length > 0; k++) {
+            const randIdx = Math.floor(Math.random() * hiddenHoles.length);
+            const holeToPop = hiddenHoles.splice(randIdx, 1)[0];
+            holeToPop.state = 'popping';
+            holeToPop.height = 0;
+            holeToPop.peekTimer = 1.6 + Math.random() * 1.5;
+            holeToPop.speed = 3.6 + Math.random() * 1.2;
+            FrogAudio.playPop();
+          }
+        }
+      }
 
       // 2. Cập nhật vị trí búa
       frogHammer.x += (frogHammer.targetX - frogHammer.x) * Math.min(1, dt * 18);
@@ -18508,44 +18641,84 @@
       ctx.arc(0, -34, 2.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // NẾU BỊ ĐẬP TRÚNG: VẼ SAO XOAY VÒNG VÀ CUỘN THIỆP VÀNG HIỆN TÊN HỌC SINH
+      // NẾU BỊ ĐẬP TRÚNG: VẼ SAO XOAY VÒNG VÀ BẢNG VÀNG HIỆN TÊN SIÊU RÕ NÉT
       if (isWhacked) {
         // Vòng hào quang sao xoay trên đầu
-        const haloR = 28;
-        for (let s = 0; s < 4; s++) {
-          const sa = hole.dizzyAngle + (Math.PI * 2 * s) / 4;
+        const haloR = 34;
+        for (let s = 0; s < 5; s++) {
+          const sa = hole.dizzyAngle + (Math.PI * 2 * s) / 5;
           const sx = Math.cos(sa) * haloR;
-          const sy = -45 + Math.sin(sa) * 8;
+          const sy = -50 + Math.sin(sa) * 10;
           ctx.fillStyle = '#facc15';
-          ctx.font = '16px sans-serif';
+          ctx.font = '18px sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText('⭐', sx, sy);
         }
 
-        // BẢNG VÀNG CUỘN THƯ MANG TÊN HỌC SINH
+        // BẢNG VÀNG CUỘN THƯ MANG TÊN HỌC SINH SIÊU RÕ NÉT & TƯƠNG PHẢN CAO
         const stName = hole.student ? hole.student.name : 'Học sinh';
         ctx.save();
-        ctx.translate(0, -78);
+        ctx.translate(0, -90);
 
-        // Nền thiệp vàng kim
-        const tagW = Math.max(130, stName.length * 11 + 30);
-        const tagH = 34;
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
-        ctx.strokeStyle = '#facc15';
-        ctx.lineWidth = 2.5;
+        // Nền thiệp đen tuyền - viền vàng kim sắc sảo
+        const tagW = Math.max(160, stName.length * 15 + 50);
+        const tagH = 46;
+
+        // Đổ bóng nổi khối
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
         ctx.beginPath();
-        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 12);
+        ctx.roundRect(-tagW / 2 + 4, -tagH / 2 + 4, tagW, tagH, 14);
+        ctx.fill();
+
+        // Nền thẻ đen tuyền hoàng gia
+        ctx.fillStyle = '#0f172a';
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 14);
         ctx.fill();
         ctx.stroke();
 
-        // Tên học sinh nổi bật màu vàng óng
-        ctx.fillStyle = '#fde047';
-        ctx.font = '900 13px system-ui, sans-serif';
+        // Viền phụ sáng bóng màu trắng - vàng
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.roundRect(-tagW / 2 + 3, -tagH / 2 + 3, tagW - 6, tagH - 6, 11);
+        ctx.stroke();
+
+        // Tên học sinh màu vàng óng có viền đen dày dặn (Không bao giờ tệp màu!)
+        ctx.font = '900 18px system-ui, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 4.5;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(`👑 ${stName}`, 0, 1);
+        ctx.fillStyle = '#fef08a';
         ctx.fillText(`👑 ${stName}`, 0, 1);
         ctx.restore();
+      } else if (hole.height > 0.6) {
+        // Khi đang ngó đầu lên (peeking): Hiển thị huy hiệu tên nhỏ bên dưới để dễ quan sát
+        const stName = hole.student ? hole.student.name : '';
+        if (stName) {
+          ctx.save();
+          ctx.translate(0, 24);
+          const badgeW = Math.max(70, stName.length * 8 + 18);
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+          ctx.strokeStyle = '#22c55e';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.roundRect(-badgeW / 2, -9, badgeW, 18, 9);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '800 11px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(stName, 0, 0);
+          ctx.restore();
+        }
       }
 
       ctx.restore();
@@ -19086,15 +19259,15 @@
           fishingLeapFish = {
             startX: fishingBobberPos.x,
             startY: fishingWaterY,
-            targetX: Math.max(220, w * 0.48),
-            targetY: fishingWaterY - 110,
+            targetX: Math.max(220, w * 0.5),
+            targetY: Math.max(65, h * 0.16),
             progress: 0,
             studentName: fishingTargetWinner ? fishingTargetWinner.name : 'Học sinh may mắn'
           };
 
           const statusEl = document.getElementById('fishing-game-status');
           if (statusEl) {
-            statusEl.innerText = `🎉 GIẬT CẦN! ĐÃ BẮT ĐƯỢC CHÚ CÁ MAY MẮN: ${fishingLeapFish.studentName}!`;
+            statusEl.innerHTML = `🎉 <b class="text-amber-300">GIẬT CẦN!</b> ĐÃ BẮT ĐƯỢC CHÚ CÁ MAY MẮN: <b class="text-emerald-300 text-sm font-black">${fishingLeapFish.studentName}</b>! 👑`;
           }
         }
       } else if (fishingGameState === 'reeling') {
@@ -19102,7 +19275,7 @@
         fishingChildPullBack = Math.min(1, fishingChildPullBack + 0.05);
 
         if (fishingLeapFish) {
-          fishingLeapFish.progress += dt / 900; // Nhảy trong ~0.9s
+          fishingLeapFish.progress += dt / 850; // Nhảy trong ~0.85s
           if (fishingLeapFish.progress >= 1) {
             fishingLeapFish.progress = 1;
             fishingGameState = 'celebrating';
@@ -19111,12 +19284,20 @@
             // Mở bung bảng tên
             fishingScrollProgress = 1;
 
-            // Gọi callback kết quả sau 1.2s chiêm ngưỡng
+            if (typeof confetti === 'function') {
+              confetti({
+                particleCount: 110,
+                spread: 80,
+                origin: { y: 0.5 }
+              });
+            }
+
+            // Dành 2.5s để cả lớp đọc tên rõ ràng trên sân khấu trước khi mở modal
             setTimeout(() => {
               if (typeof fishingFinishCallback === 'function') {
                 fishingFinishCallback(fishingTargetWinner);
               }
-            }, 1200);
+            }, 2500);
           }
         }
       } else if (fishingGameState === 'celebrating') {
@@ -19527,10 +19708,14 @@
       ctx.beginPath();
       ctx.moveTo(tipX, tipY);
       if (fishingGameState === 'reeling' || fishingGameState === 'celebrating') {
-        // Dây câu kéo thẳng lên chú cá đang nhảy
+        // Dây câu kéo thẳng lên chú cá đang nhảy hoặc lơ lửng trên không
         if (fishingLeapFish) {
-          ctx.lineTo(fishingLeapFish.startX + (fishingLeapFish.targetX - fishingLeapFish.startX) * fishingLeapFish.progress,
-                     fishingLeapFish.startY + (fishingLeapFish.targetY - fishingLeapFish.startY) * fishingLeapFish.progress);
+          const lp = fishingLeapFish.progress;
+          const fx = fishingLeapFish.startX + (fishingLeapFish.targetX - fishingLeapFish.startX) * Math.min(1, lp);
+          const fy = lp < 1
+            ? fishingLeapFish.startY + (fishingLeapFish.targetY - fishingLeapFish.startY) * lp - Math.sin(lp * Math.PI) * 45
+            : fishingLeapFish.targetY + Math.sin(timestamp * 0.005) * 4;
+          ctx.lineTo(fx, fy);
         }
       } else {
         // Dây câu rủ cong nhẹ tự nhiên
@@ -19755,36 +19940,48 @@
       ctx.restore();
     }
 
-    // VẼ CÁ NHẢY LÊN MẶT NƯỚC & BẢNG CUỘN THƯ VÀNG HIỆN TÊN HỌC SINH
+    // VẼ CÁ NHẢY LÊN MẶT NƯỚC & BẢNG CUỘN THƯ VÀNG HIỆN TÊN HỌC SINH SIÊU RÕ NÉT
     function drawLeapingFishAndNameScroll(ctx, w, h, timestamp) {
       if (!fishingLeapFish) return;
 
       const p = fishingLeapFish.progress;
-      // Đường cong Parabol vút lên bầu trời
-      const curX = fishingLeapFish.startX + (fishingLeapFish.targetX - fishingLeapFish.startX) * p;
-      const heightArc = Math.sin(p * Math.PI) * 170;
-      const curY = fishingWaterY - heightArc;
+      const lp = Math.min(1, p);
 
+      // Tọa độ của chú cá nhảy lên và lơ lửng trên không
+      const curX = fishingLeapFish.startX + (fishingLeapFish.targetX - fishingLeapFish.startX) * lp;
+      const curY = lp < 1
+        ? fishingLeapFish.startY + (fishingLeapFish.targetY - fishingLeapFish.startY) * lp - Math.sin(lp * Math.PI) * 55
+        : fishingLeapFish.targetY + Math.sin(timestamp * 0.005) * 4;
+
+      // 1. PHỦ LỚP NỀN MỜ ĐIỆN ẢNH ĐEN TUYỀN (VIGNETTE CINEMA OVERLAY)
+      // Giúp làm tối cảnh nền hồ nước, tập trung toàn bộ tương phản vào chú cá và tên học sinh
+      const overlayAlpha = Math.min(0.72, Math.max(0, (p - 0.2) * 1.1));
+      ctx.save();
+      ctx.fillStyle = `rgba(10, 15, 29, ${overlayAlpha})`;
+      ctx.fillRect(0, 0, w, h);
+      ctx.restore();
+
+      // 2. VẼ CHÚ CÁ VÀNG LƠ LỬNG TRÊN KHÔNG
       ctx.save();
       ctx.translate(curX, curY);
 
-      // Chú cá nhảy uốn cong
-      const angle = (p - 0.5) * 1.6;
+      // Góc nghiêng lắc lư sinh động
+      const angle = lp < 1 ? (p - 0.5) * 1.5 : Math.sin(timestamp * 0.004) * 0.15;
       ctx.rotate(angle);
 
-      // Hào quang lấp lánh xung quanh chú cá vàng may mắn
-      const aura = ctx.createRadialGradient(0, 0, 15, 0, 0, 85);
+      // Hào quang vàng rực rỡ tỏa rộng
+      const aura = ctx.createRadialGradient(0, 0, 15, 0, 0, 95);
       aura.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
-      aura.addColorStop(0.5, 'rgba(245, 158, 11, 0.45)');
+      aura.addColorStop(0.4, 'rgba(245, 158, 11, 0.6)');
       aura.addColorStop(1, 'rgba(245, 158, 11, 0)');
       ctx.fillStyle = aura;
       ctx.beginPath();
-      ctx.arc(0, 0, 85, 0, Math.PI * 2);
+      ctx.arc(0, 0, 95, 0, Math.PI * 2);
       ctx.fill();
 
-      // Vẽ chú cá vàng siêu to khổng lồ đang ngậm lưỡi câu
+      // Vẽ chú cá vàng to đẹp
       const bigFish = {
-        size: 56,
+        size: 58,
         depth: 1,
         color: '#f59e0b',
         bellyColor: '#fef08a',
@@ -19796,79 +19993,127 @@
       };
       drawSingleFish(ctx, bigFish, timestamp);
 
-      // Lưỡi câu bạc lấp lánh ở mép miệng cá
-      ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 3;
+      // Lưỡi câu bạc ở miệng cá
+      ctx.strokeStyle = '#f1f5f9';
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
-      ctx.arc(32, 6, 8, Math.PI * 0.3, Math.PI * 1.6);
+      ctx.arc(33, 6, 8, Math.PI * 0.3, Math.PI * 1.6);
       ctx.stroke();
 
       ctx.restore();
 
-      // BẢNG VÀNG CUỘN THƯ TỰ ĐỘNG BUNG RA MANG TÊN HỌC SINH
-      if (p > 0.45 || fishingGameState === 'celebrating') {
-        const scrollScale = Math.min(1, (p - 0.45) / 0.35);
-        const scrollX = curX;
-        const scrollY = Math.min(curY + 75, fishingWaterY - 35);
+      // 3. BẢNG VINH DANH HOÀNG GIA - TƯƠNG PHẢN CỰC MẠNH, TÊN HỌC SINH TO RÕ RÀNG
+      if (p > 0.3 || fishingGameState === 'celebrating') {
+        const scrollScale = Math.min(1, Math.max(0, (p - 0.3) / 0.45));
+        const cardX = w * 0.5;
+        const cardY = Math.min(h * 0.60, curY + 145);
 
         ctx.save();
-        ctx.translate(scrollX, scrollY);
+        ctx.translate(cardX, cardY);
         ctx.scale(scrollScale, scrollScale);
 
         const stName = fishingLeapFish.studentName || 'Học sinh may mắn';
-        const tagW = Math.max(220, stName.length * 15 + 70);
-        const tagH = 55;
+        const cardW = Math.min(w * 0.92, 540);
+        const cardH = 175;
 
-        // Đổ bóng nổi khối
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        // Đổ bóng nổi khối vàng kim
+        ctx.shadowColor = 'rgba(245, 158, 11, 0.5)';
+        ctx.shadowBlur = 35;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 6;
+
+        // Khối hộp đen tuyền cao cấp
+        const cardGrad = ctx.createLinearGradient(0, -cardH / 2, 0, cardH / 2);
+        cardGrad.addColorStop(0, '#0f172a');
+        cardGrad.addColorStop(0.5, '#1e293b');
+        cardGrad.addColorStop(1, '#090d16');
+        ctx.fillStyle = cardGrad;
         ctx.beginPath();
-        ctx.roundRect(-tagW / 2 + 5, -tagH / 2 + 5, tagW, tagH, 16);
+        ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, 20);
         ctx.fill();
 
-        // Nền thiệp kim sắc hoàng gia
-        const cardGrad = ctx.createLinearGradient(0, -tagH / 2, 0, tagH / 2);
-        cardGrad.addColorStop(0, '#0f172a');
-        cardGrad.addColorStop(1, '#1e293b');
-        ctx.fillStyle = cardGrad;
-        ctx.strokeStyle = '#facc15';
-        ctx.lineWidth = 3.5;
+        ctx.shadowColor = 'transparent';
+
+        // Viền vàng kim 2 lớp siêu sắc nét
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 4;
         ctx.beginPath();
-        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 16);
+        ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, 20);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(-cardW / 2 + 5, -cardH / 2 + 5, cardW - 10, cardH - 10, 16);
+        ctx.stroke();
+
+        // Dải ruy băng đỏ vinh danh phía trên
+        const ribbonW = Math.min(cardW - 40, 360);
+        const ribbonH = 34;
+        const ribbonY = -cardH / 2 + 20;
+
+        const ribbonGrad = ctx.createLinearGradient(-ribbonW / 2, 0, ribbonW / 2, 0);
+        ribbonGrad.addColorStop(0, '#dc2626');
+        ribbonGrad.addColorStop(0.5, '#ef4444');
+        ribbonGrad.addColorStop(1, '#dc2626');
+        ctx.fillStyle = ribbonGrad;
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(-ribbonW / 2, ribbonY - ribbonH / 2, ribbonW, ribbonH, 12);
         ctx.fill();
         ctx.stroke();
 
-        // 2 đầu trục cuộn thư hoàng gia màu đỏ vàng
-        ctx.fillStyle = '#dc2626';
-        ctx.beginPath();
-        ctx.roundRect(-tagW / 2 - 8, -tagH / 2 - 4, 12, tagH + 8, 5);
-        ctx.roundRect(tagW / 2 - 4, -tagH / 2 - 4, 12, tagH + 8, 5);
-        ctx.fill();
-        ctx.fillStyle = '#fde047';
-        ctx.beginPath();
-        ctx.arc(-tagW / 2 - 2, -tagH / 2 - 4, 5, 0, Math.PI * 2);
-        ctx.arc(-tagW / 2 - 2, tagH / 2 + 4, 5, 0, Math.PI * 2);
-        ctx.arc(tagW / 2 + 2, -tagH / 2 - 4, 5, 0, Math.PI * 2);
-        ctx.arc(tagW / 2 + 2, tagH / 2 + 4, 5, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Tiêu đề nhỏ bên trên
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '800 11px system-ui, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('✨ HỌC SINH ĐƯỢC CÂU LÊN ✨', 0, -11);
-
-        // Tên học sinh màu vàng kim rực rỡ
-        ctx.fillStyle = '#fde047';
-        ctx.font = '900 19px system-ui, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 13px system-ui, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(`👑 ${stName}`, 0, 9);
+        ctx.fillText('🎣 BÉ ĐÃ CÂU ĐƯỢC CHÚ CÁ MAY MẮN! 🎣', 0, ribbonY);
 
-        // Ngôi sao lấp lánh 2 bên
-        const starTime = Math.sin(timestamp * 0.008);
-        ctx.font = '16px sans-serif';
-        ctx.fillText('⭐', -tagW / 2 + 25, 9 + starTime * 2);
-        ctx.fillText('⭐', tagW / 2 - 25, 9 - starTime * 2);
+        // TÊN HỌC SINH SIÊU TO, SIÊU RÕ NÉT, TƯƠNG PHẢN TUYỆT ĐỐI
+        const nameY = ribbonY + 46;
+        const fontSize = cardW < 400 ? 25 : 34;
+
+        ctx.font = `900 ${fontSize}px system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Viền đen dày dặn tạo tương phản cực mạnh (Tuyệt đối không bị tệp màu!)
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 7;
+        ctx.lineJoin = 'round';
+        ctx.strokeText(`👑 ${stName}`, 0, nameY);
+
+        // Chữ màu vàng óng kim cương rực rỡ
+        ctx.fillStyle = '#fef08a';
+        ctx.fillText(`👑 ${stName}`, 0, nameY);
+
+        // Huy hiệu lớp & Điểm sổ điểm
+        const classes = typeof getAllSavedClasses === 'function' ? getAllSavedClasses() : [];
+        const curCls = classes.find(c => c.id === currentClassId);
+        const className = curCls ? curCls.name : 'Lớp học';
+
+        const badgeY = nameY + 44;
+        const badgeW = Math.min(cardW - 60, 310);
+        const badgeH = 28;
+
+        ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(-badgeW / 2, badgeY - badgeH / 2, badgeW, badgeH, 14);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#6ee7b7';
+        ctx.font = '800 12px system-ui, sans-serif';
+        ctx.fillText(`⭐ ${className} • Tặng +1 Điểm Sổ Điểm ⭐`, 0, badgeY);
+
+        // Hai ngôi sao nhấp nháy 2 bên
+        const starOsc = Math.sin(timestamp * 0.008) * 3;
+        ctx.font = '22px sans-serif';
+        ctx.fillText('✨', -cardW / 2 + 25, starOsc);
+        ctx.fillText('✨', cardW / 2 - 25, -starOsc);
 
         ctx.restore();
       }
@@ -19939,6 +20184,1414 @@
         ctx.fill();
         ctx.restore();
       }
+    }
+
+    // ==========================================
+    // MODULE 16: MÚA LÂN HÁI LỘC (LION DANCE MINIGAME)
+    // Lân Sư Rồng, Ông Địa Quạt Mo, Giàn Treo Phần Thưởng: Lồng Đèn, Lì Xì, Quà Giáng Sinh...
+    // ==========================================
+
+    const LionAudio = {
+      ctx: null,
+      enabled: true,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+      // Tiếng trống cái Lân trầm hùng: TÙNG!
+      playDrumBass(vol = 0.35) {
+        if (!this.enabled || !isAppSoundActive) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(145, now);
+          osc.frequency.exponentialRampToValueAtTime(42, now + 0.32);
+          gain.gain.setValueAtTime(vol, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        } catch (e) {}
+      },
+      // Tiếng gõ vành trống đanh gọn: CẮC!
+      playDrumRim(vol = 0.28) {
+        if (!this.enabled || !isAppSoundActive) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const filter = this.ctx.createBiquadFilter();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(820, now);
+          osc.frequency.exponentialRampToValueAtTime(320, now + 0.08);
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(950, now);
+          filter.Q.setValueAtTime(3.5, now);
+          gain.gain.setValueAtTime(vol, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        } catch (e) {}
+      },
+      // Tiếng chũm chọe đồng vang: XÈNG!
+      playCymbal(vol = 0.22) {
+        if (!this.enabled || !isAppSoundActive) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const now = this.ctx.currentTime;
+          const bufSize = Math.floor(this.ctx.sampleRate * 0.35);
+          const buf = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < bufSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.08));
+          }
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buf;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'highpass';
+          filter.frequency.setValueAtTime(3600, now);
+          const gain = this.ctx.createGain();
+          gain.gain.setValueAtTime(vol, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          noise.start(now);
+          noise.stop(now + 0.36);
+        } catch (e) {}
+      },
+      // Tràng pháo nổ giòn tan: TÁCH TÁCH TÙNG TÙNG!
+      playFirecracker() {
+        if (!this.enabled || !isAppSoundActive) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          for (let i = 0; i < 9; i++) {
+            const delay = i * 0.07 + Math.random() * 0.04;
+            const now = this.ctx.currentTime + delay;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = Math.random() < 0.35 ? 'triangle' : 'square';
+            osc.frequency.setValueAtTime(260 + Math.random() * 600, now);
+            osc.frequency.exponentialRampToValueAtTime(60, now + 0.06);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.08);
+          }
+        } catch (e) {}
+      },
+      // Nhạc mừng hái lộc đại cát
+      playFanfare() {
+        if (!this.enabled || !isAppSoundActive) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+          notes.forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            const t = this.ctx.currentTime + idx * 0.12;
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.3, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.42);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.45);
+          });
+        } catch (e) {}
+      }
+    };
+
+    function toggleLionSound() {
+      LionAudio.enabled = !LionAudio.enabled;
+      const btn = document.getElementById('lion-sound-btn');
+      if (btn) {
+        btn.innerHTML = LionAudio.enabled ? '🔊 Bật' : '🔇 Tắt';
+      }
+    }
+
+    function toggleLionFullscreen() {
+      const container = document.getElementById('lion-stage-container');
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+      setTimeout(resizeLionCanvas, 150);
+    }
+
+    // GAME STATE & VARIABLES
+    let lionRewards = [];
+    let lionSparks = [];
+    let lionConfetti = [];
+    let lionGameState = 'idle'; // 'idle' | 'dancing' | 'aiming' | 'leaping' | 'celebrating'
+    let lionAnimId = null;
+    let lionLastTime = 0;
+    let lionStartTime = 0;
+    let lionTargetWinner = null;
+    let lionTargetReward = null;
+    let lionFinishCallback = null;
+    let lionTotalDuration = 5000;
+    let lionDrumBeatTimer = 0;
+    let lionDrumBeatPatternIndex = 0;
+    let lionBannerProgress = 0; // 0 to 1
+
+    // Entity chú Lân
+    const lionActor = {
+      x: 350,
+      y: 420,
+      baseY: 420,
+      vx: 0,
+      vy: 0,
+      scale: 1,
+      facing: 1, // 1: phải, -1: trái
+      bodyAngle: 0,
+      headBob: 0,
+      mouthOpen: 0, // 0 to 1
+      eyeBlink: 0, // 0: mở, 1: nhắm
+      tailPhase: 0,
+      jumpProgress: 0, // 0 to 1
+      jumpStartX: 0,
+      jumpStartY: 0,
+      jumpTargetX: 0,
+      jumpTargetY: 0,
+      crouchFactor: 0
+    };
+
+    // Entity Ông Địa
+    const ongDiaActor = {
+      x: 180,
+      y: 430,
+      baseY: 430,
+      fanAngle: 0,
+      hopPhase: 0,
+      facing: 1,
+      bellyBounce: 0
+    };
+
+    // Các loại phần thưởng treo trên giàn hoa lễ hội
+    const REWARD_TYPES = [
+      { id: 'lantern_red', icon: '🏮', name: 'Lồng Đèn Trung Thu Quả Trám', color: '#ef4444', accent: '#fef08a' },
+      { id: 'lixi', icon: '🧧', name: 'Bao Lì Xì Tết May Mắn', color: '#dc2626', accent: '#fbbf24' },
+      { id: 'xmas_gift', icon: '🎁', name: 'Hộp Quà Giáng Sinh Noel', color: '#16a34a', accent: '#f43f5e' },
+      { id: 'lantern_star', icon: '⭐', name: 'Đèn Ngôi Sao 5 Cánh', color: '#f59e0b', accent: '#ffffff' },
+      { id: 'lantern_carp', icon: '🐟', name: 'Lồng Đèn Cá Chép Hóa Rồng', color: '#ea580c', accent: '#fde047' },
+      { id: 'gold_pouch', icon: '💰', name: 'Túi Kim Bảo Phú Quý', color: '#eab308', accent: '#991b1b' },
+      { id: 'xmas_bell', icon: '🔔', name: 'Chuông Vàng Giáng Sinh', color: '#fbbf24', accent: '#dc2626' }
+    ];
+
+    function initLionGame(forceReset = false) {
+      const canvas = document.getElementById('lion-canvas');
+      if (!canvas) return;
+      resizeLionCanvas();
+
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || canvas.width || 800;
+      const h = rect.height || canvas.height || 550;
+
+      const groundY = Math.round(h * 0.78);
+      lionActor.baseY = groundY;
+      lionActor.y = groundY;
+      lionActor.x = Math.round(w * 0.55);
+      lionActor.facing = -1;
+      lionActor.bodyAngle = 0;
+      lionActor.mouthOpen = 0;
+      lionActor.crouchFactor = 0;
+      lionActor.jumpProgress = 0;
+
+      ongDiaActor.baseY = groundY + 5;
+      ongDiaActor.y = groundY + 5;
+      ongDiaActor.x = Math.round(w * 0.22);
+      ongDiaActor.facing = 1;
+
+      // Sinh giàn treo phần thưởng dàn hàng ngang trên cao
+      const numRewards = 7;
+      const startX = w * 0.15;
+      const endX = w * 0.85;
+      const stepX = (endX - startX) / (numRewards - 1);
+      lionRewards = [];
+
+      for (let i = 0; i < numRewards; i++) {
+        const typeInfo = REWARD_TYPES[i % REWARD_TYPES.length];
+        lionRewards.push({
+          id: `rew_${i}`,
+          x: startX + i * stepX,
+          y: Math.round(h * 0.22) + (i % 2 === 0 ? 0 : 18),
+          baseY: Math.round(h * 0.22) + (i % 2 === 0 ? 0 : 18),
+          type: typeInfo.id,
+          icon: typeInfo.icon,
+          name: typeInfo.name,
+          color: typeInfo.color,
+          accent: typeInfo.accent,
+          swingPhase: Math.random() * Math.PI * 2,
+          swingSpeed: 0.025 + Math.random() * 0.02,
+          swingAmp: 0.08 + Math.random() * 0.06,
+          isTarget: false,
+          isHarvested: false,
+          scale: 1.0
+        });
+      }
+
+      lionSparks = [];
+      lionConfetti = [];
+      lionBannerProgress = 0;
+      lionDrumBeatTimer = 0;
+      lionDrumBeatPatternIndex = 0;
+
+      if (forceReset || lionGameState === 'idle' || lionGameState === 'celebrating') {
+        lionGameState = 'idle';
+        lionTargetWinner = null;
+        lionTargetReward = null;
+        const statusEl = document.getElementById('lion-game-status');
+        if (statusEl) {
+          statusEl.innerText = 'Lân Sư Rồng & Ông Địa đang chờ tiếng trống... Bấm BẮT ĐẦU MÚA LÂN!';
+        }
+      }
+
+      if (!lionAnimId) {
+        lionLastTime = performance.now();
+        lionAnimId = requestAnimationFrame(renderLionCanvas);
+      }
+    }
+
+    function resizeLionCanvas() {
+      const canvas = document.getElementById('lion-canvas');
+      const container = document.getElementById('lion-stage-container');
+      if (!canvas || !container) return;
+
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.round(rect.width || 800);
+      const h = Math.round(rect.height || 550);
+
+      if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+      }
+    }
+
+    function resetLionGame() {
+      initLionGame(true);
+    }
+
+    function startLionGame(winnerStudent, callback) {
+      initLionGame(false);
+      LionAudio.init();
+
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      lionTotalDuration = Math.max(3500, durationSec * 1000);
+      lionStartTime = performance.now();
+      lionTargetWinner = winnerStudent;
+      lionFinishCallback = callback;
+      lionBannerProgress = 0;
+      lionGameState = 'dancing';
+
+      // Chọn ngẫu nhiên 1 phần thưởng may mắn để chú Lân nhắm tới hái
+      const chosenIdx = Math.floor(Math.random() * lionRewards.length);
+      lionRewards.forEach((r, idx) => {
+        r.isTarget = (idx === chosenIdx);
+        r.isHarvested = false;
+        r.scale = 1.0;
+      });
+      lionTargetReward = lionRewards[chosenIdx];
+
+      const statusEl = document.getElementById('lion-game-status');
+      if (statusEl) {
+        statusEl.innerText = `🦁 TÙNG CẮC XÈNG! Chú Lân đang múa tưng bừng hướng tới ${lionTargetReward.name}!`;
+      }
+
+      LionAudio.playDrumBass(0.4);
+      LionAudio.playCymbal(0.3);
+    }
+
+    // MAIN ANIMATION LOOP
+    function renderLionCanvas(timestamp) {
+      const canvas = document.getElementById('lion-canvas');
+      if (!canvas) {
+        lionAnimId = null;
+        return;
+      }
+
+      const container = document.getElementById('lion-stage-container');
+      if (container && container.classList.contains('hidden')) {
+        lionAnimId = requestAnimationFrame(renderLionCanvas);
+        return;
+      }
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        lionAnimId = requestAnimationFrame(renderLionCanvas);
+        return;
+      }
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      // Cập nhật logic minigame
+      updateLionGameLogic(timestamp, w, h);
+
+      // Vẽ các lớp đồ họa nghệ thuật dân gian
+      drawLionSceneBackground(ctx, w, h, timestamp);
+      drawRewardRackAndItems(ctx, w, h, timestamp);
+      drawOngDiaCharacter(ctx, ongDiaActor, timestamp);
+      drawLionDanceCreature(ctx, lionActor, timestamp);
+      drawLionSparksAndConfetti(ctx);
+
+      // Vẽ Liễn Đại Cát chúc mừng khi hái được lộc
+      if (lionGameState === 'celebrating' && lionTargetWinner) {
+        drawLionCelebrationScroll(ctx, w, h, timestamp);
+      }
+
+      ctx.restore();
+
+      lionAnimId = requestAnimationFrame(renderLionCanvas);
+    }
+
+    // UPDATE LOGIC
+    function updateLionGameLogic(timestamp, w, h) {
+      const dt = timestamp - lionLastTime;
+      lionLastTime = timestamp;
+
+      // 1. Nhịp trống hội múa Lân ("Tùng! Cắc! Tùng tùng cắc! Xèng!")
+      if (lionGameState === 'dancing' || lionGameState === 'aiming') {
+        lionDrumBeatTimer += dt;
+        if (lionDrumBeatTimer > 240) {
+          lionDrumBeatTimer = 0;
+          lionDrumBeatPatternIndex = (lionDrumBeatPatternIndex + 1) % 8;
+          if (lionDrumBeatPatternIndex === 0 || lionDrumBeatPatternIndex === 4) {
+            LionAudio.playDrumBass(0.32);
+          } else if (lionDrumBeatPatternIndex === 2 || lionDrumBeatPatternIndex === 6) {
+            LionAudio.playDrumRim(0.24);
+          } else if (lionDrumBeatPatternIndex === 7) {
+            LionAudio.playCymbal(0.2);
+          }
+        }
+      }
+
+      // 2. Chuyển trạng thái theo tiến độ thời gian
+      if (lionGameState === 'dancing') {
+        const elapsed = timestamp - lionStartTime;
+        const progress = Math.min(1, elapsed / (lionTotalDuration - 1400));
+
+        // Nhún nhảy múa vòng quanh tiếp cận dưới chân phần thưởng
+        const targetX = lionTargetReward ? lionTargetReward.x : w * 0.5;
+        lionActor.x += (targetX - lionActor.x) * 0.04;
+        lionActor.facing = (targetX >= lionActor.x) ? 1 : -1;
+
+        // Đầu nhấp nhô theo nhịp múa
+        lionActor.headBob = Math.sin(timestamp * 0.012) * 14;
+        lionActor.mouthOpen = (Math.sin(timestamp * 0.016) + 1) * 0.45;
+        lionActor.tailPhase += 0.12;
+
+        // Ông Địa quạt mo nhún nhảy cổ vũ
+        ongDiaActor.x += ((targetX - 140) - ongDiaActor.x) * 0.03;
+        ongDiaActor.facing = (lionActor.x >= ongDiaActor.x) ? 1 : -1;
+        ongDiaActor.hopPhase += 0.14;
+        ongDiaActor.fanAngle = Math.sin(timestamp * 0.009) * 0.45;
+
+        // Khi gần hết thời gian quay, chú Lân vào thế chùng chân lấy đà
+        if (elapsed >= lionTotalDuration - 1400) {
+          lionGameState = 'aiming';
+          lionActor.jumpStartX = lionActor.x;
+          lionActor.jumpStartY = lionActor.baseY;
+          lionActor.jumpTargetX = lionTargetReward ? lionTargetReward.x : w * 0.5;
+          lionActor.jumpTargetY = lionTargetReward ? lionTargetReward.y + 25 : h * 0.3;
+          lionActor.jumpProgress = 0;
+          LionAudio.playDrumRim(0.3);
+        }
+      } else if (lionGameState === 'aiming') {
+        // Lấy đà 400ms: chùng thấp người xuống đất, mắt nhìn chăm chú lên phần thưởng
+        lionActor.crouchFactor = Math.min(1, lionActor.crouchFactor + 0.08);
+        lionActor.mouthOpen = 0.2;
+        if (lionActor.crouchFactor >= 1) {
+          lionGameState = 'leaping';
+          lionActor.crouchFactor = 0;
+          LionAudio.playDrumBass(0.45);
+          LionAudio.playCymbal(0.35);
+        }
+      } else if (lionGameState === 'leaping') {
+        // Chú Lân bật nhảy lên cao hình vòng cung
+        lionActor.jumpProgress += 0.042;
+        const p = Math.min(1, lionActor.jumpProgress);
+
+        // Quỹ đạo Parabol nhảy lên đớp lộc
+        lionActor.x = lionActor.jumpStartX + (lionActor.jumpTargetX - lionActor.jumpStartX) * p;
+        const jumpApex = lionActor.jumpTargetY - 40;
+        // Điểm uốn: y xuất phát -> đỉnh nhảy -> mục tiêu
+        lionActor.y = lionActor.jumpStartY + (lionActor.jumpTargetY - lionActor.jumpStartY) * p - Math.sin(p * Math.PI) * 120;
+
+        lionActor.mouthOpen = Math.min(1, lionActor.mouthOpen + 0.12);
+        lionActor.bodyAngle = (lionActor.facing === 1 ? -0.25 : 0.25) * Math.sin(p * Math.PI);
+
+        // Khi Lân chạm trúng phần thưởng
+        if (p >= 1) {
+          lionGameState = 'celebrating';
+          if (lionTargetReward) {
+            lionTargetReward.isHarvested = true;
+          }
+          // Âm thanh ăn mừng: Pháo nổ + Chiêng Xèng + Nhạc Khải Hoàn
+          LionAudio.playFirecracker();
+          LionAudio.playCymbal(0.4);
+          LionAudio.playFanfare();
+
+          // Tung pháo hoa giấy & đốm lửa vàng rực
+          createLionCelebrationEffects(lionActor.x, lionActor.y);
+
+          const statusEl = document.getElementById('lion-game-status');
+          if (statusEl) {
+            statusEl.innerText = `🎉 ĐẠI CÁT ĐẠI LỢI! Chú Lân đã hái thành công ${lionTargetReward?.name || 'Phần Thưởng'}!`;
+          }
+
+          // Hiển thị tên học sinh ít nhất 2.5s rồi mở popup
+          setTimeout(() => {
+            if (typeof lionFinishCallback === 'function') {
+              lionFinishCallback(lionTargetWinner);
+            }
+          }, 2500);
+        }
+      } else if (lionGameState === 'celebrating') {
+        // Giữ chú Lân ngậm lộc đung đưa nhẹ, liễn đỏ buông xuống từ từ
+        lionActor.y = lionActor.jumpTargetY + Math.sin(timestamp * 0.005) * 6;
+        lionBannerProgress = Math.min(1, lionBannerProgress + 0.038);
+        lionActor.mouthOpen = 0.9;
+
+        // Ông Địa nhảy tưng bừng vỗ tay
+        ongDiaActor.hopPhase += 0.2;
+        ongDiaActor.fanAngle = Math.sin(timestamp * 0.015) * 0.6;
+      } else {
+        // Idle nhẹ nhàng
+        lionActor.headBob = Math.sin(timestamp * 0.004) * 5;
+        lionActor.mouthOpen = 0.1;
+        ongDiaActor.fanAngle = Math.sin(timestamp * 0.005) * 0.25;
+      }
+
+      // 3. Đung đưa các phần thưởng trên giàn
+      lionRewards.forEach(r => {
+        r.swingPhase += r.swingSpeed;
+      });
+    }
+
+    // BỐI CẢNH SÂN LỄ HỘI DÂN GIAN BAN ĐÊM (LUNG LINH, ĐÈN LỒNG, TRĂNG RẰM)
+    function drawLionSceneBackground(ctx, w, h, timestamp) {
+      // 1. Nền trời hoàng hôn / lễ hội trăng rằm ấm áp
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      skyGrad.addColorStop(0, '#1e1b4b'); // Indigo đêm
+      skyGrad.addColorStop(0.45, '#3b0764'); // Tím cung đình
+      skyGrad.addColorStop(0.78, '#701a75'); // Hồng tím rực rỡ
+      skyGrad.addColorStop(1, '#451a03'); // Sân gạch đỏ đất
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Trăng rằm vằng vặc vàng óng
+      const moonX = w * 0.82;
+      const moonY = h * 0.2;
+      const moonR = 48;
+      const moonGlow = ctx.createRadialGradient(moonX, moonY, moonR * 0.4, moonX, moonY, moonR * 2.8);
+      moonGlow.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+      moonGlow.addColorStop(0.4, 'rgba(251, 191, 36, 0.4)');
+      moonGlow.addColorStop(1, 'rgba(251, 191, 36, 0)');
+      ctx.fillStyle = moonGlow;
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonR * 2.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mây lững lờ trôi qua ánh trăng
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.22)';
+      ctx.beginPath();
+      ctx.ellipse(moonX - 25, moonY + 14, 65, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Dãy đình làng / mái ngói cong cổ kính phía sau mờ ảo
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.72);
+      // Mái chùa cong 1
+      ctx.quadraticCurveTo(w * 0.15, h * 0.6, w * 0.25, h * 0.66);
+      ctx.lineTo(w * 0.25, h * 0.74);
+      // Cổng tam quan
+      ctx.lineTo(w * 0.45, h * 0.74);
+      ctx.quadraticCurveTo(w * 0.52, h * 0.58, w * 0.6, h * 0.74);
+      // Mái cong 2
+      ctx.quadraticCurveTo(w * 0.75, h * 0.62, w * 0.9, h * 0.68);
+      ctx.lineTo(w, h * 0.72);
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fill();
+
+      // 4. Mặt sân gạch Bát Tràng đỏ lễ hội
+      const groundY = Math.round(h * 0.78);
+      const groundGrad = ctx.createLinearGradient(0, groundY, 0, h);
+      groundGrad.addColorStop(0, '#78350f');
+      groundGrad.addColorStop(0.3, '#451a03');
+      groundGrad.addColorStop(1, '#1c1917');
+      ctx.fillStyle = groundGrad;
+      ctx.fillRect(0, groundY, w, h - groundY);
+
+      // Kẻ vân gạch lễ hội viền vàng
+      ctx.strokeStyle = 'rgba(245, 158, 11, 0.2)';
+      ctx.lineWidth = 1.2;
+      for (let y = groundY; y < h; y += 22) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+      for (let x = 0; x < w; x += 45) {
+        ctx.beginPath();
+        ctx.moveTo(x, groundY);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+    }
+
+    // VẼ GIÀN TREO & CÁC PHẦN THƯỞNG ĐA DẠNG (LỒNG ĐÈN, LÌ XÌ, QUÀ GIÁNG SINH...)
+    function drawRewardRackAndItems(ctx, w, h, timestamp) {
+      // 1. Dây thừng đỏ giăng cờ hoa lễ hội treo quà
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.15);
+      ctx.quadraticCurveTo(w * 0.5, h * 0.24, w, h * 0.15);
+      ctx.stroke();
+
+      // Dây viền vàng lấp lánh song song
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.8;
+      ctx.setLineDash([8, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.15 + 2);
+      ctx.quadraticCurveTo(w * 0.5, h * 0.24 + 2, w, h * 0.15 + 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. Vẽ từng phần thưởng
+      lionRewards.forEach(rew => {
+        ctx.save();
+        const swing = Math.sin(rew.swingPhase) * rew.swingAmp;
+        ctx.translate(rew.x, rew.y);
+        ctx.rotate(swing);
+
+        // Dây treo đỏ nối từ giàn xuống phần thưởng
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, -28);
+        ctx.lineTo(0, 0);
+        ctx.stroke();
+
+        // Nút thắt may mắn đồng tiền cổ
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(0, -14, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Vòng hào quang phát sáng nếu là mục tiêu trúng thưởng
+        if (rew.isTarget && (lionGameState === 'dancing' || lionGameState === 'aiming' || lionGameState === 'leaping')) {
+          const glow = ctx.createRadialGradient(0, 0, 10, 0, 0, 48);
+          glow.addColorStop(0, 'rgba(254, 240, 138, 0.85)');
+          glow.addColorStop(0.6, 'rgba(245, 158, 11, 0.35)');
+          glow.addColorStop(1, 'rgba(245, 158, 11, 0)');
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(0, 0, 48, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Vẽ chi tiết biểu tượng phần thưởng theo loại
+        drawSpecificRewardItem(ctx, rew);
+
+        ctx.restore();
+      });
+    }
+
+    // VẼ CHI TIẾT TỪNG PHẦN THƯỞNG (LỒNG ĐÈN TRÒN, LỒNG ĐÈN CÁ CHÉP, BAO LÌ XÌ, HỘP QUÀ NOEL...)
+    function drawSpecificRewardItem(ctx, rew) {
+      if (rew.isHarvested) {
+        // Đã bị chú Lân ngậm, vẽ dây đứt tua rua vàng
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(-5, 0);
+        ctx.lineTo(0, 12);
+        ctx.lineTo(5, 0);
+        ctx.stroke();
+        return;
+      }
+
+      ctx.save();
+
+      if (rew.type === 'lixi') {
+        // Bao lì xì chữ PHÚC / TÀI LỘC viền hoa văn vàng
+        ctx.fillStyle = '#dc2626';
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.roundRect(-16, -24, 32, 48, 5);
+        ctx.fill();
+        ctx.stroke();
+
+        // Nắp gập lì xì
+        ctx.fillStyle = '#b91c1c';
+        ctx.beginPath();
+        ctx.moveTo(-16, -24);
+        ctx.lineTo(0, -10);
+        ctx.lineTo(16, -24);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Hình tròn chữ LỘC vàng ở giữa
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.arc(0, 4, 9, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#b91c1c';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('LỘC', 0, 4);
+
+        // Tua rua vàng dưới đáy
+        drawTassel(ctx, 0, 24, '#fef08a');
+
+      } else if (rew.type === 'xmas_gift') {
+        // Hộp quà Giáng sinh Noel có nơ đỏ rực
+        ctx.fillStyle = '#15803d'; // Hộp xanh lá Noel
+        ctx.strokeStyle = '#166534';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(-18, -16, 36, 36, 4);
+        ctx.fill();
+        ctx.stroke();
+
+        // Dải ruy băng đỏ chéo ngang dọc
+        ctx.fillStyle = '#dc2626';
+        ctx.fillRect(-5, -16, 10, 36);
+        ctx.fillRect(-18, -3, 36, 8);
+
+        // Chiếc nơ đỏ trên nắp
+        ctx.beginPath();
+        ctx.ellipse(-7, -19, 7, 4, -0.4, 0, Math.PI * 2);
+        ctx.ellipse(7, -19, 7, 4, 0.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Tua rua
+        drawTassel(ctx, 0, 20, '#dc2626');
+
+      } else if (rew.type === 'lantern_carp') {
+        // Lồng đèn cá chép hóa rồng Trung thu
+        ctx.fillStyle = '#ea580c';
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 20, 14, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Đuôi cá chép vẫy
+        ctx.fillStyle = '#f97316';
+        ctx.beginPath();
+        ctx.moveTo(14, 0);
+        ctx.lineTo(26, -10);
+        ctx.lineTo(22, 0);
+        ctx.lineTo(26, 10);
+        ctx.closePath();
+        ctx.fill();
+
+        // Mắt cá
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-11, -3, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-12, -3, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+
+        drawTassel(ctx, 0, 15, '#fef08a');
+
+      } else if (rew.type === 'lantern_star') {
+        // Lồng đèn ngôi sao 5 cánh Trung thu
+        ctx.fillStyle = '#eab308';
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2.5;
+        drawStarShape(ctx, 0, 0, 5, 20, 9);
+        ctx.fill();
+        ctx.stroke();
+
+        // Vòng tròn đỏ ở tâm ngôi sao
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(0, 0, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        drawTassel(ctx, 0, 20, '#fef08a');
+
+      } else if (rew.type === 'gold_pouch') {
+        // Túi kim bảo tài lộc
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(0, 4, 18, 0, Math.PI);
+        ctx.quadraticCurveTo(-18, -12, 0, -14);
+        ctx.quadraticCurveTo(18, -12, 18, 4);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Miệng túi buộc dây đỏ
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-12, -10);
+        ctx.lineTo(12, -10);
+        ctx.stroke();
+
+        drawTassel(ctx, 0, 22, '#fef08a');
+
+      } else {
+        // Lồng đèn Trung thu tròn quả trám đỏ viền vàng cổ điển
+        const grad = ctx.createLinearGradient(-18, 0, 18, 0);
+        grad.addColorStop(0, '#dc2626');
+        grad.addColorStop(0.5, '#f87171');
+        grad.addColorStop(1, '#991b1b');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 20, 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Nan đèn vàng
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 10, 18, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Đai trên dưới
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillRect(-9, -21, 18, 4);
+        ctx.fillRect(-9, 17, 18, 4);
+
+        drawTassel(ctx, 0, 22, '#fef08a');
+      }
+
+      ctx.restore();
+    }
+
+    function drawStarShape(ctx, cx, cy, spikes, outerRadius, innerRadius) {
+      let rot = Math.PI / 2 * 3;
+      let x = cx;
+      let y = cy;
+      const step = Math.PI / spikes;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - outerRadius);
+      for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+      }
+      ctx.lineTo(cx, cy - outerRadius);
+      ctx.closePath();
+    }
+
+    function drawTassel(ctx, x, y, color = '#fef08a') {
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x - 5, y);
+      ctx.lineTo(x - 8, y + 16);
+      ctx.lineTo(x, y + 18);
+      ctx.lineTo(x + 8, y + 16);
+      ctx.lineTo(x + 5, y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // VẼ CHÚ LÂN SẶC SỠ NGHỆ THUẬT DÂN GIAN VIỆT NAM
+    function drawLionDanceCreature(ctx, lion, timestamp) {
+      ctx.save();
+      ctx.translate(lion.x, lion.y - (lion.crouchFactor * 22));
+      ctx.scale(lion.facing, 1);
+      ctx.rotate(lion.bodyAngle);
+
+      // 1. Thân mình chú Lân (áo choàng vảy gấm uốn lượn phủ 2 người múa)
+      const bodyW = 120;
+      const bodyH = 55;
+      const tailWag = Math.sin(lion.tailPhase) * 14;
+
+      // Lớp vảy thân Lân
+      const bodyGrad = ctx.createLinearGradient(-bodyW, 0, 0, 0);
+      bodyGrad.addColorStop(0, '#dc2626');
+      bodyGrad.addColorStop(0.3, '#f97316');
+      bodyGrad.addColorStop(0.7, '#eab308');
+      bodyGrad.addColorStop(1, '#dc2626');
+
+      ctx.fillStyle = bodyGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, -10 + lion.headBob * 0.3);
+      ctx.quadraticCurveTo(-bodyW * 0.5, -bodyH * 0.9 + tailWag * 0.4, -bodyW, -15 + tailWag);
+      ctx.lineTo(-bodyW, 20 + tailWag);
+      ctx.quadraticCurveTo(-bodyW * 0.5, bodyH * 0.8 + tailWag * 0.3, 0, 25);
+      ctx.closePath();
+      ctx.fill();
+
+      // Hoa văn vảy kim tuyến trên thân Lân
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.6)';
+      ctx.lineWidth = 2.2;
+      for (let i = 1; i <= 4; i++) {
+        const scaleX = -i * 22;
+        ctx.beginPath();
+        ctx.arc(scaleX, 6 + tailWag * (i / 4), 11, 0, Math.PI);
+        ctx.stroke();
+      }
+
+      // Viền lông xù trắng muốt dọc sống lưng và bụng
+      ctx.fillStyle = '#ffffff';
+      for (let i = 0; i <= 6; i++) {
+        const furX = -i * 18;
+        const furY = -22 + Math.sin(lion.tailPhase + i) * 3;
+        ctx.beginPath();
+        ctx.ellipse(furX, furY, 9, 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. Đuôi Lân rực rỡ vẫy cao
+      ctx.fillStyle = '#eab308';
+      ctx.beginPath();
+      ctx.moveTo(-bodyW, -5 + tailWag);
+      ctx.quadraticCurveTo(-bodyW - 35, -35 + tailWag * 1.5, -bodyW - 48, -10 + tailWag);
+      ctx.quadraticCurveTo(-bodyW - 25, 10 + tailWag, -bodyW, 15 + tailWag);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Chân người múa Lân (chân trước & chân sau)
+      drawLionLegs(ctx, lion, tailWag);
+
+      // 4. ĐẦU LÂN OAI PHONG LẪM LIỆT (VẼ CHI TIẾT TRỌNG TÂM)
+      ctx.save();
+      ctx.translate(15, -15 + lion.headBob);
+
+      // Gò má và trán Lân
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(0, 0, 36, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+
+      // Sừng Lân vươn cao kiêu hãnh với gương bát quái / ngọc minh châu
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath();
+      ctx.moveTo(-8, -32);
+      ctx.lineTo(0, -56);
+      ctx.lineTo(8, -32);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Viên ngọc minh châu đỏ đỉnh sừng
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, -58, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-2, -60, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tai Lân vểnh nhấp nhô
+      ctx.fillStyle = '#ea580c';
+      ctx.beginPath();
+      ctx.ellipse(-26, -26, 12, 8, -0.6, 0, Math.PI * 2);
+      ctx.ellipse(26, -26, 12, 8, 0.6, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Đôi mắt to tròn chớp chớp sống động
+      const eyeBlink = (Math.sin(timestamp * 0.003) > 0.95) ? 0.1 : 1;
+      // Mắt trái
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(-14, -6, 11, 11 * eyeBlink, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      if (eyeBlink > 0.3) {
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-13, -6, 5.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-15, -8, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Mắt phải
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.ellipse(14, -6, 11, 11 * eyeBlink, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      if (eyeBlink > 0.3) {
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(15, -6, 5.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(13, -8, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Lông mày xoắn ốc xanh ngọc / vàng đặc trưng
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.arc(-14, -18, 9, Math.PI, 0);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(14, -18, 9, Math.PI, 0);
+      ctx.stroke();
+
+      // Mũi Lân to phồng đỏ
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.ellipse(0, 4, 12, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Miệng Lân há to theo nhịp trống và ngậm phần thưởng khi hái lộc!
+      const mouthY = 16 + lion.mouthOpen * 14;
+      ctx.fillStyle = '#7f1d1d';
+      ctx.beginPath();
+      ctx.ellipse(0, mouthY, 26, 10 + lion.mouthOpen * 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Răng nanh bạc
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(-16, mouthY - 4);
+      ctx.lineTo(-12, mouthY + 5);
+      ctx.lineTo(-8, mouthY - 4);
+      ctx.moveTo(8, mouthY - 4);
+      ctx.lineTo(12, mouthY + 5);
+      ctx.lineTo(16, mouthY - 4);
+      ctx.fill();
+
+      // Râu bạc trắng muốt dưới cằm
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(-22, mouthY + 8);
+      ctx.quadraticCurveTo(0, mouthY + 36, 22, mouthY + 8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Nếu đang hái được lộc (celebrating): Chú Lân ngậm phần thưởng trong miệng!
+      if (lionGameState === 'celebrating' && lionTargetReward) {
+        ctx.save();
+        ctx.translate(0, mouthY);
+        ctx.scale(0.85, 0.85);
+        drawSpecificRewardItem(ctx, lionTargetReward);
+        ctx.restore();
+      }
+
+      ctx.restore(); // Hết Đầu Lân
+
+      ctx.restore(); // Hết Chú Lân
+    }
+
+    function drawLionLegs(ctx, lion, tailWag) {
+      // 4 chân múa Lân với quần thụng đỏ viền lông vàng
+      ctx.fillStyle = '#b91c1c';
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.8;
+
+      const legHops = Math.sin(lion.tailPhase * 2) * 6;
+
+      // Chân sau
+      ctx.fillRect(-95, 20 + tailWag * 0.5, 16, 26 - legHops);
+      ctx.strokeRect(-95, 20 + tailWag * 0.5, 16, 26 - legHops);
+      ctx.fillRect(-70, 20 + tailWag * 0.3, 16, 26 + legHops);
+      ctx.strokeRect(-70, 20 + tailWag * 0.3, 16, 26 + legHops);
+
+      // Chân trước
+      ctx.fillRect(-35, 22, 16, 26 + legHops);
+      ctx.strokeRect(-35, 22, 16, 26 + legHops);
+      ctx.fillRect(-10, 22, 16, 26 - legHops);
+      ctx.strokeRect(-10, 22, 16, 26 - legHops);
+
+      // Giày múa Lân viền lông trắng
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-87, 46 + tailWag * 0.5 - legHops, 8, 0, Math.PI * 2);
+      ctx.arc(-62, 46 + tailWag * 0.3 + legHops, 8, 0, Math.PI * 2);
+      ctx.arc(-27, 48 + legHops, 8, 0, Math.PI * 2);
+      ctx.arc(-2, 48 - legHops, 8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // VẼ ÔNG ĐỊA BỤNG PHỆ CẦM QUẠT MO PHE PHẨY
+    function drawOngDiaCharacter(ctx, dia, timestamp) {
+      ctx.save();
+      const hopY = Math.abs(Math.sin(dia.hopPhase)) * 9;
+      ctx.translate(dia.x, dia.y - hopY);
+      ctx.scale(dia.facing, 1);
+
+      // 1. Chân & bàn chân trần điệu nghệ
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-14, 24, 11, 16);
+      ctx.fillRect(4, 24, 11, 16);
+      ctx.fillStyle = '#ca8a04'; // Quần lụa vàng kéo cao
+      ctx.fillRect(-18, 14, 38, 14);
+
+      // 2. Bụng bự phệ tròn ung dung
+      ctx.fillStyle = '#fde68a'; // Bụng da căng tròn
+      ctx.beginPath();
+      ctx.ellipse(0, 6, 24, 22, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Rốn tròn
+      ctx.fillStyle = '#b45309';
+      ctx.beginPath();
+      ctx.arc(0, 10, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Áo gấm đỏ mở phanh ngực hai bên
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.moveTo(-22, -8);
+      ctx.lineTo(-24, 16);
+      ctx.lineTo(-14, 16);
+      ctx.lineTo(-12, -8);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(22, -8);
+      ctx.lineTo(24, 16);
+      ctx.lineTo(14, 16);
+      ctx.lineTo(12, -8);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Đầu và mặt nạ Ông Địa cười toe toét
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, -18, 20, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ea580c';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Hai búi tóc / tai to tròn
+      ctx.fillStyle = '#1e1b4b';
+      ctx.beginPath();
+      ctx.arc(-20, -22, 6, 0, Math.PI * 2);
+      ctx.arc(20, -22, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Đôi má lúm đồng tiền hồng hào phúc hậu
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.45)';
+      ctx.beginPath();
+      ctx.arc(-11, -14, 5.5, 0, Math.PI * 2);
+      ctx.arc(11, -14, 5.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Mắt cười híp tít chữ V ngược ^^
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(-9, -20, 4.5, Math.PI * 1.1, Math.PI * 1.9);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(9, -20, 4.5, Math.PI * 1.1, Math.PI * 1.9);
+      ctx.stroke();
+
+      // Nụ cười toả nắng há rộng đỏ tươi
+      ctx.fillStyle = '#be123c';
+      ctx.beginPath();
+      ctx.arc(0, -11, 8.5, 0, Math.PI);
+      ctx.closePath();
+      ctx.fill();
+      // Chiếc răng sún ngộ nghĩnh
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-2.5, -11, 5, 3.5);
+
+      // 4. Tay cầm quạt mo phe phẩy
+      ctx.save();
+      ctx.translate(18, 0);
+      ctx.rotate(dia.fanAngle);
+
+      // Cánh tay
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.ellipse(8, -4, 12, 6, 0.4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Chiếc quạt mo cau màu nâu vàng
+      ctx.fillStyle = '#d97706';
+      ctx.beginPath();
+      ctx.ellipse(22, -10, 16, 22, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+      // Sống quạt
+      ctx.beginPath();
+      ctx.moveTo(12, 2);
+      ctx.lineTo(26, -24);
+      ctx.stroke();
+
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    // TẠO PHÁO HOA & HOA GIẤY ĂN MỪNG
+    function createLionCelebrationEffects(x, y) {
+      // Đốm lửa pháo sáng
+      for (let i = 0; i < 35; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2 + Math.random() * 6;
+        lionSparks.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2,
+          radius: 2 + Math.random() * 3.5,
+          alpha: 1.0,
+          color: Math.random() < 0.5 ? '#fef08a' : (Math.random() < 0.5 ? '#f97316' : '#ef4444')
+        });
+      }
+
+      // Hoa giấy kim tuyến
+      const colors = ['#fef08a', '#ef4444', '#10b981', '#3b82f6', '#f43f5e', '#a855f7'];
+      for (let i = 0; i < 50; i++) {
+        lionConfetti.push({
+          x: x + (Math.random() - 0.5) * 60,
+          y: y + (Math.random() - 0.5) * 40,
+          vx: (Math.random() - 0.5) * 7,
+          vy: -3 - Math.random() * 5,
+          size: 6 + Math.random() * 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.2,
+          alpha: 1.0
+        });
+      }
+    }
+
+    function drawLionSparksAndConfetti(ctx) {
+      // Sparks
+      for (let i = lionSparks.length - 1; i >= 0; i--) {
+        const s = lionSparks[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.vy += 0.15; // trọng lực
+        s.alpha -= 0.024;
+        if (s.alpha <= 0) {
+          lionSparks.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, s.alpha);
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Confetti
+      for (let i = lionConfetti.length - 1; i >= 0; i--) {
+        const c = lionConfetti[i];
+        c.x += c.vx;
+        c.y += c.vy;
+        c.vy += 0.12;
+        c.rotation += c.rotSpeed;
+        c.alpha -= 0.012;
+        if (c.alpha <= 0 || c.y > 700) {
+          lionConfetti.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, c.alpha);
+        ctx.translate(c.x, c.y);
+        ctx.rotate(c.rotation);
+        ctx.fillStyle = c.color;
+        ctx.fillRect(-c.size / 2, -c.size / 4, c.size, c.size / 2);
+        ctx.restore();
+      }
+    }
+
+    // BẢNG LIỄN ĐỎ ĐẠI CÁT CUỘN XUỐNG HIỂN THỊ TÊN HỌC SINH CHIẾN THẮNG
+    // Đảm bảo nguyên tắc: Độ tương phản tuyệt đối, viền đen 7px, chữ vàng óng, nền tối mờ
+    function drawLionCelebrationScroll(ctx, w, h, timestamp) {
+      const p = lionBannerProgress;
+      if (p <= 0.05) return;
+
+      ctx.save();
+
+      // 1. Phủ một lớp nền tối mờ (Vignette) để tên học sinh nổi bật 100%, không bao giờ bị tệp màu
+      ctx.fillStyle = `rgba(10, 15, 29, ${p * 0.72})`;
+      ctx.fillRect(0, 0, w, h);
+
+      // Kích thước tấm liễn đỏ hoàng gia
+      const scrollW = Math.min(w * 0.88, 540);
+      const targetScrollH = 210;
+      const scrollH = targetScrollH * p;
+      const scrollX = (w - scrollW) / 2;
+      const scrollY = Math.max(65, (h - targetScrollH) * 0.42);
+
+      ctx.translate(scrollX + scrollW / 2, scrollY + scrollH / 2);
+      ctx.scale(Math.min(1, p * 1.05), Math.min(1, p * 1.05));
+
+      // 2. Thân liễn đỏ gấm thêu rồng phụng
+      const halfW = scrollW / 2;
+      const halfH = scrollH / 2;
+
+      // Bóng đổ sâu
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      ctx.shadowBlur = 24;
+      ctx.shadowOffsetY = 10;
+
+      // Nền liễn đỏ hoàng gia
+      const scrollGrad = ctx.createLinearGradient(0, -halfH, 0, halfH);
+      scrollGrad.addColorStop(0, '#991b1b');
+      scrollGrad.addColorStop(0.3, '#dc2626');
+      scrollGrad.addColorStop(0.7, '#b91c1c');
+      scrollGrad.addColorStop(1, '#7f1d1d');
+      ctx.fillStyle = scrollGrad;
+      ctx.beginPath();
+      ctx.roundRect(-halfW, -halfH, scrollW, scrollH, 16);
+      ctx.fill();
+
+      // Viền kép thếp vàng đại cát
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+      ctx.strokeStyle = '#eab308';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(-halfW + 6, -halfH + 6, scrollW - 12, scrollH - 12, 12);
+      ctx.stroke();
+
+      // Tắt bóng đổ để vẽ chữ sắc nét tuyệt đối
+      ctx.shadowColor = 'transparent';
+
+      if (p >= 0.6) {
+        // Trục cuốn mạ vàng trên và dưới
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.roundRect(-halfW - 12, -halfH - 8, scrollW + 24, 12, 6);
+        ctx.roundRect(-halfW - 12, halfH - 4, scrollW + 24, 12, 6);
+        ctx.fill();
+
+        // 3. Tiêu đề phần thưởng hái được
+        const rewardName = lionTargetReward ? `${lionTargetReward.icon} ${lionTargetReward.name.toUpperCase()} ${lionTargetReward.icon}` : '🏮 HÁI ĐƯỢC LỘC VÀNG 🏮';
+        ctx.font = 'bold 13px system-ui, sans-serif';
+        ctx.fillStyle = '#fef08a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(rewardName, 0, -halfH + 32);
+
+        // 4. TÊN HỌC SINH: FONT 34PX VÀNG ÓNG + VIỀN ĐEN 7PX ĐẬM NÉT (KHÔNG BAO GIỜ BỊ TỆP MÀU)
+        const studentName = lionTargetWinner ? lionTargetWinner.name : 'HỌC SINH MAY MẮN';
+        ctx.font = '900 34px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // Viền đen 7px
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 7;
+        ctx.strokeText(`👑 ${studentName}`, 0, 4);
+
+        // Chữ vàng óng rực rỡ bên trong
+        ctx.fillStyle = '#fef08a';
+        ctx.fillText(`👑 ${studentName}`, 0, 4);
+
+        // 5. Huy hiệu: +1 SỔ ĐIỂM ĐIỆN TỬ
+        const badgeY = halfH - 34;
+        const badgeW = Math.min(scrollW - 40, 320);
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.roundRect(-badgeW / 2, badgeY - 14, badgeW, 28, 14);
+        ctx.fill();
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#34d399';
+        ctx.font = '800 12px system-ui, sans-serif';
+        ctx.fillText('⭐ +1 ĐIỂM CỘNG SỔ ĐIỂM ĐIỆN TỬ ⭐', 0, badgeY);
+
+        // 6. Hiệu ứng kim tuyến lấp lánh hai bên góc
+        const starOsc = Math.sin(timestamp * 0.008) * 3;
+        ctx.font = '24px sans-serif';
+        ctx.fillText('✨', -halfW + 30, starOsc);
+        ctx.fillText('✨', halfW - 30, -starOsc);
+      }
+
+      ctx.restore();
     }
 
     // ==========================================
@@ -27879,6 +29532,19 @@
         return;
       }
 
+      // 16. Múa Lân Hái Lộc (Lion Dance)
+      if (mode === 'lion') {
+        btn.innerHTML = "🦁 ĐANG MÚA LÂN...";
+        if (typeof startLionGame === 'function') {
+          startLionGame(selected, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
       // 15. Máy Kéo Số (Slot) hoặc Card Grid fallback
       btn.innerHTML = "🎰 ĐANG CHỌN...";
       let spinCount = 0;
@@ -27944,6 +29610,8 @@
           btnElement.innerHTML = '<i class="fa-solid fa-hammer"></i> TIẾP TỤC ĐẬP ẾCH';
         } else if (mode === 'fishing') {
           btnElement.innerHTML = '<i class="fa-solid fa-fish"></i> TIẾP TỤC CÂU CÁ';
+        } else if (mode === 'lion') {
+          btnElement.innerHTML = '<i class="fa-solid fa-drum"></i> TIẾP TỤC MÚA LÂN';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
