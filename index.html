@@ -18015,6 +18015,7 @@
       isFrogCanvasEventBound = true;
 
       const updatePos = (clientX, clientY) => {
+        if (frogGameState === 'auto_whacking' || frogGameState === 'hit_celebrating') return;
         const rect = canvas.getBoundingClientRect();
         frogHammer.targetX = clientX - rect.left;
         frogHammer.targetY = clientY - rect.top;
@@ -18025,11 +18026,13 @@
       });
 
       canvas.addEventListener('mousedown', (e) => {
+        if (frogGameState === 'auto_whacking' || frogGameState === 'hit_celebrating') return;
         updatePos(e.clientX, e.clientY);
         handleFrogWhackClick(frogHammer.targetX, frogHammer.targetY);
       });
 
       canvas.addEventListener('touchstart', (e) => {
+        if (frogGameState === 'auto_whacking' || frogGameState === 'hit_celebrating') return;
         if (e.touches && e.touches[0]) {
           const t = e.touches[0];
           updatePos(t.clientX, t.clientY);
@@ -18145,7 +18148,7 @@
         });
       }
 
-      // Sau 1.6s, mở modal vinh danh
+      // Sau 2.2s để cả lớp cùng reo hò và đọc tên, mở modal vinh danh
       setTimeout(() => {
         const btn = document.getElementById('spin-btn');
         if (frogFinishCallback) {
@@ -18153,7 +18156,7 @@
         } else {
           showWinnerResult(winner, btn);
         }
-      }, 1600);
+      }, 2200);
     }
 
     function triggerFrogMiss(clickX, clickY) {
@@ -18199,48 +18202,86 @@
       }
     }
 
+    let frogScanTimer = null;
+
     function startFrogGame(winnerStudent, callback) {
+      if (frogScanTimer) {
+        clearTimeout(frogScanTimer);
+        frogScanTimer = null;
+      }
+
       frogGameState = 'auto_whacking';
       frogTargetWinner = winnerStudent;
       frogFinishCallback = callback;
 
-      // 1. Đảm bảo luôn có 4-5 con ếch đang ngó đầu lên
-      const activeHoles = frogHoles.filter(h => h.state === 'peeking' || h.state === 'popping' || h.state === 'ducking');
-      if (activeHoles.length < 4) {
-        const hiddenHoles = frogHoles.filter(h => h.state === 'hidden');
-        const needed = 5 - activeHoles.length;
-        for (let k = 0; k < needed && hiddenHoles.length > 0; k++) {
-          const randIdx = Math.floor(Math.random() * hiddenHoles.length);
-          const h = hiddenHoles.splice(randIdx, 1)[0];
-          h.state = 'peeking';
-          h.height = 1;
-          h.peekTimer = 3.5;
-          activeHoles.push(h);
+      // Đọc thời lượng từ cài đặt (#spin-duration)
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 3);
+      const scanDuration = Math.max(2200, Math.min(5000, durationSec * 1000));
+      const hopInterval = 380; // Mỗi 380ms cây búa lướt vờn qua một chú ếch
+      const totalHops = Math.max(3, Math.floor((scanDuration - 600) / hopInterval));
+
+      // Luôn duy trì 4-5 chú ếch ngó đầu lên tự nhiên
+      const ensureActiveFrogs = () => {
+        const active = frogHoles.filter(h => h.state === 'peeking' || h.state === 'popping' || h.state === 'ducking');
+        if (active.length < 4) {
+          const hidden = frogHoles.filter(h => h.state === 'hidden');
+          const needed = 5 - active.length;
+          for (let k = 0; k < needed && hidden.length > 0; k++) {
+            const randIdx = Math.floor(Math.random() * hidden.length);
+            const h = hidden.splice(randIdx, 1)[0];
+            h.state = 'peeking';
+            h.height = 1;
+            h.peekTimer = 3.0;
+            active.push(h);
+          }
+        }
+        return active;
+      };
+
+      let currentHop = 0;
+
+      function performScanHop() {
+        const activeHoles = ensureActiveFrogs();
+        if (currentHop < totalHops) {
+          // Búa thần tự động bay lướt qua ngẫu nhiên các chú ếch đang ngó đầu
+          const randomHole = activeHoles[Math.floor(Math.random() * activeHoles.length)] || frogHoles[0];
+          frogHammer.targetX = randomHole.x;
+          frogHammer.targetY = randomHole.y - 48;
+          FrogAudio.playPop();
+
+          const statusEl = document.getElementById('frog-game-status');
+          if (statusEl) {
+            statusEl.innerHTML = `🔨 <b class="text-amber-300">BÚA THẦN ĐANG TỰ CHỌN VỊ TRÍ ĐẬP... (${totalHops - currentHop})</b>`;
+          }
+
+          currentHop++;
+          frogScanTimer = setTimeout(performScanHop, hopInterval);
+        } else {
+          // BƯỚC KHÓA MỤC TIÊU: Chọn ngẫu nhiên 1 chú ếch và giáng búa dứt khoát!
+          const chosenHole = activeHoles[Math.floor(Math.random() * activeHoles.length)] || frogHoles[0];
+          if (winnerStudent) chosenHole.student = winnerStudent;
+
+          // Giữ chú ếch được chọn ngó đầu cao chờ đón búa
+          chosenHole.state = 'peeking';
+          chosenHole.height = 1;
+          chosenHole.peekTimer = 4.0;
+
+          frogHammer.targetX = chosenHole.x;
+          frogHammer.targetY = chosenHole.y - 48;
+
+          const statusEl = document.getElementById('frog-game-status');
+          if (statusEl) {
+            statusEl.innerHTML = `🎯 <b class="text-rose-400 font-black animate-pulse">ĐÃ CHỌN ĐƯỢC CHÚ ẾCH! VUNG BÚA ĐẬP MẠNH...</b>`;
+          }
+
+          // Chờ 350ms búa bay tới đúng vị trí rồi dộng mạnh xuống
+          frogScanTimer = setTimeout(() => {
+            handleFrogWhackClick(chosenHole.x, chosenHole.y - 48);
+          }, 350);
         }
       }
 
-      // 2. CHỌN NGẪU NHIÊN 1 CON TRONG SỐ CÁC CON ĐANG HIỂN THỊ
-      const chosenHole = activeHoles[Math.floor(Math.random() * activeHoles.length)] || frogHoles[0];
-      if (winnerStudent) chosenHole.student = winnerStudent;
-
-      // Giữ cho chú ếch được chọn ngó đầu cao chờ búa đập
-      chosenHole.state = 'peeking';
-      chosenHole.height = 1;
-      chosenHole.peekTimer = 4.0;
-
-      const statusEl = document.getElementById('frog-game-status');
-      if (statusEl) {
-        statusEl.innerHTML = `🔨 <b class="text-amber-300">BÚA THẦN ĐANG VUNG ĐẬP NGẪU NHIÊN 1 TRONG 5 CHÚ ẾCH...!</b>`;
-      }
-
-      // Di chuyển búa đến phía trên chú ếch được chọn
-      frogHammer.targetX = chosenHole.x;
-      frogHammer.targetY = chosenHole.y - 45;
-
-      // Sau 550ms, búa vung đập mạnh xuống
-      setTimeout(() => {
-        handleFrogWhackClick(chosenHole.x, chosenHole.y - 45);
-      }, 550);
+      performScanHop();
     }
 
     function toggleFrogSound() {
@@ -18260,6 +18301,10 @@
     }
 
     function resetFrogGame() {
+      if (frogScanTimer) {
+        clearTimeout(frogScanTimer);
+        frogScanTimer = null;
+      }
       initFrogGame(true);
       showCloudToast('Đã đặt lại trò chơi Đập Ếch!');
     }
@@ -18644,13 +18689,13 @@
       // NẾU BỊ ĐẬP TRÚNG: VẼ SAO XOAY VÒNG VÀ BẢNG VÀNG HIỆN TÊN SIÊU RÕ NÉT
       if (isWhacked) {
         // Vòng hào quang sao xoay trên đầu
-        const haloR = 34;
+        const haloR = 36;
         for (let s = 0; s < 5; s++) {
           const sa = hole.dizzyAngle + (Math.PI * 2 * s) / 5;
           const sx = Math.cos(sa) * haloR;
-          const sy = -50 + Math.sin(sa) * 10;
+          const sy = -52 + Math.sin(sa) * 10;
           ctx.fillStyle = '#facc15';
-          ctx.font = '18px sans-serif';
+          ctx.font = '20px sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText('⭐', sx, sy);
@@ -18659,16 +18704,16 @@
         // BẢNG VÀNG CUỘN THƯ MANG TÊN HỌC SINH SIÊU RÕ NÉT & TƯƠNG PHẢN CAO
         const stName = hole.student ? hole.student.name : 'Học sinh';
         ctx.save();
-        ctx.translate(0, -90);
+        ctx.translate(0, -96);
 
         // Nền thiệp đen tuyền - viền vàng kim sắc sảo
-        const tagW = Math.max(160, stName.length * 15 + 50);
-        const tagH = 46;
+        const tagW = Math.max(200, stName.length * 18 + 55);
+        const tagH = 54;
 
         // Đổ bóng nổi khối
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
         ctx.beginPath();
-        ctx.roundRect(-tagW / 2 + 4, -tagH / 2 + 4, tagW, tagH, 14);
+        ctx.roundRect(-tagW / 2 + 4, -tagH / 2 + 4, tagW, tagH, 16);
         ctx.fill();
 
         // Nền thẻ đen tuyền hoàng gia
@@ -18676,49 +18721,34 @@
         ctx.strokeStyle = '#f59e0b';
         ctx.lineWidth = 3.5;
         ctx.beginPath();
-        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 14);
+        ctx.roundRect(-tagW / 2, -tagH / 2, tagW, tagH, 16);
         ctx.fill();
         ctx.stroke();
 
         // Viền phụ sáng bóng màu trắng - vàng
         ctx.strokeStyle = '#fef08a';
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.roundRect(-tagW / 2 + 3, -tagH / 2 + 3, tagW - 6, tagH - 6, 11);
+        ctx.roundRect(-tagW / 2 + 3, -tagH / 2 + 3, tagW - 6, tagH - 6, 13);
         ctx.stroke();
 
         // Tên học sinh màu vàng óng có viền đen dày dặn (Không bao giờ tệp màu!)
-        ctx.font = '900 18px system-ui, sans-serif';
+        ctx.font = '900 22px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 4.5;
+        ctx.lineWidth = 6;
         ctx.lineJoin = 'round';
-        ctx.strokeText(`👑 ${stName}`, 0, 1);
+        ctx.strokeText(`👑 ${stName}`, 0, -4);
         ctx.fillStyle = '#fef08a';
-        ctx.fillText(`👑 ${stName}`, 0, 1);
+        ctx.fillText(`👑 ${stName}`, 0, -4);
+
+        // Huy hiệu cộng điểm bên dưới tên
+        ctx.font = '800 10.5px system-ui, sans-serif';
+        ctx.fillStyle = '#34d399';
+        ctx.fillText('⭐ +1 Điểm Sổ Điểm ⭐', 0, 16);
+
         ctx.restore();
-      } else if (hole.height > 0.6) {
-        // Khi đang ngó đầu lên (peeking): Hiển thị huy hiệu tên nhỏ bên dưới để dễ quan sát
-        const stName = hole.student ? hole.student.name : '';
-        if (stName) {
-          ctx.save();
-          ctx.translate(0, 24);
-          const badgeW = Math.max(70, stName.length * 8 + 18);
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-          ctx.strokeStyle = '#22c55e';
-          ctx.lineWidth = 1.5;
-          ctx.beginPath();
-          ctx.roundRect(-badgeW / 2, -9, badgeW, 18, 9);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = '#ffffff';
-          ctx.font = '800 11px system-ui, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(stName, 0, 0);
-          ctx.restore();
-        }
       }
 
       ctx.restore();
