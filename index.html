@@ -786,7 +786,7 @@
         <div>
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-            DANH SÁCH 16 PHƯƠNG PHÁP ĐUA & GỌI TÊN
+            DANH SÁCH 17 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
           <p class="text-xs text-slate-600 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
@@ -794,13 +794,13 @@
         <!-- Filter Buttons -->
         <div class="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 transition">
-            Tất Cả (16)
+            Tất Cả (17)
           </button>
           <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
             🏎️ Đường Đua Tốc Độ (8)
           </button>
           <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
-            🎁 May Mắn & Hồi Hộp (8)
+            🎁 May Mắn & Hồi Hộp (9)
           </button>
         </div>
       </div>
@@ -1348,6 +1348,39 @@
           </div>
         </div>
 
+        <!-- 17. SÚT LUÂN LƯU PENALTY -->
+        <div onclick="launchGame('penalty')" data-category="lucky" class="game-card-item cursor-pointer rounded-2xl bg-white border border-emerald-200 hover:border-emerald-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-emerald-100/80 border border-emerald-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                ⚽
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-700 border border-emerald-500/20">
+                May Mắn
+              </span>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 group-hover:text-emerald-600 transition-colors">
+                17. Sút Luân Lưu Penalty (Vào: Bỏ qua • Trượt: Gọi tên)
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Kịch tính chấm 11m! Sút bóng vào lưới xé rách mành $\rightarrow$ An toàn bỏ qua! Sút ra ngoài hoặc bị thủ môn cản phá $\rightarrow$ Bị gọi tên lên bảng!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">⚽ Sút 11m</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🧤 Thủ Môn Bay</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔥 Nghẹt Thở</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-emerald-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Sút Penalty →</span>
+          </div>
+        </div>
+
       </div>
 
     </section>
@@ -1408,6 +1441,7 @@
               <option value="frog" class="bg-slate-900 text-emerald-300 font-bold">🐸 Đập Ếch Bắt Tên (Whack-a-Frog)</option>
               <option value="fishing" class="bg-slate-900 text-teal-300 font-bold">🎣 Bé Câu Cá Bắt Tên (50 Con Cá)</option>
               <option value="lion" class="bg-slate-900 text-amber-300 font-bold">🦁 Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà)</option>
+              <option value="penalty" class="bg-slate-900 text-emerald-300 font-bold">⚽ Sút Luân Lưu Penalty (Vào: Bỏ qua • Trượt: Gọi tên)</option>
             </select>
           </div>
 
