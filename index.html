@@ -21701,7 +21701,7 @@
     }
 
     // ==========================================
-    // MODULE 17: SÚT LUÂN LƯU PENALTY (PENALTY SHOOTOUT)
+    // MODULE 17: SÚT LUÂN LƯU PENALTY (PENALTY SHOOTOUT) - V2 PRO
     // ==========================================
     let penaltySoundEnabled = true;
     let penaltyGameState = 'idle'; // 'idle' | 'kicking' | 'celebrating'
@@ -21709,7 +21709,7 @@
     let penaltyLastTime = 0;
     let penaltyTargetWinner = null;
     let penaltyFinishCallback = null;
-    let penaltyKickStage = 0; // 0: Idle, 1: First Kick (Score -> Safe/Bỏ qua), 2: Decisive Kick (Miss -> Bị gọi tên)
+    let penaltyKickStage = 0; // 0: Idle, 1: First Kick (Score -> Safe/Bỏ qua), 2: Decisive Kick (Miss -> Deflect Out -> Bị gọi tên)
     let penaltyKickStartTime = 0;
     let penaltyStageTime = 0;
     let penaltyParticles = [];
@@ -21718,6 +21718,22 @@
     let penaltyCurrentCandidate = null;
     let penaltyDecisiveOutcome = 'saved'; // 'saved' | 'woodwork' | 'off_target'
     let penaltyNetBulge = 0; // Displacement of net when scored
+
+    // Physics state for ball during deflection / bounce out of bounds
+    const penaltyBallPhysics = {
+      active: false,
+      x: 0,
+      y: 0,
+      z: 1.0,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      rot: 0,
+      vrot: 0,
+      groundY: 0,
+      bounces: 0,
+      isOut: false
+    };
 
     const PenaltyAudio = {
       ctx: null,
@@ -21804,7 +21820,6 @@
         if (!this.ctx) return;
         try {
           const now = this.ctx.currentTime;
-          // Rustle noise for net
           const bufferSize = this.ctx.sampleRate * 0.25;
           const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
           const data = buffer.getChannelData(0);
@@ -21832,7 +21847,6 @@
         if (!this.ctx) return;
         try {
           const now = this.ctx.currentTime;
-          // Metallic woodwork sound (clang)
           [620, 1260, 2400].forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -21856,14 +21870,33 @@
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(210, now);
-          osc.frequency.exponentialRampToValueAtTime(50, now + 0.18);
-          gain.gain.setValueAtTime(0.38, now);
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.exponentialRampToValueAtTime(55, now + 0.18);
+          gain.gain.setValueAtTime(0.45, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now);
           osc.stop(now + 0.21);
+        } catch(e) {}
+      },
+      bounce() {
+        if (!penaltySoundEnabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const now = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(130, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.08);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.1);
         } catch(e) {}
       },
       cheer() {
@@ -21965,6 +21998,8 @@
         penaltyParticles = [];
         penaltyBannerProgress = 0;
         penaltyNetBulge = 0;
+        penaltyBallPhysics.active = false;
+        penaltyBallPhysics.isOut = false;
         setPenaltyStatus('Sân vận động đã sẵn sàng! Bấm SÚT PENALTY để bắt đầu loạt sút luân lưu!');
       }
 
@@ -22007,6 +22042,8 @@
       penaltyParticles = [];
       penaltyBannerProgress = 0;
       penaltyNetBulge = 0;
+      penaltyBallPhysics.active = false;
+      penaltyBallPhysics.isOut = false;
 
       // Pick a random candidate from students (other than targetStudent if possible)
       const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
@@ -22014,7 +22051,7 @@
       penaltyCurrentCandidate = pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)] : targetStudent;
 
       // Decide outcome for decisive kick (2nd kick)
-      const outcomes = ['saved', 'woodwork', 'off_target'];
+      const outcomes = ['saved', 'saved', 'woodwork', 'off_target']; // higher weight for goalkeeper save
       penaltyDecisiveOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
 
       PenaltyAudio.whistle('short');
@@ -22029,21 +22066,23 @@
     function triggerDecisiveKick() {
       penaltyKickStage = 2; // Decisive kick by targetWinner
       penaltyKickStartTime = performance.now();
+      penaltyBallPhysics.active = false;
+      penaltyBallPhysics.isOut = false;
       PenaltyAudio.whistle('short');
       setPenaltyStatus(`⚽ LƯỢT SÚT QUYẾT ĐỊNH: [${penaltyTargetWinner.name}] đang chuẩn bị dứt điểm...`);
     }
 
-    function spawnPenaltyTurf(x, y, count = 12) {
+    function spawnPenaltyTurf(x, y, count = 14) {
       for (let i = 0; i < count; i++) {
-        const angle = -Math.PI * 0.5 + (Math.random() - 0.5) * 1.4;
-        const speed = 2 + Math.random() * 4.5;
+        const angle = -Math.PI * 0.5 + (Math.random() - 0.5) * 1.5;
+        const speed = 2.5 + Math.random() * 5;
         penaltyParticles.push({
           type: 'turf',
           x, y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          gravity: 0.18,
-          size: 2 + Math.random() * 3,
+          gravity: 0.22,
+          size: 2.5 + Math.random() * 3.5,
           color: Math.random() > 0.5 ? '#15803d' : '#166534',
           alpha: 1,
           decay: 0.02 + Math.random() * 0.02
@@ -22051,20 +22090,20 @@
       }
     }
 
-    function spawnPenaltySparks(x, y, color = '#fef08a', count = 16) {
+    function spawnPenaltySparks(x, y, color = '#fef08a', count = 20) {
       for (let i = 0; i < count; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const speed = 2 + Math.random() * 5;
+        const speed = 3 + Math.random() * 6;
         penaltyParticles.push({
           type: 'spark',
           x, y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          gravity: 0.12,
-          size: 2 + Math.random() * 3,
+          gravity: 0.15,
+          size: 2.5 + Math.random() * 3.5,
           color,
           alpha: 1,
-          decay: 0.025 + Math.random() * 0.025
+          decay: 0.025 + Math.random() * 0.03
         });
       }
     }
@@ -22074,10 +22113,10 @@
       for (let i = 0; i < count; i++) {
         penaltyParticles.push({
           type: 'confetti',
-          x: w * 0.2 + Math.random() * (w * 0.6),
-          y: h * 0.2 + Math.random() * (h * 0.3),
-          vx: (Math.random() - 0.5) * 6,
-          vy: -2 - Math.random() * 5,
+          x: w * 0.15 + Math.random() * (w * 0.7),
+          y: h * 0.15 + Math.random() * (h * 0.35),
+          vx: (Math.random() - 0.5) * 7,
+          vy: -2 - Math.random() * 6,
           gravity: 0.14,
           w: 6 + Math.random() * 6,
           h: 4 + Math.random() * 4,
@@ -22085,7 +22124,7 @@
           vrot: (Math.random() - 0.5) * 0.2,
           color: colors[Math.floor(Math.random() * colors.length)],
           alpha: 1,
-          decay: 0.008 + Math.random() * 0.008
+          decay: 0.007 + Math.random() * 0.007
         });
       }
     }
@@ -22119,28 +22158,29 @@
       ctx.clearRect(0, 0, w, h);
 
       // Sky gradient
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.48);
-      skyGrad.addColorStop(0, '#020617'); // Dark night sky
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.46);
+      skyGrad.addColorStop(0, '#020617'); // Dark midnight sky
       skyGrad.addColorStop(0.65, '#09152e');
       skyGrad.addColorStop(1, '#0e2b45');
       ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, w, h * 0.48);
+      ctx.fillRect(0, 0, w, h * 0.46);
 
-      // Stadium Stands & Floodlights
+      // Stadium Stands, LED Boards & Floodlights
       drawStadiumBackground(ctx, w, h, timestamp);
 
       // Pitch Grass (Perspective trapezoid)
-      const horizonY = h * 0.44;
+      const horizonY = h * 0.42;
       const pitchGrad = ctx.createLinearGradient(0, horizonY, 0, h);
-      pitchGrad.addColorStop(0, '#14532d');
-      pitchGrad.addColorStop(0.5, '#15803d');
+      pitchGrad.addColorStop(0, '#0f4423');
+      pitchGrad.addColorStop(0.4, '#14532d');
+      pitchGrad.addColorStop(0.7, '#15803d');
       pitchGrad.addColorStop(1, '#16a34a');
       ctx.fillStyle = pitchGrad;
       ctx.fillRect(0, horizonY, w, h - horizonY);
 
-      // Pitch cut lawn stripes (alternating green bars in perspective)
+      // Pitch cut lawn stripes (alternating green bars in 3D perspective)
       ctx.save();
-      const stripes = 8;
+      const stripes = 9;
       for (let i = 0; i < stripes; i++) {
         if (i % 2 === 0) {
           const y1 = horizonY + (h - horizonY) * (i / stripes);
@@ -22155,12 +22195,12 @@
       ctx.restore();
 
       // Goal dimensions
-      const goalW = Math.min(w * 0.56, 420);
-      const goalH = goalW * 0.42;
+      const goalW = Math.min(w * 0.54, 430);
+      const goalH = goalW * 0.44;
       const goalX = (w - goalW) / 2;
-      const goalY = horizonY - goalH * 0.62;
+      const goalY = horizonY - goalH * 0.65;
       const penaltySpotX = w * 0.5;
-      const penaltySpotY = h * 0.78;
+      const penaltySpotY = h * 0.79;
 
       // Decay net bulge
       penaltyNetBulge *= 0.92;
@@ -22173,20 +22213,18 @@
       let ballVisible = true;
 
       let keeperX = w * 0.5;
-      let keeperY = goalY + goalH - 4;
+      let keeperY = goalY + goalH - 2;
       let keeperDiveX = 0;
       let keeperDiveY = 0;
       let keeperAngle = 0;
-      let keeperGloveL = { x: -18, y: -26 };
-      let keeperGloveR = { x: 18, y: -26 };
-      let keeperState = 'ready'; // 'ready' | 'diving' | 'saved' | 'beaten'
+      let keeperState = 'ready'; // 'ready' | 'diving' | 'saved' | 'beaten' | 'celebrating'
 
-      let shooterX = penaltySpotX - 44;
-      let shooterY = penaltySpotY + 18;
+      let shooterX = penaltySpotX - 48;
+      let shooterY = penaltySpotY + 16;
       let shooterRunT = 0;
       let shooterKickT = 0;
       let shooterName = penaltyCurrentCandidate ? penaltyCurrentCandidate.name : 'CẦU THỦ';
-      let shooterStatus = 'standing';
+      let shooterStatus = 'standing'; // 'standing' | 'running' | 'kicked' | 'celebrating' | 'despairing'
 
       if (penaltyGameState === 'kicking') {
         const elapsed = timestamp - penaltyKickStartTime;
@@ -22194,24 +22232,26 @@
         if (penaltyKickStage === 1) {
           // ================= KICK 1: CANDIDATE SCORES (SAFE / BỎ QUA) =================
           shooterName = penaltyCurrentCandidate ? penaltyCurrentCandidate.name : 'HỌC SINH A';
-          const runDuration = 650;
+          const runDuration = 700;
           const kickDuration = 750;
-          const totalKick1 = 1800;
+          const totalKick1 = 1950;
 
           if (elapsed < runDuration) {
-            // Run-up
+            // Run-up: 3 dynamic strides
             const p = elapsed / runDuration;
             shooterRunT = p;
-            shooterX = (penaltySpotX - 44) + p * 34;
-            shooterY = (penaltySpotY + 18) - p * 12;
+            shooterX = (penaltySpotX - 48) + p * 38;
+            shooterY = (penaltySpotY + 16) - p * 10;
             shooterStatus = 'running';
-            // Keeper bounces
-            keeperY += Math.sin(timestamp * 0.015) * 3;
+            // Keeper bounces on toes
+            keeperY += Math.sin(timestamp * 0.016) * 3;
           } else if (elapsed < runDuration + kickDuration) {
-            // Ball flies into corner (GOAL!)
+            // Ball flies into top corner (GOAL!)
             const p = (elapsed - runDuration) / kickDuration;
+            // Smooth easing for ball
+            const easeP = p * (2 - p);
             shooterRunT = 1;
-            shooterKickT = Math.min(p * 2.5, 1);
+            shooterKickT = Math.min(p * 2.8, 1);
             shooterX = penaltySpotX - 10;
             shooterY = penaltySpotY + 6;
             shooterStatus = 'kicked';
@@ -22222,32 +22262,32 @@
             }
 
             // Ball curves into top-right corner of the net
-            const targetX = goalX + goalW * 0.84;
-            const targetY = goalY + goalH * 0.32;
-            ballX = penaltySpotX + (targetX - penaltySpotX) * p;
-            ballY = penaltySpotY + (targetY - penaltySpotY) * p - Math.sin(p * Math.PI) * 55;
-            ballZ = 1.0 - p * 0.56;
-            ballRot = p * 16;
+            const targetX = goalX + goalW * 0.86;
+            const targetY = goalY + goalH * 0.3;
+            ballX = penaltySpotX + (targetX - penaltySpotX) * easeP;
+            ballY = penaltySpotY + (targetY - penaltySpotY) * easeP - Math.sin(easeP * Math.PI) * 55;
+            ballZ = 1.0 - easeP * 0.58;
+            ballRot = easeP * 18;
 
-            // Keeper dives to the left (wrong way / beaten!)
-            const keeperT = Math.min(p * 1.3, 1);
-            keeperDiveX = -goalW * 0.28 * keeperT;
-            keeperDiveY = -goalH * 0.2 * Math.sin(keeperT * Math.PI);
-            keeperAngle = -0.55 * keeperT;
+            // Keeper dives the wrong way (left side)
+            const keeperT = Math.min(p * 1.35, 1);
+            keeperDiveX = -goalW * 0.3 * keeperT;
+            keeperDiveY = -goalH * 0.22 * Math.sin(keeperT * Math.PI);
+            keeperAngle = -0.6 * keeperT;
             keeperState = 'beaten';
 
-            if (p > 0.88 && penaltyNetBulge < 5) {
-              penaltyNetBulge = 18;
+            if (p > 0.86 && penaltyNetBulge < 5) {
+              penaltyNetBulge = 22;
               PenaltyAudio.net();
               PenaltyAudio.cheer();
             }
           } else if (elapsed < totalKick1) {
             // Celebration for Kick 1: SAFE!
-            ballX = goalX + goalW * 0.84;
-            ballY = goalY + goalH * 0.45;
-            ballZ = 0.44;
-            keeperDiveX = -goalW * 0.28;
-            keeperAngle = -0.55;
+            ballX = goalX + goalW * 0.86;
+            ballY = goalY + goalH * 0.42;
+            ballZ = 0.42;
+            keeperDiveX = -goalW * 0.3;
+            keeperAngle = -0.6;
             keeperState = 'beaten';
             shooterStatus = 'celebrating';
             setPenaltyStatus(`🟢 VÀO RỒI! [${penaltyCurrentCandidate.name}] ĐÃ SÚT VÀO - AN TOÀN (BỎ QUA)!`);
@@ -22256,24 +22296,28 @@
             triggerDecisiveKick();
           }
         } else if (penaltyKickStage === 2) {
-          // ================= KICK 2: DECISIVE KICK (MISS -> BỊ GỌI TÊN) =================
+          // ================= KICK 2: DECISIVE KICK (MISS -> BOUNCE OUT -> BỊ GỌI TÊN) =================
           shooterName = penaltyTargetWinner ? penaltyTargetWinner.name : 'HỌC SINH';
-          const runDuration = 700;
-          const kickDuration = 800;
+          const runDuration = 720;
+          const strikeFlightDuration = 820; // Flight time until save/woodwork contact
+          const contactTime = runDuration + strikeFlightDuration; // ~1540ms
+          const outOfBoundsDuration = 1800; // Extra time for ball to deflect and clearly fly out of bounds!
+          const totalSequenceDuration = contactTime + outOfBoundsDuration; // ~3340ms
 
           if (elapsed < runDuration) {
             // Run-up
             const p = elapsed / runDuration;
             shooterRunT = p;
-            shooterX = (penaltySpotX - 44) + p * 34;
-            shooterY = (penaltySpotY + 18) - p * 12;
+            shooterX = (penaltySpotX - 48) + p * 38;
+            shooterY = (penaltySpotY + 16) - p * 10;
             shooterStatus = 'running';
-            keeperY += Math.sin(timestamp * 0.015) * 3;
-          } else if (elapsed < runDuration + kickDuration) {
-            // Ball flies based on decisive outcome
-            const p = (elapsed - runDuration) / kickDuration;
+            keeperY += Math.sin(timestamp * 0.016) * 3;
+          } else if (elapsed < contactTime) {
+            // Ball flies toward goal before contact
+            const p = (elapsed - runDuration) / strikeFlightDuration;
+            const easeP = p * p * (3 - 2 * p); // Smooth cubic ease
             shooterRunT = 1;
-            shooterKickT = Math.min(p * 2.5, 1);
+            shooterKickT = Math.min(p * 2.8, 1);
             shooterX = penaltySpotX - 10;
             shooterY = penaltySpotY + 6;
             shooterStatus = 'kicked';
@@ -22284,91 +22328,159 @@
             }
 
             if (penaltyDecisiveOutcome === 'saved') {
-              // 1. Thủ môn bay người cản phá (Goalkeeper Save)
-              const saveTargetX = goalX + goalW * 0.68;
-              const saveTargetY = goalY + goalH * 0.45;
+              // Flies toward mid-right where keeper dives to save
+              const saveTargetX = goalX + goalW * 0.72;
+              const saveTargetY = goalY + goalH * 0.42;
 
-              if (p < 0.8) {
-                const subP = p / 0.8;
-                ballX = penaltySpotX + (saveTargetX - penaltySpotX) * subP;
-                ballY = penaltySpotY + (saveTargetY - penaltySpotY) * subP - Math.sin(subP * Math.PI) * 45;
-                ballZ = 1.0 - subP * 0.52;
-                ballRot = subP * 14;
+              ballX = penaltySpotX + (saveTargetX - penaltySpotX) * easeP;
+              ballY = penaltySpotY + (saveTargetY - penaltySpotY) * easeP - Math.sin(easeP * Math.PI) * 45;
+              ballZ = 1.0 - easeP * 0.54;
+              ballRot = easeP * 16;
 
-                // Keeper dives directly into the shot trajectory!
-                keeperDiveX = (saveTargetX - w * 0.5) * subP;
-                keeperDiveY = -goalH * 0.28 * Math.sin(subP * Math.PI);
-                keeperAngle = 0.65 * subP;
-                keeperState = 'diving';
-              } else {
-                // Ball deflected away!
-                const ricochetP = (p - 0.8) / 0.2;
-                ballX = saveTargetX + ricochetP * 40;
-                ballY = saveTargetY + ricochetP * 25 + Math.sin(ricochetP * Math.PI) * 15;
-                ballZ = 0.48 + ricochetP * 0.08;
-                ballRot += 0.3;
-                keeperDiveX = saveTargetX - w * 0.5;
-                keeperAngle = 0.65;
-                keeperState = 'saved';
+              // Keeper dives aggressively toward ball
+              keeperDiveX = (saveTargetX - w * 0.5) * easeP;
+              keeperDiveY = -goalH * 0.3 * Math.sin(easeP * Math.PI);
+              keeperAngle = 0.7 * easeP;
+              keeperState = 'diving';
 
-                if (elapsed - runDuration - kickDuration * 0.8 < 35) {
-                  PenaltyAudio.save();
-                  PenaltyAudio.groan();
-                  spawnPenaltySparks(saveTargetX, saveTargetY, '#38bdf8', 18);
-                }
+              // Initialize deflection physics right before contact
+              if (!penaltyBallPhysics.active && p > 0.95) {
+                penaltyBallPhysics.active = true;
+                penaltyBallPhysics.x = saveTargetX;
+                penaltyBallPhysics.y = saveTargetY;
+                penaltyBallPhysics.z = 0.46;
+                // Deflects strongly to the right and out towards corner/sideline!
+                penaltyBallPhysics.vx = 170 + Math.random() * 40; // Pixels per second
+                penaltyBallPhysics.vy = -75; // Arcs up slightly
+                penaltyBallPhysics.rot = ballRot;
+                penaltyBallPhysics.vrot = 14;
+                penaltyBallPhysics.groundY = horizonY + (h - horizonY) * 0.18;
+                penaltyBallPhysics.bounces = 0;
+                penaltyBallPhysics.isOut = false;
+
+                PenaltyAudio.save();
+                PenaltyAudio.groan();
+                spawnPenaltySparks(saveTargetX, saveTargetY, '#38bdf8', 24);
+                setPenaltyStatus(`⚡ XUẤT THẦN! THỦ MÔN ĐÃ CẢN PHÁ ĐƯỢC BÓNG! BÓNG ĐANG NẢY RA NGOÀI BIÊN...`);
               }
             } else if (penaltyDecisiveOutcome === 'woodwork') {
-              // 2. Bóng đập trúng xà ngang / cột dọc dội ra (Crossbar / Post)
+              // Ball flies toward crossbar / top corner
               const barX = goalX + goalW * 0.5;
-              const barY = goalY + 3; // Crossbar
-              if (p < 0.8) {
-                const subP = p / 0.8;
-                ballX = penaltySpotX + (barX - penaltySpotX) * subP;
-                ballY = penaltySpotY + (barY - penaltySpotY) * subP - Math.sin(subP * Math.PI) * 35;
-                ballZ = 1.0 - subP * 0.54;
-                ballRot = subP * 16;
-                // Keeper dives late
-                keeperDiveX = -goalW * 0.25 * subP;
-                keeperAngle = -0.5 * subP;
-                keeperState = 'diving';
-              } else {
-                // Ricochet backward off crossbar
-                const ricoP = (p - 0.8) / 0.2;
-                ballX = barX + (Math.random() > 0.5 ? -1 : 1) * ricoP * 30;
-                ballY = barY + ricoP * 55;
-                ballZ = 0.46 + ricoP * 0.15;
-                ballRot -= 0.4;
-                if (elapsed - runDuration - kickDuration * 0.8 < 35) {
-                  PenaltyAudio.post();
-                  PenaltyAudio.groan();
-                  spawnPenaltySparks(barX, barY, '#fef08a', 20);
-                }
+              const barY = goalY + 2;
+
+              ballX = penaltySpotX + (barX - penaltySpotX) * easeP;
+              ballY = penaltySpotY + (barY - penaltySpotY) * easeP - Math.sin(easeP * Math.PI) * 38;
+              ballZ = 1.0 - easeP * 0.56;
+              ballRot = easeP * 18;
+
+              keeperDiveX = -goalW * 0.25 * easeP;
+              keeperAngle = -0.5 * easeP;
+              keeperState = 'diving';
+
+              if (!penaltyBallPhysics.active && p > 0.95) {
+                penaltyBallPhysics.active = true;
+                penaltyBallPhysics.x = barX;
+                penaltyBallPhysics.y = barY;
+                penaltyBallPhysics.z = 0.44;
+                // Rebound backwards out into penalty box & off-field
+                penaltyBallPhysics.vx = (Math.random() > 0.5 ? 1 : -1) * (140 + Math.random() * 30);
+                penaltyBallPhysics.vy = 120; // Downward ricochet
+                penaltyBallPhysics.rot = ballRot;
+                penaltyBallPhysics.vrot = -18;
+                penaltyBallPhysics.groundY = horizonY + (h - horizonY) * 0.25;
+                penaltyBallPhysics.bounces = 0;
+                penaltyBallPhysics.isOut = false;
+
+                PenaltyAudio.post();
+                PenaltyAudio.groan();
+                spawnPenaltySparks(barX, barY, '#fef08a', 24);
+                setPenaltyStatus(`💥 BÓNG DỘI XÀ NGANG ĐANH THÉP! BÓNG ĐANG NẢY RA NGOÀI...`);
               }
             } else {
-              // 3. Sút ra ngoài / bay vọt xà ngang (Off-Target)
-              const skyTargetX = goalX + goalW * 0.95;
-              const skyTargetY = goalY - 45; // Over the crossbar
-              ballX = penaltySpotX + (skyTargetX - penaltySpotX) * p;
-              ballY = penaltySpotY + (skyTargetY - penaltySpotY) * p - Math.sin(p * Math.PI) * 50;
-              ballZ = 1.0 - p * 0.65;
-              ballRot = p * 18;
-              keeperDiveX = goalW * 0.22 * p;
-              keeperAngle = 0.4 * p;
+              // Off-target (rockets over the bar into the night sky/stands)
+              const skyX = goalX + goalW * 0.92;
+              const skyY = goalY - 60;
+
+              ballX = penaltySpotX + (skyX - penaltySpotX) * easeP;
+              ballY = penaltySpotY + (skyY - penaltySpotY) * easeP - Math.sin(easeP * Math.PI) * 52;
+              ballZ = 1.0 - easeP * 0.68;
+              ballRot = easeP * 20;
+
+              keeperDiveX = goalW * 0.2 * easeP;
+              keeperAngle = 0.4 * easeP;
               keeperState = 'diving';
-              if (p > 0.85 && elapsed - runDuration - kickDuration * 0.85 < 35) {
+
+              if (p > 0.9 && !penaltyBallPhysics.active) {
+                penaltyBallPhysics.active = true;
+                penaltyBallPhysics.x = skyX;
+                penaltyBallPhysics.y = skyY;
+                penaltyBallPhysics.z = 0.32;
+                penaltyBallPhysics.vx = 80;
+                penaltyBallPhysics.vy = -110;
+                penaltyBallPhysics.isOut = true;
                 PenaltyAudio.groan();
+                setPenaltyStatus(`🚀 BẮN CHIM! BÓNG BAY VỌT XÀ RA NGOÀI KHÁN ĐÀI...`);
+              }
+            }
+          } else if (elapsed < totalSequenceDuration) {
+            // ================= PHASE D: BALL DEFLECTS & FLIES COMPLETELY OUT OF BOUNDS =================
+            // Shooter drops to knees in despair
+            shooterStatus = 'despairing';
+            shooterX = penaltySpotX - 8;
+            shooterY = penaltySpotY + 6;
+
+            // Keeper lands and celebrates
+            if (penaltyDecisiveOutcome === 'saved') {
+              const saveTargetX = goalX + goalW * 0.72;
+              keeperDiveX = saveTargetX - w * 0.5;
+              keeperAngle = 0.4;
+              keeperState = 'celebrating'; // Standing and pumping fists
+            } else {
+              keeperState = 'ready';
+            }
+
+            // Update Ball Physics during deflection
+            if (penaltyBallPhysics.active) {
+              penaltyBallPhysics.x += penaltyBallPhysics.vx * dt;
+              penaltyBallPhysics.y += penaltyBallPhysics.vy * dt;
+              penaltyBallPhysics.rot += penaltyBallPhysics.vrot * dt;
+
+              if (penaltyDecisiveOutcome !== 'off_target') {
+                penaltyBallPhysics.vy += 380 * dt; // Gravity
+                // Check bounce on turf
+                if (penaltyBallPhysics.y >= penaltyBallPhysics.groundY) {
+                  penaltyBallPhysics.y = penaltyBallPhysics.groundY;
+                  penaltyBallPhysics.vy = -penaltyBallPhysics.vy * 0.55; // Dampened rebound
+                  penaltyBallPhysics.vx *= 0.85; // Ground friction
+                  penaltyBallPhysics.vrot *= 0.85;
+                  penaltyBallPhysics.bounces++;
+                  if (penaltyBallPhysics.bounces <= 3) {
+                    PenaltyAudio.bounce();
+                    spawnPenaltyTurf(penaltyBallPhysics.x, penaltyBallPhysics.y, 6);
+                  }
+                }
+              }
+
+              ballX = penaltyBallPhysics.x;
+              ballY = penaltyBallPhysics.y;
+              ballZ = penaltyBallPhysics.z;
+              ballRot = penaltyBallPhysics.rot;
+
+              // When ball travels past screen edges or far outside goal:
+              if (ballX > w + 40 || ballX < -40 || ballY < -60 || (penaltyBallPhysics.bounces >= 3 && Math.abs(penaltyBallPhysics.vx) < 15)) {
+                penaltyBallPhysics.isOut = true;
               }
             }
           } else {
-            // Kick 2 Complete -> Triggers Winner Call (Missed!)
+            // ================= PHASE E: ONLY AFTER BALL IS OUT OF PLAY -> CALL WINNER =================
             penaltyGameState = 'celebrating';
             penaltyBannerStartTime = timestamp;
             PenaltyAudio.whistleWinner();
-            spawnPenaltyCelebrationConfetti(w, h, 60);
+            spawnPenaltyCelebrationConfetti(w, h, 65);
 
-            let reason = 'BỊ THỦ MÔN CẢN PHÁ';
-            if (penaltyDecisiveOutcome === 'woodwork') reason = 'BÓNG ĐẬP XÀ NGANG / CỘT DỌC';
-            if (penaltyDecisiveOutcome === 'off_target') reason = 'BÓNG BAY RA NGOÀI';
+            let reason = 'BỊ THỦ MÔN CẢN PHÁ RA NGOÀI';
+            if (penaltyDecisiveOutcome === 'woodwork') reason = 'BÓNG DỘI XÀ NGANG BAY RA NGOÀI';
+            if (penaltyDecisiveOutcome === 'off_target') reason = 'BÓNG BAY VỌT XÀ RA NGOÀI';
 
             setPenaltyStatus(`❌ KHÔNG VÀO! [${penaltyTargetWinner.name}] SÚT TRƯỢT (${reason}) - BỊ GỌI TÊN!`);
           }
@@ -22376,21 +22488,21 @@
       } else if (penaltyGameState === 'celebrating') {
         shooterName = penaltyTargetWinner ? penaltyTargetWinner.name : 'HỌC SINH';
         shooterStatus = 'despairing';
-        keeperState = 'saved';
+        keeperState = 'celebrating';
         keeperDiveX = 0;
         keeperAngle = 0;
-        keeperY = goalY + goalH - 12 + Math.sin(timestamp * 0.012) * 6; // Keeper jumping celebrating
+        keeperY = goalY + goalH - 4 + Math.sin(timestamp * 0.012) * 5; // Keeper jumping celebrating
         ballVisible = false;
 
         const bannerElapsed = timestamp - penaltyBannerStartTime;
         penaltyBannerProgress = Math.min(bannerElapsed / 700, 1.0);
 
         // Continuous celebration sparks
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.28) {
           spawnPenaltyCelebrationConfetti(w, h, 8);
         }
 
-        // After 2.5 seconds, trigger callback modal
+        // After 2.5 seconds of dramatic banner, open result modal
         if (bannerElapsed > 2500 && penaltyFinishCallback) {
           const cb = penaltyFinishCallback;
           penaltyFinishCallback = null;
@@ -22402,23 +22514,23 @@
         ballY = penaltySpotY;
         ballZ = 1.0;
         keeperY += Math.sin(timestamp * 0.005) * 2;
-        shooterX = penaltySpotX - 44;
-        shooterY = penaltySpotY + 18;
+        shooterX = penaltySpotX - 48;
+        shooterY = penaltySpotY + 16;
       }
 
       // 3. Draw Goal & Net
       drawGoalAndNet(ctx, goalX, goalY, goalW, goalH, penaltyNetBulge, timestamp);
 
-      // 4. Draw Goalkeeper
-      drawGoalkeeper(ctx, w * 0.5 + keeperDiveX, keeperY + keeperDiveY, keeperAngle, keeperState, timestamp);
+      // 4. Draw Goalkeeper (Realistic Pro Model)
+      drawGoalkeeperPro(ctx, w * 0.5 + keeperDiveX, keeperY + keeperDiveY, keeperAngle, keeperState, timestamp);
 
       // 5. Draw Ball (Depth sorted)
       if (ballVisible) {
         drawBall(ctx, ballX, ballY, ballZ, ballRot);
       }
 
-      // 6. Draw Shooter (Kicking player at 11m)
-      drawShooter(ctx, shooterX, shooterY, shooterStatus, shooterRunT, shooterKickT, shooterName, timestamp);
+      // 6. Draw Shooter (Realistic Pro Model)
+      drawShooterPro(ctx, shooterX, shooterY, shooterStatus, shooterRunT, shooterKickT, shooterName, timestamp);
 
       // 7. Update & Draw Particles
       updateAndDrawPenaltyParticles(ctx, dt);
@@ -22431,73 +22543,99 @@
       penaltyAnimId = requestAnimationFrame(renderPenaltyCanvas);
     }
 
-    // DRAW STADIUM FLOODLIGHTS & CROWD
+    // DRAW STADIUM BACKGROUND & LED BOARDS
     function drawStadiumBackground(ctx, w, h, timestamp) {
-      // Crowd silhouette rows
-      const crowdY = h * 0.34;
+      const crowdY = h * 0.32;
+
+      // Upper Stands with Seating Tiers & Cheering Fans
       ctx.fillStyle = '#061326';
+      ctx.fillRect(0, crowdY - 26, w, 26);
+
+      // Crowd rows with subtle bouncing heads
+      ctx.fillStyle = '#081c38';
       ctx.beginPath();
       ctx.moveTo(0, crowdY);
-      for (let x = 0; x <= w; x += 12) {
-        const headH = 4 + Math.sin(x * 0.2 + timestamp * 0.003) * 2.5;
+      for (let x = 0; x <= w; x += 10) {
+        const headH = 5 + Math.sin(x * 0.25 + timestamp * 0.004) * 3;
         ctx.lineTo(x, crowdY - headH);
       }
-      ctx.lineTo(w, h * 0.44);
-      ctx.lineTo(0, h * 0.44);
+      ctx.lineTo(w, crowdY);
       ctx.closePath();
       ctx.fill();
 
-      // Flashes from crowd cameras
-      if (Math.random() < 0.12) {
+      // Camera Flashbulbs in crowd
+      if (Math.random() < 0.16) {
         const flashX = Math.random() * w;
-        const flashY = crowdY - 8 + Math.random() * 16;
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        const flashY = crowdY - 22 + Math.random() * 20;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
         ctx.beginPath();
-        ctx.arc(flashX, flashY, 3, 0, Math.PI * 2);
+        ctx.arc(flashX, flashY, 3.5, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // 4 Stadium Floodlight Towers
-      const towers = [w * 0.08, w * 0.32, w * 0.68, w * 0.92];
+      // Perimeter LED Electronic Sponsor Boards
+      const ledY = crowdY + 1;
+      const ledH = h * 0.42 - ledY;
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(0, ledY, w, ledH);
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(0, ledY, w, ledH);
+
+      // Glowing LED Board Content ("⚽ PENALTY SHOOTOUT 2026 • ĐẤU TRƯỜNG PENALTY")
+      const scrollOffset = (timestamp * 0.04) % (w * 0.6);
+      ctx.save();
+      ctx.font = '900 11px system-ui, sans-serif';
+      ctx.fillStyle = '#38bdf8';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const boardText = "⚽ PENALTY SHOOTOUT 2026 ★ ĐẤU TRƯỜNG PENALTY ★ THỬ THÁCH 11M ⚽";
+      for (let offset = -w; offset < w * 2; offset += w * 0.6) {
+        ctx.fillText(boardText, offset + scrollOffset, ledY + ledH / 2);
+      }
+      ctx.restore();
+
+      // 4 Volumetric Stadium Floodlight Towers
+      const towers = [w * 0.08, w * 0.34, w * 0.66, w * 0.92];
       towers.forEach(tx => {
-        // Light beams shining down
-        const beamGrad = ctx.createRadialGradient(tx, 35, 5, tx, h * 0.6, 260);
-        beamGrad.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
-        beamGrad.addColorStop(0.4, 'rgba(186, 230, 253, 0.08)');
+        // Light beams shining down with soft radial falloff
+        const beamGrad = ctx.createRadialGradient(tx, 32, 5, tx, h * 0.58, 280);
+        beamGrad.addColorStop(0, 'rgba(255, 255, 255, 0.28)');
+        beamGrad.addColorStop(0.35, 'rgba(186, 230, 253, 0.09)');
         beamGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
         ctx.fillStyle = beamGrad;
         ctx.beginPath();
-        ctx.moveTo(tx - 18, 30);
-        ctx.lineTo(tx + 18, 30);
-        ctx.lineTo(tx + 110, h * 0.7);
-        ctx.lineTo(tx - 110, h * 0.7);
+        ctx.moveTo(tx - 22, 28);
+        ctx.lineTo(tx + 22, 28);
+        ctx.lineTo(tx + 120, h * 0.68);
+        ctx.lineTo(tx - 120, h * 0.68);
         ctx.closePath();
         ctx.fill();
 
         // Tower lamp fixture
-        ctx.fillStyle = '#cbd5e1';
-        ctx.fillRect(tx - 14, 25, 28, 7);
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(tx - 16, 24, 32, 8);
         ctx.fillStyle = '#ffffff';
         ctx.beginPath();
-        ctx.arc(tx, 28, 9, 0, Math.PI * 2);
+        ctx.arc(tx, 27, 9.5, 0, Math.PI * 2);
         ctx.fill();
       });
     }
 
     // DRAW PITCH MARKINGS
     function drawPitchMarkings(ctx, w, h, horizonY) {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.58)';
       ctx.lineWidth = 2.5;
 
       // Goal line
       ctx.beginPath();
-      ctx.moveTo(w * 0.18, horizonY + 2);
-      ctx.lineTo(w * 0.82, horizonY + 2);
+      ctx.moveTo(w * 0.16, horizonY + 2);
+      ctx.lineTo(w * 0.84, horizonY + 2);
       ctx.stroke();
 
-      // Penalty box (perspective box)
+      // Penalty box (perspective trapezoid)
       const boxTopW = w * 0.58;
-      const boxBotW = w * 0.78;
+      const boxBotW = w * 0.8;
       const boxH = (h - horizonY) * 0.52;
       const boxTopY = horizonY + 2;
       const boxBotY = horizonY + boxH;
@@ -22521,47 +22659,47 @@
       ctx.stroke();
 
       // 11m Penalty Spot
-      const spotY = h * 0.78;
+      const spotY = h * 0.79;
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(w * 0.5, spotY, 4.5, 0, Math.PI * 2);
+      ctx.arc(w * 0.5, spotY, 5, 0, Math.PI * 2);
       ctx.fill();
 
       // Penalty Arc (D outside penalty box)
       ctx.beginPath();
-      ctx.arc(w * 0.5, spotY, 42, Math.PI * 0.85, Math.PI * 2.15);
+      ctx.arc(w * 0.5, spotY, 44, Math.PI * 0.85, Math.PI * 2.15);
       ctx.stroke();
     }
 
     // DRAW 3D GOAL AND NET
     function drawGoalAndNet(ctx, x, y, w, h, bulge, timestamp) {
-      const postRadius = 6;
-      const depthOffset = 38; // 3D depth of net back
+      const postRadius = 6.5;
+      const depthOffset = 42; // 3D depth of net back
 
       // Back frame
-      ctx.strokeStyle = '#64748b';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3.5;
       ctx.beginPath();
-      ctx.moveTo(x + depthOffset, y - depthOffset * 0.35);
-      ctx.lineTo(x + w - depthOffset, y - depthOffset * 0.35);
+      ctx.moveTo(x + depthOffset, y - depthOffset * 0.36);
+      ctx.lineTo(x + w - depthOffset, y - depthOffset * 0.36);
       ctx.lineTo(x + w - depthOffset * 0.6, y + h - depthOffset * 0.2);
-      ctx.moveTo(x + depthOffset, y - depthOffset * 0.35);
+      ctx.moveTo(x + depthOffset, y - depthOffset * 0.36);
       ctx.lineTo(x + depthOffset * 0.6, y + h - depthOffset * 0.2);
       ctx.stroke();
 
       // Net mesh grid
       ctx.save();
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.42)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.44)';
       ctx.lineWidth = 1;
 
       // Vertical net strings
-      const cols = 22;
+      const cols = 24;
       for (let c = 0; c <= cols; c++) {
         const u = c / cols;
         const topX = x + u * w;
         const topY = y;
         const backX = x + depthOffset + u * (w - depthOffset * 2);
-        const backY = y - depthOffset * 0.35;
+        const backY = y - depthOffset * 0.36;
         const botX = x + u * w;
         const botY = y + h;
 
@@ -22576,7 +22714,7 @@
       }
 
       // Horizontal net strings
-      const rows = 12;
+      const rows = 14;
       for (let r = 1; r <= rows; r++) {
         const v = r / rows;
         const curY = y + v * h;
@@ -22596,7 +22734,7 @@
       // Left Post
       const postGradL = ctx.createLinearGradient(x - postRadius, 0, x + postRadius, 0);
       postGradL.addColorStop(0, '#94a3b8');
-      postGradL.addColorStop(0.4, '#ffffff');
+      postGradL.addColorStop(0.35, '#ffffff');
       postGradL.addColorStop(1, '#cbd5e1');
       ctx.fillStyle = postGradL;
       ctx.fillRect(x - postRadius, y, postRadius * 2, h);
@@ -22604,7 +22742,7 @@
       // Right Post
       const postGradR = ctx.createLinearGradient(x + w - postRadius, 0, x + w + postRadius, 0);
       postGradR.addColorStop(0, '#94a3b8');
-      postGradR.addColorStop(0.4, '#ffffff');
+      postGradR.addColorStop(0.35, '#ffffff');
       postGradR.addColorStop(1, '#cbd5e1');
       ctx.fillStyle = postGradR;
       ctx.fillRect(x + w - postRadius, y, postRadius * 2, h);
@@ -22612,236 +22750,452 @@
       // Crossbar
       const barGrad = ctx.createLinearGradient(0, y - postRadius, 0, y + postRadius);
       barGrad.addColorStop(0, '#94a3b8');
-      barGrad.addColorStop(0.4, '#ffffff');
+      barGrad.addColorStop(0.35, '#ffffff');
       barGrad.addColorStop(1, '#cbd5e1');
       ctx.fillStyle = barGrad;
       ctx.fillRect(x - postRadius, y - postRadius, w + postRadius * 2, postRadius * 2);
 
       // Post base pads
-      ctx.fillStyle = '#475569';
+      ctx.fillStyle = '#334155';
       ctx.fillRect(x - postRadius - 2, y + h - 3, postRadius * 2 + 4, 5);
       ctx.fillRect(x + w - postRadius - 2, y + h - 3, postRadius * 2 + 4, 5);
 
       ctx.restore();
     }
 
-    // DRAW GOALKEEPER
-    function drawGoalkeeper(ctx, x, y, angle, state, timestamp) {
+    // ==========================================
+    // REALISTIC GOALKEEPER PRO MODEL
+    // ==========================================
+    function drawGoalkeeperPro(ctx, x, y, angle, state, timestamp) {
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(angle);
 
-      // Shadow
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      // Ground shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.42)';
       ctx.beginPath();
-      ctx.ellipse(0, 4, 18, 6, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 4, 22, 7, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Legs
-      ctx.fillStyle = '#0f172a'; // Black shorts
-      ctx.fillRect(-10, -22, 20, 12);
-
-      // Socks & Cleats
-      ctx.fillStyle = '#facc15'; // Yellow socks
-      ctx.fillRect(-9, -10, 6, 10);
-      ctx.fillRect(3, -10, 6, 10);
-      ctx.fillStyle = '#ffffff'; // White boots
-      ctx.fillRect(-10, 0, 8, 4);
-      ctx.fillRect(3, 0, 8, 4);
-
-      // Jersey (Bright Neon Yellow/Green Goalkeeper kit)
-      ctx.fillStyle = '#84cc16';
-      ctx.beginPath();
-      ctx.roundRect(-12, -38, 24, 18, 4);
-      ctx.fill();
-
-      // Number 1 on back/front
-      ctx.fillStyle = '#1e293b';
-      ctx.font = 'bold 9px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('1', 0, -29);
-
-      // Head & Hair
-      ctx.fillStyle = '#fbcfe8'; // Skin tone
-      ctx.beginPath();
-      ctx.arc(0, -44, 7, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#451a03'; // Brown hair
-      ctx.beginPath();
-      ctx.arc(0, -46, 7, Math.PI, Math.PI * 2);
-      ctx.fill();
-
-      // Arms & Goalie Gloves
-      ctx.fillStyle = '#84cc16';
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = '#84cc16';
-
-      let lArmX = -18, lArmY = -34;
-      let rArmX = 18, rArmY = -34;
-
+      // 1. LEGS & SOCCER BOOTS
+      let lLegAngle = 0.1;
+      let rLegAngle = -0.1;
       if (state === 'diving') {
-        lArmX = -26; lArmY = -42;
-        rArmX = 26; rArmY = -42;
-      } else if (state === 'saved') {
-        lArmX = -16; lArmY = -52;
-        rArmX = 16; rArmY = -52;
-      } else if (state === 'beaten') {
-        lArmX = -14; lArmY = -22;
-        rArmX = 14; rArmY = -22;
+        lLegAngle = -0.35;
+        rLegAngle = 0.45; // Leg trailing in air
+      } else if (state === 'celebrating') {
+        lLegAngle = -0.15;
+        rLegAngle = 0.15;
       }
 
+      // Goalkeeper Shorts (Dark Navy with neon green contour stripes)
+      ctx.fillStyle = '#0f172a';
       ctx.beginPath();
-      ctx.moveTo(-10, -34);
+      ctx.roundRect(-12, -26, 24, 14, 3);
+      ctx.fill();
+      // Stripe
+      ctx.fillStyle = '#84cc16';
+      ctx.fillRect(-12, -26, 3, 14);
+      ctx.fillRect(9, -26, 3, 14);
+
+      // Left Leg (Thigh, Knee, Calf, Sock)
+      ctx.save();
+      ctx.translate(-6, -13);
+      ctx.rotate(lLegAngle);
+      // Skin / Thigh
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-3, 0, 6, 7);
+      // Knee pad / Sock (Neon Yellow)
+      const sockGradL = ctx.createLinearGradient(-3, 7, 3, 7);
+      sockGradL.addColorStop(0, '#65a30d');
+      sockGradL.addColorStop(0.5, '#a3e635');
+      sockGradL.addColorStop(1, '#84cc16');
+      ctx.fillStyle = sockGradL;
+      ctx.beginPath();
+      ctx.roundRect(-3.5, 7, 7, 10, 2);
+      ctx.fill();
+      // Cleat / Boot (White & Neon)
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.roundRect(-5, 17, 9, 5, 2);
+      ctx.fill();
+      ctx.fillStyle = '#84cc16';
+      ctx.fillRect(-2, 18, 5, 2);
+      ctx.restore();
+
+      // Right Leg
+      ctx.save();
+      ctx.translate(6, -13);
+      ctx.rotate(rLegAngle);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-3, 0, 6, 7);
+      const sockGradR = ctx.createLinearGradient(-3, 7, 3, 7);
+      sockGradR.addColorStop(0, '#65a30d');
+      sockGradR.addColorStop(0.5, '#a3e635');
+      sockGradR.addColorStop(1, '#84cc16');
+      ctx.fillStyle = sockGradR;
+      ctx.beginPath();
+      ctx.roundRect(-3.5, 7, 7, 10, 2);
+      ctx.fill();
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.roundRect(-4, 17, 9, 5, 2);
+      ctx.fill();
+      ctx.fillStyle = '#84cc16';
+      ctx.fillRect(-1, 18, 5, 2);
+      ctx.restore();
+
+      // 2. TORSO & GOALKEEPER JERSEY
+      // Neon Lime/Cyan athletic goalkeeper jersey with shoulder pads & number #1
+      const jerseyGrad = ctx.createLinearGradient(-14, -46, 14, -46);
+      jerseyGrad.addColorStop(0, '#4d7c0f');
+      jerseyGrad.addColorStop(0.2, '#84cc16');
+      jerseyGrad.addColorStop(0.8, '#a3e635');
+      jerseyGrad.addColorStop(1, '#4d7c0f');
+      ctx.fillStyle = jerseyGrad;
+      ctx.beginPath();
+      ctx.roundRect(-14, -46, 28, 22, 6);
+      ctx.fill();
+
+      // Collar (V-neck)
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.moveTo(-5, -46);
+      ctx.lineTo(0, -40);
+      ctx.lineTo(5, -46);
+      ctx.closePath();
+      ctx.fill();
+
+      // Goalkeeper Number 1
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '900 11px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('1', 0, -34);
+
+      // 3. HEAD, HAIR & HEADBAND
+      // Neck
+      ctx.fillStyle = '#fbcfe8';
+      ctx.fillRect(-4, -50, 8, 5);
+
+      // Head / Face
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, -54, 8.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Athletic Hair / Undercut
+      ctx.fillStyle = '#3e2723';
+      ctx.beginPath();
+      ctx.arc(0, -56, 8.5, Math.PI * 0.9, Math.PI * 2.1);
+      ctx.fill();
+      // Quiff
+      ctx.beginPath();
+      ctx.ellipse(0, -61, 6, 3.5, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eyes & Concentrated Expression
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.arc(-3, -54, 1.2, 0, Math.PI * 2);
+      ctx.arc(3, -54, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. ARMS & PRO GOALIE GLOVES
+      let lArmX = -20, lArmY = -38;
+      let rArmX = 20, rArmY = -38;
+
+      if (state === 'diving') {
+        // Full extension reach!
+        lArmX = -32; lArmY = -48;
+        rArmX = 30; rArmY = -48;
+      } else if (state === 'celebrating') {
+        // Both fists raised high!
+        lArmX = -18; lArmY = -62;
+        rArmX = 18; rArmY = -62;
+      } else if (state === 'beaten') {
+        lArmX = -14; lArmY = -24;
+        rArmX = 14; rArmY = -24;
+      }
+
+      // Arm sleeves (Padded goalkeeper sleeves)
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#84cc16';
+      ctx.lineCap = 'round';
+
+      ctx.beginPath();
+      ctx.moveTo(-11, -42);
       ctx.lineTo(lArmX, lArmY);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.moveTo(10, -34);
+      ctx.moveTo(11, -42);
       ctx.lineTo(rArmX, rArmY);
       ctx.stroke();
 
-      // Big goalie gloves (Orange/Cyan)
-      ctx.fillStyle = '#f97316';
-      ctx.beginPath();
-      ctx.arc(lArmX, lArmY, 5, 0, Math.PI * 2);
-      ctx.arc(rArmX, rArmY, 5, 0, Math.PI * 2);
-      ctx.fill();
+      // PRO GOALIE GLOVES (Large orange/neon latex gloves with palm grip)
+      drawGoalieGlove(ctx, lArmX, lArmY, -0.4);
+      drawGoalieGlove(ctx, rArmX, rArmY, 0.4);
 
-      // Name tag: "THỦ MÔN"
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+      // Name badge tag
+      ctx.restore();
+      ctx.save();
+      ctx.translate(x, y - 72);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = '#84cc16';
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.roundRect(-26, -60, 52, 13, 6);
+      ctx.roundRect(-30, -9, 60, 18, 9);
       ctx.fill();
+      ctx.stroke();
+
       ctx.fillStyle = '#fde047';
-      ctx.font = 'bold 8px system-ui, sans-serif';
+      ctx.font = 'bold 9px system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('🧤 THỦ MÔN', 0, -53.5);
+      ctx.fillText('🧤 THỦ MÔN', 0, 0.5);
+      ctx.restore();
+    }
+
+    function drawGoalieGlove(ctx, gx, gy, rot) {
+      ctx.save();
+      ctx.translate(gx, gy);
+      ctx.rotate(rot);
+
+      // Back of glove (Orange)
+      ctx.fillStyle = '#ea580c';
+      ctx.beginPath();
+      ctx.roundRect(-5, -6, 10, 12, 4);
+      ctx.fill();
+
+      // Grip palm / Fingers (Neon white & cyan)
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(-3, -7, 6, 3);
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(-4, 2, 8, 3); // Wrist strap
 
       ctx.restore();
     }
 
-    // DRAW STRIKER / SHOOTER
-    function drawShooter(ctx, x, y, status, runT, kickT, name, timestamp) {
+    // ==========================================
+    // REALISTIC SHOOTER PRO MODEL
+    // ==========================================
+    function drawShooterPro(ctx, x, y, status, runT, kickT, name, timestamp) {
       ctx.save();
       ctx.translate(x, y);
 
-      // Shadow
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+      // Ground shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.42)';
       ctx.beginPath();
-      ctx.ellipse(0, 3, 16, 5, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 3, 20, 6, 0, 0, Math.PI * 2);
       ctx.fill();
 
       let bodyAngle = 0;
-      let legAngleL = 0;
-      let legAngleR = 0;
-      let armAngleL = 0;
-      let armAngleR = 0;
+      let plantLegRot = 0;
+      let kickLegRot = 0;
+      let lArmAngle = 0;
+      let rArmAngle = 0;
 
       if (status === 'running') {
-        bodyAngle = 0.2;
-        legAngleL = Math.sin(runT * Math.PI * 6) * 0.7;
-        legAngleR = -legAngleL;
-        armAngleL = -legAngleL;
-        armAngleR = legAngleL;
+        bodyAngle = 0.22;
+        // Cyclic running strides
+        const cycle = Math.sin(runT * Math.PI * 6);
+        plantLegRot = cycle * 0.65;
+        kickLegRot = -cycle * 0.65;
+        lArmAngle = -cycle * 0.8;
+        rArmAngle = cycle * 0.8;
       } else if (status === 'kicked') {
-        bodyAngle = 0.3;
-        legAngleL = -0.4;
-        legAngleR = 0.85 * kickT; // Kicking foot swinging forward!
-        armAngleL = 0.6;
-        armAngleR = -0.6;
+        bodyAngle = 0.32;
+        plantLegRot = -0.3; // Plant foot firmly in ground
+        kickLegRot = 0.95 * kickT; // Kicking foot whip
+        lArmAngle = 0.7;
+        rArmAngle = -0.7;
       } else if (status === 'celebrating') {
-        bodyAngle = 0;
-        armAngleL = -1.2; // Both arms up high!
-        armAngleR = -1.2;
+        bodyAngle = -0.05;
+        plantLegRot = -0.1;
+        kickLegRot = 0.1;
+        lArmAngle = -1.35; // Both arms raised in glory
+        rArmAngle = -1.35;
       } else if (status === 'despairing') {
-        bodyAngle = 0.45; // Hunched over head in hands
-        armAngleL = -0.5;
-        armAngleR = -0.5;
+        // On both knees with head in hands
+        bodyAngle = 0.52;
+        plantLegRot = -0.8;
+        kickLegRot = -0.8;
+        lArmAngle = -0.65;
+        rArmAngle = -0.65;
       }
 
       ctx.rotate(bodyAngle);
 
-      // Legs
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = '#ffffff'; // White socks
-      // Left leg
+      // 1. LEGS & SOCCER BOOTS
+      // Plant Leg (Left Leg)
       ctx.save();
-      ctx.rotate(legAngleL);
+      ctx.translate(-6, -18);
+      ctx.rotate(plantLegRot);
+      // Thigh
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-3, 0, 6, 9);
+      // Red Sock
+      const sockGradL = ctx.createLinearGradient(-3.5, 9, 3.5, 9);
+      sockGradL.addColorStop(0, '#991b1b');
+      sockGradL.addColorStop(0.5, '#dc2626');
+      sockGradL.addColorStop(1, '#ef4444');
+      ctx.fillStyle = sockGradL;
       ctx.beginPath();
-      ctx.moveTo(-5, -16);
-      ctx.lineTo(-7, 0);
-      ctx.stroke();
-      ctx.fillStyle = '#dc2626'; // Red boots
-      ctx.fillRect(-9, -1, 7, 4);
-      ctx.restore();
-
-      // Right leg (Kicking leg)
-      ctx.save();
-      ctx.rotate(legAngleR);
-      ctx.beginPath();
-      ctx.moveTo(5, -16);
-      ctx.lineTo(8, 0);
-      ctx.stroke();
-      ctx.fillStyle = '#dc2626';
-      ctx.fillRect(6, -1, 7, 4);
-      ctx.restore();
-
-      // Shorts
+      ctx.roundRect(-3.5, 9, 7, 12, 2);
+      ctx.fill();
+      // White top sock stripe
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-3.5, 9, 7, 2);
+      // Cleat (Modern Gold & Black)
       ctx.fillStyle = '#1e293b';
-      ctx.fillRect(-8, -26, 16, 11);
-
-      // Jersey (Vietnam / National Team Red Kit)
-      ctx.fillStyle = '#dc2626';
       ctx.beginPath();
-      ctx.roundRect(-10, -42, 20, 18, 4);
+      ctx.roundRect(-5, 21, 11, 6, 2.5);
+      ctx.fill();
+      ctx.fillStyle = '#fbbf24';
+      ctx.fillRect(-2, 22, 6, 2);
+      ctx.restore();
+
+      // Kicking Leg (Right Leg)
+      ctx.save();
+      ctx.translate(6, -18);
+      ctx.rotate(kickLegRot);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-3, 0, 6, 9);
+      const sockGradR = ctx.createLinearGradient(-3.5, 9, 3.5, 9);
+      sockGradR.addColorStop(0, '#991b1b');
+      sockGradR.addColorStop(0.5, '#dc2626');
+      sockGradR.addColorStop(1, '#ef4444');
+      ctx.fillStyle = sockGradR;
+      ctx.beginPath();
+      ctx.roundRect(-3.5, 9, 7, 12, 2);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-3.5, 9, 7, 2);
+      // Cleat
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.roundRect(-4, 21, 11, 6, 2.5);
+      ctx.fill();
+      ctx.fillStyle = '#fbbf24';
+      ctx.fillRect(-1, 22, 6, 2);
+      ctx.restore();
+
+      // 2. SHORTS
+      ctx.fillStyle = '#1e293b'; // Navy / Black shorts
+      ctx.beginPath();
+      ctx.roundRect(-11, -30, 22, 14, 3);
+      ctx.fill();
+      // Side gold stripes
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(-11, -30, 2.5, 14);
+      ctx.fillRect(8.5, -30, 2.5, 14);
+
+      // 3. TORSO & NATIONAL TEAM JERSEY (Red with Gold Star)
+      const redJersey = ctx.createLinearGradient(-13, -52, 13, -52);
+      redJersey.addColorStop(0, '#991b1b');
+      redJersey.addColorStop(0.3, '#dc2626');
+      redJersey.addColorStop(0.7, '#ef4444');
+      redJersey.addColorStop(1, '#991b1b');
+      ctx.fillStyle = redJersey;
+      ctx.beginPath();
+      ctx.roundRect(-13, -52, 26, 24, 5);
       ctx.fill();
 
-      // Yellow Star on chest
+      // Gold Star on chest
       ctx.fillStyle = '#fde047';
-      ctx.font = '10px sans-serif';
+      ctx.font = 'bold 12px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('★', 0, -33);
+      ctx.fillText('★', 0, -40);
 
-      // Head
+      // V-Collar
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath();
+      ctx.moveTo(-5, -52);
+      ctx.lineTo(0, -47);
+      ctx.lineTo(5, -52);
+      ctx.closePath();
+      ctx.fill();
+
+      // 4. HEAD, HAIR & FACE
+      // Neck
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillRect(-4, -56, 8, 6);
+
+      // Face
       ctx.fillStyle = '#fed7aa';
       ctx.beginPath();
-      ctx.arc(0, -48, 7.5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#1e1b4b'; // Black hair
-      ctx.beginPath();
-      ctx.arc(0, -50, 7.5, Math.PI, Math.PI * 2);
+      ctx.arc(0, -61, 9, 0, Math.PI * 2);
       ctx.fill();
 
-      // Arms
+      // Hair (Stylized modern side-parting)
+      ctx.fillStyle = '#18181b';
+      ctx.beginPath();
+      ctx.arc(0, -63, 9, Math.PI * 0.85, Math.PI * 2.15);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(-1, -68, 7, 3.5, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eyes & Brows
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(-3.5, -61, 1.2, 0, Math.PI * 2);
+      ctx.arc(3.5, -61, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.moveTo(-5, -64); ctx.lineTo(-2, -63);
+      ctx.moveTo(2, -63); ctx.lineTo(5, -64);
+      ctx.stroke();
+
+      // 5. ARMS & HANDS
+      ctx.lineWidth = 4.5;
       ctx.strokeStyle = '#dc2626';
-      ctx.lineWidth = 3.5;
-      ctx.beginPath();
-      ctx.moveTo(-9, -38);
-      ctx.lineTo(-14 + Math.sin(armAngleL) * 10, -28 + Math.cos(armAngleL) * 10);
-      ctx.stroke();
+      ctx.lineCap = 'round';
 
+      // Left Arm
       ctx.beginPath();
-      ctx.moveTo(9, -38);
-      ctx.lineTo(14 + Math.sin(armAngleR) * 10, -28 + Math.cos(armAngleR) * 10);
+      ctx.moveTo(-11, -48);
+      const lHandX = -17 + Math.sin(lArmAngle) * 14;
+      const lHandY = -36 + Math.cos(lArmAngle) * 14;
+      ctx.lineTo(lHandX, lHandY);
       ctx.stroke();
+      // Hand
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(lHandX, lHandY, 3, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Name tag over striker's head
+      // Right Arm
+      ctx.beginPath();
+      ctx.moveTo(11, -48);
+      const rHandX = 17 + Math.sin(rArmAngle) * 14;
+      const rHandY = -36 + Math.cos(rArmAngle) * 14;
+      ctx.lineTo(rHandX, rHandY);
+      ctx.stroke();
+      // Hand
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(rHandX, rHandY, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 6. FLOATING NAME BADGE
       ctx.restore();
       ctx.save();
-      ctx.translate(x, y - 66);
-      const tagW = Math.max(90, name.length * 8 + 18);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+      ctx.translate(x, y - 82);
+      const tagW = Math.max(96, name.length * 8 + 22);
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
       ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
-      ctx.roundRect(-tagW / 2, -10, tagW, 20, 10);
+      ctx.roundRect(-tagW / 2, -11, tagW, 22, 11);
       ctx.fill();
       ctx.stroke();
 
-      ctx.font = 'bold 10.5px system-ui, sans-serif';
+      ctx.font = 'bold 11px system-ui, sans-serif';
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
@@ -22851,15 +23205,15 @@
 
     // DRAW 3D SOCCER BALL
     function drawBall(ctx, x, y, z, rot) {
-      const baseR = 12;
-      const r = baseR * z;
+      const baseR = 12.5;
+      const r = Math.max(baseR * z, 3.5);
 
       ctx.save();
       ctx.translate(x, y);
 
-      // Shadow on ground
-      const shadowR = r * 1.1;
-      const shadowDist = (1.0 - z) * 16;
+      // Soft Ground Shadow
+      const shadowR = r * 1.15;
+      const shadowDist = (1.0 - z) * 18;
       ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
       ctx.beginPath();
       ctx.ellipse(0, r + shadowDist, shadowR, shadowR * 0.35, 0, 0, Math.PI * 2);
@@ -22869,8 +23223,8 @@
       ctx.rotate(rot);
       const ballGrad = ctx.createRadialGradient(-r * 0.3, -r * 0.3, r * 0.1, 0, 0, r);
       ballGrad.addColorStop(0, '#ffffff');
-      ballGrad.addColorStop(0.7, '#e2e8f0');
-      ballGrad.addColorStop(1, '#64748b');
+      ballGrad.addColorStop(0.75, '#e2e8f0');
+      ballGrad.addColorStop(1, '#475569');
       ctx.fillStyle = ballGrad;
       ctx.beginPath();
       ctx.arc(0, 0, r, 0, Math.PI * 2);
@@ -22878,9 +23232,7 @@
 
       // Pentagonal black patches
       ctx.fillStyle = '#0f172a';
-      // Center patch
       drawPentagon(ctx, 0, 0, r * 0.36);
-      // Surrounding patches
       for (let i = 0; i < 5; i++) {
         const ang = (i * Math.PI * 2) / 5;
         const px = Math.cos(ang) * r * 0.68;
@@ -22958,7 +23310,7 @@
       const halfH = bannerH / 2;
 
       // 1. Royal Dark Slate Banner Box with Gold Border & Shadow
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.88)';
       ctx.shadowBlur = 28;
       ctx.shadowOffsetY = 12;
 
@@ -22987,11 +23339,11 @@
       // 2. Banner Header Ribbon
       let outcomeSubtitle = '❌ SÚT HỎNG PENALTY - ĐÃ BỊ GỌI TÊN!';
       if (penaltyDecisiveOutcome === 'woodwork') {
-        outcomeSubtitle = '💥 BÓNG DỘI XÀ NGANG / CỘT DỌC - BỊ GỌI TÊN!';
+        outcomeSubtitle = '💥 BÓNG DỘI XÀ NGANG / CỘT DỌC RA NGOÀI - BỊ GỌI TÊN!';
       } else if (penaltyDecisiveOutcome === 'saved') {
-        outcomeSubtitle = '🧤 THỦ MÔN CẢN PHÁ XUẤT SẮC - BỊ GỌI TÊN!';
+        outcomeSubtitle = '🧤 THỦ MÔN CẢN PHÁ BÓNG BAY RA NGOÀI - BỊ GỌI TÊN!';
       } else if (penaltyDecisiveOutcome === 'off_target') {
-        outcomeSubtitle = '🚀 BÓNG BAY RA NGOÀI KHUNG THÀNH - BỊ GỌI TÊN!';
+        outcomeSubtitle = '🚀 BÓNG BAY VỌT XÀ RA NGOÀI KHUNG THÀNH - BỊ GỌI TÊN!';
       }
 
       ctx.font = 'bold 13px system-ui, sans-serif';
