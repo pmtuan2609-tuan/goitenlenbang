@@ -2948,7 +2948,6 @@
 
     function requireAuth(actionCallback, reasonText = 'Vui lòng đăng nhập hoặc đăng ký tài khoản để bắt đầu trải nghiệm tính năng này!') {
       if (currentUser) {
-        if (typeof actionCallback === 'function') actionCallback();
         return true;
       }
       pendingAuthCallback = typeof actionCallback === 'function' ? actionCallback : null;
@@ -3024,6 +3023,11 @@
         // 1. Đóng modal ngay lập tức không chần chừ
         const banner = document.getElementById('auth-modal-prompt-banner');
         if (banner) banner.classList.add('hidden');
+        const authModal = document.getElementById('auth-modal');
+        if (authModal) {
+          authModal.classList.add('hidden');
+          authModal.classList.remove('flex');
+        }
         closeModalUi('auth-modal', 'auth-modal-content');
         const passInput = document.getElementById('auth-login-password');
         if (passInput) passInput.value = '';
@@ -3170,6 +3174,11 @@
       // Đóng modal và cập nhật header ngay lập tức
       const banner = document.getElementById('auth-modal-prompt-banner');
       if (banner) banner.classList.add('hidden');
+      const authModal = document.getElementById('auth-modal');
+      if (authModal) {
+        authModal.classList.add('hidden');
+        authModal.classList.remove('flex');
+      }
       closeModalUi('auth-modal', 'auth-modal-content');
       updateUserHeaderArea();
       showCloudToast('Đăng ký thành công! Chào mừng Thầy/Cô ' + (name || username));
@@ -31752,10 +31761,15 @@
       const storedUser = localStorage.getItem('RACE_CURRENT_USER_V4');
       const allUsers = getAllUsers();
       if (storedUser) {
-        const found = allUsers.find(u => u.username.toLowerCase() === storedUser.toLowerCase());
-        if (found) {
-          currentUser = found;
-          currentUserRole = found.role || 'teacher';
+        if (storedUser.toLowerCase() === 'thaytuan') {
+          currentUser = DEFAULT_ADMIN_USER;
+          currentUserRole = 'admin';
+        } else {
+          const found = allUsers.find(u => u.username.toLowerCase() === storedUser.toLowerCase());
+          if (found) {
+            currentUser = found;
+            currentUserRole = found.role || 'teacher';
+          }
         }
       }
 
