@@ -1374,6 +1374,40 @@
               <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔥 Nghẹt Thở</span>
             </div>
           </div>
+
+        <!-- 18. ĐUA BI DZÍCH ZẮC (PLINKO MARBLE RACE) -->
+        <div onclick="launchGame('marble')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-purple-200 hover:border-purple-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-purple-100/80 border border-purple-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🎱
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500/10 text-purple-700 border border-purple-500/20">
+                Đua Bi Dzích Zắc
+              </span>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 group-hover:text-purple-600 transition-colors">
+                18. Đua Bi Dzích Zắc (Rơi Tự Do Qua Mê Cung)
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Toàn bộ học sinh hóa thân thành các viên bi sắc màu cùng rơi qua rừng đinh, thanh trượt ziczac & bánh xe xoay → Viên bi về đích cuối cùng là người được gọi tên!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎱 Bi Dzích Zắc</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌀 Vượt Chướng Ngại</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔥 Về Đích Cuối</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-purple-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-purple-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Đua Bi →</span>
+          </div>
+        </div>
+
           <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
             <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
               <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
@@ -1443,6 +1477,7 @@
               <option value="fishing" class="bg-slate-900 text-teal-300 font-bold">🎣 Bé Câu Cá Bắt Tên (50 Con Cá)</option>
               <option value="lion" class="bg-slate-900 text-amber-300 font-bold">🦁 Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà)</option>
               <option value="penalty" class="bg-slate-900 text-emerald-300 font-bold">⚽ Sút Luân Lưu Penalty (Vào: Bỏ qua • Trượt: Gọi tên)</option>
+              <option value="marble" class="bg-slate-900 text-purple-300 font-bold">🎱 Đua Bi Dzích Zắc (Rơi Tự Do Mê Cung)</option>
             </select>
           </div>
 
@@ -1975,6 +2010,31 @@
             </div>
           </div>
           <canvas id="penalty-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 18: ĐUA BI DZÍCH ZẮC (PLINKO MARBLE RACE) -->
+        <div id="marble-stage-container" class="hidden flex flex-col relative w-full h-[540px] sm:h-[600px] lg:h-[680px] xl:h-[750px] min-h-[500px] bg-gradient-to-b from-slate-950 via-indigo-950 to-slate-950 border border-purple-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-purple-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-purple-400 font-extrabold text-sm">🎱</span>
+              <span id="marble-game-status">Đã nạp toàn bộ bi học sinh vào cổng thả! Nhấn THẢ BI để bắt đầu cuộc đua!</span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button onclick="toggleMarbleWinRule()" id="marble-rule-btn" class="bg-purple-900/80 hover:bg-purple-850 text-purple-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-purple-400/50 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đổi luật chọn người về đích">
+                🏁 Luật: Về Cuối Cùng
+              </button>
+              <button onclick="toggleMarbleSound()" id="marble-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleMarbleFullscreen()" id="marble-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-purple-400"></i> Phóng to
+              </button>
+              <button onclick="resetMarbleGame()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới bàn thả bi">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-purple-400"></i> Thả Lại
+              </button>
+            </div>
+          </div>
+          <canvas id="marble-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -3577,6 +3637,7 @@
       else if (mode === 'fishing') initFishingGame(true);
       else if (mode === 'lion') initLionGame(true);
       else if (mode === 'penalty') initPenaltyGame(true);
+        else if (mode === 'marble') initMarbleGame(true);
     }
 
     function renderClassesListTab() {
@@ -4563,6 +4624,8 @@
         if (typeof resizeLionCanvas === 'function') resizeLionCanvas();
       } else if (mode === 'penalty') {
         if (typeof resizePenaltyCanvas === 'function') resizePenaltyCanvas();
+      } else if (mode === 'marble') {
+        if (typeof resizeMarbleCanvas === 'function') resizeMarbleCanvas();
       }
     }
 
@@ -4588,7 +4651,9 @@
       const frogContainer = document.getElementById('frog-stage-container');
       const fishingContainer = document.getElementById('fishing-stage-container');
       const lionContainer = document.getElementById('lion-stage-container');
-      const penaltyContainer = document.getElementById('penalty-stage-container');
+      const penaltyContainer = document.getElementById('penalty-stage-container',
+        'marble-stage-container');
+      const marbleContainer = document.getElementById('marble-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -4608,6 +4673,7 @@
       if (fishingContainer) fishingContainer.classList.add('hidden');
       if (lionContainer) lionContainer.classList.add('hidden');
       if (penaltyContainer) penaltyContainer.classList.add('hidden');
+      if (marbleContainer) marbleContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -4726,6 +4792,13 @@
           if (typeof resizePenaltyCanvas === 'function') resizePenaltyCanvas();
           if (typeof renderPenaltyCanvas === 'function') renderPenaltyCanvas(performance.now());
         }, 40);
+      } else if (mode === 'marble') {
+        if (marbleContainer) marbleContainer.classList.remove('hidden');
+        if (typeof initMarbleGame === 'function') initMarbleGame(true);
+        setTimeout(() => {
+          if (typeof resizeMarbleCanvas === 'function') resizeMarbleCanvas();
+          if (typeof renderMarbleCanvas === 'function') renderMarbleCanvas(performance.now());
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -4755,7 +4828,8 @@
         frog: { title: 'Đập Ếch Bắt Tên (Whack-a-Frog)', icon: '🐸' },
         fishing: { title: 'Bé Câu Cá Bắt Tên (50 Con Cá Đa Sắc Màu)', icon: '🎣' },
         lion: { title: 'Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà Giáng Sinh)', icon: '🦁' },
-        penalty: { title: 'Sút Luân Lưu Penalty (Sút Vào Bỏ Qua, Sút Trượt Bị Gọi Tên)', icon: '⚽' }
+        penalty: { title: 'Sút Luân Lưu Penalty (Sút Vào Bỏ Qua, Sút Trượt Bị Gọi Tên)', icon: '⚽' },
+        marble: { title: 'Đua Bi Dzích Zắc (Rơi Tự Do Qua Mê Cung Chướng Ngại Vật)', icon: '🎱' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -4788,6 +4862,8 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-drum"></i> MÚA LÂN HÁI LỘC';
         } else if (mode === 'penalty') {
           spinBtn.innerHTML = '<i class="fa-solid fa-futbol"></i> SÚT PENALTY';
+        } else if (mode === 'marble') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-bowling-ball"></i> THẢ BI DZÍCH ZẮC';
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -13227,6 +13303,7 @@
       if (mode === 'fishing') return fishingGameState === 'biting' || fishingGameState === 'reeling' || fishingGameState === 'waiting';
       if (mode === 'lion') return lionGameState === 'dancing' || lionGameState === 'aiming' || lionGameState === 'leaping' || lionGameState === 'falling' || lionGameState === 'celebrating';
       if (mode === 'penalty') return penaltyGameState === 'kicking' || penaltyGameState === 'celebrating';
+      if (mode === 'marble') return typeof marbleGameState !== 'undefined' && (marbleGameState === 'dropping' || marbleGameState === 'slowmo');
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -31620,6 +31697,1277 @@
 
 
     // ==========================================
+    
+    // ==========================================
+    // MODULE 18: ĐUA BI DZÍCH ZẮC (PLINKO MARBLE RACE)
+    // ==========================================
+    const MarbleAudio = {
+      ctx: null,
+      getCtx() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        return this.ctx;
+      },
+      playDrop() {
+        if (!isAppSoundActive || !marbleSoundEnabled) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        try {
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(360, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.22);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } catch(e) {}
+      },
+      playPeg(noteIndex = 0) {
+        if (!isAppSoundActive || !marbleSoundEnabled) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        try {
+          const now = ctx.currentTime;
+          const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+          const freq = scale[Math.abs(noteIndex) % scale.length];
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.95, now + 0.07);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.09);
+        } catch(e) {}
+      },
+      playBumper() {
+        if (!isAppSoundActive || !marbleSoundEnabled) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        try {
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.exponentialRampToValueAtTime(560, now + 0.12);
+          gain.gain.setValueAtTime(0.28, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } catch(e) {}
+      },
+      playSpinner() {
+        if (!isAppSoundActive || !marbleSoundEnabled) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        try {
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(280, now);
+          osc.frequency.exponentialRampToValueAtTime(130, now + 0.05);
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.07);
+        } catch(e) {}
+      },
+      playFinishTick() {
+        if (!isAppSoundActive || !marbleSoundEnabled) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        try {
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(659.25, now);
+          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.09);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.12);
+        } catch(e) {}
+      },
+      playWinner() {
+        if (!isAppSoundActive || !marbleSoundEnabled) return;
+        const ctx = this.getCtx();
+        if (!ctx) return;
+        try {
+          const now = ctx.currentTime;
+          const chords = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+          chords.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+            gain.gain.setValueAtTime(0.24, now + idx * 0.09);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.52);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + idx * 0.09);
+            osc.stop(now + idx * 0.09 + 0.55);
+          });
+        } catch(e) {}
+      }
+    };
+
+    const MARBLE_PALETTES = [
+      { fill: '#ef4444', shine: '#fca5a5', dark: '#7f1d1d', border: '#fecaca', name: 'Ruby Đỏ' },
+      { fill: '#3b82f6', shine: '#93c5fd', dark: '#1e3a8a', border: '#bfdbfe', name: 'Sapphire Xanh' },
+      { fill: '#10b981', shine: '#6ee7b7', dark: '#064e3b', border: '#a7f3d0', name: 'Lục Bảo' },
+      { fill: '#f59e0b', shine: '#fcd34d', dark: '#78350f', border: '#fef3c7', name: 'Hoàng Kim' },
+      { fill: '#8b5cf6', shine: '#c4b5fd', dark: '#4c1d95', border: '#ddd6fe', name: 'Thạch Anh Tím' },
+      { fill: '#ec4899', shine: '#f472b6', dark: '#831843', border: '#fbcfe8', name: 'Hồng Ngọc' },
+      { fill: '#06b6d4', shine: '#67e8f9', dark: '#164e63', border: '#cffafe', name: 'Lam Ngọc' },
+      { fill: '#84cc16', shine: '#bef264', dark: '#365314', border: '#d9f99d', name: 'Xanh Cốm' },
+      { fill: '#f97316', shine: '#fdba74', dark: '#7c2d12', border: '#ffedd5', name: 'Cam San Hô' },
+      { fill: '#14b8a6', shine: '#5eead4', dark: '#134e4a', border: '#ccfbf1', name: 'Ngọc Bích' },
+      { fill: '#a855f7', shine: '#d8b4fe', dark: '#581c87', border: '#f3e8ff', name: 'Tử Đinh Hương' },
+      { fill: '#e11d48', shine: '#fda4af', dark: '#4c0519', border: '#ffe4e6', name: 'Hoa Hồng Đỏ' }
+    ];
+
+    // State Variables for Marble Race
+    let marbleGameState = 'idle'; // 'idle' | 'dropping' | 'slowmo' | 'finished'
+    let marbleWinRule = 'last';    // 'last' (Về đích cuối cùng - mặc định) | 'first' (Về đích đầu tiên)
+    let marbleSoundEnabled = true;
+    let marbles = [];
+    let finishedMarbles = [];
+    let marbleAnimId = null;
+    let marbleLastTime = 0;
+    let marbleTargetWinner = null;
+    let marbleFinishCallback = null;
+    let marbleRaceDuration = 6000;
+    let marbleGateProgress = 0;    // 0 -> 1 (cổng thả bi trượt mở)
+    let marbleSlowMo = 1.0;
+    let marbleParticles = [];
+    let marbleShockwaves = [];
+    let marbleHoveredStudent = null;
+
+    // Virtual Coordinate Map Dimensions
+    const MARBLE_VW = 1100;
+    const MARBLE_VH = 800;
+
+    // Static Map Geometry
+    let marblePegs = [];
+    let marbleRamps = [];
+    let marbleSpinners = [];
+    let marbleBumpers = [];
+
+    function buildMarbleMapObstacles() {
+      // 1. Pegs Grid (Rừng đinh so le)
+      marblePegs = [];
+      const pegRows = [
+        { y: 155, count: 11, startX: 170, endX: 930 },
+        { y: 195, count: 12, startX: 135, endX: 965 },
+        { y: 235, count: 11, startX: 170, endX: 930 },
+        { y: 275, count: 12, startX: 135, endX: 965 },
+        // Lower pegs before finish
+        { y: 615, count: 9, startX: 280, endX: 820 },
+        { y: 650, count: 10, startX: 245, endX: 855 },
+        { y: 685, count: 11, startX: 210, endX: 890 }
+      ];
+
+      let noteCounter = 0;
+      pegRows.forEach((row) => {
+        const step = (row.endX - row.startX) / (row.count - 1);
+        for (let i = 0; i < row.count; i++) {
+          marblePegs.push({
+            x: row.startX + i * step,
+            y: row.y,
+            r: 6.5,
+            glow: 0,
+            noteIndex: noteCounter++
+          });
+        }
+      });
+
+      // 2. Zigzag Slanted Ramps
+      marbleRamps = [
+        // Upper zigzag tier
+        { x1: 70, y1: 315, x2: 470, y2: 380, thickness: 6, color: '#38bdf8' },
+        { x1: 1030, y1: 315, x2: 630, y2: 380, thickness: 6, color: '#38bdf8' },
+        // Mid zigzag deflectors
+        { x1: 190, y1: 435, x2: 610, y2: 475, thickness: 6, color: '#ec4899' },
+        { x1: 910, y1: 435, x2: 490, y2: 475, thickness: 6, color: '#ec4899' },
+        // Funnel walls before finish
+        { x1: 70, y1: 590, x2: 210, y2: 650, thickness: 6, color: '#a855f7' },
+        { x1: 1030, y1: 590, x2: 890, y2: 650, thickness: 6, color: '#a855f7' }
+      ];
+
+      // 3. Rotating Spinners (Bánh xe xoay 4 cánh)
+      marbleSpinners = [
+        { cx: 280, cy: 535, r: 46, blades: 4, rotSpeed: 2.3, angle: 0, color: '#f59e0b' },
+        { cx: 550, cy: 525, r: 52, blades: 4, rotSpeed: -2.7, angle: 0.4, color: '#06b6d4' },
+        { cx: 820, cy: 535, r: 46, blades: 4, rotSpeed: 2.3, angle: 0.8, color: '#10b981' }
+      ];
+
+      // 4. Bouncy Pinball Bumpers
+      marbleBumpers = [
+        { cx: 140, cy: 415, r: 26, glow: 0, color: '#38bdf8' },
+        { cx: 960, cy: 415, r: 26, glow: 0, color: '#38bdf8' },
+        { cx: 350, cy: 645, r: 18, glow: 0, color: '#ec4899' },
+        { cx: 750, cy: 645, r: 18, glow: 0, color: '#ec4899' }
+      ];
+    }
+
+    function toggleMarbleWinRule() {
+      if (marbleWinRule === 'last') {
+        marbleWinRule = 'first';
+      } else {
+        marbleWinRule = 'last';
+      }
+      updateMarbleRuleButton();
+      if (marbleGameState === 'idle') {
+        setMarbleStatus(marbleWinRule === 'last'
+          ? '🎯 Chế độ: Viên bi về đích CUỐI CÙNG sẽ là người được gọi tên!'
+          : '🏆 Chế độ: Viên bi về đích ĐẦU TIÊN (Về nhất) sẽ là người được gọi tên!');
+      }
+    }
+
+    function updateMarbleRuleButton() {
+      const btn = document.getElementById('marble-rule-btn');
+      if (btn) {
+        if (marbleWinRule === 'last') {
+          btn.className = 'bg-purple-900/80 hover:bg-purple-850 text-purple-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-purple-400/50 transition flex items-center gap-1 shadow-md cursor-pointer';
+          btn.innerHTML = '🏁 Luật: Về Cuối Cùng';
+          btn.title = 'Hiện tại: Viên bi cán đích cuối cùng sẽ được gọi tên (Bấm để đổi sang Về Nhất)';
+        } else {
+          btn.className = 'bg-amber-600/90 hover:bg-amber-500 text-amber-100 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-amber-300 transition flex items-center gap-1 shadow-md cursor-pointer';
+          btn.innerHTML = '🏆 Luật: Về Đầu Tiên';
+          btn.title = 'Hiện tại: Viên bi cán đích đầu tiên sẽ được gọi tên (Bấm để đổi sang Về Cuối)';
+        }
+      }
+    }
+
+    function toggleMarbleSound() {
+      marbleSoundEnabled = !marbleSoundEnabled;
+      const btn = document.getElementById('marble-sound-btn');
+      if (btn) {
+        btn.innerHTML = marbleSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+      }
+    }
+
+    function toggleMarbleFullscreen() {
+      const container = document.getElementById('marble-stage-container');
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+      setTimeout(resizeMarbleCanvas, 80);
+      setTimeout(resizeMarbleCanvas, 240);
+    }
+
+    function setMarbleStatus(text) {
+      const el = document.getElementById('marble-game-status');
+      if (el) el.innerText = text;
+    }
+
+    function resizeMarbleCanvas() {
+      const canvas = document.getElementById('marble-canvas');
+      const container = document.getElementById('marble-stage-container');
+      if (!canvas || !container) return;
+
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width || 800);
+      const h = Math.floor(rect.height || 600);
+
+      if (canvas.width !== Math.floor(w * dpr) || canvas.height !== Math.floor(h * dpr)) {
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+      }
+    }
+
+    function resetMarbleGame() {
+      initMarbleGame(true);
+    }
+
+    function initMarbleGame(resetPositions = true) {
+      resizeMarbleCanvas();
+      buildMarbleMapObstacles();
+
+      if (marbleAnimId) {
+        cancelAnimationFrame(marbleAnimId);
+        marbleAnimId = null;
+      }
+
+      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
+      const pool = visible.length > 0 ? visible : Array.from({ length: 24 }, (_, i) => ({ id: `hs_${i + 1}`, name: `Học sinh ${i + 1}` }));
+
+      const N = pool.length;
+      let marbleRadius = 16.5;
+      if (N > 18) marbleRadius = 14.5;
+      if (N > 35) marbleRadius = 12.5;
+      if (N > 50) marbleRadius = 11;
+
+      marbles = [];
+      finishedMarbles = [];
+      marbleParticles = [];
+      marbleShockwaves = [];
+      marbleGateProgress = 0;
+      marbleSlowMo = 1.0;
+      marbleTargetWinner = null;
+      marbleFinishCallback = null;
+      marbleGameState = 'idle';
+
+      // Sắp xếp các viên bi trong phễu xuất phát ở đỉnh (Hopper: X từ 400 đến 700, Y từ 45 đến 105)
+      const hopperCols = Math.min(12, Math.max(6, Math.ceil(Math.sqrt(N * 2))));
+      const colStep = 250 / Math.max(1, hopperCols - 1);
+
+      pool.forEach((st, idx) => {
+        const pal = MARBLE_PALETTES[idx % MARBLE_PALETTES.length];
+        const row = Math.floor(idx / hopperCols);
+        const col = idx % hopperCols;
+
+        // Vị trí so le trong phễu
+        const staggerOffset = (row % 2 === 1) ? colStep * 0.5 : 0;
+        const startX = 425 + col * colStep + staggerOffset + (Math.random() - 0.5) * 8;
+        const startY = 48 + row * (marbleRadius * 1.9) + (Math.random() - 0.5) * 4;
+
+        marbles.push({
+          student: st,
+          name: st.name,
+          x: Math.max(260, Math.min(840, startX)),
+          y: Math.max(35, Math.min(108, startY)),
+          vx: (Math.random() - 0.5) * 6,
+          vy: Math.random() * 2,
+          radius: marbleRadius,
+          color: pal.fill,
+          shine: pal.shine,
+          dark: pal.dark,
+          border: pal.border,
+          angle: Math.random() * Math.PI * 2,
+          angularVel: (Math.random() - 0.5) * 3,
+          finished: false,
+          finishRank: 0,
+          finishTime: 0,
+          stuckTimer: 0,
+          trail: []
+        });
+      });
+
+      updateMarbleRuleButton();
+      setMarbleStatus(`Đã nạp ${N} viên bi học sinh vào cổng thả! Nhấn THẢ BI để bắt đầu cuộc đua!`);
+
+      marbleLastTime = performance.now();
+      marbleAnimId = requestAnimationFrame(renderMarbleCanvas);
+    }
+
+    function startMarbleGame(selectedStudent, durationMs, callback) {
+      if (marbleGameState === 'dropping' || marbleGameState === 'slowmo') return;
+
+      initMarbleGame(false);
+      marbleTargetWinner = selectedStudent;
+      marbleRaceDuration = Math.max(4000, durationMs || 6000);
+      marbleFinishCallback = callback;
+      marbleGameState = 'dropping';
+      marbleGateProgress = 0;
+      marbleSlowMo = 1.0;
+
+      MarbleAudio.playDrop();
+      setMarbleStatus('🌪️ Cửa xả đã mở! Toàn bộ bi đang ào ạt vượt mê cung chướng ngại vật...');
+
+      // Bias nhẹ để kịch bản rơi tự nhiên nhưng kịch tính:
+      // Nếu luật là 'last', viên bi của selectedStudent được cho hệ số bám dốc/va đập hơi cao hơn để xác suất về cuối rất lớn
+      if (marbleTargetWinner) {
+        const targetMarble = marbles.find(m => m.student.id === marbleTargetWinner.id);
+        if (targetMarble) {
+          if (marbleWinRule === 'last') {
+            targetMarble.vy *= 0.5;
+            targetMarble.y = Math.min(targetMarble.y, 45); // Bắt đầu ở tầng trên cùng của phễu
+          } else {
+            targetMarble.vy += 35;
+          }
+        }
+      }
+    }
+
+    // ==========================================
+    // PHYSICS SIMULATION ENGINE
+    // ==========================================
+    function updateMarblePhysics(dt) {
+      if (marbleGameState !== 'dropping' && marbleGameState !== 'slowmo') return;
+
+      const effectiveDt = dt * marbleSlowMo;
+
+      // 1. Cửa xả bi mở dần
+      if (marbleGateProgress < 1.0) {
+        marbleGateProgress = Math.min(1.0, marbleGateProgress + dt * 1.6);
+      }
+
+      // 2. Quay Spinners
+      marbleSpinners.forEach(sp => {
+        sp.angle += sp.rotSpeed * effectiveDt;
+      });
+
+      // 3. Giảm glow của pegs & bumpers
+      marblePegs.forEach(p => {
+        if (p.glow > 0) p.glow = Math.max(0, p.glow - dt * 2.8);
+      });
+      marbleBumpers.forEach(b => {
+        if (b.glow > 0) b.glow = Math.max(0, b.glow - dt * 2.8);
+      });
+
+      // 4. Trọng lực động thích ứng theo duration
+      // Chuẩn: 6000ms -> gravity = 460 px/s^2
+      const gravity = Math.max(300, Math.min(620, (6000 / marbleRaceDuration) * 460));
+
+      const finishY = 705;
+      const floorY = 772;
+
+      // 5. Cập nhật từng viên bi
+      marbles.forEach(m => {
+        if (m.finished) {
+          // Bi đã về đích: nằm thư giãn ở máng thu bi đáy
+          m.y = Math.min(floorY, m.y + m.vy * effectiveDt);
+          m.vy = Math.max(0, m.vy - 300 * effectiveDt);
+          m.vx *= Math.pow(0.85, effectiveDt * 60);
+          m.x += m.vx * effectiveDt;
+          m.x = Math.max(80, Math.min(1020, m.x));
+          return;
+        }
+
+        // Cập nhật vết đuôi ánh sáng (Trail)
+        if (m.trail.length > 5) m.trail.shift();
+        m.trail.push({ x: m.x, y: m.y });
+
+        // Trong phễu: bị chặn bởi cửa xả nếu cửa chưa mở hết
+        if (m.y < 118) {
+          // Vách nghiêng phễu trên:
+          // Trái: từ (120, 35) đến (440, 110)
+          if (m.x < 440) {
+            const slopeY = 35 + ((m.x - 120) / (440 - 120)) * (110 - 35);
+            if (m.y > slopeY - m.radius) {
+              m.y = slopeY - m.radius;
+              m.vx += 45 * effectiveDt;
+            }
+          }
+          // Phải: từ (980, 35) đến (660, 110)
+          if (m.x > 660) {
+            const slopeY = 35 + ((980 - m.x) / (980 - 660)) * (110 - 35);
+            if (m.y > slopeY - m.radius) {
+              m.y = slopeY - m.radius;
+              m.vx -= 45 * effectiveDt;
+            }
+          }
+
+          // Cửa chắn ngang Y = 110 giữa 440 và 660
+          const gateHalfWidth = 110 * marbleGateProgress;
+          const openLeft = 550 - gateHalfWidth;
+          const openRight = 550 + gateHalfWidth;
+
+          if (m.y >= 110 - m.radius && m.y < 125) {
+            if (m.x < openLeft || m.x > openRight) {
+              m.y = 110 - m.radius;
+              m.vy = -Math.abs(m.vy) * 0.3;
+              m.vx += (550 - m.x) * 1.5 * effectiveDt; // dạt về phía khe mở
+            }
+          }
+        }
+
+        // Áp dụng gia tốc trọng lực & ma sát không khí
+        m.vy += gravity * effectiveDt;
+        m.vx *= Math.pow(0.988, effectiveDt * 60);
+
+        m.x += m.vx * effectiveDt;
+        m.y += m.vy * effectiveDt;
+
+        m.angle += m.angularVel * effectiveDt;
+        m.angularVel *= Math.pow(0.99, effectiveDt * 60);
+
+        // Vách tường 2 bên (X = 72 đến 1028)
+        if (m.x < 72 + m.radius) {
+          m.x = 72 + m.radius;
+          m.vx = Math.abs(m.vx) * 0.72 + 15;
+          m.angularVel = m.vy * 0.05;
+        } else if (m.x > 1028 - m.radius) {
+          m.x = 1028 - m.radius;
+          m.vx = -Math.abs(m.vx) * 0.72 - 15;
+          m.angularVel = -m.vy * 0.05;
+        }
+
+        // --- VA CHẠM ĐINH (PEGS) ---
+        marblePegs.forEach(peg => {
+          const dx = m.x - peg.x;
+          const dy = m.y - peg.y;
+          const dist = Math.hypot(dx, dy);
+          const minDist = m.radius + peg.r;
+
+          if (dist < minDist && dist > 0.001) {
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Đẩy ra khỏi đinh
+            m.x = peg.x + nx * minDist;
+            m.y = peg.y + ny * minDist;
+
+            const dot = m.vx * nx + m.vy * ny;
+            if (dot < 0) {
+              const rest = 0.68;
+              m.vx -= (1 + rest) * dot * nx;
+              m.vy -= (1 + rest) * dot * ny;
+
+              // Thêm lực chệch hướng ngẫu nhiên để bi nảy dzích zắc
+              m.vx += (Math.random() - 0.5) * 45;
+              m.angularVel = (Math.random() - 0.5) * 8;
+            }
+
+            peg.glow = 1.0;
+            MarbleAudio.playPeg(peg.noteIndex);
+
+            // Bắn tia lửa nhỏ
+            if (marbleParticles.length < 90) {
+              marbleParticles.push({
+                x: peg.x,
+                y: peg.y,
+                vx: (Math.random() - 0.5) * 80,
+                vy: (Math.random() - 0.5) * 80,
+                color: '#fef08a',
+                r: 2.2,
+                life: 0.25
+              });
+            }
+          }
+        });
+
+        // --- VA CHẠM ĐỆM BUMPER (PINBALL BUMPERS) ---
+        marbleBumpers.forEach(bmp => {
+          const dx = m.x - bmp.cx;
+          const dy = m.y - bmp.cy;
+          const dist = Math.hypot(dx, dy);
+          const minDist = m.radius + bmp.r;
+
+          if (dist < minDist && dist > 0.001) {
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            m.x = bmp.cx + nx * minDist;
+            m.y = bmp.cy + ny * minDist;
+
+            // Lực nảy cực mạnh (restitution 1.35)
+            const speed = Math.max(160, Math.hypot(m.vx, m.vy));
+            m.vx = nx * speed * 1.35;
+            m.vy = ny * speed * 1.35;
+
+            bmp.glow = 1.0;
+            MarbleAudio.playBumper();
+
+            marbleShockwaves.push({
+              x: bmp.cx,
+              y: bmp.cy,
+              r: bmp.r,
+              maxR: bmp.r + 28,
+              color: bmp.color,
+              alpha: 1.0
+            });
+          }
+        });
+
+        // --- VA CHẠM THANH DỐC ZICZAC (RAMPS) ---
+        marbleRamps.forEach(ramp => {
+          const rx1 = ramp.x1, ry1 = ramp.y1, rx2 = ramp.x2, ry2 = ramp.y2;
+          const lineLenSq = (rx2 - rx1) ** 2 + (ry2 - ry1) ** 2;
+          if (lineLenSq === 0) return;
+
+          let t = ((m.x - rx1) * (rx2 - rx1) + (m.y - ry1) * (ry2 - ry1)) / lineLenSq;
+          t = Math.max(0, Math.min(1, t));
+
+          const closestX = rx1 + t * (rx2 - rx1);
+          const closestY = ry1 + t * (ry2 - ry1);
+
+          const dx = m.x - closestX;
+          const dy = m.y - closestY;
+          const dist = Math.hypot(dx, dy);
+          const minDist = m.radius + ramp.thickness * 0.5;
+
+          if (dist < minDist && dist > 0.001) {
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            m.x = closestX + nx * minDist;
+            m.y = closestY + ny * minDist;
+
+            const dot = m.vx * nx + m.vy * ny;
+            if (dot < 0) {
+              const rest = 0.58;
+              m.vx -= (1 + rest) * dot * nx;
+              m.vy -= (1 + rest) * dot * ny;
+
+              // Trượt dốc
+              const tangentX = (rx2 - rx1) / Math.sqrt(lineLenSq);
+              const tangentY = (ry2 - ry1) / Math.sqrt(lineLenSq);
+              m.vx += tangentX * 30 * effectiveDt;
+              m.vy += tangentY * 30 * effectiveDt;
+            }
+          }
+        });
+
+        // --- VA CHẠM CÁNH CHONG CHÓNG (SPINNERS) ---
+        marbleSpinners.forEach(sp => {
+          for (let b = 0; b < sp.blades; b++) {
+            const bladeAngle = sp.angle + (b * (Math.PI * 2 / sp.blades));
+            const bx = sp.cx + Math.cos(bladeAngle) * sp.r;
+            const by = sp.cy + Math.sin(bladeAngle) * sp.r;
+
+            const lineLenSq = (bx - sp.cx) ** 2 + (by - sp.cy) ** 2;
+            let t = ((m.x - sp.cx) * (bx - sp.cx) + (m.y - sp.cy) * (by - sp.cy)) / lineLenSq;
+            t = Math.max(0, Math.min(1, t));
+
+            const closestX = sp.cx + t * (bx - sp.cx);
+            const closestY = sp.cy + t * (by - sp.cy);
+
+            const dx = m.x - closestX;
+            const dy = m.y - closestY;
+            const dist = Math.hypot(dx, dy);
+
+            if (dist < m.radius + 5 && dist > 0.001) {
+              const nx = dx / dist;
+              const ny = dy / dist;
+
+              m.x = closestX + nx * (m.radius + 5);
+              m.y = closestY + ny * (m.radius + 5);
+
+              // Vận tốc tiếp tuyến của cánh quạt tác dụng lên bi
+              const bladeSpeed = sp.rotSpeed * (t * sp.r);
+              const pushX = -Math.sin(bladeAngle) * bladeSpeed;
+              const pushY = Math.cos(bladeAngle) * bladeSpeed;
+
+              m.vx = nx * 140 + pushX * 1.2;
+              m.vy = ny * 140 + pushY * 1.2;
+
+              MarbleAudio.playSpinner();
+              break;
+            }
+          }
+        });
+
+        // Chống kẹt (Anti-stuck Nudge)
+        if (m.y > 140 && m.y < finishY - 30 && Math.hypot(m.vx, m.vy) < 18) {
+          m.stuckTimer += effectiveDt;
+          if (m.stuckTimer > 0.35) {
+            m.vx += (Math.random() - 0.5) * 85;
+            m.vy += 75;
+            m.stuckTimer = 0;
+          }
+        }
+
+        // --- CÁN ĐÍCH (CROSS FINISH LINE) ---
+        if (m.y >= finishY && !m.finished) {
+          m.finished = true;
+          m.finishRank = finishedMarbles.length + 1;
+          m.finishTime = performance.now();
+          finishedMarbles.push(m);
+
+          MarbleAudio.playFinishTick();
+
+          // Tia sáng khi cán đích
+          for (let p = 0; p < 8; p++) {
+            marbleParticles.push({
+              x: m.x,
+              y: finishY,
+              vx: (Math.random() - 0.5) * 120,
+              vy: -Math.random() * 90,
+              color: m.shine,
+              r: 2.8,
+              life: 0.4
+            });
+          }
+        }
+      });
+
+      // 6. Va chạm giữa các viên bi với nhau (Marble-to-Marble Collisions)
+      for (let i = 0; i < marbles.length; i++) {
+        const m1 = marbles[i];
+        if (m1.finished) continue;
+
+        for (let j = i + 1; j < marbles.length; j++) {
+          const m2 = marbles[j];
+          if (m2.finished) continue;
+
+          const dx = m2.x - m1.x;
+          const dy = m2.y - m1.y;
+          const dist = Math.hypot(dx, dy);
+          const minDist = m1.radius + m2.radius;
+
+          if (dist < minDist && dist > 0.001) {
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Đẩy tách ra
+            const overlap = (minDist - dist) * 0.5;
+            m1.x -= nx * overlap;
+            m1.y -= ny * overlap;
+            m2.x += nx * overlap;
+            m2.y += ny * overlap;
+
+            // Trao đổi xung lượng đàn hồi
+            const kx = m1.vx - m2.vx;
+            const ky = m1.vy - m2.vy;
+            const p = 2 * (nx * kx + ny * ky) / 2;
+
+            m1.vx -= p * nx * 0.88;
+            m1.vy -= p * ny * 0.88;
+            m2.vx += p * nx * 0.88;
+            m2.vy += p * ny * 0.88;
+          }
+        }
+      }
+
+      // 7. Cập nhật Particles & Shockwaves
+      for (let i = marbleParticles.length - 1; i >= 0; i--) {
+        const p = marbleParticles[i];
+        p.x += p.vx * effectiveDt;
+        p.y += p.vy * effectiveDt;
+        p.life -= effectiveDt;
+        if (p.life <= 0) marbleParticles.splice(i, 1);
+      }
+
+      for (let i = marbleShockwaves.length - 1; i >= 0; i--) {
+        const s = marbleShockwaves[i];
+        s.r += 65 * effectiveDt;
+        s.alpha -= 2.2 * effectiveDt;
+        if (s.alpha <= 0) marbleShockwaves.splice(i, 1);
+      }
+
+      // 8. KIỂM TRA ĐIỀU KIỆN KẾT THÚC & GỌI TÊN
+      const remainingActive = marbles.filter(m => !m.finished);
+
+      // --- CHẾ ĐỘ 1: VIÊN BI VỀ ĐÍCH CUỐI CÙNG (LAST MARBLE STANDING) ---
+      if (marbleWinRule === 'last') {
+        if (remainingActive.length === 1 && marbleGameState === 'dropping') {
+          // Kích hoạt Slow-Motion kịch tính cho viên bi cuối cùng!
+          marbleGameState = 'slowmo';
+          marbleSlowMo = 0.42;
+          const lastOne = remainingActive[0];
+          setMarbleStatus(`🔥 HỒI HỘP: [${lastOne.student.name}] LÀ VIÊN BI CUỐI CÙNG ĐANG CÁN ĐÍCH!`);
+        } else if (remainingActive.length === 0 && (marbleGameState === 'dropping' || marbleGameState === 'slowmo')) {
+          // Viên bi cuối cùng đã cán đích!
+          marbleGameState = 'finished';
+          marbleSlowMo = 1.0;
+          const finalWinnerMarble = finishedMarbles[finishedMarbles.length - 1];
+
+          MarbleAudio.playWinner();
+          spawnMarbleFireworks();
+
+          setMarbleStatus(`🎉 CHÚC MỪNG: [${finalWinnerMarble.student.name}] LÀ VIÊN BI VỀ ĐÍCH CUỐI CÙNG VÀ ĐƯỢC GỌI TÊN!`);
+
+          if (marbleFinishCallback) {
+            const cb = marbleFinishCallback;
+            marbleFinishCallback = null;
+            setTimeout(() => {
+              cb(finalWinnerMarble.student);
+            }, 1200);
+          }
+        }
+      }
+
+      // --- CHẾ ĐỘ 2: VIÊN BI VỀ ĐÍCH ĐẦU TIÊN (FIRST MARBLE TO FINISH) ---
+      else if (marbleWinRule === 'first') {
+        if (finishedMarbles.length >= 1 && marbleGameState === 'dropping') {
+          marbleGameState = 'finished';
+          const championMarble = finishedMarbles[0];
+
+          MarbleAudio.playWinner();
+          spawnMarbleFireworks();
+
+          setMarbleStatus(`🏆 CHÚC MỪNG: [${championMarble.student.name}] LÀ VIÊN BI VỀ ĐÍCH ĐẦU TIÊN VÀ ĐƯỢC GỌI TÊN!`);
+
+          if (marbleFinishCallback) {
+            const cb = marbleFinishCallback;
+            marbleFinishCallback = null;
+            setTimeout(() => {
+              cb(championMarble.student);
+            }, 1200);
+          }
+        }
+      }
+    }
+
+    function spawnMarbleFireworks() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 160,
+          spread: 90,
+          origin: { y: 0.6 }
+        });
+      }
+      for (let i = 0; i < 40; i++) {
+        marbleParticles.push({
+          x: MARBLE_VW * 0.5 + (Math.random() - 0.5) * 400,
+          y: 710,
+          vx: (Math.random() - 0.5) * 260,
+          vy: -Math.random() * 240,
+          color: ['#fbbf24', '#f43f5e', '#38bdf8', '#a855f7', '#4ade80'][Math.floor(Math.random() * 5)],
+          r: 3.5,
+          life: 1.2
+        });
+      }
+    }
+
+    // ==========================================
+    // CANVAS RENDERER
+    // ==========================================
+    function renderMarbleCanvas(now) {
+      const canvas = document.getElementById('marble-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const dt = Math.min(0.05, (now - (marbleLastTime || now)) / 1000);
+      marbleLastTime = now;
+
+      // Cập nhật vật lý
+      updateMarblePhysics(dt);
+
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Tỉ lệ scale Virtual World vào Canvas
+      const scale = Math.min(w / MARBLE_VW, h / MARBLE_VH);
+      const offsetX = (w - MARBLE_VW * scale) * 0.5;
+      const offsetY = (h - MARBLE_VH * scale) * 0.5;
+
+      ctx.save();
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(scale, scale);
+
+      // 1. Nền Neon Cyberpunk & Ánh Sao
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, MARBLE_VH);
+      bgGrad.addColorStop(0, '#040714');
+      bgGrad.addColorStop(0.5, '#0b112c');
+      bgGrad.addColorStop(1, '#040714');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, MARBLE_VW, MARBLE_VH);
+
+      // Lưới perspective công nghệ
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
+      ctx.lineWidth = 1;
+      for (let x = 60; x <= MARBLE_VW - 60; x += 50) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, MARBLE_VH);
+        ctx.stroke();
+      }
+      for (let y = 40; y <= MARBLE_VH; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(60, y);
+        ctx.lineTo(MARBLE_VW - 60, y);
+        ctx.stroke();
+      }
+
+      // 2. Viền Stadium Outer Frame
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(66, 25, MARBLE_VW - 132, MARBLE_VH - 45);
+
+      // Đèn LED neon chạy viền
+      const ledTime = now * 0.003;
+      const ledGlow = (Math.sin(ledTime) + 1) * 0.5;
+      ctx.strokeStyle = `rgba(56, 189, 248, ${0.4 + ledGlow * 0.4})`;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(69, 28, MARBLE_VW - 138, MARBLE_VH - 51);
+
+      // 3. Phễu Thả Bi & Cửa Xả Cơ Khí (Hopper & Gate)
+      // Vách dốc phễu kim loại
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(120, 35);
+      ctx.lineTo(440, 110);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(980, 35);
+      ctx.lineTo(660, 110);
+      ctx.stroke();
+
+      // Cửa xả cơ khí (Gate Doors)
+      const gateHalfW = 110 * marbleGateProgress;
+      const openLeft = 550 - gateHalfW;
+      const openRight = 550 + gateHalfW;
+
+      // Cánh cửa trái
+      ctx.fillStyle = '#475569';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 3;
+      ctx.fillRect(440, 107, openLeft - 440, 9);
+      ctx.strokeRect(440, 107, openLeft - 440, 9);
+
+      // Cánh cửa phải
+      ctx.fillRect(openRight, 107, 660 - openRight, 9);
+      ctx.strokeRect(openRight, 107, 660 - openRight, 9);
+
+      // Biển báo CỬA THẢ BI
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(475, 12, 150, 24, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⚡ CỬA THẢ BI DZÍCH ZẮC', 550, 24);
+
+      // 4. Vẽ Rừng Đinh So Le (Plinko Pegs)
+      marblePegs.forEach(peg => {
+        // Vòng sáng khi va chạm
+        if (peg.glow > 0) {
+          ctx.beginPath();
+          ctx.arc(peg.x, peg.y, peg.r + 10 * peg.glow, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(254, 240, 138, ${peg.glow * 0.55})`;
+          ctx.fill();
+        }
+
+        // Đinh kim loại
+        ctx.beginPath();
+        ctx.arc(peg.x, peg.y, peg.r, 0, Math.PI * 2);
+        ctx.fillStyle = peg.glow > 0 ? '#fef08a' : '#cbd5e1';
+        ctx.fill();
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Tâm đinh LED
+        ctx.beginPath();
+        ctx.arc(peg.x, peg.y, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = peg.glow > 0 ? '#ffffff' : '#38bdf8';
+        ctx.fill();
+      });
+
+      // 5. Vẽ Thanh Dốc Ziczac (Zigzag Ramps)
+      marbleRamps.forEach(ramp => {
+        ctx.strokeStyle = ramp.color;
+        ctx.lineWidth = ramp.thickness;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(ramp.x1, ramp.y1);
+        ctx.lineTo(ramp.x2, ramp.y2);
+        ctx.stroke();
+
+        // Gờ sáng neon trên lưng dốc
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(ramp.x1, ramp.y1 - 2);
+        ctx.lineTo(ramp.x2, ramp.y2 - 2);
+        ctx.stroke();
+      });
+
+      // 6. Vẽ Đệm Nảy Bumper (Pinball Bumpers)
+      marbleBumpers.forEach(bmp => {
+        if (bmp.glow > 0) {
+          ctx.beginPath();
+          ctx.arc(bmp.cx, bmp.cy, bmp.r + 8, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(56, 189, 248, ${bmp.glow * 0.4})`;
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(bmp.cx, bmp.cy, bmp.r, 0, Math.PI * 2);
+        ctx.fillStyle = bmp.glow > 0 ? '#f0fdf4' : '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = bmp.color;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Tâm lò xo
+        ctx.beginPath();
+        ctx.arc(bmp.cx, bmp.cy, bmp.r * 0.45, 0, Math.PI * 2);
+        ctx.fillStyle = bmp.color;
+        ctx.fill();
+      });
+
+      // 7. Vẽ Bánh Xe Chong Chóng Xoay (Spinners)
+      marbleSpinners.forEach(sp => {
+        // Cánh chong chóng
+        for (let b = 0; b < sp.blades; b++) {
+          const bladeAngle = sp.angle + (b * (Math.PI * 2 / sp.blades));
+          const bx = sp.cx + Math.cos(bladeAngle) * sp.r;
+          const by = sp.cy + Math.sin(bladeAngle) * sp.r;
+
+          ctx.strokeStyle = sp.color;
+          ctx.lineWidth = 6;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(sp.cx, sp.cy);
+          ctx.lineTo(bx, by);
+          ctx.stroke();
+
+          // Đầu bọc tròn
+          ctx.beginPath();
+          ctx.arc(bx, by, 5, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+        }
+
+        // Trục giữa
+        ctx.beginPath();
+        ctx.arc(sp.cx, sp.cy, 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+
+      // 8. Vẽ Sóng Chấn Động Shockwaves
+      marbleShockwaves.forEach(sw => {
+        ctx.beginPath();
+        ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(56, 189, 248, ${sw.alpha})`;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+      });
+
+      // 9. VẠCH ĐÍCH (FINISH LINE) & MÁNG THU BI
+      const finishY = 705;
+      const floorY = 772;
+
+      // Dải cờ ca-rô vạch đích 🏁
+      const checkW = 16;
+      for (let x = 70; x < 1030; x += checkW) {
+        const isWhite = (Math.floor(x / checkW) % 2 === 0);
+        ctx.fillStyle = isWhite ? '#ffffff' : '#000000';
+        ctx.fillRect(x, finishY - 6, checkW, 12);
+      }
+
+      // Đèn laser neon vạch đích
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#ef4444';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.moveTo(70, finishY);
+      ctx.lineTo(1030, finishY);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Biển báo VẠCH ĐÍCH
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.roundRect(475, finishY - 18, 150, 18, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#fecaca';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏁 VẠCH ĐÍCH FINISH 🏁', 550, finishY - 9);
+
+      // Sàn máng thu bi
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+      ctx.fillRect(70, floorY, 960, 20);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(70, floorY, 960, 20);
+
+      // 10. VẼ TOÀN BỘ CÁC VIÊN BI & TÊN HỌC SINH
+      const remaining = marbles.filter(m => !m.finished);
+      const isSoloLast = (remaining.length === 1 && marbleWinRule === 'last');
+      const lastMarble = isSoloLast ? remaining[0] : null;
+
+      // Hiệu ứng Spotlight rọi thẳng vào viên bi cuối cùng khi Slow-Mo
+      if (isSoloLast && lastMarble) {
+        const spotGrad = ctx.createRadialGradient(lastMarble.x, lastMarble.y, 10, lastMarble.x, lastMarble.y, 140);
+        spotGrad.addColorStop(0, 'rgba(250, 204, 21, 0.35)');
+        spotGrad.addColorStop(1, 'rgba(250, 204, 21, 0)');
+        ctx.fillStyle = spotGrad;
+        ctx.beginPath();
+        ctx.arc(lastMarble.x, lastMarble.y, 140, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Chùm sáng từ trên rọi xuống
+        ctx.fillStyle = 'rgba(250, 204, 21, 0.08)';
+        ctx.beginPath();
+        ctx.moveTo(550, 20);
+        ctx.lineTo(lastMarble.x - 45, lastMarble.y);
+        ctx.lineTo(lastMarble.x + 45, lastMarble.y);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      marbles.forEach(m => {
+        // Vết đuôi (Trail)
+        if (m.trail.length > 1 && !m.finished) {
+          ctx.strokeStyle = m.shine;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          m.trail.forEach((pt, i) => {
+            if (i === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+          });
+          ctx.stroke();
+        }
+
+        // Bóng đổ của viên bi
+        ctx.beginPath();
+        ctx.arc(m.x + 2, m.y + 3, m.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+        ctx.fill();
+
+        // Thân viên bi 3D Gradient
+        const ballGrad = ctx.createRadialGradient(
+          m.x - m.radius * 0.32,
+          m.y - m.radius * 0.32,
+          m.radius * 0.1,
+          m.x,
+          m.y,
+          m.radius
+        );
+        ballGrad.addColorStop(0, m.shine);
+        ballGrad.addColorStop(0.4, m.color);
+        ballGrad.addColorStop(1, m.dark);
+
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
+        ctx.fillStyle = ballGrad;
+        ctx.fill();
+        ctx.strokeStyle = m.border;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Hoa văn bi ve (Swirl Ribbon) xoay theo m.angle
+        ctx.save();
+        ctx.translate(m.x, m.y);
+        ctx.rotate(m.angle);
+        ctx.beginPath();
+        ctx.ellipse(0, 0, m.radius * 0.65, m.radius * 0.25, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+        ctx.restore();
+
+        // Đốm sáng phản xạ trắng (Specular Dot)
+        ctx.beginPath();
+        ctx.arc(m.x - m.radius * 0.32, m.y - m.radius * 0.32, m.radius * 0.22, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.fill();
+
+        // VẼ NHÃN TÊN HỌC SINH (NAME BADGE)
+        ctx.save();
+        const isHighlight = (m === lastMarble);
+        const nameFontSize = isHighlight ? 14 : 11;
+        ctx.font = `bold ${nameFontSize}px sans-serif`;
+
+        const nameWidth = ctx.measureText(m.name).width;
+        const badgeW = nameWidth + (isHighlight ? 26 : 14);
+        const badgeH = isHighlight ? 24 : 18;
+        const badgeX = m.x - badgeW * 0.5;
+        const badgeY = m.y - m.radius - badgeH - 3;
+
+        // Nền nhãn tên
+        ctx.fillStyle = isHighlight ? 'rgba(24, 18, 3, 0.95)' : 'rgba(15, 23, 42, 0.88)';
+        ctx.strokeStyle = isHighlight ? '#facc15' : m.border;
+        ctx.lineWidth = isHighlight ? 2.5 : 1.2;
+
+        ctx.beginPath();
+        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        // Chữ tên học sinh
+        ctx.fillStyle = isHighlight ? '#fef08a' : '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const displayText = isHighlight ? `👑 ${m.name}` : m.name;
+        ctx.fillText(displayText, m.x, badgeY + badgeH * 0.5);
+
+        // Huy hiệu xếp hạng nếu đã về đích
+        if (m.finished && m.finishRank) {
+          ctx.fillStyle = '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(m.x + m.radius * 0.8, m.y - m.radius * 0.8, 8, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#0f172a';
+          ctx.font = 'bold 9px sans-serif';
+          ctx.fillText(m.finishRank, m.x + m.radius * 0.8, m.y - m.radius * 0.8 + 1);
+        }
+
+        ctx.restore();
+      });
+
+      // 11. Vẽ Hạt Tia Lửa / Pháo Hoa (Particles)
+      marbleParticles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+      });
+
+      // 12. HUD Overlay trên Virtual Canvas
+      // Mini Stats góc trên trái
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.roundRect(75, 35, 260, 28, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`🎱 Tổng: ${marbles.length} | 🏁 Đã về: ${finishedMarbles.length} | 🌪️ Còn: ${remaining.length}`, 85, 49);
+
+      // Mini Badge Luật chơi góc trên phải
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.strokeStyle = marbleWinRule === 'last' ? '#a855f7' : '#f59e0b';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.roundRect(MARBLE_VW - 335, 35, 260, 28, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = marbleWinRule === 'last' ? '#d8b4fe' : '#fde047';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(marbleWinRule === 'last' ? '🏁 Luật: Bi Về Cuối Cùng Gọi Tên' : '🏆 Luật: Bi Về Đầu Tiên Gọi Tên', MARBLE_VW - 85, 49);
+
+      ctx.restore();
+
+      // Tiếp tục vòng lặp animation
+      marbleAnimId = requestAnimationFrame(renderMarbleCanvas);
+    }
+
+
     // 14. MAIN START SPIN CONTROLLER (ALL 9 MODES)
     // ==========================================
     function startSpin() {
@@ -31865,6 +33213,21 @@
         return;
       }
 
+      // 18. Đua Bi Dzích Zắc (Plinko Marble Race)
+      if (mode === 'marble') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(4000, durationSec * 1000);
+        btn.innerHTML = '<i class="fa-solid fa-bowling-ball fa-spin"></i> ĐANG ĐUA BI DZÍCH ZẮC...';
+        if (typeof startMarbleGame === 'function') {
+          startMarbleGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
       // 15. Máy Kéo Số (Slot) hoặc Card Grid fallback
       btn.innerHTML = "🎰 ĐANG CHỌN...";
       let spinCount = 0;
@@ -31934,6 +33297,8 @@
           btnElement.innerHTML = '<i class="fa-solid fa-drum"></i> TIẾP TỤC MÚA LÂN';
         } else if (mode === 'penalty') {
           btnElement.innerHTML = '<i class="fa-solid fa-futbol"></i> TIẾP TỤC SÚT PENALTY';
+        } else if (mode === 'marble') {
+          btnElement.innerHTML = '<i class="fa-solid fa-bowling-ball"></i> TIẾP TỤC THẢ BI';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
@@ -32013,6 +33378,10 @@
           text = `Chúc mừng bạn ${currentWinner.name} đã nhận được bao lì xì may mắn đầu năm!`;
         } else if (document.getElementById('spin-mode')?.value === 'penalty') {
           text = `Học sinh ${currentWinner.name} đã sút trượt penalty và được gọi tên lên bảng!`;
+        } else if (document.getElementById('spin-mode')?.value === 'marble') {
+          text = (typeof marbleWinRule !== 'undefined' && marbleWinRule === 'first')
+            ? `Chúc mừng bạn ${currentWinner.name} đã là viên bi về đích đầu tiên và giành chiến thắng!`
+            : `Chúc mừng bạn ${currentWinner.name} đã là viên bi về đích cuối cùng và được gọi tên!`;
         }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
