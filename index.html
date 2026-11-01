@@ -426,7 +426,9 @@
   [id*="-stage-container"] #frog-game-status,
   [id*="-stage-container"] #fishing-game-status,
   [id*="-stage-container"] #lion-game-status,
-  [id*="-stage-container"] #penalty-game-status {
+  [id*="-stage-container"] #penalty-game-status,
+  [id*="-race-container"] #dragon-boat-race-status,
+  [id*="-race-container"] #sack-race-status {
     color: #ffffff !important;
   }
 
@@ -787,7 +789,7 @@
         <div>
           <h2 class="text-lg sm:text-xl font-black text-slate-900 flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-            DANH SÁCH 17 PHƯƠNG PHÁP ĐUA & GỌI TÊN
+            DANH SÁCH 19 PHƯƠNG PHÁP ĐUA & GỌI TÊN
           </h2>
           <p class="text-xs text-slate-600 font-medium">Bấm vào bất kỳ thẻ trò chơi nào để bước vào đấu trường ngay lập tức</p>
         </div>
@@ -795,10 +797,10 @@
         <!-- Filter Buttons -->
         <div class="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 transition">
-            Tất Cả (17)
+            Tất Cả (19)
           </button>
           <button type="button" onclick="filterHomeGames('race')" id="home-filter-race" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
-            🏎️ Đường Đua Tốc Độ (8)
+            🏎️ Đường Đua Tốc Độ & Hội Thao (10)
           </button>
           <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition">
             🎁 May Mắn & Hồi Hộp (9)
@@ -1382,39 +1384,73 @@
           </div>
         </div>
 
-        <!-- 18. ĐUA BI DZÍCH ZẮC (PLINKO MARBLE RACE) -->
-        <div onclick="launchGame('marble')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-purple-200 hover:border-purple-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+        <!-- 18. ĐUA THUYỀN RỒNG -->
+        <div onclick="launchGame('dragon_boat')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-teal-200 hover:border-teal-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
           <div class="space-y-2.5">
             <div class="flex items-center justify-between gap-2">
-              <div class="w-11 h-11 rounded-xl bg-purple-100/80 border border-purple-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
-                🎱
+              <div class="w-11 h-11 rounded-xl bg-teal-100/80 border border-teal-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🚣
               </div>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-500/10 text-purple-700 border border-purple-500/20">
-                Đua Bi Dzích Zắc
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-teal-500/10 text-teal-700 border border-teal-500/20">
+                Hội Sông Nước
               </span>
             </div>
             <div>
-              <h3 class="text-sm font-black text-slate-900 group-hover:text-purple-600 transition-colors">
-                18. Đua Bi Dzích Zắc (Đường Đua Dài 6 Chặng)
+              <h3 class="text-sm font-black text-slate-900 group-hover:text-teal-600 transition-colors">
+                18. Đua Thuyền Rồng (Hội Đua Thuyền Sông Nước)
               </h3>
               <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
-                Đường đua siêu dài với 6 chặng liên hoàn: rừng đinh Plinko, cầu trượt ziczac đa tầng, bánh xe xoay & bẫy đệm nhún → Viên bi về đích cuối cùng là người được gọi tên!
+                Trống giục vang trời sông nước non xanh! Các tay chèo nhịp nhàng rẽ sóng, đầu rồng phun bọt sóng lao nhanh về đích!
               </p>
             </div>
             <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎱 Bi Dzích Zắc</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌀 6 Chặng Đua</span>
-              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🔥 Về Đích Cuối</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🚣 Thuyền Rồng</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🥁 Trống Hội</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🌊 Rẽ Sóng</span>
             </div>
           </div>
           <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
-            <span class="text-purple-600 text-[11px] font-bold flex items-center gap-1">
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
               <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
             </span>
-            <span class="text-purple-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Đua Bi →</span>
+            <span class="text-teal-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Đua Thuyền →</span>
           </div>
         </div>
-</div>
+
+        <!-- 19. NHẢY BAO BỐ -->
+        <div onclick="launchGame('sack_race')" data-category="race" class="game-card-item cursor-pointer rounded-2xl bg-white border border-amber-200 hover:border-amber-400 p-4 flex flex-col justify-between relative shadow-xs hover:shadow-lg transition-all group">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="w-11 h-11 rounded-xl bg-amber-100/80 border border-amber-200 flex items-center justify-center text-2xl shadow-xs group-hover:scale-105 transition shrink-0">
+                🦘
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500/10 text-amber-700 border border-amber-500/20">
+                Hội Thao Dân Gian
+              </span>
+            </div>
+            <div>
+              <h3 class="text-sm font-black text-slate-900 group-hover:text-amber-600 transition-colors">
+                19. Nhảy Bao Bố (Hội Thao Dân Gian Vui Nhộn)
+              </h3>
+              <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium mt-1">
+                Trò chơi dân gian vui nhộn! Vận động viên thu mình trong bao bố gai, nhún chân bật nhảy tanh tách tranh tài về đích!
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 text-[11px] font-bold text-slate-800">
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🦘 Bật Nhảy</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎒 Bao Bố Gai</span>
+              <span class="spec-chip rounded-lg px-1.5 py-1 text-center truncate">🎉 Vui Nhộn</span>
+            </div>
+          </div>
+          <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between text-xs font-bold">
+            <span class="text-emerald-600 text-[11px] font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-[10px]"></i> Sẵn sàng
+            </span>
+            <span class="text-amber-600 font-extrabold text-[11px] group-hover:translate-x-0.5 transition-transform">Vào Nhảy Bao Bố →</span>
+          </div>
+        </div>
+
+      </div>
 
     </section>
 
@@ -1475,7 +1511,8 @@
               <option value="fishing" class="bg-slate-900 text-teal-300 font-bold">🎣 Bé Câu Cá Bắt Tên (50 Con Cá)</option>
               <option value="lion" class="bg-slate-900 text-amber-300 font-bold">🦁 Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà)</option>
               <option value="penalty" class="bg-slate-900 text-emerald-300 font-bold">⚽ Sút Luân Lưu Penalty (Vào: Bỏ qua • Trượt: Gọi tên)</option>
-              <option value="marble" class="bg-slate-900 text-purple-300 font-bold">🎱 Đua Bi Dzích Zắc (Rơi Tự Do Mê Cung)</option>
+              <option value="dragon_boat" class="bg-slate-900 text-teal-300 font-bold">🚣 Đua Thuyền Rồng (Hội Đua Thuyền Sông Nước)</option>
+              <option value="sack_race" class="bg-slate-900 text-amber-300 font-bold">🦘 Nhảy Bao Bố (Hội Thao Dân Gian Vui Nhộn)</option>
             </select>
           </div>
 
@@ -2010,29 +2047,68 @@
           <canvas id="penalty-canvas" class="w-full h-full block"></canvas>
         </div>
 
-        <!-- STAGE 18: ĐUA BI DZÍCH ZẮC (PLINKO MARBLE RACE) -->
-        <div id="marble-stage-container" class="hidden flex flex-col relative w-full h-[540px] sm:h-[600px] lg:h-[680px] xl:h-[750px] min-h-[500px] bg-gradient-to-b from-slate-950 via-indigo-950 to-slate-950 border border-purple-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+        <!-- STAGE 18: ĐUA THUYỀN RỒNG (DRAGON BOAT RACE) -->
+        <div id="dragon-boat-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-teal-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
-            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-purple-400/40 text-white text-xs font-bold shadow-md">
-              <span class="text-purple-400 font-extrabold text-sm">🎱</span>
-              <span id="marble-game-status">Đã nạp toàn bộ bi học sinh vào cổng thả! Nhấn THẢ BI để bắt đầu cuộc đua!</span>
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-teal-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-teal-400 font-extrabold text-sm">🚣</span>
+              <span id="dragon-boat-race-status">Đội thuyền rồng đã vào vị trí! Trống giục vang trời sẵn sàng xuất phát!</span>
             </div>
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <button onclick="toggleMarbleWinRule()" id="marble-rule-btn" class="bg-purple-900/80 hover:bg-purple-850 text-purple-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-purple-400/50 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đổi luật chọn người về đích">
-                🏁 Luật: Về Cuối Cùng
-              </button>
-              <button onclick="toggleMarbleSound()" id="marble-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleDragonBoatSound()" id="dragon-boat-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
                 🔊 Bật
               </button>
-              <button onclick="toggleMarbleFullscreen()" id="marble-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
-                <i data-lucide="maximize" class="w-3.5 h-3.5 text-purple-400"></i> Phóng to
+              <button onclick="toggleDragonBoatFullscreen()" id="dragon-boat-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-teal-400"></i> Phóng to
               </button>
-              <button onclick="resetMarbleGame()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới bàn thả bi">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-purple-400"></i> Thả Lại
+              <button onclick="resetDragonBoatRacePositions()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đặt lại vị trí xuất phát">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-teal-400"></i> Đặt lại
               </button>
             </div>
           </div>
-          <canvas id="marble-canvas" class="w-full h-full block"></canvas>
+          <!-- Bảng xếp hạng trực tiếp thuyền rồng dẫn đầu -->
+          <div id="dragon-boat-leaderboard" class="hidden absolute top-14 right-3 z-30 flex flex-col gap-1 w-44 pointer-events-none transition-all">
+            <div class="bg-slate-900/90 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg border border-teal-500/40 uppercase tracking-wider text-center">
+              🚣 Thuyền Dẫn Đầu
+            </div>
+            <div id="dragon-boat-top-list" class="flex flex-col gap-1"></div>
+          </div>
+          <canvas id="dragon-boat-race-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          <div id="dragon-boat-countdown-overlay" class="hidden absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-40 flex items-center justify-center pointer-events-none transition-all">
+            <div id="dragon-boat-countdown-text" class="text-7xl sm:text-9xl font-black text-teal-300 drop-shadow-[0_0_35px_rgba(20,184,166,0.8)] scale-110 transition-transform">3</div>
+          </div>
+        </div>
+
+        <!-- STAGE 19: NHẢY BAO BỐ (SACK RACE) -->
+        <div id="sack-race-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-amber-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-amber-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-amber-400 font-extrabold text-sm">🦘</span>
+              <span id="sack-race-status">Các vận động viên bao bố đã sẵn sàng! Bấm XUẤT PHÁT để bật nhảy!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleSackSound()" id="sack-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleSackFullscreen()" id="sack-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-amber-400"></i> Phóng to
+              </button>
+              <button onclick="resetSackRacePositions()" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đặt lại vị trí xuất phát">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <!-- Bảng xếp hạng trực tiếp vận động viên bao bố dẫn đầu -->
+          <div id="sack-leaderboard" class="hidden absolute top-14 right-3 z-30 flex flex-col gap-1 w-44 pointer-events-none transition-all">
+            <div class="bg-slate-900/90 text-white font-extrabold text-[10px] px-2 py-0.5 rounded-lg border border-amber-500/40 uppercase tracking-wider text-center">
+              🦘 Vận Động Viên Dẫn Đầu
+            </div>
+            <div id="sack-top-list" class="flex flex-col gap-1"></div>
+          </div>
+          <canvas id="sack-race-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          <div id="sack-countdown-overlay" class="hidden absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-40 flex items-center justify-center pointer-events-none transition-all">
+            <div id="sack-countdown-text" class="text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_0_35px_rgba(245,158,11,0.8)] scale-110 transition-transform">3</div>
+          </div>
         </div>
 
       </div>
@@ -3635,7 +3711,8 @@
       else if (mode === 'fishing') initFishingGame(true);
       else if (mode === 'lion') initLionGame(true);
       else if (mode === 'penalty') initPenaltyGame(true);
-        else if (mode === 'marble') initMarbleGame(true);
+      else if (mode === 'dragon_boat') initDragonBoatRace(true);
+      else if (mode === 'sack_race') initSackRace(true);
     }
 
     function renderClassesListTab() {
@@ -4622,13 +4699,15 @@
         if (typeof resizeLionCanvas === 'function') resizeLionCanvas();
       } else if (mode === 'penalty') {
         if (typeof resizePenaltyCanvas === 'function') resizePenaltyCanvas();
-      } else if (mode === 'marble') {
-        if (typeof resizeMarbleCanvas === 'function') resizeMarbleCanvas();
+      } else if (mode === 'dragon_boat' && (typeof dragonBoatRaceState !== 'undefined' && (dragonBoatRaceState === 'idle' || dragonBoatRaceState === 'countdown'))) {
+        if (typeof initDragonBoatRace === 'function') initDragonBoatRace(false);
+      } else if (mode === 'sack_race' && (typeof sackRaceState !== 'undefined' && (sackRaceState === 'idle' || sackRaceState === 'countdown'))) {
+        if (typeof initSackRace === 'function') initSackRace(false);
       }
     }
 
     // ==========================================
-    // 7. UNIFIED MODE CHANGER (CONTROLS ALL 14 MODES)
+    // 7. UNIFIED MODE CHANGER (CONTROLS ALL 19 MODES)
     // ==========================================
     function handleModeChange() {
       const mode = document.getElementById('spin-mode')?.value || 'duck';
@@ -4650,7 +4729,8 @@
       const fishingContainer = document.getElementById('fishing-stage-container');
       const lionContainer = document.getElementById('lion-stage-container');
       const penaltyContainer = document.getElementById('penalty-stage-container');
-      const marbleContainer = document.getElementById('marble-stage-container');
+      const dragonBoatContainer = document.getElementById('dragon-boat-race-container');
+      const sackContainer = document.getElementById('sack-race-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -4670,7 +4750,8 @@
       if (fishingContainer) fishingContainer.classList.add('hidden');
       if (lionContainer) lionContainer.classList.add('hidden');
       if (penaltyContainer) penaltyContainer.classList.add('hidden');
-      if (marbleContainer) marbleContainer.classList.add('hidden');
+      if (dragonBoatContainer) dragonBoatContainer.classList.add('hidden');
+      if (sackContainer) sackContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -4789,12 +4870,19 @@
           if (typeof resizePenaltyCanvas === 'function') resizePenaltyCanvas();
           if (typeof renderPenaltyCanvas === 'function') renderPenaltyCanvas(performance.now());
         }, 40);
-      } else if (mode === 'marble') {
-        if (marbleContainer) marbleContainer.classList.remove('hidden');
-        if (typeof initMarbleGame === 'function') initMarbleGame(true);
+      } else if (mode === 'dragon_boat') {
+        if (dragonBoatContainer) dragonBoatContainer.classList.remove('hidden');
+        if (typeof initDragonBoatRace === 'function') initDragonBoatRace(true);
         setTimeout(() => {
-          if (typeof resizeMarbleCanvas === 'function') resizeMarbleCanvas();
-          if (typeof renderMarbleCanvas === 'function') renderMarbleCanvas(performance.now());
+          if (typeof resizeDragonBoatCanvas === 'function') resizeDragonBoatCanvas();
+          if (typeof renderDragonBoatRaceCanvas === 'function') renderDragonBoatRaceCanvas(performance.now());
+        }, 40);
+      } else if (mode === 'sack_race') {
+        if (sackContainer) sackContainer.classList.remove('hidden');
+        if (typeof initSackRace === 'function') initSackRace(true);
+        setTimeout(() => {
+          if (typeof resizeSackCanvas === 'function') resizeSackCanvas();
+          if (typeof renderSackRaceCanvas === 'function') renderSackRaceCanvas(performance.now());
         }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
@@ -4826,7 +4914,8 @@
         fishing: { title: 'Bé Câu Cá Bắt Tên (50 Con Cá Đa Sắc Màu)', icon: '🎣' },
         lion: { title: 'Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà Giáng Sinh)', icon: '🦁' },
         penalty: { title: 'Sút Luân Lưu Penalty (Sút Vào Bỏ Qua, Sút Trượt Bị Gọi Tên)', icon: '⚽' },
-        marble: { title: 'Đua Bi Dzích Zắc (Rơi Tự Do Qua Mê Cung Chướng Ngại Vật)', icon: '🎱' }
+        dragon_boat: { title: 'Đua Thuyền Rồng (Hội Đua Thuyền Sông Nước)', icon: '🚣' },
+        sack_race: { title: 'Nhảy Bao Bố (Hội Thao Dân Gian Vui Nhộn)', icon: '🦘' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -4859,8 +4948,10 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-drum"></i> MÚA LÂN HÁI LỘC';
         } else if (mode === 'penalty') {
           spinBtn.innerHTML = '<i class="fa-solid fa-futbol"></i> SÚT PENALTY';
-        } else if (mode === 'marble') {
-          spinBtn.innerHTML = '<i class="fa-solid fa-bowling-ball"></i> THẢ BI DZÍCH ZẮC';
+        } else if (mode === 'dragon_boat') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-water"></i> XUẤT PHÁT ĐUA THUYỀN';
+        } else if (mode === 'sack_race') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-person-running"></i> XUẤT PHÁT BẬT NHẢY';
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -4927,6 +5018,12 @@
         else if (mode === 'wheel_slot' || mode === 'bingo') initBingoGame(true);
         else if (mode === 'athletics') initAthleticsRace(true);
         else if (mode === 'swimming') initSwimRace(true);
+        else if (mode === 'frog') initFrogGame(true);
+        else if (mode === 'fishing') initFishingGame(true);
+        else if (mode === 'lion') initLionGame(true);
+        else if (mode === 'penalty') initPenaltyGame(true);
+        else if (mode === 'dragon_boat') initDragonBoatRace(true);
+        else if (mode === 'sack_race') initSackRace(true);
       }
     }
 
@@ -13177,6 +13274,8 @@
       else if (mode === 'fishing' && typeof resizeFishingCanvas === 'function') resizeFishingCanvas();
       else if (mode === 'lion' && typeof resizeLionCanvas === 'function') resizeLionCanvas();
       else if (mode === 'penalty' && typeof resizePenaltyCanvas === 'function') resizePenaltyCanvas();
+      else if (mode === 'dragon_boat' && typeof resizeDragonBoatCanvas === 'function') resizeDragonBoatCanvas();
+      else if (mode === 'sack_race' && typeof resizeSackCanvas === 'function') resizeSackCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -13199,7 +13298,9 @@
         { id: 'frog-fullscreen-btn', color: 'text-emerald-400' },
         { id: 'fishing-fullscreen-btn', color: 'text-teal-400' },
         { id: 'lion-fullscreen-btn', color: 'text-amber-400' },
-        { id: 'penalty-fullscreen-btn', color: 'text-emerald-400' }
+        { id: 'penalty-fullscreen-btn', color: 'text-emerald-400' },
+        { id: 'dragon-boat-fullscreen-btn', color: 'text-teal-400' },
+        { id: 'sack-fullscreen-btn', color: 'text-amber-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -13271,7 +13372,9 @@
         'frog-stage-container',
         'fishing-stage-container',
         'lion-stage-container',
-        'penalty-stage-container'
+        'penalty-stage-container',
+        'dragon-boat-race-container',
+        'sack-race-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -13300,7 +13403,8 @@
       if (mode === 'fishing') return fishingGameState === 'biting' || fishingGameState === 'reeling' || fishingGameState === 'waiting';
       if (mode === 'lion') return lionGameState === 'dancing' || lionGameState === 'aiming' || lionGameState === 'leaping' || lionGameState === 'falling' || lionGameState === 'celebrating';
       if (mode === 'penalty') return penaltyGameState === 'kicking' || penaltyGameState === 'celebrating';
-      if (mode === 'marble') return typeof marbleGameState !== 'undefined' && (marbleGameState === 'dropping' || marbleGameState === 'slowmo');
+      if (mode === 'dragon_boat') return dragonBoatRaceState === 'racing' || dragonBoatRaceState === 'countdown';
+      if (mode === 'sack_race') return sackRaceState === 'racing' || sackRaceState === 'countdown';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -23973,6 +24077,1947 @@
 
 
     // ==========================================
+    // 18. MODULE: ĐUA THUYỀN RỒNG (DRAGON BOAT RACE)
+    // ==========================================
+    const DRAGON_BOAT_PALETTES = [
+      { hull: '#b91c1c', trim: '#fef08a', head: '#dc2626', accent: '#f59e0b', oar: '#d97706', band: '#ef4444', name: 'Rồng Đỏ' },
+      { hull: '#b45309', trim: '#fef08a', head: '#f59e0b', accent: '#fbbf24', oar: '#b45309', band: '#f59e0b', name: 'Rồng Vàng' },
+      { hull: '#047857', trim: '#a7f3d0', head: '#10b981', accent: '#059669', oar: '#065f46', band: '#10b981', name: 'Rồng Ngọc' },
+      { hull: '#1d4ed8', trim: '#bfdbfe', head: '#3b82f6', accent: '#2563eb', oar: '#1e40af', band: '#3b82f6', name: 'Rồng Lam' },
+      { hull: '#6d28d9', trim: '#e9d5ff', head: '#8b5cf6', accent: '#7c3aed', oar: '#5b21b6', band: '#8b5cf6', name: 'Rồng Tím' },
+      { hull: '#c2410c', trim: '#fed7aa', head: '#ea580c', accent: '#f97316', oar: '#9a3412', band: '#ea580c', name: 'Rồng Lửa' },
+      { hull: '#0e7490', trim: '#cffafe', head: '#06b6d4', accent: '#0891b2', oar: '#155e75', band: '#06b6d4', name: 'Rồng Biển' },
+      { hull: '#be185d', trim: '#fbcfe8', head: '#ec4899', accent: '#db2777', oar: '#9d174d', band: '#ec4899', name: 'Rồng Sen' }
+    ];
+
+    let dragonBoats = [];
+    let dragonBoatRaceState = 'idle'; // 'idle' | 'countdown' | 'racing' | 'celebrating'
+    let dragonBoatStartX = 200;
+    let dragonBoatFinishX = 2600;
+    let dragonBoatTrackLength = 3000;
+    let dragonBoatCameraX = 0;
+    let dragonBoatStartTime = 0;
+    let dragonBoatRaceDuration = 6000;
+    let dragonBoatTargetWinner = null;
+    let dragonBoatFinishCallback = null;
+    let dragonBoatAnimId = null;
+    let dragonBoatFinishLineCrossed = false;
+    let dragonBoatLastSplashTime = 0;
+    let dragonBoatLastFrameTime = 0;
+    let dragonBoatDrumTimer = 0;
+    let dragonBoatWinner = null;
+    let dragonBoatSoundEnabled = true;
+    let dragonBoatWaterRipples = [];
+    let dragonBoatWaterSplashes = [];
+    let dragonBoatConfetti = [];
+
+    const DragonBoatAudio = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+      // Tiếng trống hội đua thuyền giục giã dồn dập
+      playDrum(accent = false) {
+        if (!dragonBoatSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(accent ? 165 : 125, t);
+          osc.frequency.exponentialRampToValueAtTime(38, t + (accent ? 0.32 : 0.22));
+          gain.gain.setValueAtTime(accent ? 0.45 : 0.32, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + (accent ? 0.35 : 0.25));
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.36);
+        } catch(e) {}
+      },
+      // Tiếng phèng la / thanh la đồng hội làng
+      playGong() {
+        if (!dragonBoatSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const freqs = [420, 680, 920, 1340];
+          freqs.forEach((f, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, t);
+            gain.gain.setValueAtTime(0.18 / (idx + 1), t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 1.25);
+          });
+        } catch(e) {}
+      },
+      // Tiếng mái chèo quẫy nước rẽ sóng
+      playPaddleSplash() {
+        if (!dragonBoatSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(280 + Math.random() * 60, t);
+          osc.frequency.exponentialRampToValueAtTime(55, t + 0.1);
+          gain.gain.setValueAtTime(0.12, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.11);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.12);
+        } catch(e) {}
+      },
+      // Kèn đồng hoan hô chiến thắng
+      playVictory() {
+        if (!dragonBoatSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const notes = [261.63, 329.63, 392.00, 523.25];
+          notes.forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, t + i * 0.12);
+            gain.gain.setValueAtTime(0.28, t + i * 0.12);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.12 + 0.45);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t + i * 0.12);
+            osc.stop(t + i * 0.12 + 0.48);
+          });
+        } catch(e) {}
+      }
+    };
+
+    function toggleDragonBoatSound() {
+      dragonBoatSoundEnabled = !dragonBoatSoundEnabled;
+      const btn = document.getElementById('dragon-boat-sound-btn');
+      if (btn) btn.innerHTML = dragonBoatSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleDragonBoatFullscreen() {
+      const container = document.getElementById('dragon-boat-race-container');
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+      scheduleRaceResizes();
+    }
+
+    function resetDragonBoatRacePositions() {
+      initDragonBoatRace(true);
+      const btn = document.getElementById('spin-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-70');
+        btn.innerHTML = '<i class="fa-solid fa-water"></i> XUẤT PHÁT ĐUA THUYỀN';
+      }
+      const statusEl = document.getElementById('dragon-boat-race-status');
+      if (statusEl) {
+        statusEl.innerText = 'Đội thuyền rồng đã vào vị trí! Trống giục vang trời sẵn sàng xuất phát!';
+      }
+      const overlay = document.getElementById('dragon-boat-countdown-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      const lb = document.getElementById('dragon-boat-leaderboard');
+      if (lb) lb.classList.add('hidden');
+    }
+
+    function resizeDragonBoatCanvas() {
+      const container = document.getElementById('dragon-boat-race-container');
+      const canvas = document.getElementById('dragon-boat-race-canvas');
+      if (!container || !canvas) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.round(rect.width || 800);
+      const h = Math.round(rect.height || 520);
+      if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+      }
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      updateDragonBoatPositions(h);
+    }
+
+    function calculateDragonBoatLayout(h, count) {
+      const topBankH = Math.max(50, Math.floor(h * 0.12));
+      const botBankH = Math.max(45, Math.floor(h * 0.10));
+      const riverH = Math.max(220, h - topBankH - botBankH);
+      const targetLaneH = h > 700 ? 64 : 48;
+      const maxLanesByHeight = Math.max(3, Math.floor(riverH / targetLaneH));
+      const usableLanes = Math.max(3, Math.min(count, Math.min(14, maxLanesByHeight)));
+      const laneH = riverH / usableLanes;
+      return { topBankH, botBankH, riverH, usableLanes, laneH };
+    }
+
+    function updateDragonBoatPositions(h) {
+      if (!dragonBoats || dragonBoats.length === 0) return;
+      const count = dragonBoats.length;
+      const layout = calculateDragonBoatLayout(h, count);
+      if (dragonBoatRaceState === 'idle') {
+        dragonBoats.forEach((b, i) => {
+          const laneIdx = i % layout.usableLanes;
+          b.lane = laneIdx + 1;
+          b.startX = dragonBoatStartX - Math.floor(i / layout.usableLanes) * 65;
+          b.x = b.startX;
+          b.baseY = layout.topBankH + (laneIdx + 0.5) * layout.laneH;
+          b.y = b.baseY;
+        });
+      } else {
+        dragonBoats.forEach((b, i) => {
+          const laneIdx = i % layout.usableLanes;
+          b.baseY = layout.topBankH + (laneIdx + 0.5) * layout.laneH;
+          b.y = b.baseY;
+        });
+      }
+    }
+
+    function initDragonBoatRace(resetPositions = true) {
+      const container = document.getElementById('dragon-boat-race-container');
+      const canvas = document.getElementById('dragon-boat-race-canvas');
+      if (!container || !canvas) return;
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      const count = visible.length;
+      resizeDragonBoatCanvas();
+
+      const rect = container.getBoundingClientRect();
+      const h = canvas.height ? (canvas.height / (Math.min(window.devicePixelRatio || 1, 2))) : (rect.height || 520);
+      const layout = calculateDragonBoatLayout(h, count);
+
+      dragonBoatStartX = 200;
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(((rect.width || 800)) * 2.8, 2400);
+      const raceDist = Math.round(baseDist * durationFactor);
+      dragonBoatFinishX = dragonBoatStartX + raceDist;
+      dragonBoatTrackLength = dragonBoatFinishX + 350;
+
+      if (resetPositions || dragonBoats.length !== count) {
+        dragonBoats = visible.map((st, i) => {
+          const laneIdx = i % layout.usableLanes;
+          const startX = dragonBoatStartX - Math.floor(i / layout.usableLanes) * 65;
+          const baseY = layout.topBankH + (laneIdx + 0.5) * layout.laneH;
+          const palette = DRAGON_BOAT_PALETTES[i % DRAGON_BOAT_PALETTES.length];
+
+          const nameParts = (st.name || '').trim().split(/\s+/);
+          const shortName = nameParts.length > 2 ? nameParts.slice(-2).join(' ') : (st.name || 'Thuyền Rồng');
+
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortName,
+            fullName: st.name,
+            lane: laneIdx + 1,
+            startX: startX,
+            x: startX,
+            baseY: baseY,
+            y: baseY,
+            vx: 0,
+            palette: palette,
+            paddlePhase: i * 0.45,
+            isWinner: false,
+            raceRole: 'pack',
+            hasFinished: false,
+            finishTime: null,
+            bobOffset: Math.sin(i * 1.5) * 3
+          };
+        });
+      }
+
+      dragonBoatCameraX = 0;
+      dragonBoatRaceState = 'idle';
+      dragonBoatFinishLineCrossed = false;
+      dragonBoatWinner = null;
+      dragonBoatWaterRipples = [];
+      dragonBoatWaterSplashes = [];
+      dragonBoatConfetti = [];
+
+      const statusEl = document.getElementById('dragon-boat-race-status');
+      if (statusEl) {
+        statusEl.innerText = 'Đội thuyền rồng đã vào vị trí! Trống giục vang trời sẵn sàng xuất phát!';
+      }
+      const overlay = document.getElementById('dragon-boat-countdown-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      const lb = document.getElementById('dragon-boat-leaderboard');
+      if (lb) lb.classList.add('hidden');
+
+      if (!dragonBoatAnimId) {
+        dragonBoatLastFrameTime = performance.now();
+        dragonBoatAnimId = requestAnimationFrame(renderDragonBoatRaceCanvas);
+      }
+    }
+
+    function startDragonBoatRace(winnerStudent, durationMs = 6000, callback) {
+      if (dragonBoatRaceState === 'racing' || dragonBoatRaceState === 'countdown') return;
+
+      dragonBoatTargetWinner = winnerStudent;
+      dragonBoatFinishCallback = callback;
+      dragonBoatRaceDuration = Math.max(3000, durationMs);
+      const durationSec = dragonBoatRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const container = document.getElementById('dragon-boat-race-container');
+      const rect = container?.getBoundingClientRect() || { width: 800 };
+      const baseDist = Math.max(rect.width * 2.8, 2400);
+      const raceDist = Math.round(baseDist * durationFactor);
+      dragonBoatFinishX = dragonBoatStartX + raceDist;
+      dragonBoatTrackLength = dragonBoatFinishX + 350;
+
+      dragonBoatFinishLineCrossed = false;
+      dragonBoatWinner = null;
+      dragonBoatWaterRipples = [];
+      dragonBoatWaterSplashes = [];
+      dragonBoatConfetti = [];
+      dragonBoatLastFrameTime = 0;
+      DragonBoatAudio.init();
+
+      // Phân vai trò các thuyền tạo màn rượt đuổi nghẹt thở
+      const others = dragonBoats.filter(b => b.id !== winnerStudent.id).sort(() => Math.random() - 0.5);
+      const chaser1 = others[0] || null;
+      const chaser2 = others[1] || null;
+
+      dragonBoats.forEach(b => {
+        b.isWinner = (b.id === winnerStudent.id);
+        b.x = b.startX;
+        b.vx = 0;
+        b.hasFinished = false;
+        b.finishTime = null;
+
+        if (b.isWinner) {
+          b.raceRole = 'winner';
+        } else if (b === chaser1) {
+          b.raceRole = 'chaser1';
+        } else if (b === chaser2) {
+          b.raceRole = 'chaser2';
+        } else {
+          b.raceRole = Math.random() < 0.5 ? 'front_pack' : 'mid_pack';
+        }
+      });
+      dragonBoatCameraX = 0;
+
+      // Đếm ngược xuất phát 3, 2, 1, XUẤT PHÁT!
+      dragonBoatRaceState = 'countdown';
+      const overlay = document.getElementById('dragon-boat-countdown-overlay');
+      const countText = document.getElementById('dragon-boat-countdown-text');
+      const statusEl = document.getElementById('dragon-boat-race-status');
+      const lb = document.getElementById('dragon-boat-leaderboard');
+
+      if (overlay) overlay.classList.remove('hidden');
+      if (lb) lb.classList.remove('hidden');
+      if (statusEl) statusEl.innerText = 'Trọng tài chuẩn bị gióng trống xuất phát...';
+
+      let count = 3;
+      if (countText) {
+        countText.innerText = count;
+        countText.className = "text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_0_35px_rgba(245,158,11,0.8)] scale-110 transition-transform";
+      }
+      DragonBoatAudio.playDrum(true);
+
+      const countInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          if (countText) {
+            countText.innerText = count;
+            countText.className = "text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_0_35px_rgba(245,158,11,0.8)] scale-110 transition-transform";
+          }
+          DragonBoatAudio.playDrum(true);
+        } else if (count === 0) {
+          if (countText) {
+            countText.innerText = "XUẤT PHÁT!";
+            countText.className = "text-5xl sm:text-7xl font-black text-emerald-300 drop-shadow-[0_0_40px_rgba(52,211,153,0.9)] scale-125 transition-transform";
+          }
+          DragonBoatAudio.playGong();
+        } else {
+          clearInterval(countInterval);
+          if (overlay) overlay.classList.add('hidden');
+          dragonBoatRaceState = 'racing';
+          dragonBoatStartTime = performance.now();
+          if (statusEl) statusEl.innerText = 'Trống giục vang trời! Toàn đội thuyền rồng đang rẽ sóng phi nước đại!';
+        }
+      }, 700);
+    }
+
+    function renderDragonBoatRaceCanvas(now) {
+      const canvas = document.getElementById('dragon-boat-race-canvas');
+      if (!canvas) {
+        dragonBoatAnimId = requestAnimationFrame(renderDragonBoatRaceCanvas);
+        return;
+      }
+      const ctx = canvas.getContext('2d');
+      const cw = canvas.width ? (canvas.width / (Math.min(window.devicePixelRatio || 1, 2))) : 800;
+      const ch = canvas.height ? (canvas.height / (Math.min(window.devicePixelRatio || 1, 2))) : 520;
+
+      const dt = dragonBoatLastFrameTime ? Math.min((now - dragonBoatLastFrameTime) / 1000, 0.04) : 0.016;
+      dragonBoatLastFrameTime = now;
+
+      // 1. CẬP NHẬT ĐỘNG LỰC HỌC THUYỀN RỒNG VÀ TRỐNG HỘI
+      if (dragonBoatRaceState === 'racing') {
+        const elapsed = now - dragonBoatStartTime;
+        const timeProgress = Math.min(1, elapsed / dragonBoatRaceDuration);
+
+        // Nhịp trống giục giã tăng tốc dần từ 320ms -> 180ms
+        const drumInterval = Math.max(160, 320 - timeProgress * 150);
+        if (now - dragonBoatDrumTimer > drumInterval) {
+          dragonBoatDrumTimer = now;
+          DragonBoatAudio.playDrum(timeProgress > 0.7);
+          if (now - dragonBoatLastSplashTime > 200) {
+            dragonBoatLastSplashTime = now;
+            DragonBoatAudio.playPaddleSplash();
+          }
+        }
+
+        const totalDist = dragonBoatFinishX - dragonBoatStartX;
+        const nominalSpeed = totalDist / (dragonBoatRaceDuration / 1000);
+
+        dragonBoats.forEach(b => {
+          if (!b.hasFinished) {
+            const accel = Math.min(1, elapsed / 800);
+            const paddleSurge = 1.0 + Math.sin(b.paddlePhase * 2) * 0.12;
+
+            let speedRatio = 1.0;
+            if (timeProgress < 0.55) {
+              // Nửa đầu: So kè quyết liệt, các thuyền so kè nhau mũi thuyền
+              if (b.raceRole === 'winner') {
+                speedRatio = 0.99 + Math.sin(timeProgress * 10 + b.lane) * 0.04;
+              } else if (b.raceRole === 'chaser1') {
+                speedRatio = 1.02 + Math.sin(timeProgress * 10 + b.lane) * 0.03;
+              } else if (b.raceRole === 'chaser2') {
+                speedRatio = 1.00 + Math.cos(timeProgress * 11 + b.lane) * 0.03;
+              } else {
+                speedRatio = 0.96 + Math.sin(timeProgress * 9 + b.lane) * 0.04;
+              }
+            } else {
+              // Nửa sau: Nước rút! Thuyền chiến thắng bứt phá oanh liệt
+              const sprintP = (timeProgress - 0.55) / 0.45;
+              if (b.raceRole === 'winner') {
+                speedRatio = 1.08 + sprintP * 0.22;
+              } else if (b.raceRole === 'chaser1') {
+                speedRatio = 1.05 + sprintP * 0.08;
+              } else if (b.raceRole === 'chaser2') {
+                speedRatio = 1.02 + sprintP * 0.06;
+              } else {
+                speedRatio = 0.88 - sprintP * 0.08;
+              }
+            }
+
+            b.vx = nominalSpeed * speedRatio * paddleSurge * accel;
+            b.x += b.vx * dt;
+            b.paddlePhase += (b.vx / nominalSpeed) * 11.0 * dt;
+
+            // Tạo bọt sóng rẽ nước phía sau đuôi thuyền
+            if (Math.random() < 0.45) {
+              dragonBoatWaterRipples.push({
+                x: b.x - 70,
+                y: b.baseY + (Math.random() * 8 - 4),
+                r: 3,
+                maxR: 24 + Math.random() * 16,
+                alpha: 0.8,
+                speed: 30 + Math.random() * 20
+              });
+            }
+
+            // Kiểm tra chạm vạch đích
+            if (b.x + 40 >= dragonBoatFinishX) {
+              b.hasFinished = true;
+              b.x = dragonBoatFinishX - 40;
+              b.vx = 0;
+
+              if (!dragonBoatFinishLineCrossed) {
+                dragonBoatFinishLineCrossed = true;
+                dragonBoatWinner = b;
+                dragonBoatRaceState = 'celebrating';
+                b.finishTime = ((now - dragonBoatStartTime) / 1000).toFixed(2);
+                DragonBoatAudio.playGong();
+                DragonBoatAudio.playVictory();
+
+                const statusEl = document.getElementById('dragon-boat-race-status');
+                if (statusEl) {
+                  statusEl.innerHTML = '🏆 Thuyền rồng quán quân: <b class="text-teal-300 font-extrabold">' + b.fullName + '</b> cán đích (' + b.finishTime + 's)!';
+                }
+
+                // Pháo hoa ăn mừng
+                createDragonBoatCelebration(b.x, b.baseY);
+
+                setTimeout(() => {
+                  if (typeof dragonBoatFinishCallback === 'function') {
+                    dragonBoatFinishCallback(b.student);
+                  }
+                }, 1600);
+              }
+            }
+          }
+        });
+
+        // Cập nhật Leaderboard
+        updateDragonBoatLeaderboard();
+      }
+
+      // 2. CAMERA THEO DÕI THUYỀN DẪN ĐẦU / THUYỀN THẮNG
+      let leadX = dragonBoatStartX;
+      if (dragonBoats && dragonBoats.length > 0) {
+        if (dragonBoatWinner) {
+          leadX = dragonBoatWinner.x;
+        } else {
+          leadX = Math.max(...dragonBoats.map(b => b.x));
+        }
+      }
+      const targetCameraX = Math.max(0, Math.min(dragonBoatTrackLength - cw, leadX - cw * 0.48));
+      dragonBoatCameraX += (targetCameraX - dragonBoatCameraX) * Math.min(1, dt * 7.5);
+
+      // 3. VẼ KHÔNG GIAN SÔNG NƯỚC NON XANH (RIVER & MOUNTAIN SCENERY)
+      const layout = calculateDragonBoatLayout(ch, dragonBoats.length);
+      drawDragonBoatLandscape(ctx, cw, ch, dragonBoatCameraX, now, layout);
+
+      // 4. RENDER CÁC THUYỀN RỒNG VÀ ĐỢT SÓNG
+      ctx.save();
+      ctx.translate(-dragonBoatCameraX, 0);
+
+      // Cập nhật & vẽ bọt sóng
+      drawDragonBoatWaterRipples(ctx, dt);
+
+      // Vạch xuất phát
+      drawDragonBoatStartLine(ctx, layout);
+
+      // Phao tiêu phân làn (Buoys)
+      drawDragonBoatLaneBuoys(ctx, layout, now);
+
+      // Vạch đích & Cổng chào nổi trên sông
+      drawDragonBoatFinishGate(ctx, layout, now);
+
+      // Vẽ từng thuyền rồng
+      dragonBoats.forEach(b => {
+        drawSingleDragonBoat(ctx, b, now);
+      });
+
+      // Pháo hoa ăn mừng
+      drawDragonBoatConfetti(ctx, dt);
+
+      ctx.restore();
+
+      dragonBoatAnimId = requestAnimationFrame(renderDragonBoatRaceCanvas);
+    }
+
+    function drawDragonBoatLandscape(ctx, cw, ch, camX, now, layout) {
+      // 1. Bầu trời rạng rỡ non sông (Sunrise / Sunset gradient)
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, layout.topBankH + 60);
+      skyGrad.addColorStop(0, '#0f172a');
+      skyGrad.addColorStop(0.35, '#1e293b');
+      skyGrad.addColorStop(0.7, '#0d9488');
+      skyGrad.addColorStop(1, '#14b8a6');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, cw, layout.topBankH);
+
+      // Mặt trời vàng rực trên sông
+      const sunX = ((cw * 0.75 - camX * 0.05) % (cw + 200) + (cw + 200)) % (cw + 200);
+      const sunGrad = ctx.createRadialGradient(sunX, layout.topBankH * 0.45, 5, sunX, layout.topBankH * 0.45, 45);
+      sunGrad.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+      sunGrad.addColorStop(0.4, 'rgba(245, 158, 11, 0.6)');
+      sunGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+      ctx.fillStyle = sunGrad;
+      ctx.beginPath();
+      ctx.arc(sunX, layout.topBankH * 0.45, 45, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Dãy núi đá vôi karst hùng vĩ phía xa (Tam Cốc, Hạ Long)
+      ctx.save();
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.65)';
+      ctx.beginPath();
+      ctx.moveTo(-100, layout.topBankH);
+      for (let x = -100; x <= cw + 100; x += 60) {
+        const peakH = Math.sin((x + camX * 0.08) * 0.008) * 22 + Math.cos((x + camX * 0.08) * 0.018) * 14;
+        ctx.lineTo(x, layout.topBankH - 18 - peakH);
+      }
+      ctx.lineTo(cw + 100, layout.topBankH);
+      ctx.closePath();
+      ctx.fill();
+
+      // Lớp núi gần hơn màu xanh thẫm
+      ctx.fillStyle = 'rgba(13, 148, 136, 0.45)';
+      ctx.beginPath();
+      ctx.moveTo(-100, layout.topBankH);
+      for (let x = -100; x <= cw + 100; x += 50) {
+        const peakH = Math.sin((x + camX * 0.14) * 0.012) * 16 + Math.cos((x + camX * 0.14) * 0.024) * 10;
+        ctx.lineTo(x, layout.topBankH - 8 - peakH);
+      }
+      ctx.lineTo(cw + 100, layout.topBankH);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // 2. Bờ sông phía trên (Bờ A) có cây xanh và cờ hội
+      const topBankGrad = ctx.createLinearGradient(0, layout.topBankH - 12, 0, layout.topBankH);
+      topBankGrad.addColorStop(0, '#166534');
+      topBankGrad.addColorStop(0.6, '#15803d');
+      topBankGrad.addColorStop(1, '#14532d');
+      ctx.fillStyle = topBankGrad;
+      ctx.fillRect(0, layout.topBankH - 10, cw, 10);
+
+      // 3. Mặt nước dòng sông xanh ngọc bích (River Water)
+      const riverGrad = ctx.createLinearGradient(0, layout.topBankH, 0, layout.topBankH + layout.riverH);
+      riverGrad.addColorStop(0, '#042f2e');
+      riverGrad.addColorStop(0.2, '#0f766e');
+      riverGrad.addColorStop(0.6, '#0d9488');
+      riverGrad.addColorStop(1, '#115e59');
+      ctx.fillStyle = riverGrad;
+      ctx.fillRect(0, layout.topBankH, cw, layout.riverH);
+
+      // Các gợn sóng lăn tăn lung linh trên mặt nước
+      ctx.save();
+      ctx.strokeStyle = 'rgba(204, 251, 241, 0.18)';
+      ctx.lineWidth = 1.2;
+      for (let i = 0; i < 7; i++) {
+        const wy = layout.topBankH + (i + 0.5) * (layout.riverH / 7);
+        ctx.beginPath();
+        for (let x = 0; x <= cw; x += 40) {
+          const waveY = wy + Math.sin((x + camX + now * 0.08) * 0.035 + i) * 3;
+          if (x === 0) ctx.moveTo(x, waveY);
+          else ctx.lineTo(x, waveY);
+        }
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 4. Bờ sông phía dưới (Bờ B)
+      const botBankY = layout.topBankH + layout.riverH;
+      const botBankGrad = ctx.createLinearGradient(0, botBankY, 0, ch);
+      botBankGrad.addColorStop(0, '#14532d');
+      botBankGrad.addColorStop(0.4, '#15803d');
+      botBankGrad.addColorStop(1, '#052e16');
+      ctx.fillStyle = botBankGrad;
+      ctx.fillRect(0, botBankY, cw, ch - botBankY);
+    }
+
+    function drawDragonBoatStartLine(ctx, layout) {
+      const sx = dragonBoatStartX;
+      ctx.save();
+      // Cọc tiêu xuất phát trên hai bờ
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(sx - 4, layout.topBankH - 18, 8, 20);
+      ctx.fillRect(sx - 4, layout.topBankH + layout.riverH - 2, 8, 20);
+
+      // Cờ đỏ xuất phát
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.moveTo(sx + 4, layout.topBankH - 18);
+      ctx.lineTo(sx + 22, layout.topBankH - 12);
+      ctx.lineTo(sx + 4, layout.topBankH - 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Vạch kẻ phao trắng-đỏ trên mặt nước
+      ctx.strokeStyle = 'rgba(254, 240, 138, 0.45)';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 8]);
+      ctx.beginPath();
+      ctx.moveTo(sx, layout.topBankH);
+      ctx.lineTo(sx, layout.topBankH + layout.riverH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+
+    function drawDragonBoatLaneBuoys(ctx, layout, now) {
+      ctx.save();
+      for (let lane = 1; lane < layout.usableLanes; lane++) {
+        const laneY = layout.topBankH + lane * layout.laneH;
+        // Dây phao đứt đoạn màu vàng
+        ctx.strokeStyle = 'rgba(253, 224, 71, 0.18)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([12, 16]);
+        ctx.beginPath();
+        ctx.moveTo(dragonBoatStartX - 80, laneY);
+        ctx.lineTo(dragonBoatFinishX + 180, laneY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Phao tròn nổi mỗi 160px
+        for (let bx = dragonBoatStartX; bx <= dragonBoatFinishX; bx += 160) {
+          const bob = Math.sin(now * 0.005 + bx * 0.05) * 2;
+          ctx.fillStyle = (bx % 320 === 0) ? '#ef4444' : '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(bx, laneY + bob, 3.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+    }
+
+    function drawDragonBoatFinishGate(ctx, layout, now) {
+      const fx = dragonBoatFinishX;
+      ctx.save();
+
+      // Cột trụ hai bờ
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(fx - 10, layout.topBankH - 32, 20, 36);
+      ctx.fillRect(fx - 10, layout.topBankH + layout.riverH - 4, 20, 36);
+
+      // Dải cờ đuôi nheo trên vạch đích
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(fx, layout.topBankH - 24);
+      ctx.lineTo(fx, layout.topBankH + layout.riverH + 24);
+      ctx.stroke();
+
+      // Dải ruy băng ca-rô đích đến (Checkered ribbon)
+      const checkerH = 14;
+      const totalChecks = Math.floor(layout.riverH / checkerH);
+      for (let i = 0; i < totalChecks; i++) {
+        const py = layout.topBankH + i * checkerH;
+        ctx.fillStyle = (i % 2 === 0) ? '#ffffff' : '#000000';
+        ctx.fillRect(fx - 4, py, 4, checkerH);
+        ctx.fillStyle = (i % 2 === 1) ? '#ffffff' : '#000000';
+        ctx.fillRect(fx, py, 4, checkerH);
+      }
+
+      // Biển chữ "VỀ ĐÍCH" đỏ viền vàng rực rỡ
+      const bannerW = 90;
+      const bannerH = 26;
+      ctx.fillStyle = '#b91c1c';
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(fx - bannerW / 2, layout.topBankH - 38, bannerW, bannerH, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 11px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏁 VỀ ĐÍCH 🏁', fx, layout.topBankH - 25);
+
+      ctx.restore();
+    }
+
+    function drawSingleDragonBoat(ctx, boat, now) {
+      ctx.save();
+      const bob = Math.sin(now * 0.007 + boat.lane) * 2;
+      ctx.translate(boat.x, boat.baseY + bob);
+
+      // Bóng thuyền trên mặt nước (Water shadow)
+      ctx.fillStyle = 'rgba(2, 44, 34, 0.45)';
+      ctx.beginPath();
+      ctx.ellipse(0, 10, 58, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Thân thuyền rồng bằng gỗ sơn son thếp vàng (Hull)
+      const p = boat.palette;
+      const hullGrad = ctx.createLinearGradient(0, -10, 0, 12);
+      hullGrad.addColorStop(0, p.hull);
+      hullGrad.addColorStop(0.5, p.accent);
+      hullGrad.addColorStop(1, '#450a0a');
+      ctx.fillStyle = hullGrad;
+      ctx.strokeStyle = p.trim;
+      ctx.lineWidth = 2;
+
+      // Dáng thuyền thon dài vút mũi và lái
+      ctx.beginPath();
+      ctx.moveTo(-52, -4);
+      ctx.quadraticCurveTo(-20, 12, 42, 6);
+      ctx.lineTo(52, -2);
+      ctx.quadraticCurveTo(20, 4, -44, -2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Họa tiết vảy rồng trên mạn thuyền
+      ctx.strokeStyle = p.trim;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let sx = -35; sx <= 35; sx += 12) {
+        ctx.arc(sx, 3, 5, 0, Math.PI, false);
+      }
+      ctx.stroke();
+
+      // 1. ĐẦU RỒNG OAI PHONG Ở MŨI THUYỀN (DRAGON PROW)
+      ctx.save();
+      ctx.translate(50, -4);
+      // Đầu rồng sơn son
+      ctx.fillStyle = p.head;
+      ctx.beginPath();
+      ctx.moveTo(0, 4);
+      ctx.lineTo(14, 0);
+      ctx.lineTo(20, -6);
+      ctx.lineTo(16, -14);
+      ctx.lineTo(6, -8);
+      ctx.lineTo(0, -3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = p.trim;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Sừng rồng vàng uốn cong
+      ctx.fillStyle = p.trim;
+      ctx.beginPath();
+      ctx.moveTo(14, -13);
+      ctx.quadraticCurveTo(22, -20, 24, -26);
+      ctx.lineTo(21, -22);
+      ctx.lineTo(12, -14);
+      ctx.closePath();
+      ctx.fill();
+
+      // Mắt lửa rực sáng
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(14, -7, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(15, -7, 1.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Râu rồng uốn lượn
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(18, -4);
+      ctx.quadraticCurveTo(25, -2, 28, 4);
+      ctx.stroke();
+      ctx.restore();
+
+      // 2. ĐUÔI RỒNG CONG VÚT Ở ĐUÔI THUYỀN (DRAGON STERN)
+      ctx.save();
+      ctx.translate(-50, -3);
+      ctx.fillStyle = p.head;
+      ctx.beginPath();
+      ctx.moveTo(0, 3);
+      ctx.quadraticCurveTo(-14, -6, -18, -18);
+      ctx.quadraticCurveTo(-10, -12, 0, -2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = p.trim;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      ctx.restore();
+
+      // 3. TAY ĐÁNH TRỐNG Ở MŨI THUYỀN (DRUMMER)
+      ctx.save();
+      ctx.translate(30, -7);
+      // Quả trống cái da trâu viền đỏ
+      ctx.fillStyle = '#991b1b';
+      ctx.fillRect(-6, -4, 12, 8);
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(-6, -4, 12, 8);
+      // Mặt trống tròn
+      ctx.fillStyle = '#fef3c7';
+      ctx.beginPath();
+      ctx.ellipse(6, 0, 2, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Người đánh trống
+      ctx.fillStyle = p.band;
+      ctx.beginPath();
+      ctx.arc(-8, -10, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(-7, -10, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = p.trim;
+      ctx.fillRect(-9, -13, 6, 2);
+
+      // Cánh tay giơ dùi gõ trống
+      const drumArm = Math.sin(now * 0.02 + boat.lane) * 4;
+      ctx.strokeStyle = '#fed7aa';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(-6, -7);
+      ctx.lineTo(0, -6 + drumArm);
+      ctx.stroke();
+      ctx.restore();
+
+      // 4. CÁC TAY CHÈO THUYỀN ĐỒNG NHỊP (3 ROWERS)
+      const paddleAng = Math.sin(boat.paddlePhase) * 0.45;
+      const rowerOffsets = [-28, -8, 12];
+      rowerOffsets.forEach((rx) => {
+        ctx.save();
+        ctx.translate(rx, -6);
+
+        const lean = Math.sin(boat.paddlePhase) * 3;
+        ctx.fillStyle = p.band;
+        ctx.beginPath();
+        ctx.arc(-1 + lean * 0.3, -9, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(lean * 0.3, -9, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = p.trim;
+        ctx.fillRect(-2 + lean * 0.3, -12, 5, 1.8);
+
+        ctx.fillStyle = p.hull;
+        ctx.fillRect(-3 + lean * 0.3, -5, 6, 7);
+
+        // Mái chèo gỗ cắm sâu xuống nước
+        ctx.save();
+        ctx.translate(0, 0);
+        ctx.rotate(paddleAng);
+        ctx.strokeStyle = p.oar;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(-2, -6);
+        ctx.lineTo(4, 18);
+        ctx.stroke();
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.ellipse(4, 18, 3.5, 6, 0.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (paddleAng > 0.15) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.beginPath();
+          ctx.arc(6, 19, 2.5, 0, Math.PI * 2);
+          ctx.arc(8, 17, 1.8, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        ctx.restore();
+      });
+
+      // 5. BIỂN TÊN HỌC SINH NỔI BẬT PHÍA TRÊN THUYỀN (NAME BADGE)
+      ctx.save();
+      const badgeY = -28;
+      const isLead = (dragonBoatWinner === boat) || (dragonBoatRaceState === 'racing' && boat.x === Math.max(...dragonBoats.map(b => b.x)));
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      const textW = ctx.measureText(boat.displayName).width;
+      const padW = Math.max(textW + 16, 56);
+
+      ctx.fillStyle = isLead ? '#b45309' : 'rgba(15, 23, 42, 0.88)';
+      ctx.strokeStyle = isLead ? '#fef08a' : p.trim;
+      ctx.lineWidth = isLead ? 2 : 1.2;
+      ctx.beginPath();
+      ctx.roundRect(-padW / 2, badgeY - 8, padW, 16, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(boat.displayName, 0, badgeY);
+
+      if (isLead) {
+        ctx.font = '9px sans-serif';
+        ctx.fillText('👑', -padW / 2 + 6, badgeY);
+      }
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawDragonBoatWaterRipples(ctx, dt) {
+      ctx.save();
+      for (let i = dragonBoatWaterRipples.length - 1; i >= 0; i--) {
+        const r = dragonBoatWaterRipples[i];
+        r.r += r.speed * dt;
+        r.alpha -= 1.1 * dt;
+        if (r.alpha <= 0) {
+          dragonBoatWaterRipples.splice(i, 1);
+          continue;
+        }
+        ctx.strokeStyle = 'rgba(204, 251, 241, ' + (r.alpha * 0.6) + ')';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.ellipse(r.x, r.y, r.r, r.r * 0.35, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function createDragonBoatCelebration(x, y) {
+      dragonBoatConfetti = [];
+      const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#ec4899', '#ffffff', '#fef08a'];
+      for (let i = 0; i < 90; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = 3 + Math.random() * 6;
+        dragonBoatConfetti.push({
+          x: x,
+          y: y - 20,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd - 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: 3 + Math.random() * 4,
+          alpha: 1.0,
+          decay: 0.35 + Math.random() * 0.35
+        });
+      }
+    }
+
+    function drawDragonBoatConfetti(ctx, dt) {
+      if (!dragonBoatConfetti || dragonBoatConfetti.length === 0) return;
+      ctx.save();
+      for (let i = dragonBoatConfetti.length - 1; i >= 0; i--) {
+        const c = dragonBoatConfetti[i];
+        c.x += c.vx;
+        c.y += c.vy;
+        c.vy += 2.5 * dt;
+        c.alpha -= c.decay * dt;
+        if (c.alpha <= 0) {
+          dragonBoatConfetti.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = c.color;
+        ctx.globalAlpha = c.alpha;
+        ctx.fillRect(c.x, c.y, c.size, c.size);
+      }
+      ctx.restore();
+    }
+
+    function updateDragonBoatLeaderboard() {
+      const topList = document.getElementById('dragon-boat-top-list');
+      if (!topList || !dragonBoats || dragonBoats.length === 0) return;
+      const sorted = [...dragonBoats].sort((a, b) => b.x - a.x).slice(0, 4);
+      topList.innerHTML = sorted.map((b, idx) => {
+        const medals = ['🥇', '🥈', '🥉', '4.'];
+        const isLead = idx === 0;
+        const dist = Math.max(0, Math.round(dragonBoatFinishX - b.x));
+        return '<div class="flex items-center justify-between text-[11px] font-bold px-2 py-1 rounded ' + (isLead ? 'bg-teal-500/30 text-teal-200 border border-teal-400/40' : 'bg-slate-900/60 text-slate-300') + '">' +
+          '<span class="flex items-center gap-1 truncate max-w-[100px]">' +
+            '<span>' + medals[idx] + '</span>' +
+            '<span class="truncate">' + b.displayName + '</span>' +
+          '</span>' +
+          '<span class="text-[10px] text-teal-300 font-mono">' + (b.hasFinished ? 'VỀ ĐÍCH' : dist + 'm') + '</span>' +
+        '</div>';
+      }).join('');
+    }
+
+
+    // ==========================================
+    // 19. MODULE: NHẢY BAO BỐ (SACK RACE)
+    // ==========================================
+    const SACK_RACE_PALETTES = [
+      { shirt: '#dc2626', trim: '#fef08a', hair: '#1e293b', band: '#b91c1c', sack: '#b47d48', name: 'Đỏ Năng Động' },
+      { shirt: '#2563eb', trim: '#ffffff', hair: '#78350f', band: '#1d4ed8', sack: '#a26d3d', name: 'Xanh Lam Tốc Độ' },
+      { shirt: '#16a34a', trim: '#dcfce7', hair: '#172554', band: '#15803d', sack: '#b88554', name: 'Xanh Lá Vui Tươi' },
+      { shirt: '#d97706', trim: '#fef3c7', hair: '#451a03', band: '#b45309', sack: '#9c6838', name: 'Cam Rực Rỡ' },
+      { shirt: '#7c3aed', trim: '#ede9fe', hair: '#1e1b4b', band: '#6d28d9', sack: '#aa7746', name: 'Tím Siêu Nhót' },
+      { shirt: '#db2777', trim: '#fce7f3', hair: '#831843', band: '#be185d', sack: '#b07b49', name: 'Hồng Nhanh Nhẹn' },
+      { shirt: '#0891b2', trim: '#cffafe', hair: '#0f172a', band: '#0e7490', sack: '#a56f3e', name: 'Ngọc Biển Bứt Phá' },
+      { shirt: '#ca8a04', trim: '#fef9c3', hair: '#713f12', band: '#a16207', sack: '#b47e4b', name: 'Vàng Hoàng Kim' }
+    ];
+
+    let sackRunners = [];
+    let sackRaceState = 'idle'; // 'idle' | 'countdown' | 'racing' | 'celebrating'
+    let sackStartX = 180;
+    let sackFinishX = 2500;
+    let sackTrackLength = 2900;
+    let sackCameraX = 0;
+    let sackStartTime = 0;
+    let sackRaceDuration = 6000;
+    let sackTargetWinner = null;
+    let sackFinishCallback = null;
+    let sackAnimId = null;
+    let sackFinishLineBroken = false;
+    let sackLastHopSoundTime = 0;
+    let sackLastFrameTime = 0;
+    let sackWinner = null;
+    let sackSoundEnabled = true;
+    let sackGrassParticles = [];
+    let sackConfetti = [];
+
+    const SackRaceAudio = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+      // Tiếng còi tuýt xuất phát hội thao
+      playWhistle() {
+        if (!sackSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          [2850, 3100].forEach(freq => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, t);
+            gain.gain.setValueAtTime(0.25, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.46);
+          });
+        } catch(e) {}
+      },
+      // Tiếng lò xo đàn hồi / bật nhảy bao bố: "Boing! Phốc!"
+      playHop() {
+        if (!sackSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(175, t);
+          osc.frequency.exponentialRampToValueAtTime(360, t + 0.08);
+          osc.frequency.exponentialRampToValueAtTime(120, t + 0.16);
+          gain.gain.setValueAtTime(0.18, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.17);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.18);
+        } catch(e) {}
+      },
+      // Kèn đồng hoan hô chiến thắng
+      playVictory() {
+        if (!sackSoundEnabled || (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive)) return;
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const notes = [330, 392, 523.25, 659.25];
+          notes.forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, t + i * 0.1);
+            gain.gain.setValueAtTime(0.28, t + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.1 + 0.42);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t + i * 0.1);
+            osc.stop(t + i * 0.1 + 0.45);
+          });
+        } catch(e) {}
+      }
+    };
+
+    function toggleSackSound() {
+      sackSoundEnabled = !sackSoundEnabled;
+      const btn = document.getElementById('sack-sound-btn');
+      if (btn) btn.innerHTML = sackSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+
+    function toggleSackFullscreen() {
+      const container = document.getElementById('sack-race-container');
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+      scheduleRaceResizes();
+    }
+
+    function resetSackRacePositions() {
+      initSackRace(true);
+      const btn = document.getElementById('spin-btn');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-70');
+        btn.innerHTML = '<i class="fa-solid fa-person-running"></i> XUẤT PHÁT BẬT NHẢY';
+      }
+      const statusEl = document.getElementById('sack-race-status');
+      if (statusEl) {
+        statusEl.innerText = 'Các vận động viên bao bố đã sẵn sàng! Bấm XUẤT PHÁT để bật nhảy!';
+      }
+      const overlay = document.getElementById('sack-countdown-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      const lb = document.getElementById('sack-leaderboard');
+      if (lb) lb.classList.add('hidden');
+    }
+
+    function resizeSackCanvas() {
+      const container = document.getElementById('sack-race-container');
+      const canvas = document.getElementById('sack-race-canvas');
+      if (!container || !canvas) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.round(rect.width || 800);
+      const h = Math.round(rect.height || 520);
+      if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+      }
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      updateSackPositions(h);
+    }
+
+    function calculateSackLayout(h, count) {
+      const fieldTopH = Math.max(50, Math.floor(h * 0.12));
+      const fieldBotH = Math.max(45, Math.floor(h * 0.10));
+      const trackH = Math.max(220, h - fieldTopH - fieldBotH);
+      const targetLaneH = h > 700 ? 64 : 48;
+      const maxLanesByHeight = Math.max(3, Math.floor(trackH / targetLaneH));
+      const usableLanes = Math.max(3, Math.min(count, Math.min(14, maxLanesByHeight)));
+      const laneH = trackH / usableLanes;
+      return { fieldTopH, fieldBotH, trackH, usableLanes, laneH };
+    }
+
+    function updateSackPositions(h) {
+      if (!sackRunners || sackRunners.length === 0) return;
+      const count = sackRunners.length;
+      const layout = calculateSackLayout(h, count);
+      if (sackRaceState === 'idle') {
+        sackRunners.forEach((r, i) => {
+          const laneIdx = i % layout.usableLanes;
+          r.lane = laneIdx + 1;
+          r.startX = sackStartX - Math.floor(i / layout.usableLanes) * 60;
+          r.x = r.startX;
+          r.baseY = layout.fieldTopH + (laneIdx + 0.5) * layout.laneH;
+          r.y = r.baseY;
+        });
+      } else {
+        sackRunners.forEach((r, i) => {
+          const laneIdx = i % layout.usableLanes;
+          r.baseY = layout.fieldTopH + (laneIdx + 0.5) * layout.laneH;
+          r.y = r.baseY;
+        });
+      }
+    }
+
+    function initSackRace(resetPositions = true) {
+      const container = document.getElementById('sack-race-container');
+      const canvas = document.getElementById('sack-race-canvas');
+      if (!container || !canvas) return;
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      const count = visible.length;
+      resizeSackCanvas();
+
+      const rect = container.getBoundingClientRect();
+      const h = canvas.height ? (canvas.height / (Math.min(window.devicePixelRatio || 1, 2))) : (rect.height || 520);
+      const layout = calculateSackLayout(h, count);
+
+      sackStartX = 180;
+      const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const baseDist = Math.max(((rect.width || 800)) * 2.8, 2400);
+      const raceDist = Math.round(baseDist * durationFactor);
+      sackFinishX = sackStartX + raceDist;
+      sackTrackLength = sackFinishX + 350;
+
+      if (resetPositions || sackRunners.length !== count) {
+        sackRunners = visible.map((st, i) => {
+          const laneIdx = i % layout.usableLanes;
+          const startX = sackStartX - Math.floor(i / layout.usableLanes) * 60;
+          const baseY = layout.fieldTopH + (laneIdx + 0.5) * layout.laneH;
+          const palette = SACK_RACE_PALETTES[i % SACK_RACE_PALETTES.length];
+
+          const nameParts = (st.name || '').trim().split(/\s+/);
+          const shortName = nameParts.length > 2 ? nameParts.slice(-2).join(' ') : (st.name || 'VĐV Bao Bố');
+
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortName,
+            fullName: st.name,
+            lane: laneIdx + 1,
+            startX: startX,
+            x: startX,
+            baseY: baseY,
+            y: baseY,
+            vx: 0,
+            palette: palette,
+            hopProgress: (i * 0.22) % 1.0,
+            hopY: 0,
+            squashX: 1.0,
+            squashY: 1.0,
+            tilt: 0,
+            isWinner: false,
+            raceRole: 'pack',
+            hasFinished: false,
+            finishTime: null
+          };
+        });
+      }
+
+      sackCameraX = 0;
+      sackRaceState = 'idle';
+      sackFinishLineBroken = false;
+      sackWinner = null;
+      sackGrassParticles = [];
+      sackConfetti = [];
+
+      const statusEl = document.getElementById('sack-race-status');
+      if (statusEl) {
+        statusEl.innerText = 'Các vận động viên bao bố đã sẵn sàng! Bấm XUẤT PHÁT để bật nhảy!';
+      }
+      const overlay = document.getElementById('sack-countdown-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      const lb = document.getElementById('sack-leaderboard');
+      if (lb) lb.classList.add('hidden');
+
+      if (!sackAnimId) {
+        sackLastFrameTime = performance.now();
+        sackAnimId = requestAnimationFrame(renderSackRaceCanvas);
+      }
+    }
+
+    function startSackRace(winnerStudent, durationMs = 6000, callback) {
+      if (sackRaceState === 'racing' || sackRaceState === 'countdown') return;
+
+      sackTargetWinner = winnerStudent;
+      sackFinishCallback = callback;
+      sackRaceDuration = Math.max(3000, durationMs);
+      const durationSec = sackRaceDuration / 1000;
+      const durationFactor = Math.max(0.6, durationSec / 5);
+      const container = document.getElementById('sack-race-container');
+      const rect = container?.getBoundingClientRect() || { width: 800 };
+      const baseDist = Math.max(rect.width * 2.8, 2400);
+      const raceDist = Math.round(baseDist * durationFactor);
+      sackFinishX = sackStartX + raceDist;
+      sackTrackLength = sackFinishX + 350;
+
+      sackFinishLineBroken = false;
+      sackWinner = null;
+      sackGrassParticles = [];
+      sackConfetti = [];
+      sackLastFrameTime = 0;
+      SackRaceAudio.init();
+
+      const others = sackRunners.filter(r => r.id !== winnerStudent.id).sort(() => Math.random() - 0.5);
+      const chaser1 = others[0] || null;
+      const chaser2 = others[1] || null;
+
+      sackRunners.forEach(r => {
+        r.isWinner = (r.id === winnerStudent.id);
+        r.x = r.startX;
+        r.vx = 0;
+        r.hasFinished = false;
+        r.finishTime = null;
+
+        if (r.isWinner) {
+          r.raceRole = 'winner';
+        } else if (r === chaser1) {
+          r.raceRole = 'chaser1';
+        } else if (r === chaser2) {
+          r.raceRole = 'chaser2';
+        } else {
+          r.raceRole = Math.random() < 0.5 ? 'front_pack' : 'mid_pack';
+        }
+      });
+      sackCameraX = 0;
+
+      // Đếm ngược xuất phát 3, 2, 1, BẬT NHẢY!
+      sackRaceState = 'countdown';
+      const overlay = document.getElementById('sack-countdown-overlay');
+      const countText = document.getElementById('sack-countdown-text');
+      const statusEl = document.getElementById('sack-race-status');
+      const lb = document.getElementById('sack-leaderboard');
+
+      if (overlay) overlay.classList.remove('hidden');
+      if (lb) lb.classList.remove('hidden');
+      if (statusEl) statusEl.innerText = 'Trọng tài vào vị trí phất cờ chuẩn bị...';
+
+      let count = 3;
+      if (countText) {
+        countText.innerText = count;
+        countText.className = "text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_0_35px_rgba(245,158,11,0.8)] scale-110 transition-transform";
+      }
+      SackRaceAudio.playHop();
+
+      const countInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          if (countText) {
+            countText.innerText = count;
+            countText.className = "text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_0_35px_rgba(245,158,11,0.8)] scale-110 transition-transform";
+          }
+          SackRaceAudio.playHop();
+        } else if (count === 0) {
+          if (countText) {
+            countText.innerText = "BẬT NHẢY!";
+            countText.className = "text-5xl sm:text-7xl font-black text-emerald-300 drop-shadow-[0_0_40px_rgba(52,211,153,0.9)] scale-125 transition-transform";
+          }
+          SackRaceAudio.playWhistle();
+        } else {
+          clearInterval(countInterval);
+          if (overlay) overlay.classList.add('hidden');
+          sackRaceState = 'racing';
+          sackStartTime = performance.now();
+          if (statusEl) statusEl.innerText = 'Tiếng còi vang lên! Các vận động viên đang bật nhảy tanh tách!';
+        }
+      }, 700);
+    }
+
+    function renderSackRaceCanvas(now) {
+      const canvas = document.getElementById('sack-race-canvas');
+      if (!canvas) {
+        sackAnimId = requestAnimationFrame(renderSackRaceCanvas);
+        return;
+      }
+      const ctx = canvas.getContext('2d');
+      const cw = canvas.width ? (canvas.width / (Math.min(window.devicePixelRatio || 1, 2))) : 800;
+      const ch = canvas.height ? (canvas.height / (Math.min(window.devicePixelRatio || 1, 2))) : 520;
+
+      const dt = sackLastFrameTime ? Math.min((now - sackLastFrameTime) / 1000, 0.04) : 0.016;
+      sackLastFrameTime = now;
+
+      // 1. CẬP NHẬT VẬT LÝ BẬT NHẢY BAO BỐ (HOP PHYSICS)
+      if (sackRaceState === 'racing') {
+        const elapsed = now - sackStartTime;
+        const timeProgress = Math.min(1, elapsed / sackRaceDuration);
+
+        const totalDist = sackFinishX - sackStartX;
+        const nominalSpeed = totalDist / (sackRaceDuration / 1000);
+
+        if (now - sackLastHopSoundTime > 320) {
+          sackLastHopSoundTime = now;
+          SackRaceAudio.playHop();
+        }
+
+        sackRunners.forEach(r => {
+          if (!r.hasFinished) {
+            const accel = Math.min(1, elapsed / 700);
+
+            let speedRatio = 1.0;
+            if (timeProgress < 0.55) {
+              if (r.raceRole === 'winner') {
+                speedRatio = 0.99 + Math.sin(timeProgress * 11 + r.lane) * 0.04;
+              } else if (r.raceRole === 'chaser1') {
+                speedRatio = 1.02 + Math.sin(timeProgress * 13 + r.lane) * 0.03;
+              } else if (r.raceRole === 'chaser2') {
+                speedRatio = 1.00 + Math.cos(timeProgress * 12 + r.lane) * 0.03;
+              } else {
+                speedRatio = 0.96 + Math.sin(timeProgress * 10 + r.lane) * 0.04;
+              }
+            } else {
+              const sprintP = (timeProgress - 0.55) / 0.45;
+              if (r.raceRole === 'winner') {
+                speedRatio = 1.08 + sprintP * 0.22;
+              } else if (r.raceRole === 'chaser1') {
+                speedRatio = 1.05 + sprintP * 0.08;
+              } else if (r.raceRole === 'chaser2') {
+                speedRatio = 1.02 + sprintP * 0.06;
+              } else {
+                speedRatio = 0.88 - sprintP * 0.08;
+              }
+            }
+
+            const hopFreq = 3.6;
+            r.hopProgress = (r.hopProgress + hopFreq * dt) % 1.0;
+            const p = r.hopProgress;
+
+            let jumpY = 0;
+            let sqX = 1.0;
+            let sqY = 1.0;
+            let tilt = 0.05;
+
+            if (p < 0.22) {
+              const subP = p / 0.22;
+              sqX = 1.0 + Math.sin(subP * Math.PI) * 0.16;
+              sqY = 1.0 - Math.sin(subP * Math.PI) * 0.16;
+              jumpY = Math.sin(subP * Math.PI) * 3;
+              tilt = -0.05;
+            } else if (p < 0.78) {
+              const subP = (p - 0.22) / 0.56;
+              jumpY = -Math.sin(subP * Math.PI) * 28;
+              sqX = 0.90 + Math.sin(subP * Math.PI) * 0.05;
+              sqY = 1.15 + Math.sin(subP * Math.PI) * 0.08;
+              tilt = 0.14;
+            } else {
+              const subP = (p - 0.78) / 0.22;
+              sqX = 1.15 * (1 - subP) + 1.0 * subP;
+              sqY = 0.85 * (1 - subP) + 1.0 * subP;
+              jumpY = 0;
+              tilt = 0;
+
+              if (Math.random() < 0.35) {
+                sackGrassParticles.push({
+                  x: r.x - 12,
+                  y: r.baseY + 12,
+                  vx: -(1 + Math.random() * 2),
+                  vy: -(1 + Math.random() * 2),
+                  size: 2 + Math.random() * 2,
+                  alpha: 0.8,
+                  color: Math.random() < 0.5 ? '#86efac' : '#d97706'
+                });
+              }
+            }
+
+            r.hopY = jumpY;
+            r.squashX = sqX;
+            r.squashY = sqY;
+            r.tilt = tilt;
+
+            const forwardThrust = (p >= 0.22 && p < 0.78) ? 1.55 : 0.35;
+            r.vx = nominalSpeed * speedRatio * forwardThrust * accel;
+            r.x += r.vx * dt;
+
+            if (r.x + 15 >= sackFinishX) {
+              r.hasFinished = true;
+              r.x = sackFinishX + 10;
+              r.vx = 0;
+              r.hopY = -12;
+
+              if (!sackFinishLineBroken) {
+                sackFinishLineBroken = true;
+                sackWinner = r;
+                sackRaceState = 'celebrating';
+                r.finishTime = ((now - sackStartTime) / 1000).toFixed(2);
+                SackRaceAudio.playWhistle();
+                SackRaceAudio.playVictory();
+
+                const statusEl = document.getElementById('sack-race-status');
+                if (statusEl) {
+                  statusEl.innerHTML = '🏆 Quán quân nhảy bao bố: <b class="text-amber-300 font-extrabold">' + r.fullName + '</b> cán đích (' + r.finishTime + 's)!';
+                }
+
+                createSackCelebration(r.x, r.baseY);
+
+                setTimeout(() => {
+                  if (typeof sackFinishCallback === 'function') {
+                    sackFinishCallback(r.student);
+                  }
+                }, 1600);
+              }
+            }
+          }
+        });
+
+        updateSackLeaderboard();
+      }
+
+      // 2. CAMERA THEO DÕI VĐV DẪN ĐẦU / QUÁN QUÂN
+      let leadX = sackStartX;
+      if (sackRunners && sackRunners.length > 0) {
+        if (sackWinner) {
+          leadX = sackWinner.x;
+        } else {
+          leadX = Math.max(...sackRunners.map(r => r.x));
+        }
+      }
+      const targetCameraX = Math.max(0, Math.min(sackTrackLength - cw, leadX - cw * 0.48));
+      sackCameraX += (targetCameraX - sackCameraX) * Math.min(1, dt * 7.5);
+
+      // 3. VẼ SÂN CỎ HỘI THAO DÂN GIAN (SPORTS FIELD SCENERY)
+      const layout = calculateSackLayout(ch, sackRunners.length);
+      drawSackFieldLandscape(ctx, cw, ch, sackCameraX, now, layout);
+
+      // 4. RENDER CÁC VĐV BAO BỐ VÀ VẠCH ĐÍCH
+      ctx.save();
+      ctx.translate(-sackCameraX, 0);
+
+      drawSackGrassParticles(ctx, dt);
+      drawSackStartLine(ctx, layout);
+      drawSackTrackLanes(ctx, layout);
+      drawSackFinishLine(ctx, layout, now);
+
+      sackRunners.forEach(r => {
+        drawSingleSackRunner(ctx, r, now);
+      });
+
+      drawSackConfetti(ctx, dt);
+
+      ctx.restore();
+
+      sackAnimId = requestAnimationFrame(renderSackRaceCanvas);
+    }
+
+    function drawSackFieldLandscape(ctx, cw, ch, camX, now, layout) {
+      // 1. Khán đài và hàng cây xanh phía trên
+      const topGrad = ctx.createLinearGradient(0, 0, 0, layout.fieldTopH);
+      topGrad.addColorStop(0, '#064e3b');
+      topGrad.addColorStop(0.5, '#047857');
+      topGrad.addColorStop(1, '#059669');
+      ctx.fillStyle = topGrad;
+      ctx.fillRect(0, 0, cw, layout.fieldTopH);
+
+      // Dải cờ đuôi nheo tam giác ngũ sắc treo rực rỡ phía trên
+      ctx.save();
+      const flagColors = ['#ef4444', '#f59e0b', '#3b82f6', '#10b981', '#ec4899', '#8b5cf6'];
+      const flagW = 22;
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, 8);
+      ctx.lineTo(cw, 8);
+      ctx.stroke();
+
+      for (let fx = 10; fx < cw; fx += flagW + 6) {
+        const flagWave = Math.sin(now * 0.008 + fx * 0.1) * 3;
+        const col = flagColors[Math.floor((fx + camX * 0.2) / 28) % flagColors.length];
+        ctx.fillStyle = col;
+        ctx.beginPath();
+        ctx.moveTo(fx, 8);
+        ctx.lineTo(fx + flagW, 8);
+        ctx.lineTo(fx + flagW / 2, 22 + flagWave);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // 2. Thảm cỏ xanh mướt sân vận động (Lawn Stripes)
+      const fieldY = layout.fieldTopH;
+      const fieldH = layout.trackH;
+      const grassGrad = ctx.createLinearGradient(0, fieldY, 0, fieldY + fieldH);
+      grassGrad.addColorStop(0, '#15803d');
+      grassGrad.addColorStop(0.5, '#16a34a');
+      grassGrad.addColorStop(1, '#15803d');
+      ctx.fillStyle = grassGrad;
+      ctx.fillRect(0, fieldY, cw, fieldH);
+
+      // Sọc cỏ cắt đều đặn (Lawn mower stripes)
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+      const stripeW = 80;
+      for (let sx = -((camX) % (stripeW * 2)); sx < cw; sx += stripeW * 2) {
+        ctx.fillRect(sx, fieldY, stripeW, fieldH);
+      }
+      ctx.restore();
+
+      // 3. Khán đài cổ vũ phía dưới
+      const botY = layout.fieldTopH + layout.trackH;
+      const botGrad = ctx.createLinearGradient(0, botY, 0, ch);
+      botGrad.addColorStop(0, '#064e3b');
+      botGrad.addColorStop(0.5, '#047857');
+      botGrad.addColorStop(1, '#022c22');
+      ctx.fillStyle = botGrad;
+      ctx.fillRect(0, botY, cw, ch - botY);
+    }
+
+    function drawSackStartLine(ctx, layout) {
+      const sx = sackStartX;
+      ctx.save();
+      ctx.fillStyle = '#b91c1c';
+      ctx.fillRect(sx - 3, layout.fieldTopH - 16, 6, 20);
+      ctx.fillRect(sx - 3, layout.fieldTopH + layout.trackH - 4, 6, 20);
+
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(sx, layout.fieldTopH);
+      ctx.lineTo(sx, layout.fieldTopH + layout.trackH);
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(sx - 16, layout.fieldTopH + layout.trackH / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.font = '900 12px system-ui, sans-serif';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.textAlign = 'center';
+      ctx.fillText('XUẤT PHÁT', 0, 0);
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawSackTrackLanes(ctx, layout) {
+      ctx.save();
+      for (let lane = 1; lane < layout.usableLanes; lane++) {
+        const laneY = layout.fieldTopH + lane * layout.laneH;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(sackStartX - 60, laneY);
+        ctx.lineTo(sackFinishX + 160, laneY);
+        ctx.stroke();
+      }
+
+      for (let dist = 300; dist < (sackFinishX - sackStartX) - 200; dist += 350) {
+        const dx = sackStartX + dist;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 6]);
+        ctx.beginPath();
+        ctx.moveTo(dx, layout.fieldTopH);
+        ctx.lineTo(dx, layout.fieldTopH + layout.trackH);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(Math.round(dist / 35) + 'm', dx, layout.fieldTopH + 14);
+      }
+      ctx.restore();
+    }
+
+    function drawSackFinishLine(ctx, layout, now) {
+      const fx = sackFinishX;
+      ctx.save();
+
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(fx - 5, layout.fieldTopH - 26, 10, 32);
+      ctx.fillRect(fx - 5, layout.fieldTopH + layout.trackH - 6, 10, 32);
+
+      const checkH = 12;
+      const totalChecks = Math.floor(layout.trackH / checkH);
+      for (let i = 0; i < totalChecks; i++) {
+        const py = layout.fieldTopH + i * checkH;
+        ctx.fillStyle = (i % 2 === 0) ? '#ffffff' : '#000000';
+        ctx.fillRect(fx - 4, py, 4, checkH);
+        ctx.fillStyle = (i % 2 === 1) ? '#ffffff' : '#000000';
+        ctx.fillRect(fx, py, 4, checkH);
+      }
+
+      if (!sackFinishLineBroken) {
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(fx, layout.fieldTopH);
+        const wave = Math.sin(now * 0.008) * 4;
+        ctx.quadraticCurveTo(fx + wave, layout.fieldTopH + layout.trackH / 2, fx, layout.fieldTopH + layout.trackH);
+        ctx.stroke();
+      }
+
+      const bannerW = 86;
+      const bannerH = 24;
+      ctx.fillStyle = '#b91c1c';
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(fx - bannerW / 2, layout.fieldTopH - 34, bannerW, bannerH, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '900 11px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏆 VỀ ĐÍCH 🏆', fx, layout.fieldTopH - 22);
+
+      ctx.restore();
+    }
+
+    function drawSingleSackRunner(ctx, r, now) {
+      ctx.save();
+      ctx.translate(r.x, r.baseY);
+
+      const shadowScale = Math.max(0.4, 1.0 + r.hopY / 50);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+      ctx.beginPath();
+      ctx.ellipse(0, 16, 16 * shadowScale, 6 * shadowScale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.translate(0, r.hopY);
+      ctx.rotate(r.tilt);
+      ctx.scale(r.squashX, r.squashY);
+
+      const p = r.palette;
+
+      // 1. CHIẾC BAO BỐ GAI DÂN GIAN (BURLAP SACK)
+      const sackGrad = ctx.createLinearGradient(-15, 0, 15, 16);
+      sackGrad.addColorStop(0, p.sack);
+      sackGrad.addColorStop(0.5, '#c28853');
+      sackGrad.addColorStop(1, '#78461f');
+      ctx.fillStyle = sackGrad;
+      ctx.beginPath();
+      ctx.roundRect(-15, -4, 30, 22, [4, 4, 10, 10]);
+      ctx.fill();
+
+      ctx.strokeStyle = '#e2b384';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(80, 40, 10, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-11, 2); ctx.lineTo(-11, 14);
+      ctx.moveTo(0, 1); ctx.lineTo(0, 15);
+      ctx.moveTo(11, 2); ctx.lineTo(11, 14);
+      ctx.stroke();
+
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(-14, -2, 3.5, 0, Math.PI * 2);
+      ctx.arc(14, -2, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. THÂN HỌC SINH (CHIBI ATHLETE BODY)
+      ctx.fillStyle = p.shirt;
+      ctx.beginPath();
+      ctx.roundRect(-12, -16, 24, 14, [4, 4, 0, 0]);
+      ctx.fill();
+      ctx.strokeStyle = p.trim;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 8px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(r.lane, 0, -9);
+
+      ctx.fillStyle = p.shirt;
+      ctx.fillRect(-15, -14, 4, 10);
+      ctx.fillRect(11, -14, 4, 10);
+
+      // 3. ĐẦU VÀ KHUÔN MẶT CƯỜI RẠNG RỠ (HAPPY FACE)
+      ctx.save();
+      ctx.translate(0, -22);
+
+      ctx.fillStyle = p.hair;
+      ctx.beginPath();
+      ctx.arc(0, 0, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, 2, 7.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = p.band;
+      ctx.fillRect(-8, -2, 16, 3.5);
+      ctx.fillStyle = p.trim;
+      ctx.fillRect(-3, -2, 6, 3.5);
+
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(-3, 2, 1.8, Math.PI, 0, false);
+      ctx.arc(3, 2, 1.8, Math.PI, 0, false);
+      ctx.stroke();
+
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, 5, 2.2, 0, Math.PI);
+      ctx.fill();
+
+      ctx.restore();
+
+      // 4. BIỂN TÊN HỌC SINH PHÍA TRÊN ĐẦU (STUDENT NAME TAG)
+      ctx.save();
+      const badgeY = -38;
+      const isLead = (sackWinner === r) || (sackRaceState === 'racing' && r.x === Math.max(...sackRunners.map(s => s.x)));
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      const textW = ctx.measureText(r.displayName).width;
+      const padW = Math.max(textW + 16, 54);
+
+      ctx.fillStyle = isLead ? '#b45309' : 'rgba(15, 23, 42, 0.88)';
+      ctx.strokeStyle = isLead ? '#fef08a' : p.trim;
+      ctx.lineWidth = isLead ? 2 : 1.2;
+      ctx.beginPath();
+      ctx.roundRect(-padW / 2, badgeY - 8, padW, 16, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(r.displayName, 0, badgeY);
+
+      if (isLead) {
+        ctx.font = '9px sans-serif';
+        ctx.fillText('👑', -padW / 2 + 6, badgeY);
+      }
+      ctx.restore();
+
+      ctx.restore();
+    }
+
+    function drawSackGrassParticles(ctx, dt) {
+      if (!sackGrassParticles || sackGrassParticles.length === 0) return;
+      ctx.save();
+      for (let i = sackGrassParticles.length - 1; i >= 0; i--) {
+        const g = sackGrassParticles[i];
+        g.x += g.vx;
+        g.y += g.vy;
+        g.alpha -= 1.8 * dt;
+        if (g.alpha <= 0) {
+          sackGrassParticles.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = g.color;
+        ctx.globalAlpha = g.alpha;
+        ctx.fillRect(g.x, g.y, g.size, g.size);
+      }
+      ctx.restore();
+    }
+
+    function createSackCelebration(x, y) {
+      sackConfetti = [];
+      const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#ec4899', '#ffffff', '#fef08a'];
+      for (let i = 0; i < 90; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = 3 + Math.random() * 6;
+        sackConfetti.push({
+          x: x,
+          y: y - 25,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd - 3.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          size: 3 + Math.random() * 4,
+          alpha: 1.0,
+          decay: 0.35 + Math.random() * 0.35
+        });
+      }
+    }
+
+    function drawSackConfetti(ctx, dt) {
+      if (!sackConfetti || sackConfetti.length === 0) return;
+      ctx.save();
+      for (let i = sackConfetti.length - 1; i >= 0; i--) {
+        const c = sackConfetti[i];
+        c.x += c.vx;
+        c.y += c.vy;
+        c.vy += 2.5 * dt;
+        c.alpha -= c.decay * dt;
+        if (c.alpha <= 0) {
+          sackConfetti.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = c.color;
+        ctx.globalAlpha = c.alpha;
+        ctx.fillRect(c.x, c.y, c.size, c.size);
+      }
+      ctx.restore();
+    }
+
+    function updateSackLeaderboard() {
+      const topList = document.getElementById('sack-top-list');
+      if (!topList || !sackRunners || sackRunners.length === 0) return;
+      const sorted = [...sackRunners].sort((a, b) => b.x - a.x).slice(0, 4);
+      topList.innerHTML = sorted.map((r, idx) => {
+        const medals = ['🥇', '🥈', '🥉', '4.'];
+        const isLead = idx === 0;
+        const dist = Math.max(0, Math.round(sackFinishX - r.x));
+        return '<div class="flex items-center justify-between text-[11px] font-bold px-2 py-1 rounded ' + (isLead ? 'bg-amber-500/30 text-amber-200 border border-amber-400/40' : 'bg-slate-900/60 text-slate-300') + '">' +
+          '<span class="flex items-center gap-1 truncate max-w-[100px]">' +
+            '<span>' + medals[idx] + '</span>' +
+            '<span class="truncate">' + r.displayName + '</span>' +
+          '</span>' +
+          '<span class="text-[10px] text-amber-300 font-mono">' + (r.hasFinished ? 'VỀ ĐÍCH' : dist + 'm') + '</span>' +
+        '</div>';
+      }).join('');
+    }
+
+
+    // ==========================================
     // MODULE: ĐUA XE F1 QUANH CO (FORMULA 1 GRAND PRIX)
     // ==========================================
     const F1_TEAM_COLORS = [
@@ -31694,2279 +33739,6 @@
 
 
     // ==========================================
-    
-    // ==========================================
-    // ==========================================
-    // MODULE 18: ĐUA BI DZÍCH ZẮC SIÊU DÀI 6 CHẶNG (EPIC LONG-TRACK MARBLE RACE)
-    // ==========================================
-    const MarbleAudio = {
-      ctx: null,
-      getCtx() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) this.ctx = new AudioContext();
-        }
-        if (this.ctx && this.ctx.state === 'suspended') {
-          this.ctx.resume().catch(() => {});
-        }
-        return this.ctx;
-      },
-      playDrop() {
-        if (!isAppSoundActive || !marbleSoundEnabled) return;
-        const ctx = this.getCtx();
-        if (!ctx) return;
-        try {
-          const now = ctx.currentTime;
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(380, now);
-          osc.frequency.exponentialRampToValueAtTime(130, now + 0.28);
-          gain.gain.setValueAtTime(0.32, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.32);
-        } catch(e) {}
-      },
-      playPeg(noteIndex = 0) {
-        if (!isAppSoundActive || !marbleSoundEnabled) return;
-        const ctx = this.getCtx();
-        if (!ctx) return;
-        try {
-          const now = ctx.currentTime;
-          const scale = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
-          const freq = scale[Math.abs(noteIndex) % scale.length];
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-          osc.frequency.exponentialRampToValueAtTime(freq * 0.94, now + 0.08);
-          gain.gain.setValueAtTime(0.18, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.1);
-        } catch(e) {}
-      },
-      playBumper() {
-        if (!isAppSoundActive || !marbleSoundEnabled) return;
-        const ctx = this.getCtx();
-        if (!ctx) return;
-        try {
-          const now = ctx.currentTime;
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(170, now);
-          osc.frequency.exponentialRampToValueAtTime(580, now + 0.14);
-          gain.gain.setValueAtTime(0.3, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.18);
-        } catch(e) {}
-      },
-      playSpinner() {
-        if (!isAppSoundActive || !marbleSoundEnabled) return;
-        const ctx = this.getCtx();
-        if (!ctx) return;
-        try {
-          const now = ctx.currentTime;
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'square';
-          osc.frequency.setValueAtTime(290, now);
-          osc.frequency.exponentialRampToValueAtTime(140, now + 0.05);
-          gain.gain.setValueAtTime(0.12, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.07);
-        } catch(e) {}
-      },
-      playFinishTick() {
-        if (!isAppSoundActive || !marbleSoundEnabled) return;
-        const ctx = this.getCtx();
-        if (!ctx) return;
-        try {
-          const now = ctx.currentTime;
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(659.25, now);
-          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.1);
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.14);
-        } catch(e) {}
-      },
-      playWinner() {
-        if (!isAppSoundActive || !marbleSoundEnabled) return;
-        const ctx = this.getCtx();
-        if (!ctx) return;
-        try {
-          const now = ctx.currentTime;
-          const chords = [523.25, 659.25, 783.99, 1046.50, 1318.51];
-          chords.forEach((freq, idx) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now + idx * 0.09);
-            gain.gain.setValueAtTime(0.26, now + idx * 0.09);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.55);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start(now + idx * 0.09);
-            osc.stop(now + idx * 0.09 + 0.58);
-          });
-        } catch(e) {}
-      }
-    };
-
-    const MARBLE_PALETTES = [
-      { fill: '#ef4444', shine: '#fca5a5', dark: '#7f1d1d', border: '#fecaca', name: 'Ruby Đỏ' },
-      { fill: '#3b82f6', shine: '#93c5fd', dark: '#1e3a8a', border: '#bfdbfe', name: 'Sapphire Xanh' },
-      { fill: '#10b981', shine: '#6ee7b7', dark: '#064e3b', border: '#a7f3d0', name: 'Lục Bảo' },
-      { fill: '#f59e0b', shine: '#fcd34d', dark: '#78350f', border: '#fef3c7', name: 'Hoàng Kim' },
-      { fill: '#8b5cf6', shine: '#c4b5fd', dark: '#4c1d95', border: '#ddd6fe', name: 'Thạch Anh Tím' },
-      { fill: '#ec4899', shine: '#f472b6', dark: '#831843', border: '#fbcfe8', name: 'Hồng Ngọc' },
-      { fill: '#06b6d4', shine: '#67e8f9', dark: '#164e63', border: '#cffafe', name: 'Lam Ngọc' },
-      { fill: '#84cc16', shine: '#bef264', dark: '#365314', border: '#d9f99d', name: 'Xanh Cốm' },
-      { fill: '#f97316', shine: '#fdba74', dark: '#7c2d12', border: '#ffedd5', name: 'Cam San Hô' },
-      { fill: '#14b8a6', shine: '#5eead4', dark: '#134e4a', border: '#ccfbf1', name: 'Ngọc Bích' },
-      { fill: '#a855f7', shine: '#d8b4fe', dark: '#581c87', border: '#f3e8ff', name: 'Tử Đinh Hương' },
-      { fill: '#e11d48', shine: '#fda4af', dark: '#4c0519', border: '#ffe4e6', name: 'Hoa Hồng Đỏ' }
-    ];
-
-    // State Variables for Marble Race
-    let marbleGameState = 'idle'; // 'idle' | 'dropping' | 'slowmo' | 'finished'
-    let marbleWinRule = 'last';    // 'last' (Về đích cuối cùng - mặc định) | 'first' (Về đích đầu tiên)
-    let marbleSoundEnabled = true;
-    let marbles = [];
-    let finishedMarbles = [];
-    let marbleAnimId = null;
-    let marbleLastTime = 0;
-    let marbleTargetWinner = null;
-    let marbleFinishCallback = null;
-    let marbleRaceDuration = 12000;
-    let marbleGateProgress = 0;    // 0 -> 1 (cổng thả bi trượt mở)
-    let marbleSlowMo = 1.0;
-    let marbleParticles = [];
-    let marbleShockwaves = [];
-    let marbleCameraY = 0;         // Smooth Tracking Camera Y
-
-    // Virtual Coordinate Map Dimensions: Ultra-Long Multi-Stage Track
-    const MARBLE_VW = 960;
-    const MARBLE_VH = 720;
-    const MARBLE_TRACK_HEIGHT = 2800; // Chiều dài đường đua siêu dài (6 chặng đua liên hoàn)
-
-    // Stage Boundaries for Checkpoints / Minimap
-    const MARBLE_CHECKPOINTS = [
-      { y: 120, name: 'Xuất Phát', icon: '🚩' },
-      { y: 260, name: 'Chặng 1: Rừng Đinh Plinko', icon: '📌' },
-      { y: 760, name: 'Chặng 2: Dốc Ziczac 5 Tầng', icon: '⚡' },
-      { y: 1350, name: 'Chặng 3: Bánh Xe Xoay', icon: '⚙️' },
-      { y: 1850, name: 'Chặng 4: Đại Lộ Bumper', icon: '🛑' },
-      { y: 2250, name: 'Chặng 5: Cổ Chai Nghẽn', icon: '🌪️' },
-      { y: 2620, name: 'Chặng 6: Vạch Đích 🏁', icon: '🏆' }
-    ];
-
-    // Static Map Geometry
-    let marblePegs = [];
-    let marbleRamps = [];
-    let marbleSpinners = [];
-    let marbleBumpers = [];
-
-    function buildMarbleMapObstacles() {
-      // 1. CHẶNG 1: RỪNG ĐINH PLINKO SIÊU DÀY (Y = 240 -> 720) - 11 HÀNG ĐINH
-      marblePegs = [];
-      const pegRows = [
-        // Chặng 1: 11 hàng đinh
-        { y: 260, count: 11, startX: 160, endX: 800 },
-        { y: 305, count: 12, startX: 130, endX: 830 },
-        { y: 350, count: 11, startX: 160, endX: 800 },
-        { y: 395, count: 12, startX: 130, endX: 830 },
-        { y: 440, count: 11, startX: 160, endX: 800 },
-        { y: 485, count: 12, startX: 130, endX: 830 },
-        { y: 530, count: 11, startX: 160, endX: 800 },
-        { y: 575, count: 12, startX: 130, endX: 830 },
-        { y: 620, count: 11, startX: 160, endX: 800 },
-        { y: 665, count: 12, startX: 130, endX: 830 },
-        { y: 710, count: 11, startX: 160, endX: 800 },
-        // Chặng 5: Hàng đinh nút chặn sau cổ chai (Y = 2420 -> 2560)
-        { y: 2420, count: 8, startX: 240, endX: 720 },
-        { y: 2470, count: 9, startX: 200, endX: 760 },
-        { y: 2520, count: 8, startX: 240, endX: 720 },
-        { y: 2570, count: 10, startX: 180, endX: 780 }
-      ];
-
-      let noteCounter = 0;
-      pegRows.forEach((row) => {
-        const step = (row.endX - row.startX) / (row.count - 1);
-        for (let i = 0; i < row.count; i++) {
-          marblePegs.push({
-            x: row.startX + i * step,
-            y: row.y,
-            r: 6.5,
-            glow: 0,
-            noteIndex: noteCounter++
-          });
-        }
-      });
-
-      // 2. CHẶNG 2: MÊ CUNG DỐC ZICZAC 5 TẦNG (Y = 760 -> 1300)
-      marbleRamps = [
-        // Tầng 1: Trái nghiêng xuống giữa
-        { x1: 60, y1: 780, x2: 540, y2: 860, thickness: 7, color: '#38bdf8' },
-        // Tầng 2: Phải nghiêng xuống giữa
-        { x1: 900, y1: 890, x2: 420, y2: 970, thickness: 7, color: '#ec4899' },
-        // Tầng 3: Trái nghiêng sang phải
-        { x1: 60, y1: 1000, x2: 560, y2: 1080, thickness: 7, color: '#a855f7' },
-        // Tầng 4: Phải nghiêng sang trái
-        { x1: 900, y1: 1110, x2: 400, y2: 1190, thickness: 7, color: '#f59e0b' },
-        // Tầng 5: Ngã tư chữ X đan chéo kịch tính
-        { x1: 100, y1: 1220, x2: 480, y2: 1300, thickness: 7, color: '#10b981' },
-        { x1: 860, y1: 1220, x2: 480, y2: 1300, thickness: 7, color: '#10b981' },
-
-        // Chặng 5: Vách cổ chai nghẽn (Funnel Walls: Y = 2260 -> 2400)
-        { x1: 60, y1: 2260, x2: 360, y2: 2380, thickness: 8, color: '#ef4444' },
-        { x1: 900, y1: 2260, x2: 600, y2: 2380, thickness: 8, color: '#ef4444' }
-      ];
-
-      // 3. CHẶNG 3: BÁNH XE XOAY CẢN BƯỚC (Y = 1350 -> 1800) - 5 SPINNERS
-      marbleSpinners = [
-        { cx: 250, cy: 1430, r: 52, blades: 4, rotSpeed: 2.4, angle: 0, color: '#f59e0b' },
-        { cx: 710, cy: 1430, r: 52, blades: 4, rotSpeed: -2.4, angle: 0.5, color: '#06b6d4' },
-        { cx: 480, cy: 1570, r: 64, blades: 5, rotSpeed: 2.8, angle: 0.2, color: '#ec4899' }, // Bánh xe trung tâm khổng lồ
-        { cx: 240, cy: 1710, r: 48, blades: 4, rotSpeed: -2.2, angle: 0.7, color: '#10b981' },
-        { cx: 720, cy: 1710, r: 48, blades: 4, rotSpeed: 2.2, angle: 0.3, color: '#8b5cf6' }
-      ];
-
-      // 4. CHẶNG 4: ĐẠI LỘ ĐỆM NHÚN PINBALL BUMPERS (Y = 1850 -> 2220) - 6 BUMPERS
-      marbleBumpers = [
-        { cx: 180, cy: 1900, r: 32, glow: 0, color: '#38bdf8' },
-        { cx: 780, cy: 1900, r: 32, glow: 0, color: '#38bdf8' },
-        { cx: 480, cy: 1970, r: 42, glow: 0, color: '#f59e0b' }, // Super Bumper
-        { cx: 280, cy: 2090, r: 30, glow: 0, color: '#ec4899' },
-        { cx: 680, cy: 2090, r: 30, glow: 0, color: '#ec4899' },
-        { cx: 480, cy: 2180, r: 34, glow: 0, color: '#10b981' },
-
-        // Các đệm nảy phụ ở các khúc cua Chặng 2
-        { cx: 110, cy: 900, r: 24, glow: 0, color: '#a855f7' },
-        { cx: 850, cy: 1010, r: 24, glow: 0, color: '#a855f7' }
-      ];
-    }
-
-    function toggleMarbleWinRule() {
-      if (marbleWinRule === 'last') {
-        marbleWinRule = 'first';
-      } else {
-        marbleWinRule = 'last';
-      }
-      updateMarbleRuleButton();
-      if (marbleGameState === 'idle') {
-        setMarbleStatus(marbleWinRule === 'last'
-          ? '🎯 Chế độ: Viên bi về đích CUỐI CÙNG sẽ là người được gọi tên!'
-          : '🏆 Chế độ: Viên bi về đích ĐẦU TIÊN (Về nhất) sẽ là người được gọi tên!');
-      }
-    }
-
-    function updateMarbleRuleButton() {
-      const btn = document.getElementById('marble-rule-btn');
-      if (btn) {
-        if (marbleWinRule === 'last') {
-          btn.className = 'bg-purple-900/80 hover:bg-purple-850 text-purple-200 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-purple-400/50 transition flex items-center gap-1 shadow-md cursor-pointer';
-          btn.innerHTML = '🏁 Luật: Về Cuối Cùng';
-          btn.title = 'Hiện tại: Viên bi cán đích cuối cùng sẽ được gọi tên (Bấm để đổi sang Về Nhất)';
-        } else {
-          btn.className = 'bg-amber-600/90 hover:bg-amber-500 text-amber-100 text-xs font-bold px-2.5 py-1.5 rounded-xl border border-amber-300 transition flex items-center gap-1 shadow-md cursor-pointer';
-          btn.innerHTML = '🏆 Luật: Về Đầu Tiên';
-          btn.title = 'Hiện tại: Viên bi cán đích đầu tiên sẽ được gọi tên (Bấm để đổi sang Về Cuối)';
-        }
-      }
-    }
-
-    function toggleMarbleSound() {
-      marbleSoundEnabled = !marbleSoundEnabled;
-      const btn = document.getElementById('marble-sound-btn');
-      if (btn) {
-        btn.innerHTML = marbleSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
-      }
-    }
-
-    function toggleMarbleFullscreen() {
-      const container = document.getElementById('marble-stage-container');
-      if (!container) return;
-      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-        if (container.requestFullscreen) container.requestFullscreen();
-        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-      }
-      setTimeout(resizeMarbleCanvas, 80);
-      setTimeout(resizeMarbleCanvas, 240);
-    }
-
-    function setMarbleStatus(text) {
-      const el = document.getElementById('marble-game-status');
-      if (el) el.innerText = text;
-    }
-
-    function resizeMarbleCanvas() {
-      const canvas = document.getElementById('marble-canvas');
-      const container = document.getElementById('marble-stage-container');
-      if (!canvas || !container) return;
-
-      const rect = container.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = Math.floor(rect.width || 800);
-      const h = Math.floor(rect.height || 600);
-
-      if (canvas.width !== Math.floor(w * dpr) || canvas.height !== Math.floor(h * dpr)) {
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = w + 'px';
-        canvas.style.height = h + 'px';
-      }
-    }
-
-    function resetMarbleGame() {
-      initMarbleGame(true);
-    }
-
-    function initMarbleGame(resetPositions = true) {
-      resizeMarbleCanvas();
-      buildMarbleMapObstacles();
-
-      if (marbleAnimId) {
-        cancelAnimationFrame(marbleAnimId);
-        marbleAnimId = null;
-      }
-
-      const visible = students.filter(s => !hiddenWheelIds.includes(s.id));
-      const pool = visible.length > 0 ? visible : Array.from({ length: 24 }, (_, i) => ({ id: `hs_${i + 1}`, name: `Học sinh ${i + 1}` }));
-
-      const N = pool.length;
-      let marbleRadius = 16;
-      if (N > 18) marbleRadius = 14;
-      if (N > 35) marbleRadius = 12;
-      if (N > 50) marbleRadius = 10.5;
-
-      marbles = [];
-      finishedMarbles = [];
-      marbleParticles = [];
-      marbleShockwaves = [];
-      marbleGateProgress = 0;
-      marbleSlowMo = 1.0;
-      marbleCameraY = 0;
-      marbleTargetWinner = null;
-      marbleFinishCallback = null;
-      marbleGameState = 'idle';
-
-      // Sắp xếp các viên bi trong phễu xuất phát ở đỉnh (Hopper: X từ 380 đến 580, Y từ 45 đến 140)
-      const hopperCols = Math.min(10, Math.max(5, Math.ceil(Math.sqrt(N * 2))));
-      const colStep = 200 / Math.max(1, hopperCols - 1);
-
-      pool.forEach((st, idx) => {
-        const pal = MARBLE_PALETTES[idx % MARBLE_PALETTES.length];
-        const row = Math.floor(idx / hopperCols);
-        const col = idx % hopperCols;
-
-        const staggerOffset = (row % 2 === 1) ? colStep * 0.5 : 0;
-        const startX = 390 + col * colStep + staggerOffset + (Math.random() - 0.5) * 8;
-        const startY = 50 + row * (marbleRadius * 1.95) + (Math.random() - 0.5) * 4;
-
-        marbles.push({
-          student: st,
-          name: st.name,
-          x: Math.max(200, Math.min(760, startX)),
-          y: Math.max(40, Math.min(138, startY)),
-          vx: (Math.random() - 0.5) * 5,
-          vy: Math.random() * 2,
-          radius: marbleRadius,
-          color: pal.fill,
-          shine: pal.shine,
-          dark: pal.dark,
-          border: pal.border,
-          angle: Math.random() * Math.PI * 2,
-          angularVel: (Math.random() - 0.5) * 3,
-          finished: false,
-          finishRank: 0,
-          finishTime: 0,
-          stuckTimer: 0,
-          trail: []
-        });
-      });
-
-      updateMarbleRuleButton();
-      setMarbleStatus(`Đã nạp ${N} viên bi vào cổng xuất phát! Đường đua dài 6 chặng sẵn sàng!`);
-
-      marbleLastTime = performance.now();
-      marbleAnimId = requestAnimationFrame(renderMarbleCanvas);
-    }
-
-    function startMarbleGame(selectedStudent, durationMs, callback) {
-      if (marbleGameState === 'dropping' || marbleGameState === 'slowmo') return;
-
-      initMarbleGame(false);
-      marbleTargetWinner = selectedStudent;
-      // Đường đua dài 2800px: chạy từ 10s đến 25s tuỳ chọn
-      marbleRaceDuration = Math.max(8000, durationMs || 14000);
-      marbleFinishCallback = callback;
-      marbleGameState = 'dropping';
-      marbleGateProgress = 0;
-      marbleSlowMo = 1.0;
-      marbleCameraY = 0;
-
-      MarbleAudio.playDrop();
-      setMarbleStatus('🌪️ Cửa xả mở ra! Đàn bi đang đổ dốc vượt 6 chặng chướng ngại vật...');
-
-      // Bias nhẹ để kịch bản rơi tự nhiên nhưng kịch tính:
-      if (marbleTargetWinner) {
-        const targetMarble = marbles.find(m => m.student.id === marbleTargetWinner.id);
-        if (targetMarble) {
-          if (marbleWinRule === 'last') {
-            targetMarble.vy *= 0.4;
-            targetMarble.y = Math.min(targetMarble.y, 45); // Nằm ở tầng trên cùng phễu
-          } else {
-            targetMarble.vy += 25;
-          }
-        }
-      }
-    }
-
-    // ==========================================
-    // PHYSICS SIMULATION ENGINE (LONG-TRACK 2800PX)
-    // ==========================================
-    function updateMarblePhysics(dt) {
-      if (marbleGameState !== 'dropping' && marbleGameState !== 'slowmo') return;
-
-      const effectiveDt = dt * marbleSlowMo;
-
-      // 1. Cửa xả bi mở dần
-      if (marbleGateProgress < 1.0) {
-        marbleGateProgress = Math.min(1.0, marbleGateProgress + dt * 1.5);
-      }
-
-      // 2. Quay Spinners liên hoàn
-      marbleSpinners.forEach(sp => {
-        sp.angle += sp.rotSpeed * effectiveDt;
-      });
-
-      // 3. Giảm glow của pegs & bumpers
-      marblePegs.forEach(p => {
-        if (p.glow > 0) p.glow = Math.max(0, p.glow - dt * 2.5);
-      });
-      marbleBumpers.forEach(b => {
-        if (b.glow > 0) b.glow = Math.max(0, b.glow - dt * 2.5);
-      });
-
-      // 4. Trọng lực động (tối ưu cho đường đua dài 2800px)
-      // Duration chuẩn ~14000ms: gravity = 380 px/s^2
-      const gravity = Math.max(260, Math.min(520, (14000 / marbleRaceDuration) * 380));
-
-      const finishY = 2620;
-      const floorY = 2740;
-
-      // 5. Cập nhật từng viên bi
-      marbles.forEach(m => {
-        if (m.finished) {
-          // Bi đã cán đích: nghỉ ở máng thu đáy
-          m.y = Math.min(floorY, m.y + m.vy * effectiveDt);
-          m.vy = Math.max(0, m.vy - 300 * effectiveDt);
-          m.vx *= Math.pow(0.85, effectiveDt * 60);
-          m.x += m.vx * effectiveDt;
-          m.x = Math.max(70, Math.min(890, m.x));
-          return;
-        }
-
-        // Cập nhật vết đuôi ánh sáng (Trail)
-        if (m.trail.length > 5) m.trail.shift();
-        m.trail.push({ x: m.x, y: m.y });
-
-        // Trong phễu: bị chặn bởi cửa xả nếu chưa mở
-        if (m.y < 155) {
-          // Vách phễu trên: (100, 35) -> (380, 150) và (860, 35) -> (580, 150)
-          if (m.x < 380) {
-            const slopeY = 35 + ((m.x - 100) / (380 - 100)) * (150 - 35);
-            if (m.y > slopeY - m.radius) {
-              m.y = slopeY - m.radius;
-              m.vx += 40 * effectiveDt;
-            }
-          }
-          if (m.x > 580) {
-            const slopeY = 35 + ((860 - m.x) / (860 - 580)) * (150 - 35);
-            if (m.y > slopeY - m.radius) {
-              m.y = slopeY - m.radius;
-              m.vx -= 40 * effectiveDt;
-            }
-          }
-
-          // Cửa chắn ngang Y = 150 giữa 380 và 580
-          const gateHalfW = 100 * marbleGateProgress;
-          const openLeft = 480 - gateHalfW;
-          const openRight = 480 + gateHalfW;
-
-          if (m.y >= 148 - m.radius && m.y < 162) {
-            if (m.x < openLeft || m.x > openRight) {
-              m.y = 148 - m.radius;
-              m.vy = -Math.abs(m.vy) * 0.25;
-              m.vx += (480 - m.x) * 1.4 * effectiveDt;
-            }
-          }
-        }
-
-        // Gia tốc rơi tự do & ma sát
-        m.vy += gravity * effectiveDt;
-        m.vx *= Math.pow(0.988, effectiveDt * 60);
-
-        m.x += m.vx * effectiveDt;
-        m.y += m.vy * effectiveDt;
-
-        m.angle += m.angularVel * effectiveDt;
-        m.angularVel *= Math.pow(0.99, effectiveDt * 60);
-
-        // Vách tường 2 bên (X = 60 đến 900)
-        if (m.x < 60 + m.radius) {
-          m.x = 60 + m.radius;
-          m.vx = Math.abs(m.vx) * 0.7 + 15;
-          m.angularVel = m.vy * 0.05;
-        } else if (m.x > 900 - m.radius) {
-          m.x = 900 - m.radius;
-          m.vx = -Math.abs(m.vx) * 0.7 - 15;
-          m.angularVel = -m.vy * 0.05;
-        }
-
-        // --- VA CHẠM ĐINH (PEGS) ---
-        marblePegs.forEach(peg => {
-          // Tối ưu: chỉ tính đinh trong phạm vi Y gần viên bi
-          if (Math.abs(m.y - peg.y) > 28) return;
-
-          const dx = m.x - peg.x;
-          const dy = m.y - peg.y;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m.radius + peg.r;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            m.x = peg.x + nx * minDist;
-            m.y = peg.y + ny * minDist;
-
-            const dot = m.vx * nx + m.vy * ny;
-            if (dot < 0) {
-              const rest = 0.68;
-              m.vx -= (1 + rest) * dot * nx;
-              m.vy -= (1 + rest) * dot * ny;
-
-              m.vx += (Math.random() - 0.5) * 45;
-              m.angularVel = (Math.random() - 0.5) * 8;
-            }
-
-            peg.glow = 1.0;
-            MarbleAudio.playPeg(peg.noteIndex);
-
-            if (marbleParticles.length < 90) {
-              marbleParticles.push({
-                x: peg.x,
-                y: peg.y,
-                vx: (Math.random() - 0.5) * 70,
-                vy: (Math.random() - 0.5) * 70,
-                color: '#fef08a',
-                r: 2.2,
-                life: 0.25
-              });
-            }
-          }
-        });
-
-        // --- VA CHẠM ĐỆM BUMPER ---
-        marbleBumpers.forEach(bmp => {
-          if (Math.abs(m.y - bmp.cy) > 60) return;
-
-          const dx = m.x - bmp.cx;
-          const dy = m.y - bmp.cy;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m.radius + bmp.r;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            m.x = bmp.cx + nx * minDist;
-            m.y = bmp.cy + ny * minDist;
-
-            const speed = Math.max(180, Math.hypot(m.vx, m.vy));
-            m.vx = nx * speed * 1.4;
-            m.vy = ny * speed * 1.4;
-
-            bmp.glow = 1.0;
-            MarbleAudio.playBumper();
-
-            marbleShockwaves.push({
-              x: bmp.cx,
-              y: bmp.cy,
-              r: bmp.r,
-              maxR: bmp.r + 32,
-              color: bmp.color,
-              alpha: 1.0
-            });
-          }
-        });
-
-        // --- VA CHẠM THANH DỐC ZICZAC (RAMPS) ---
-        marbleRamps.forEach(ramp => {
-          const minY = Math.min(ramp.y1, ramp.y2) - 20;
-          const maxY = Math.max(ramp.y1, ramp.y2) + 20;
-          if (m.y < minY || m.y > maxY) return;
-
-          const rx1 = ramp.x1, ry1 = ramp.y1, rx2 = ramp.x2, ry2 = ramp.y2;
-          const lineLenSq = (rx2 - rx1) ** 2 + (ry2 - ry1) ** 2;
-          if (lineLenSq === 0) return;
-
-          let t = ((m.x - rx1) * (rx2 - rx1) + (m.y - ry1) * (ry2 - ry1)) / lineLenSq;
-          t = Math.max(0, Math.min(1, t));
-
-          const closestX = rx1 + t * (rx2 - rx1);
-          const closestY = ry1 + t * (ry2 - ry1);
-
-          const dx = m.x - closestX;
-          const dy = m.y - closestY;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m.radius + ramp.thickness * 0.5;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            m.x = closestX + nx * minDist;
-            m.y = closestY + ny * minDist;
-
-            const dot = m.vx * nx + m.vy * ny;
-            if (dot < 0) {
-              const rest = 0.56;
-              m.vx -= (1 + rest) * dot * nx;
-              m.vy -= (1 + rest) * dot * ny;
-
-              const tangentX = (rx2 - rx1) / Math.sqrt(lineLenSq);
-              const tangentY = (ry2 - ry1) / Math.sqrt(lineLenSq);
-              m.vx += tangentX * 35 * effectiveDt;
-              m.vy += tangentY * 35 * effectiveDt;
-            }
-          }
-        });
-
-        // --- VA CHẠM CÁNH CHONG CHÓNG (SPINNERS) ---
-        marbleSpinners.forEach(sp => {
-          if (Math.abs(m.y - sp.cy) > sp.r + 25) return;
-
-          for (let b = 0; b < sp.blades; b++) {
-            const bladeAngle = sp.angle + (b * (Math.PI * 2 / sp.blades));
-            const bx = sp.cx + Math.cos(bladeAngle) * sp.r;
-            const by = sp.cy + Math.sin(bladeAngle) * sp.r;
-
-            const lineLenSq = (bx - sp.cx) ** 2 + (by - sp.cy) ** 2;
-            let t = ((m.x - sp.cx) * (bx - sp.cx) + (m.y - sp.cy) * (by - sp.cy)) / lineLenSq;
-            t = Math.max(0, Math.min(1, t));
-
-            const closestX = sp.cx + t * (bx - sp.cx);
-            const closestY = sp.cy + t * (by - sp.cy);
-
-            const dx = m.x - closestX;
-            const dy = m.y - closestY;
-            const dist = Math.hypot(dx, dy);
-
-            if (dist < m.radius + 6 && dist > 0.001) {
-              const nx = dx / dist;
-              const ny = dy / dist;
-
-              m.x = closestX + nx * (m.radius + 6);
-              m.y = closestY + ny * (m.radius + 6);
-
-              const bladeSpeed = sp.rotSpeed * (t * sp.r);
-              const pushX = -Math.sin(bladeAngle) * bladeSpeed;
-              const pushY = Math.cos(bladeAngle) * bladeSpeed;
-
-              m.vx = nx * 150 + pushX * 1.3;
-              m.vy = ny * 150 + pushY * 1.3;
-
-              MarbleAudio.playSpinner();
-              break;
-            }
-          }
-        });
-
-        // Chống kẹt (Anti-stuck Nudge)
-        if (m.y > 180 && m.y < finishY - 30 && Math.hypot(m.vx, m.vy) < 18) {
-          m.stuckTimer += effectiveDt;
-          if (m.stuckTimer > 0.35) {
-            m.vx += (Math.random() - 0.5) * 90;
-            m.vy += 80;
-            m.stuckTimer = 0;
-          }
-        }
-
-        // --- CÁN ĐÍCH (CROSS FINISH LINE) ---
-        if (m.y >= finishY && !m.finished) {
-          m.finished = true;
-          m.finishRank = finishedMarbles.length + 1;
-          m.finishTime = performance.now();
-          finishedMarbles.push(m);
-
-          MarbleAudio.playFinishTick();
-
-          for (let p = 0; p < 8; p++) {
-            marbleParticles.push({
-              x: m.x,
-              y: finishY,
-              vx: (Math.random() - 0.5) * 130,
-              vy: -Math.random() * 95,
-              color: m.shine,
-              r: 3,
-              life: 0.45
-            });
-          }
-        }
-      });
-
-      // 6. Va chạm giữa các viên bi với nhau
-      for (let i = 0; i < marbles.length; i++) {
-        const m1 = marbles[i];
-        if (m1.finished) continue;
-
-        for (let j = i + 1; j < marbles.length; j++) {
-          const m2 = marbles[j];
-          if (m2.finished) continue;
-          if (Math.abs(m1.y - m2.y) > 35) continue; // Tối ưu spatial Y
-
-          const dx = m2.x - m1.x;
-          const dy = m2.y - m1.y;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m1.radius + m2.radius;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            const overlap = (minDist - dist) * 0.5;
-            m1.x -= nx * overlap;
-            m1.y -= ny * overlap;
-            m2.x += nx * overlap;
-            m2.y += ny * overlap;
-
-            const kx = m1.vx - m2.vx;
-            const ky = m1.vy - m2.vy;
-            const p = 2 * (nx * kx + ny * ky) / 2;
-
-            m1.vx -= p * nx * 0.88;
-            m1.vy -= p * ny * 0.88;
-            m2.vx += p * nx * 0.88;
-            m2.vy += p * ny * 0.88;
-          }
-        }
-      }
-
-      // 7. Cập nhật Particles & Shockwaves
-      for (let i = marbleParticles.length - 1; i >= 0; i--) {
-        const p = marbleParticles[i];
-        p.x += p.vx * effectiveDt;
-        p.y += p.vy * effectiveDt;
-        p.life -= effectiveDt;
-        if (p.life <= 0) marbleParticles.splice(i, 1);
-      }
-
-      for (let i = marbleShockwaves.length - 1; i >= 0; i--) {
-        const s = marbleShockwaves[i];
-        s.r += 65 * effectiveDt;
-        s.alpha -= 2.2 * effectiveDt;
-        if (s.alpha <= 0) marbleShockwaves.splice(i, 1);
-      }
-
-      // 8. CẬP NHẬT SMOOTH TRACKING CAMERA
-      const remainingActive = marbles.filter(m => !m.finished);
-      let targetCameraY = 0;
-
-      if (remainingActive.length > 0) {
-        if (remainingActive.length === 1 && marbleWinRule === 'last') {
-          // Bám sát viên bi cuối cùng
-          targetCameraY = remainingActive[0].y - MARBLE_VH * 0.45;
-        } else {
-          // Bám theo trung bình đàn bi
-          const avgY = remainingActive.reduce((acc, m) => acc + m.y, 0) / remainingActive.length;
-          targetCameraY = avgY - MARBLE_VH * 0.45;
-        }
-      } else {
-        // Toàn bộ đã cán đích: camera dừng ở vạch đích
-        targetCameraY = MARBLE_TRACK_HEIGHT - MARBLE_VH;
-      }
-
-      targetCameraY = Math.max(0, Math.min(MARBLE_TRACK_HEIGHT - MARBLE_VH, targetCameraY));
-      marbleCameraY += (targetCameraY - marbleCameraY) * 0.08;
-
-      // 9. CẬP NHẬT CHẶNG ĐUA HIỆN TẠI TRÊN STATUS
-      const currentCameraCenterY = marbleCameraY + MARBLE_VH * 0.5;
-      let activeCheckpointName = 'Đang vượt chướng ngại vật...';
-      for (let i = MARBLE_CHECKPOINTS.length - 1; i >= 0; i--) {
-        if (currentCameraCenterY >= MARBLE_CHECKPOINTS[i].y - 100) {
-          activeCheckpointName = `${MARBLE_CHECKPOINTS[i].icon} ${MARBLE_CHECKPOINTS[i].name}`;
-          break;
-        }
-      }
-
-      // 10. KIỂM TRA ĐIỀU KIỆN KẾT THÚC & GỌI TÊN
-      if (marbleWinRule === 'last') {
-        if (remainingActive.length === 1 && marbleGameState === 'dropping') {
-          marbleGameState = 'slowmo';
-          marbleSlowMo = 0.42;
-          const lastOne = remainingActive[0];
-          setMarbleStatus(`🔥 HỒI HỘP TỘT ĐỘ: [${lastOne.student.name}] LÀ VIÊN BI CUỐI CÙNG ĐANG CÁN ĐÍCH!`);
-        } else if (remainingActive.length === 0 && (marbleGameState === 'dropping' || marbleGameState === 'slowmo')) {
-          marbleGameState = 'finished';
-          marbleSlowMo = 1.0;
-          const finalWinnerMarble = finishedMarbles[finishedMarbles.length - 1];
-
-          MarbleAudio.playWinner();
-          spawnMarbleFireworks();
-
-          setMarbleStatus(`🎉 CHÚC MỪNG: [${finalWinnerMarble.student.name}] LÀ VIÊN BI VỀ ĐÍCH CUỐI CÙNG VÀ ĐƯỢC GỌI TÊN!`);
-
-          if (marbleFinishCallback) {
-            const cb = marbleFinishCallback;
-            marbleFinishCallback = null;
-            setTimeout(() => {
-              cb(finalWinnerMarble.student);
-            }, 1200);
-          }
-        } else if (marbleGameState === 'dropping') {
-          setMarbleStatus(`🌪️ ${activeCheckpointName} • Còn ${remainingActive.length} bi đang so kè nghẹt thở...`);
-        }
-      } else if (marbleWinRule === 'first') {
-        if (finishedMarbles.length >= 1 && marbleGameState === 'dropping') {
-          marbleGameState = 'finished';
-          const championMarble = finishedMarbles[0];
-
-          MarbleAudio.playWinner();
-          spawnMarbleFireworks();
-
-          setMarbleStatus(`🏆 CHÚC MỪNG: [${championMarble.student.name}] LÀ VIÊN BI VỀ ĐÍCH ĐẦU TIÊN VÀ ĐƯỢC GỌI TÊN!`);
-
-          if (marbleFinishCallback) {
-            const cb = marbleFinishCallback;
-            marbleFinishCallback = null;
-            setTimeout(() => {
-              cb(championMarble.student);
-            }, 1200);
-          }
-        }
-      }
-    }
-
-    function spawnMarbleFireworks() {
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 160,
-          spread: 90,
-          origin: { y: 0.6 }
-        });
-      }
-      for (let i = 0; i < 45; i++) {
-        marbleParticles.push({
-          x: MARBLE_VW * 0.5 + (Math.random() - 0.5) * 450,
-          y: 2620,
-          vx: (Math.random() - 0.5) * 260,
-          vy: -Math.random() * 240,
-          color: ['#fbbf24', '#f43f5e', '#38bdf8', '#a855f7', '#4ade80'][Math.floor(Math.random() * 5)],
-          r: 3.5,
-          life: 1.2
-        });
-      }
-    }
-
-    // ==========================================
-    // CANVAS RENDERER WITH SMOOTH TRACKING CAMERA
-    // ==========================================
-    function renderMarbleCanvas(now) {
-      const canvas = document.getElementById('marble-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-
-      const dt = Math.min(0.05, (now - (marbleLastTime || now)) / 1000);
-      marbleLastTime = now;
-
-      updateMarblePhysics(dt);
-
-      const w = canvas.width;
-      const h = canvas.height;
-
-      ctx.clearRect(0, 0, w, h);
-
-      // Scale Viewport (MARBLE_VW x MARBLE_VH) into Canvas
-      const scale = Math.min(w / MARBLE_VW, h / MARBLE_VH);
-      const offsetX = (w - MARBLE_VW * scale) * 0.5;
-      const offsetY = (h - MARBLE_VH * scale) * 0.5;
-
-      ctx.save();
-      ctx.translate(offsetX, offsetY);
-      ctx.scale(scale, scale);
-
-      // --- 1. VẼ CAMERA WORLD (CÓ DỊCH CHUYỂN THEO CAMERA Y) ---
-      ctx.save();
-      ctx.translate(0, -marbleCameraY);
-
-      // Nền Cyber Neon toàn bộ đường đua
-      const bgGrad = ctx.createLinearGradient(0, 0, 0, MARBLE_TRACK_HEIGHT);
-      bgGrad.addColorStop(0, '#040714');
-      bgGrad.addColorStop(0.2, '#090d24');
-      bgGrad.addColorStop(0.5, '#0d1330');
-      bgGrad.addColorStop(0.8, '#090d24');
-      bgGrad.addColorStop(1, '#040714');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, MARBLE_VW, MARBLE_TRACK_HEIGHT);
-
-      // Lưới đường đua perspective
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.04)';
-      ctx.lineWidth = 1;
-      for (let x = 60; x <= MARBLE_VW - 60; x += 50) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, MARBLE_TRACK_HEIGHT);
-        ctx.stroke();
-      }
-      for (let y = 50; y <= MARBLE_TRACK_HEIGHT; y += 50) {
-        ctx.beginPath();
-        ctx.moveTo(60, y);
-        ctx.lineTo(MARBLE_VW - 60, y);
-        ctx.stroke();
-      }
-
-      // Viền khung Outer Frame
-      ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(56, 25, MARBLE_VW - 112, MARBLE_TRACK_HEIGHT - 45);
-
-      // Đèn LED neon chạy dọc 2 mép
-      const ledTime = now * 0.003;
-      const ledGlow = (Math.sin(ledTime) + 1) * 0.5;
-      ctx.strokeStyle = `rgba(56, 189, 248, ${0.4 + ledGlow * 0.4})`;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(58, 28, MARBLE_VW - 116, MARBLE_TRACK_HEIGHT - 51);
-
-      // BIỂN BÁO CÁC CHẶNG ĐUA (STAGE CHECKPOINT BANNERS)
-      MARBLE_CHECKPOINTS.forEach((cp, idx) => {
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-        ctx.strokeStyle = ['#38bdf8', '#a855f7', '#ec4899', '#f59e0b', '#10b981', '#ef4444', '#fbbf24'][idx % 7];
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.roundRect(480 - 150, cp.y - 28, 300, 26, 8);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`${cp.icon} ${cp.name}`, 480, cp.y - 15);
-      });
-
-      // VÁCH PHỄU XUẤT PHÁT
-      ctx.strokeStyle = '#94a3b8';
-      ctx.lineWidth = 6;
-      ctx.beginPath();
-      ctx.moveTo(100, 35);
-      ctx.lineTo(380, 150);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(860, 35);
-      ctx.lineTo(580, 150);
-      ctx.stroke();
-
-      // CỬA XẢ CƠ KHÍ
-      const gateHalfW = 100 * marbleGateProgress;
-      const openLeft = 480 - gateHalfW;
-      const openRight = 480 + gateHalfW;
-
-      ctx.fillStyle = '#475569';
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 3;
-      ctx.fillRect(380, 147, openLeft - 380, 9);
-      ctx.strokeRect(380, 147, openLeft - 380, 9);
-
-      ctx.fillRect(openRight, 147, 580 - openRight, 9);
-      ctx.strokeRect(openRight, 147, 580 - openRight, 9);
-
-      // VẼ TẤT CẢ ĐINH (PEGS)
-      marblePegs.forEach(peg => {
-        // Chỉ vẽ đinh nằm trong hoặc gần khung hình camera
-        if (peg.y < marbleCameraY - 40 || peg.y > marbleCameraY + MARBLE_VH + 40) return;
-
-        if (peg.glow > 0) {
-          ctx.beginPath();
-          ctx.arc(peg.x, peg.y, peg.r + 10 * peg.glow, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(254, 240, 138, ${peg.glow * 0.55})`;
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(peg.x, peg.y, peg.r, 0, Math.PI * 2);
-        ctx.fillStyle = peg.glow > 0 ? '#fef08a' : '#cbd5e1';
-        ctx.fill();
-        ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(peg.x, peg.y, 2.2, 0, Math.PI * 2);
-        ctx.fillStyle = peg.glow > 0 ? '#ffffff' : '#38bdf8';
-        ctx.fill();
-      });
-
-      // VẼ TẤT CẢ DỐC ZICZAC (RAMPS)
-      marbleRamps.forEach(ramp => {
-        const maxY = Math.max(ramp.y1, ramp.y2);
-        const minY = Math.min(ramp.y1, ramp.y2);
-        if (maxY < marbleCameraY - 40 || minY > marbleCameraY + MARBLE_VH + 40) return;
-
-        ctx.strokeStyle = ramp.color;
-        ctx.lineWidth = ramp.thickness;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(ramp.x1, ramp.y1);
-        ctx.lineTo(ramp.x2, ramp.y2);
-        ctx.stroke();
-
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(ramp.x1, ramp.y1 - 2);
-        ctx.lineTo(ramp.x2, ramp.y2 - 2);
-        ctx.stroke();
-      });
-
-      // VẼ TẤT CẢ ĐỆM BUMPER
-      marbleBumpers.forEach(bmp => {
-        if (bmp.cy < marbleCameraY - 60 || bmp.cy > marbleCameraY + MARBLE_VH + 60) return;
-
-        if (bmp.glow > 0) {
-          ctx.beginPath();
-          ctx.arc(bmp.cx, bmp.cy, bmp.r + 9, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(56, 189, 248, ${bmp.glow * 0.4})`;
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(bmp.cx, bmp.cy, bmp.r, 0, Math.PI * 2);
-        ctx.fillStyle = bmp.glow > 0 ? '#f0fdf4' : '#0f172a';
-        ctx.fill();
-        ctx.strokeStyle = bmp.color;
-        ctx.lineWidth = 4;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(bmp.cx, bmp.cy, bmp.r * 0.45, 0, Math.PI * 2);
-        ctx.fillStyle = bmp.color;
-        ctx.fill();
-      });
-
-      // VẼ CÁNH CHONG CHÓNG XOAY (SPINNERS)
-      marbleSpinners.forEach(sp => {
-        if (sp.cy < marbleCameraY - 80 || sp.cy > marbleCameraY + MARBLE_VH + 80) return;
-
-        for (let b = 0; b < sp.blades; b++) {
-          const bladeAngle = sp.angle + (b * (Math.PI * 2 / sp.blades));
-          const bx = sp.cx + Math.cos(bladeAngle) * sp.r;
-          const by = sp.cy + Math.sin(bladeAngle) * sp.r;
-
-          ctx.strokeStyle = sp.color;
-          ctx.lineWidth = 6;
-          ctx.lineCap = 'round';
-          ctx.beginPath();
-          ctx.moveTo(sp.cx, sp.cy);
-          ctx.lineTo(bx, by);
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.arc(bx, by, 5, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(sp.cx, sp.cy, 11, 0, Math.PI * 2);
-        ctx.fillStyle = '#0f172a';
-        ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      });
-
-      // VẼ SÓNG SHOCKWAVES
-      marbleShockwaves.forEach(sw => {
-        ctx.beginPath();
-        ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(56, 189, 248, ${sw.alpha})`;
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-      });
-
-      // VẠCH ĐÍCH (FINISH LINE) & MÁNG THU BI (Y = 2620 & 2740)
-      const finishY = 2620;
-      const floorY = 2740;
-
-      // Cờ ca-rô
-      const checkW = 16;
-      for (let x = 60; x < 900; x += checkW) {
-        const isWhite = (Math.floor(x / checkW) % 2 === 0);
-        ctx.fillStyle = isWhite ? '#ffffff' : '#000000';
-        ctx.fillRect(x, finishY - 6, checkW, 12);
-      }
-
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 2;
-      ctx.shadowColor = '#ef4444';
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.moveTo(60, finishY);
-      ctx.lineTo(900, finishY);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(480 - 85, finishY - 20, 170, 20, 6);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#fecaca';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('🏁 VẠCH ĐÍCH FINISH 🏁', 480, finishY - 10);
-
-      // Sàn đón bi
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-      ctx.fillRect(60, floorY, 840, 24);
-      ctx.strokeStyle = '#475569';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(60, floorY, 840, 24);
-
-      // VẼ TOÀN BỘ VIÊN BI & TÊN HỌC SINH
-      const remaining = marbles.filter(m => !m.finished);
-      const isSoloLast = (remaining.length === 1 && marbleWinRule === 'last');
-      const lastMarble = isSoloLast ? remaining[0] : null;
-
-      // Spotlight viên bi cuối cùng
-      if (isSoloLast && lastMarble) {
-        const spotGrad = ctx.createRadialGradient(lastMarble.x, lastMarble.y, 10, lastMarble.x, lastMarble.y, 150);
-        spotGrad.addColorStop(0, 'rgba(250, 204, 21, 0.4)');
-        spotGrad.addColorStop(1, 'rgba(250, 204, 21, 0)');
-        ctx.fillStyle = spotGrad;
-        ctx.beginPath();
-        ctx.arc(lastMarble.x, lastMarble.y, 150, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = 'rgba(250, 204, 21, 0.1)';
-        ctx.beginPath();
-        ctx.moveTo(480, lastMarble.y - 300);
-        ctx.lineTo(lastMarble.x - 55, lastMarble.y);
-        ctx.lineTo(lastMarble.x + 55, lastMarble.y);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      marbles.forEach(m => {
-        // Chỉ vẽ bi nằm trong hoặc gần khung nhìn camera
-        if (m.y < marbleCameraY - 50 || m.y > marbleCameraY + MARBLE_VH + 50) return;
-
-        // Vết đuôi (Trail)
-        if (m.trail.length > 1 && !m.finished) {
-          ctx.strokeStyle = m.shine;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          m.trail.forEach((pt, i) => {
-            if (i === 0) ctx.moveTo(pt.x, pt.y);
-            else ctx.lineTo(pt.x, pt.y);
-          });
-          ctx.stroke();
-        }
-
-        // Bóng đổ
-        ctx.beginPath();
-        ctx.arc(m.x + 2, m.y + 3, m.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-        ctx.fill();
-
-        // 3D Sphere Radial Gradient
-        const ballGrad = ctx.createRadialGradient(
-          m.x - m.radius * 0.32,
-          m.y - m.radius * 0.32,
-          m.radius * 0.1,
-          m.x,
-          m.y,
-          m.radius
-        );
-        ballGrad.addColorStop(0, m.shine);
-        ballGrad.addColorStop(0.4, m.color);
-        ballGrad.addColorStop(1, m.dark);
-
-        ctx.beginPath();
-        ctx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
-        ctx.fillStyle = ballGrad;
-        ctx.fill();
-        ctx.strokeStyle = m.border;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Swirl ribbon
-        ctx.save();
-        ctx.translate(m.x, m.y);
-        ctx.rotate(m.angle);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, m.radius * 0.65, m.radius * 0.25, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.lineWidth = 1.8;
-        ctx.stroke();
-        ctx.restore();
-
-        // Specular dot
-        ctx.beginPath();
-        ctx.arc(m.x - m.radius * 0.32, m.y - m.radius * 0.32, m.radius * 0.22, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.fill();
-
-        // NHÃN TÊN HỌC SINH
-        ctx.save();
-        const isHighlight = (m === lastMarble);
-        const nameFontSize = isHighlight ? 14 : 11;
-        ctx.font = `bold ${nameFontSize}px sans-serif`;
-
-        const nameWidth = ctx.measureText(m.name).width;
-        const badgeW = nameWidth + (isHighlight ? 26 : 14);
-        const badgeH = isHighlight ? 24 : 18;
-        const badgeX = m.x - badgeW * 0.5;
-        const badgeY = m.y - m.radius - badgeH - 3;
-
-        ctx.fillStyle = isHighlight ? 'rgba(24, 18, 3, 0.95)' : 'rgba(15, 23, 42, 0.88)';
-        ctx.strokeStyle = isHighlight ? '#facc15' : m.border;
-        ctx.lineWidth = isHighlight ? 2.5 : 1.2;
-
-        ctx.beginPath();
-        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.fillStyle = isHighlight ? '#fef08a' : '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const displayText = isHighlight ? `👑 ${m.name}` : m.name;
-        ctx.fillText(displayText, m.x, badgeY + badgeH * 0.5);
-
-        // Huy hiệu thứ tự cán đích
-        if (m.finished && m.finishRank) {
-          ctx.fillStyle = '#f59e0b';
-          ctx.beginPath();
-          ctx.arc(m.x + m.radius * 0.8, m.y - m.radius * 0.8, 8, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#0f172a';
-          ctx.font = 'bold 9px sans-serif';
-          ctx.fillText(m.finishRank, m.x + m.radius * 0.8, m.y - m.radius * 0.8 + 1);
-        }
-
-        ctx.restore();
-      });
-
-      // Hạt pháo hoa
-      marbleParticles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-      });
-
-      ctx.restore(); // Kết thúc Camera Translation
-
-      // --- 2. VẼ HUD CỐ ĐỊNH TRÊN MÀN HÌNH (SCREEN-SPACE OVERLAY) ---
-
-      // Mini Stats góc trên trái
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.roundRect(65, 15, 270, 28, 8);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#e2e8f0';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`🎱 Tổng: ${marbles.length} | 🏁 Đã về: ${finishedMarbles.length} | 🌪️ Còn: ${remaining.length}`, 75, 29);
-
-      // Mini Badge Luật chơi góc trên phải
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-      ctx.strokeStyle = marbleWinRule === 'last' ? '#a855f7' : '#f59e0b';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.roundRect(MARBLE_VW - 310, 15, 245, 28, 8);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = marbleWinRule === 'last' ? '#d8b4fe' : '#fde047';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText(marbleWinRule === 'last' ? '🏁 Luật: Bi Về Cuối Cùng Gọi Tên' : '🏆 Luật: Bi Về Đầu Tiên Gọi Tên', MARBLE_VW - 75, 29);
-
-      // --- 3. MINIMAP TIẾN ĐỘ ĐƯỜNG ĐUA (VERTICAL RACE PROGRESS BAR) Ở MÉP PHẢI ---
-      const mapX = MARBLE_VW - 45;
-      const mapY = 55;
-      const mapW = 32;
-      const mapH = MARBLE_VH - 75;
-
-      // Khung thanh tiến độ
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(mapX, mapY, mapW, mapH, 10);
-      ctx.fill();
-      ctx.stroke();
-
-      // Vạch các chặng đua trên thanh tiến độ
-      MARBLE_CHECKPOINTS.forEach((cp) => {
-        const py = mapY + (cp.y / MARBLE_TRACK_HEIGHT) * mapH;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(mapX + 2, py);
-        ctx.lineTo(mapX + mapW - 2, py);
-        ctx.stroke();
-
-        ctx.font = '8px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(cp.icon, mapX + mapW * 0.5, py - 4);
-      });
-
-      // Vùng hiển thị Viewport của Camera
-      const camBoxY = mapY + (marbleCameraY / MARBLE_TRACK_HEIGHT) * mapH;
-      const camBoxH = Math.max(16, (MARBLE_VH / MARBLE_TRACK_HEIGHT) * mapH);
-      ctx.strokeStyle = '#facc15';
-      ctx.lineWidth = 1.8;
-      ctx.strokeRect(mapX + 2, camBoxY, mapW - 4, camBoxH);
-
-      // Chấm vị trí của các viên bi trên Minimap
-      marbles.forEach(m => {
-        const dotY = mapY + (m.y / MARBLE_TRACK_HEIGHT) * mapH;
-        ctx.beginPath();
-        ctx.arc(mapX + mapW * 0.5, dotY, 3, 0, Math.PI * 2);
-        ctx.fillStyle = m.finished ? '#4ade80' : m.shine;
-        ctx.fill();
-      });
-
-      ctx.restore();
-
-      marbleAnimId = requestAnimationFrame(renderMarbleCanvas);
-    }
-
-    function startMarbleGame(selectedStudent, durationMs, callback) {
-      if (marbleGameState === 'dropping' || marbleGameState === 'slowmo') return;
-
-      initMarbleGame(false);
-      marbleTargetWinner = selectedStudent;
-      marbleRaceDuration = Math.max(4000, durationMs || 6000);
-      marbleFinishCallback = callback;
-      marbleGameState = 'dropping';
-      marbleGateProgress = 0;
-      marbleSlowMo = 1.0;
-
-      MarbleAudio.playDrop();
-      setMarbleStatus('🌪️ Cửa xả đã mở! Toàn bộ bi đang ào ạt vượt mê cung chướng ngại vật...');
-
-      // Bias nhẹ để kịch bản rơi tự nhiên nhưng kịch tính:
-      // Nếu luật là 'last', viên bi của selectedStudent được cho hệ số bám dốc/va đập hơi cao hơn để xác suất về cuối rất lớn
-      if (marbleTargetWinner) {
-        const targetMarble = marbles.find(m => m.student.id === marbleTargetWinner.id);
-        if (targetMarble) {
-          if (marbleWinRule === 'last') {
-            targetMarble.vy *= 0.5;
-            targetMarble.y = Math.min(targetMarble.y, 45); // Bắt đầu ở tầng trên cùng của phễu
-          } else {
-            targetMarble.vy += 35;
-          }
-        }
-      }
-    }
-
-    // ==========================================
-    // PHYSICS SIMULATION ENGINE
-    // ==========================================
-    function updateMarblePhysics(dt) {
-      if (marbleGameState !== 'dropping' && marbleGameState !== 'slowmo') return;
-
-      const effectiveDt = dt * marbleSlowMo;
-
-      // 1. Cửa xả bi mở dần
-      if (marbleGateProgress < 1.0) {
-        marbleGateProgress = Math.min(1.0, marbleGateProgress + dt * 1.6);
-      }
-
-      // 2. Quay Spinners
-      marbleSpinners.forEach(sp => {
-        sp.angle += sp.rotSpeed * effectiveDt;
-      });
-
-      // 3. Giảm glow của pegs & bumpers
-      marblePegs.forEach(p => {
-        if (p.glow > 0) p.glow = Math.max(0, p.glow - dt * 2.8);
-      });
-      marbleBumpers.forEach(b => {
-        if (b.glow > 0) b.glow = Math.max(0, b.glow - dt * 2.8);
-      });
-
-      // 4. Trọng lực động thích ứng theo duration
-      // Chuẩn: 6000ms -> gravity = 460 px/s^2
-      const gravity = Math.max(300, Math.min(620, (6000 / marbleRaceDuration) * 460));
-
-      const finishY = 705;
-      const floorY = 772;
-
-      // 5. Cập nhật từng viên bi
-      marbles.forEach(m => {
-        if (m.finished) {
-          // Bi đã về đích: nằm thư giãn ở máng thu bi đáy
-          m.y = Math.min(floorY, m.y + m.vy * effectiveDt);
-          m.vy = Math.max(0, m.vy - 300 * effectiveDt);
-          m.vx *= Math.pow(0.85, effectiveDt * 60);
-          m.x += m.vx * effectiveDt;
-          m.x = Math.max(80, Math.min(1020, m.x));
-          return;
-        }
-
-        // Cập nhật vết đuôi ánh sáng (Trail)
-        if (m.trail.length > 5) m.trail.shift();
-        m.trail.push({ x: m.x, y: m.y });
-
-        // Trong phễu: bị chặn bởi cửa xả nếu cửa chưa mở hết
-        if (m.y < 118) {
-          // Vách nghiêng phễu trên:
-          // Trái: từ (120, 35) đến (440, 110)
-          if (m.x < 440) {
-            const slopeY = 35 + ((m.x - 120) / (440 - 120)) * (110 - 35);
-            if (m.y > slopeY - m.radius) {
-              m.y = slopeY - m.radius;
-              m.vx += 45 * effectiveDt;
-            }
-          }
-          // Phải: từ (980, 35) đến (660, 110)
-          if (m.x > 660) {
-            const slopeY = 35 + ((980 - m.x) / (980 - 660)) * (110 - 35);
-            if (m.y > slopeY - m.radius) {
-              m.y = slopeY - m.radius;
-              m.vx -= 45 * effectiveDt;
-            }
-          }
-
-          // Cửa chắn ngang Y = 110 giữa 440 và 660
-          const gateHalfWidth = 110 * marbleGateProgress;
-          const openLeft = 550 - gateHalfWidth;
-          const openRight = 550 + gateHalfWidth;
-
-          if (m.y >= 110 - m.radius && m.y < 125) {
-            if (m.x < openLeft || m.x > openRight) {
-              m.y = 110 - m.radius;
-              m.vy = -Math.abs(m.vy) * 0.3;
-              m.vx += (550 - m.x) * 1.5 * effectiveDt; // dạt về phía khe mở
-            }
-          }
-        }
-
-        // Áp dụng gia tốc trọng lực & ma sát không khí
-        m.vy += gravity * effectiveDt;
-        m.vx *= Math.pow(0.988, effectiveDt * 60);
-
-        m.x += m.vx * effectiveDt;
-        m.y += m.vy * effectiveDt;
-
-        m.angle += m.angularVel * effectiveDt;
-        m.angularVel *= Math.pow(0.99, effectiveDt * 60);
-
-        // Vách tường 2 bên (X = 72 đến 1028)
-        if (m.x < 72 + m.radius) {
-          m.x = 72 + m.radius;
-          m.vx = Math.abs(m.vx) * 0.72 + 15;
-          m.angularVel = m.vy * 0.05;
-        } else if (m.x > 1028 - m.radius) {
-          m.x = 1028 - m.radius;
-          m.vx = -Math.abs(m.vx) * 0.72 - 15;
-          m.angularVel = -m.vy * 0.05;
-        }
-
-        // --- VA CHẠM ĐINH (PEGS) ---
-        marblePegs.forEach(peg => {
-          const dx = m.x - peg.x;
-          const dy = m.y - peg.y;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m.radius + peg.r;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            // Đẩy ra khỏi đinh
-            m.x = peg.x + nx * minDist;
-            m.y = peg.y + ny * minDist;
-
-            const dot = m.vx * nx + m.vy * ny;
-            if (dot < 0) {
-              const rest = 0.68;
-              m.vx -= (1 + rest) * dot * nx;
-              m.vy -= (1 + rest) * dot * ny;
-
-              // Thêm lực chệch hướng ngẫu nhiên để bi nảy dzích zắc
-              m.vx += (Math.random() - 0.5) * 45;
-              m.angularVel = (Math.random() - 0.5) * 8;
-            }
-
-            peg.glow = 1.0;
-            MarbleAudio.playPeg(peg.noteIndex);
-
-            // Bắn tia lửa nhỏ
-            if (marbleParticles.length < 90) {
-              marbleParticles.push({
-                x: peg.x,
-                y: peg.y,
-                vx: (Math.random() - 0.5) * 80,
-                vy: (Math.random() - 0.5) * 80,
-                color: '#fef08a',
-                r: 2.2,
-                life: 0.25
-              });
-            }
-          }
-        });
-
-        // --- VA CHẠM ĐỆM BUMPER (PINBALL BUMPERS) ---
-        marbleBumpers.forEach(bmp => {
-          const dx = m.x - bmp.cx;
-          const dy = m.y - bmp.cy;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m.radius + bmp.r;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            m.x = bmp.cx + nx * minDist;
-            m.y = bmp.cy + ny * minDist;
-
-            // Lực nảy cực mạnh (restitution 1.35)
-            const speed = Math.max(160, Math.hypot(m.vx, m.vy));
-            m.vx = nx * speed * 1.35;
-            m.vy = ny * speed * 1.35;
-
-            bmp.glow = 1.0;
-            MarbleAudio.playBumper();
-
-            marbleShockwaves.push({
-              x: bmp.cx,
-              y: bmp.cy,
-              r: bmp.r,
-              maxR: bmp.r + 28,
-              color: bmp.color,
-              alpha: 1.0
-            });
-          }
-        });
-
-        // --- VA CHẠM THANH DỐC ZICZAC (RAMPS) ---
-        marbleRamps.forEach(ramp => {
-          const rx1 = ramp.x1, ry1 = ramp.y1, rx2 = ramp.x2, ry2 = ramp.y2;
-          const lineLenSq = (rx2 - rx1) ** 2 + (ry2 - ry1) ** 2;
-          if (lineLenSq === 0) return;
-
-          let t = ((m.x - rx1) * (rx2 - rx1) + (m.y - ry1) * (ry2 - ry1)) / lineLenSq;
-          t = Math.max(0, Math.min(1, t));
-
-          const closestX = rx1 + t * (rx2 - rx1);
-          const closestY = ry1 + t * (ry2 - ry1);
-
-          const dx = m.x - closestX;
-          const dy = m.y - closestY;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m.radius + ramp.thickness * 0.5;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            m.x = closestX + nx * minDist;
-            m.y = closestY + ny * minDist;
-
-            const dot = m.vx * nx + m.vy * ny;
-            if (dot < 0) {
-              const rest = 0.58;
-              m.vx -= (1 + rest) * dot * nx;
-              m.vy -= (1 + rest) * dot * ny;
-
-              // Trượt dốc
-              const tangentX = (rx2 - rx1) / Math.sqrt(lineLenSq);
-              const tangentY = (ry2 - ry1) / Math.sqrt(lineLenSq);
-              m.vx += tangentX * 30 * effectiveDt;
-              m.vy += tangentY * 30 * effectiveDt;
-            }
-          }
-        });
-
-        // --- VA CHẠM CÁNH CHONG CHÓNG (SPINNERS) ---
-        marbleSpinners.forEach(sp => {
-          for (let b = 0; b < sp.blades; b++) {
-            const bladeAngle = sp.angle + (b * (Math.PI * 2 / sp.blades));
-            const bx = sp.cx + Math.cos(bladeAngle) * sp.r;
-            const by = sp.cy + Math.sin(bladeAngle) * sp.r;
-
-            const lineLenSq = (bx - sp.cx) ** 2 + (by - sp.cy) ** 2;
-            let t = ((m.x - sp.cx) * (bx - sp.cx) + (m.y - sp.cy) * (by - sp.cy)) / lineLenSq;
-            t = Math.max(0, Math.min(1, t));
-
-            const closestX = sp.cx + t * (bx - sp.cx);
-            const closestY = sp.cy + t * (by - sp.cy);
-
-            const dx = m.x - closestX;
-            const dy = m.y - closestY;
-            const dist = Math.hypot(dx, dy);
-
-            if (dist < m.radius + 5 && dist > 0.001) {
-              const nx = dx / dist;
-              const ny = dy / dist;
-
-              m.x = closestX + nx * (m.radius + 5);
-              m.y = closestY + ny * (m.radius + 5);
-
-              // Vận tốc tiếp tuyến của cánh quạt tác dụng lên bi
-              const bladeSpeed = sp.rotSpeed * (t * sp.r);
-              const pushX = -Math.sin(bladeAngle) * bladeSpeed;
-              const pushY = Math.cos(bladeAngle) * bladeSpeed;
-
-              m.vx = nx * 140 + pushX * 1.2;
-              m.vy = ny * 140 + pushY * 1.2;
-
-              MarbleAudio.playSpinner();
-              break;
-            }
-          }
-        });
-
-        // Chống kẹt (Anti-stuck Nudge)
-        if (m.y > 140 && m.y < finishY - 30 && Math.hypot(m.vx, m.vy) < 18) {
-          m.stuckTimer += effectiveDt;
-          if (m.stuckTimer > 0.35) {
-            m.vx += (Math.random() - 0.5) * 85;
-            m.vy += 75;
-            m.stuckTimer = 0;
-          }
-        }
-
-        // --- CÁN ĐÍCH (CROSS FINISH LINE) ---
-        if (m.y >= finishY && !m.finished) {
-          m.finished = true;
-          m.finishRank = finishedMarbles.length + 1;
-          m.finishTime = performance.now();
-          finishedMarbles.push(m);
-
-          MarbleAudio.playFinishTick();
-
-          // Tia sáng khi cán đích
-          for (let p = 0; p < 8; p++) {
-            marbleParticles.push({
-              x: m.x,
-              y: finishY,
-              vx: (Math.random() - 0.5) * 120,
-              vy: -Math.random() * 90,
-              color: m.shine,
-              r: 2.8,
-              life: 0.4
-            });
-          }
-        }
-      });
-
-      // 6. Va chạm giữa các viên bi với nhau (Marble-to-Marble Collisions)
-      for (let i = 0; i < marbles.length; i++) {
-        const m1 = marbles[i];
-        if (m1.finished) continue;
-
-        for (let j = i + 1; j < marbles.length; j++) {
-          const m2 = marbles[j];
-          if (m2.finished) continue;
-
-          const dx = m2.x - m1.x;
-          const dy = m2.y - m1.y;
-          const dist = Math.hypot(dx, dy);
-          const minDist = m1.radius + m2.radius;
-
-          if (dist < minDist && dist > 0.001) {
-            const nx = dx / dist;
-            const ny = dy / dist;
-
-            // Đẩy tách ra
-            const overlap = (minDist - dist) * 0.5;
-            m1.x -= nx * overlap;
-            m1.y -= ny * overlap;
-            m2.x += nx * overlap;
-            m2.y += ny * overlap;
-
-            // Trao đổi xung lượng đàn hồi
-            const kx = m1.vx - m2.vx;
-            const ky = m1.vy - m2.vy;
-            const p = 2 * (nx * kx + ny * ky) / 2;
-
-            m1.vx -= p * nx * 0.88;
-            m1.vy -= p * ny * 0.88;
-            m2.vx += p * nx * 0.88;
-            m2.vy += p * ny * 0.88;
-          }
-        }
-      }
-
-      // 7. Cập nhật Particles & Shockwaves
-      for (let i = marbleParticles.length - 1; i >= 0; i--) {
-        const p = marbleParticles[i];
-        p.x += p.vx * effectiveDt;
-        p.y += p.vy * effectiveDt;
-        p.life -= effectiveDt;
-        if (p.life <= 0) marbleParticles.splice(i, 1);
-      }
-
-      for (let i = marbleShockwaves.length - 1; i >= 0; i--) {
-        const s = marbleShockwaves[i];
-        s.r += 65 * effectiveDt;
-        s.alpha -= 2.2 * effectiveDt;
-        if (s.alpha <= 0) marbleShockwaves.splice(i, 1);
-      }
-
-      // 8. KIỂM TRA ĐIỀU KIỆN KẾT THÚC & GỌI TÊN
-      const remainingActive = marbles.filter(m => !m.finished);
-
-      // --- CHẾ ĐỘ 1: VIÊN BI VỀ ĐÍCH CUỐI CÙNG (LAST MARBLE STANDING) ---
-      if (marbleWinRule === 'last') {
-        if (remainingActive.length === 1 && marbleGameState === 'dropping') {
-          // Kích hoạt Slow-Motion kịch tính cho viên bi cuối cùng!
-          marbleGameState = 'slowmo';
-          marbleSlowMo = 0.42;
-          const lastOne = remainingActive[0];
-          setMarbleStatus(`🔥 HỒI HỘP: [${lastOne.student.name}] LÀ VIÊN BI CUỐI CÙNG ĐANG CÁN ĐÍCH!`);
-        } else if (remainingActive.length === 0 && (marbleGameState === 'dropping' || marbleGameState === 'slowmo')) {
-          // Viên bi cuối cùng đã cán đích!
-          marbleGameState = 'finished';
-          marbleSlowMo = 1.0;
-          const finalWinnerMarble = finishedMarbles[finishedMarbles.length - 1];
-
-          MarbleAudio.playWinner();
-          spawnMarbleFireworks();
-
-          setMarbleStatus(`🎉 CHÚC MỪNG: [${finalWinnerMarble.student.name}] LÀ VIÊN BI VỀ ĐÍCH CUỐI CÙNG VÀ ĐƯỢC GỌI TÊN!`);
-
-          if (marbleFinishCallback) {
-            const cb = marbleFinishCallback;
-            marbleFinishCallback = null;
-            setTimeout(() => {
-              cb(finalWinnerMarble.student);
-            }, 1200);
-          }
-        }
-      }
-
-      // --- CHẾ ĐỘ 2: VIÊN BI VỀ ĐÍCH ĐẦU TIÊN (FIRST MARBLE TO FINISH) ---
-      else if (marbleWinRule === 'first') {
-        if (finishedMarbles.length >= 1 && marbleGameState === 'dropping') {
-          marbleGameState = 'finished';
-          const championMarble = finishedMarbles[0];
-
-          MarbleAudio.playWinner();
-          spawnMarbleFireworks();
-
-          setMarbleStatus(`🏆 CHÚC MỪNG: [${championMarble.student.name}] LÀ VIÊN BI VỀ ĐÍCH ĐẦU TIÊN VÀ ĐƯỢC GỌI TÊN!`);
-
-          if (marbleFinishCallback) {
-            const cb = marbleFinishCallback;
-            marbleFinishCallback = null;
-            setTimeout(() => {
-              cb(championMarble.student);
-            }, 1200);
-          }
-        }
-      }
-    }
-
-    function spawnMarbleFireworks() {
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 160,
-          spread: 90,
-          origin: { y: 0.6 }
-        });
-      }
-      for (let i = 0; i < 40; i++) {
-        marbleParticles.push({
-          x: MARBLE_VW * 0.5 + (Math.random() - 0.5) * 400,
-          y: 710,
-          vx: (Math.random() - 0.5) * 260,
-          vy: -Math.random() * 240,
-          color: ['#fbbf24', '#f43f5e', '#38bdf8', '#a855f7', '#4ade80'][Math.floor(Math.random() * 5)],
-          r: 3.5,
-          life: 1.2
-        });
-      }
-    }
-
-    // ==========================================
-    // CANVAS RENDERER
-    // ==========================================
-    function renderMarbleCanvas(now) {
-      const canvas = document.getElementById('marble-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-
-      const dt = Math.min(0.05, (now - (marbleLastTime || now)) / 1000);
-      marbleLastTime = now;
-
-      // Cập nhật vật lý
-      updateMarblePhysics(dt);
-
-      const w = canvas.width;
-      const h = canvas.height;
-
-      ctx.clearRect(0, 0, w, h);
-
-      // Tỉ lệ scale Virtual World vào Canvas
-      const scale = Math.min(w / MARBLE_VW, h / MARBLE_VH);
-      const offsetX = (w - MARBLE_VW * scale) * 0.5;
-      const offsetY = (h - MARBLE_VH * scale) * 0.5;
-
-      ctx.save();
-      ctx.translate(offsetX, offsetY);
-      ctx.scale(scale, scale);
-
-      // 1. Nền Neon Cyberpunk & Ánh Sao
-      const bgGrad = ctx.createLinearGradient(0, 0, 0, MARBLE_VH);
-      bgGrad.addColorStop(0, '#040714');
-      bgGrad.addColorStop(0.5, '#0b112c');
-      bgGrad.addColorStop(1, '#040714');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, MARBLE_VW, MARBLE_VH);
-
-      // Lưới perspective công nghệ
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
-      ctx.lineWidth = 1;
-      for (let x = 60; x <= MARBLE_VW - 60; x += 50) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, MARBLE_VH);
-        ctx.stroke();
-      }
-      for (let y = 40; y <= MARBLE_VH; y += 40) {
-        ctx.beginPath();
-        ctx.moveTo(60, y);
-        ctx.lineTo(MARBLE_VW - 60, y);
-        ctx.stroke();
-      }
-
-      // 2. Viền Stadium Outer Frame
-      ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)';
-      ctx.lineWidth = 4;
-      ctx.strokeRect(66, 25, MARBLE_VW - 132, MARBLE_VH - 45);
-
-      // Đèn LED neon chạy viền
-      const ledTime = now * 0.003;
-      const ledGlow = (Math.sin(ledTime) + 1) * 0.5;
-      ctx.strokeStyle = `rgba(56, 189, 248, ${0.4 + ledGlow * 0.4})`;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(69, 28, MARBLE_VW - 138, MARBLE_VH - 51);
-
-      // 3. Phễu Thả Bi & Cửa Xả Cơ Khí (Hopper & Gate)
-      // Vách dốc phễu kim loại
-      ctx.strokeStyle = '#94a3b8';
-      ctx.lineWidth = 6;
-      ctx.beginPath();
-      ctx.moveTo(120, 35);
-      ctx.lineTo(440, 110);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(980, 35);
-      ctx.lineTo(660, 110);
-      ctx.stroke();
-
-      // Cửa xả cơ khí (Gate Doors)
-      const gateHalfW = 110 * marbleGateProgress;
-      const openLeft = 550 - gateHalfW;
-      const openRight = 550 + gateHalfW;
-
-      // Cánh cửa trái
-      ctx.fillStyle = '#475569';
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 3;
-      ctx.fillRect(440, 107, openLeft - 440, 9);
-      ctx.strokeRect(440, 107, openLeft - 440, 9);
-
-      // Cánh cửa phải
-      ctx.fillRect(openRight, 107, 660 - openRight, 9);
-      ctx.strokeRect(openRight, 107, 660 - openRight, 9);
-
-      // Biển báo CỬA THẢ BI
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-      ctx.strokeStyle = '#f59e0b';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(475, 12, 150, 24, 8);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#fef08a';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('⚡ CỬA THẢ BI DZÍCH ZẮC', 550, 24);
-
-      // 4. Vẽ Rừng Đinh So Le (Plinko Pegs)
-      marblePegs.forEach(peg => {
-        // Vòng sáng khi va chạm
-        if (peg.glow > 0) {
-          ctx.beginPath();
-          ctx.arc(peg.x, peg.y, peg.r + 10 * peg.glow, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(254, 240, 138, ${peg.glow * 0.55})`;
-          ctx.fill();
-        }
-
-        // Đinh kim loại
-        ctx.beginPath();
-        ctx.arc(peg.x, peg.y, peg.r, 0, Math.PI * 2);
-        ctx.fillStyle = peg.glow > 0 ? '#fef08a' : '#cbd5e1';
-        ctx.fill();
-        ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Tâm đinh LED
-        ctx.beginPath();
-        ctx.arc(peg.x, peg.y, 2.2, 0, Math.PI * 2);
-        ctx.fillStyle = peg.glow > 0 ? '#ffffff' : '#38bdf8';
-        ctx.fill();
-      });
-
-      // 5. Vẽ Thanh Dốc Ziczac (Zigzag Ramps)
-      marbleRamps.forEach(ramp => {
-        ctx.strokeStyle = ramp.color;
-        ctx.lineWidth = ramp.thickness;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(ramp.x1, ramp.y1);
-        ctx.lineTo(ramp.x2, ramp.y2);
-        ctx.stroke();
-
-        // Gờ sáng neon trên lưng dốc
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath();
-        ctx.moveTo(ramp.x1, ramp.y1 - 2);
-        ctx.lineTo(ramp.x2, ramp.y2 - 2);
-        ctx.stroke();
-      });
-
-      // 6. Vẽ Đệm Nảy Bumper (Pinball Bumpers)
-      marbleBumpers.forEach(bmp => {
-        if (bmp.glow > 0) {
-          ctx.beginPath();
-          ctx.arc(bmp.cx, bmp.cy, bmp.r + 8, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(56, 189, 248, ${bmp.glow * 0.4})`;
-          ctx.fill();
-        }
-
-        ctx.beginPath();
-        ctx.arc(bmp.cx, bmp.cy, bmp.r, 0, Math.PI * 2);
-        ctx.fillStyle = bmp.glow > 0 ? '#f0fdf4' : '#0f172a';
-        ctx.fill();
-        ctx.strokeStyle = bmp.color;
-        ctx.lineWidth = 4;
-        ctx.stroke();
-
-        // Tâm lò xo
-        ctx.beginPath();
-        ctx.arc(bmp.cx, bmp.cy, bmp.r * 0.45, 0, Math.PI * 2);
-        ctx.fillStyle = bmp.color;
-        ctx.fill();
-      });
-
-      // 7. Vẽ Bánh Xe Chong Chóng Xoay (Spinners)
-      marbleSpinners.forEach(sp => {
-        // Cánh chong chóng
-        for (let b = 0; b < sp.blades; b++) {
-          const bladeAngle = sp.angle + (b * (Math.PI * 2 / sp.blades));
-          const bx = sp.cx + Math.cos(bladeAngle) * sp.r;
-          const by = sp.cy + Math.sin(bladeAngle) * sp.r;
-
-          ctx.strokeStyle = sp.color;
-          ctx.lineWidth = 6;
-          ctx.lineCap = 'round';
-          ctx.beginPath();
-          ctx.moveTo(sp.cx, sp.cy);
-          ctx.lineTo(bx, by);
-          ctx.stroke();
-
-          // Đầu bọc tròn
-          ctx.beginPath();
-          ctx.arc(bx, by, 5, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
-          ctx.fill();
-        }
-
-        // Trục giữa
-        ctx.beginPath();
-        ctx.arc(sp.cx, sp.cy, 10, 0, Math.PI * 2);
-        ctx.fillStyle = '#0f172a';
-        ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      });
-
-      // 8. Vẽ Sóng Chấn Động Shockwaves
-      marbleShockwaves.forEach(sw => {
-        ctx.beginPath();
-        ctx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(56, 189, 248, ${sw.alpha})`;
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-      });
-
-      // 9. VẠCH ĐÍCH (FINISH LINE) & MÁNG THU BI
-      const finishY = 705;
-      const floorY = 772;
-
-      // Dải cờ ca-rô vạch đích 🏁
-      const checkW = 16;
-      for (let x = 70; x < 1030; x += checkW) {
-        const isWhite = (Math.floor(x / checkW) % 2 === 0);
-        ctx.fillStyle = isWhite ? '#ffffff' : '#000000';
-        ctx.fillRect(x, finishY - 6, checkW, 12);
-      }
-
-      // Đèn laser neon vạch đích
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 2;
-      ctx.shadowColor = '#ef4444';
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.moveTo(70, finishY);
-      ctx.lineTo(1030, finishY);
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-
-      // Biển báo VẠCH ĐÍCH
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(475, finishY - 18, 150, 18, 6);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#fecaca';
-      ctx.font = 'bold 10px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('🏁 VẠCH ĐÍCH FINISH 🏁', 550, finishY - 9);
-
-      // Sàn máng thu bi
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
-      ctx.fillRect(70, floorY, 960, 20);
-      ctx.strokeStyle = '#475569';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(70, floorY, 960, 20);
-
-      // 10. VẼ TOÀN BỘ CÁC VIÊN BI & TÊN HỌC SINH
-      const remaining = marbles.filter(m => !m.finished);
-      const isSoloLast = (remaining.length === 1 && marbleWinRule === 'last');
-      const lastMarble = isSoloLast ? remaining[0] : null;
-
-      // Hiệu ứng Spotlight rọi thẳng vào viên bi cuối cùng khi Slow-Mo
-      if (isSoloLast && lastMarble) {
-        const spotGrad = ctx.createRadialGradient(lastMarble.x, lastMarble.y, 10, lastMarble.x, lastMarble.y, 140);
-        spotGrad.addColorStop(0, 'rgba(250, 204, 21, 0.35)');
-        spotGrad.addColorStop(1, 'rgba(250, 204, 21, 0)');
-        ctx.fillStyle = spotGrad;
-        ctx.beginPath();
-        ctx.arc(lastMarble.x, lastMarble.y, 140, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Chùm sáng từ trên rọi xuống
-        ctx.fillStyle = 'rgba(250, 204, 21, 0.08)';
-        ctx.beginPath();
-        ctx.moveTo(550, 20);
-        ctx.lineTo(lastMarble.x - 45, lastMarble.y);
-        ctx.lineTo(lastMarble.x + 45, lastMarble.y);
-        ctx.closePath();
-        ctx.fill();
-      }
-
-      marbles.forEach(m => {
-        // Vết đuôi (Trail)
-        if (m.trail.length > 1 && !m.finished) {
-          ctx.strokeStyle = m.shine;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          m.trail.forEach((pt, i) => {
-            if (i === 0) ctx.moveTo(pt.x, pt.y);
-            else ctx.lineTo(pt.x, pt.y);
-          });
-          ctx.stroke();
-        }
-
-        // Bóng đổ của viên bi
-        ctx.beginPath();
-        ctx.arc(m.x + 2, m.y + 3, m.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-        ctx.fill();
-
-        // Thân viên bi 3D Gradient
-        const ballGrad = ctx.createRadialGradient(
-          m.x - m.radius * 0.32,
-          m.y - m.radius * 0.32,
-          m.radius * 0.1,
-          m.x,
-          m.y,
-          m.radius
-        );
-        ballGrad.addColorStop(0, m.shine);
-        ballGrad.addColorStop(0.4, m.color);
-        ballGrad.addColorStop(1, m.dark);
-
-        ctx.beginPath();
-        ctx.arc(m.x, m.y, m.radius, 0, Math.PI * 2);
-        ctx.fillStyle = ballGrad;
-        ctx.fill();
-        ctx.strokeStyle = m.border;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Hoa văn bi ve (Swirl Ribbon) xoay theo m.angle
-        ctx.save();
-        ctx.translate(m.x, m.y);
-        ctx.rotate(m.angle);
-        ctx.beginPath();
-        ctx.ellipse(0, 0, m.radius * 0.65, m.radius * 0.25, 0, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.lineWidth = 1.8;
-        ctx.stroke();
-        ctx.restore();
-
-        // Đốm sáng phản xạ trắng (Specular Dot)
-        ctx.beginPath();
-        ctx.arc(m.x - m.radius * 0.32, m.y - m.radius * 0.32, m.radius * 0.22, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.fill();
-
-        // VẼ NHÃN TÊN HỌC SINH (NAME BADGE)
-        ctx.save();
-        const isHighlight = (m === lastMarble);
-        const nameFontSize = isHighlight ? 14 : 11;
-        ctx.font = `bold ${nameFontSize}px sans-serif`;
-
-        const nameWidth = ctx.measureText(m.name).width;
-        const badgeW = nameWidth + (isHighlight ? 26 : 14);
-        const badgeH = isHighlight ? 24 : 18;
-        const badgeX = m.x - badgeW * 0.5;
-        const badgeY = m.y - m.radius - badgeH - 3;
-
-        // Nền nhãn tên
-        ctx.fillStyle = isHighlight ? 'rgba(24, 18, 3, 0.95)' : 'rgba(15, 23, 42, 0.88)';
-        ctx.strokeStyle = isHighlight ? '#facc15' : m.border;
-        ctx.lineWidth = isHighlight ? 2.5 : 1.2;
-
-        ctx.beginPath();
-        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
-        ctx.fill();
-        ctx.stroke();
-
-        // Chữ tên học sinh
-        ctx.fillStyle = isHighlight ? '#fef08a' : '#ffffff';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const displayText = isHighlight ? `👑 ${m.name}` : m.name;
-        ctx.fillText(displayText, m.x, badgeY + badgeH * 0.5);
-
-        // Huy hiệu xếp hạng nếu đã về đích
-        if (m.finished && m.finishRank) {
-          ctx.fillStyle = '#f59e0b';
-          ctx.beginPath();
-          ctx.arc(m.x + m.radius * 0.8, m.y - m.radius * 0.8, 8, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = '#0f172a';
-          ctx.font = 'bold 9px sans-serif';
-          ctx.fillText(m.finishRank, m.x + m.radius * 0.8, m.y - m.radius * 0.8 + 1);
-        }
-
-        ctx.restore();
-      });
-
-      // 11. Vẽ Hạt Tia Lửa / Pháo Hoa (Particles)
-      marbleParticles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-      });
-
-      // 12. HUD Overlay trên Virtual Canvas
-      // Mini Stats góc trên trái
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.roundRect(75, 35, 260, 28, 8);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#e2e8f0';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`🎱 Tổng: ${marbles.length} | 🏁 Đã về: ${finishedMarbles.length} | 🌪️ Còn: ${remaining.length}`, 85, 49);
-
-      // Mini Badge Luật chơi góc trên phải
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-      ctx.strokeStyle = marbleWinRule === 'last' ? '#a855f7' : '#f59e0b';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.roundRect(MARBLE_VW - 335, 35, 260, 28, 8);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = marbleWinRule === 'last' ? '#d8b4fe' : '#fde047';
-      ctx.font = 'bold 11px sans-serif';
-      ctx.textAlign = 'right';
-      ctx.fillText(marbleWinRule === 'last' ? '🏁 Luật: Bi Về Cuối Cùng Gọi Tên' : '🏆 Luật: Bi Về Đầu Tiên Gọi Tên', MARBLE_VW - 85, 49);
-
-      ctx.restore();
-
-      // Tiếp tục vòng lặp animation
-      marbleAnimId = requestAnimationFrame(renderMarbleCanvas);
-    }
-
-
     // 14. MAIN START SPIN CONTROLLER (ALL 9 MODES)
     // ==========================================
     function startSpin() {
@@ -34212,13 +33984,28 @@
         return;
       }
 
-      // 18. Đua Bi Dzích Zắc (Plinko Marble Race)
-      if (mode === 'marble') {
+      // 18. Đua Thuyền Rồng (Dragon Boat Race)
+      if (mode === 'dragon_boat') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
-        const raceDuration = Math.max(10000, durationSec * 1000);
-        btn.innerHTML = '<i class="fa-solid fa-bowling-ball fa-spin"></i> ĐANG ĐUA BI DZÍCH ZẮC...';
-        if (typeof startMarbleGame === 'function') {
-          startMarbleGame(selected, raceDuration, (actualWinner) => {
+        const raceDuration = Math.max(3000, durationSec * 1000);
+        btn.innerHTML = "🚣 ĐANG ĐUA THUYỀN...";
+        if (typeof startDragonBoatRace === 'function') {
+          startDragonBoatRace(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
+      // 19. Nhảy Bao Bố (Sack Race)
+      if (mode === 'sack_race') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3000, durationSec * 1000);
+        btn.innerHTML = "🦘 ĐANG BẬT NHẢY...";
+        if (typeof startSackRace === 'function') {
+          startSackRace(selected, raceDuration, (actualWinner) => {
             const finalWinner = actualWinner || selected;
             currentWinner = finalWinner;
             showWinnerResult(finalWinner, btn);
@@ -34296,8 +34083,10 @@
           btnElement.innerHTML = '<i class="fa-solid fa-drum"></i> TIẾP TỤC MÚA LÂN';
         } else if (mode === 'penalty') {
           btnElement.innerHTML = '<i class="fa-solid fa-futbol"></i> TIẾP TỤC SÚT PENALTY';
-        } else if (mode === 'marble') {
-          btnElement.innerHTML = '<i class="fa-solid fa-bowling-ball"></i> TIẾP TỤC THẢ BI';
+        } else if (mode === 'dragon_boat') {
+          btnElement.innerHTML = '<i class="fa-solid fa-water"></i> TIẾP TỤC ĐUA THUYỀN';
+        } else if (mode === 'sack_race') {
+          btnElement.innerHTML = '<i class="fa-solid fa-person-running"></i> TIẾP TỤC BẬT NHẢY';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
@@ -34363,6 +34152,8 @@
         else if (mode === 'fishing') initFishingGame(true);
         else if (mode === 'lion') initLionGame(true);
         else if (mode === 'penalty') initPenaltyGame(true);
+        else if (mode === 'dragon_boat') initDragonBoatRace(true);
+        else if (mode === 'sack_race') initSackRace(true);
       }
     }
 
@@ -34377,10 +34168,10 @@
           text = `Chúc mừng bạn ${currentWinner.name} đã nhận được bao lì xì may mắn đầu năm!`;
         } else if (document.getElementById('spin-mode')?.value === 'penalty') {
           text = `Học sinh ${currentWinner.name} đã sút trượt penalty và được gọi tên lên bảng!`;
-        } else if (document.getElementById('spin-mode')?.value === 'marble') {
-          text = (typeof marbleWinRule !== 'undefined' && marbleWinRule === 'first')
-            ? `Chúc mừng bạn ${currentWinner.name} đã là viên bi về đích đầu tiên và giành chiến thắng!`
-            : `Chúc mừng bạn ${currentWinner.name} đã là viên bi về đích cuối cùng và được gọi tên!`;
+        } else if (document.getElementById('spin-mode')?.value === 'dragon_boat') {
+          text = `Chúc mừng bạn ${currentWinner.name} đã cùng đội thuyền rồng rẽ sóng về đích!`;
+        } else if (document.getElementById('spin-mode')?.value === 'sack_race') {
+          text = `Chúc mừng bạn ${currentWinner.name} đã giành chiến thắng trong chặng đua nhảy bao bố!`;
         }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
