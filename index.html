@@ -25488,7 +25488,7 @@
       const dt = sackLastFrameTime ? Math.min((now - sackLastFrameTime) / 1000, 0.04) : 0.016;
       sackLastFrameTime = now;
 
-      // 1. CẬP NHẬT VẬT LÝ BẬT NHẢY BAO BỐ (HOP PHYSICS)
+      // 1. CẬP NHẬT VẬT LÝ BẬT NHẢY BAO BỐ (SMOOTH ORGANIC HOP PHYSICS)
       if (sackRaceState === 'racing') {
         const elapsed = now - sackStartTime;
         const timeProgress = Math.min(1, elapsed / sackRaceDuration);
@@ -25496,14 +25496,14 @@
         const totalDist = sackFinishX - sackStartX;
         const nominalSpeed = totalDist / (sackRaceDuration / 1000);
 
-        if (now - sackLastHopSoundTime > 320) {
+        if (now - sackLastHopSoundTime > 310) {
           sackLastHopSoundTime = now;
           SackRaceAudio.playHop();
         }
 
         sackRunners.forEach(r => {
           if (!r.hasFinished) {
-            const accel = Math.min(1, elapsed / 700);
+            const accel = Math.min(1, elapsed / 650);
 
             let speedRatio = 1.0;
             if (timeProgress < 0.55) {
@@ -25529,43 +25529,68 @@
               }
             }
 
-            const hopFreq = 3.6;
-            r.hopProgress = (r.hopProgress + hopFreq * dt) % 1.0;
+            // Nhịp bật nhảy tự nhiên riêng cho từng VĐV (tránh trùng lặp đồng bộ)
+            const runnerFreq = 3.4 + ((r.lane * 3) % 4) * 0.12;
+            r.hopProgress = (r.hopProgress + runnerFreq * dt) % 1.0;
             const p = r.hopProgress;
 
             let jumpY = 0;
             let sqX = 1.0;
             let sqY = 1.0;
-            let tilt = 0.05;
+            let tilt = 0.04;
+            let forwardThrust = 0.45;
 
-            if (p < 0.22) {
-              const subP = p / 0.22;
-              sqX = 1.0 + Math.sin(subP * Math.PI) * 0.16;
-              sqY = 1.0 - Math.sin(subP * Math.PI) * 0.16;
-              jumpY = Math.sin(subP * Math.PI) * 3;
-              tilt = -0.05;
-            } else if (p < 0.78) {
-              const subP = (p - 0.22) / 0.56;
-              jumpY = -Math.sin(subP * Math.PI) * 28;
-              sqX = 0.90 + Math.sin(subP * Math.PI) * 0.05;
-              sqY = 1.15 + Math.sin(subP * Math.PI) * 0.08;
-              tilt = 0.14;
-            } else {
-              const subP = (p - 0.78) / 0.22;
-              sqX = 1.15 * (1 - subP) + 1.0 * subP;
-              sqY = 0.85 * (1 - subP) + 1.0 * subP;
+            // Giai đoạn 1: Chùng gối nén đà trước khi phóng lên (p: 0 -> 0.16)
+            if (p < 0.16) {
+              const subP = p / 0.16;
+              const squat = Math.sin(subP * Math.PI);
+              jumpY = squat * 3.2; // Hạ thấp trọng tâm
+              sqX = 1.0 + squat * 0.14; // Hông phình ngang
+              sqY = 1.0 - squat * 0.14; // Cơ thể nén lại
+              tilt = -0.05 * squat; // Ngả nhẹ lấy thế
+              forwardThrust = 0.35 + 0.3 * subP;
+            }
+            // Giai đoạn 2: Bật tung lên không trung với đường bay đạn đạo mượt mà (p: 0.16 -> 0.74)
+            else if (p < 0.74) {
+              const subP = (p - 0.16) / 0.58;
+              const arc = Math.sin(subP * Math.PI);
+              const maxH = 28 + (r.lane % 3) * 3;
+              jumpY = -Math.pow(arc, 0.94) * maxH;
+
+              // Kéo giãn cơ thể theo trục dọc khi bay trên không
+              sqX = 1.0 - arc * 0.10;
+              sqY = 1.0 + arc * 0.14;
+
+              // Nghiêng người lao về phía trước khí động học
+              tilt = 0.07 + arc * 0.10;
+              // Gia tốc tiến về phía trước mạnh nhất khi đang trên không
+              forwardThrust = 0.6 + 1.25 * arc;
+            }
+            // Giai đoạn 3: Tiếp đất đàn hồi với dao động tắt dần (p: 0.74 -> 1.0)
+            else {
+              const subP = (p - 0.74) / 0.26;
+              const decay = Math.exp(-subP * 4.5);
+              const rebound = Math.sin(subP * Math.PI * 1.6) * decay;
               jumpY = 0;
-              tilt = 0;
+              sqX = 1.0 + rebound * 0.18;
+              sqY = 1.0 - rebound * 0.18;
+              tilt = 0.04 * (1 - subP);
+              forwardThrust = 0.35 * (1 - subP) + 0.45 * subP;
 
-              if (Math.random() < 0.35) {
+              // Bắn tia cỏ xanh và bụi đất khi bao bố chạm đất
+              if (subP < 0.32 && Math.random() < 0.48) {
                 sackGrassParticles.push({
-                  x: r.x - 12,
-                  y: r.baseY + 12,
-                  vx: -(1 + Math.random() * 2),
-                  vy: -(1 + Math.random() * 2),
-                  size: 2 + Math.random() * 2,
-                  alpha: 0.8,
-                  color: Math.random() < 0.5 ? '#86efac' : '#d97706'
+                  x: r.x - 12 + (Math.random() * 6 - 3),
+                  y: r.baseY + 14,
+                  vx: -(1.6 + Math.random() * 3.4),
+                  vy: -(1.4 + Math.random() * 2.8),
+                  rot: Math.random() * Math.PI,
+                  vRot: (Math.random() - 0.5) * 8,
+                  len: 4 + Math.random() * 5,
+                  width: 1.5 + Math.random() * 1.5,
+                  alpha: 0.95,
+                  type: Math.random() < 0.65 ? 'grass' : 'dirt',
+                  color: Math.random() < 0.65 ? (Math.random() < 0.5 ? '#4ade80' : '#16a34a') : (Math.random() < 0.5 ? '#b45309' : '#78350f')
                 });
               }
             }
@@ -25575,7 +25600,6 @@
             r.squashY = sqY;
             r.tilt = tilt;
 
-            const forwardThrust = (p >= 0.22 && p < 0.78) ? 1.55 : 0.35;
             r.vx = nominalSpeed * speedRatio * forwardThrust * accel;
             r.x += r.vx * dt;
 
@@ -25611,6 +25635,15 @@
         });
 
         updateSackLeaderboard();
+      } else {
+        // Trạng thái chờ / đếm ngược: VĐV nhún nhảy khởi động háo hức
+        sackRunners.forEach(r => {
+          const idleP = (now * 0.005 + r.lane * 1.3);
+          r.hopY = Math.sin(idleP) * 1.8;
+          r.squashX = 1.0 - Math.sin(idleP) * 0.035;
+          r.squashY = 1.0 + Math.sin(idleP) * 0.035;
+          r.tilt = Math.sin(idleP * 0.7) * 0.02;
+        });
       }
 
       // 2. CAMERA THEO DÕI VĐV DẪN ĐẦU / QUÁN QUÂN
@@ -25818,123 +25851,363 @@
       ctx.save();
       ctx.translate(r.x, r.baseY);
 
-      const shadowScale = Math.max(0.4, 1.0 + r.hopY / 50);
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.28)';
+      // 1. SHADOW (BÓNG ĐỔ TIẾP ĐẤT ĐỘNG THEO ĐỘ CAO BẬT NHẢY)
+      const airHeight = Math.max(0, -r.hopY);
+      const groundShadowScale = Math.max(0.45, 1.0 - airHeight * 0.015);
+      const shadowAlpha = Math.max(0.12, 0.38 - airHeight * 0.008);
+      
+      // Bóng đổ tiếp xúc đậm nét
+      ctx.fillStyle = 'rgba(0, 0, 0, ' + shadowAlpha + ')';
       ctx.beginPath();
-      ctx.ellipse(0, 16, 16 * shadowScale, 6 * shadowScale, 0, 0, Math.PI * 2);
+      ctx.ellipse(0, 16, 18 * groundShadowScale, 6.5 * groundShadowScale, 0, 0, Math.PI * 2);
       ctx.fill();
 
+      // Vầng bóng mờ khuếch tán rộng
+      ctx.fillStyle = 'rgba(0, 0, 0, ' + (shadowAlpha * 0.4) + ')';
+      ctx.beginPath();
+      ctx.ellipse(0, 16, 24 * groundShadowScale, 9 * groundShadowScale, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. BIẾN ĐỔI CHUYỂN ĐỘNG CỦA VẬN ĐỘNG VIÊN
       ctx.translate(0, r.hopY);
       ctx.rotate(r.tilt);
       ctx.scale(r.squashX, r.squashY);
 
       const p = r.palette;
 
-      // 1. CHIẾC BAO BỐ GAI DÂN GIAN (BURLAP SACK)
-      const sackGrad = ctx.createLinearGradient(-15, 0, 15, 16);
-      sackGrad.addColorStop(0, p.sack);
-      sackGrad.addColorStop(0.5, '#c28853');
-      sackGrad.addColorStop(1, '#78461f');
+      // 3. CHIẾC BAO BỐ GAI DÂN GIAN CHÂN THỰC (REALISTIC BURLAP / JUTE SACK)
+      ctx.save();
+      const sackTop = -5;
+      const sackBottom = 18;
+      
+      // Đổ bóng gradient chất liệu vải bố gai dệt thô (3D cylindrical shading)
+      const sackGrad = ctx.createLinearGradient(-18, 0, 18, 10);
+      sackGrad.addColorStop(0, '#8c5828');
+      sackGrad.addColorStop(0.15, '#b6834d');
+      sackGrad.addColorStop(0.45, '#d4a373');
+      sackGrad.addColorStop(0.75, '#b07d47');
+      sackGrad.addColorStop(1, '#663d18');
       ctx.fillStyle = sackGrad;
+
       ctx.beginPath();
-      ctx.roundRect(-15, -4, 30, 22, [4, 4, 10, 10]);
+      // Bắt đầu từ mép tai bao trái
+      ctx.moveTo(-16, sackTop);
+      // Miệng bao võng nhẹ tự nhiên ở giữa do lực kéo
+      ctx.quadraticCurveTo(0, sackTop + 2.5, 16, sackTop);
+      // Hông bao bên phải phồng tự nhiên theo dáng đứng
+      ctx.bezierCurveTo(19, sackTop + 6, 19, sackBottom - 5, 15, sackBottom);
+      // Đáy bao nhô nhẹ theo bàn chân vận động viên
+      ctx.quadraticCurveTo(7, sackBottom + 2.5, 0, sackBottom + 1);
+      ctx.quadraticCurveTo(-7, sackBottom + 2.5, -15, sackBottom);
+      // Hông bao bên trái
+      ctx.bezierCurveTo(-19, sackBottom - 5, -19, sackTop + 6, -16, sackTop);
+      ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = '#e2b384';
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
+      // Vân dệt sợi đay/gai bao bố (Woven texture cross-hatch)
+      ctx.save();
+      ctx.clip(); // Giới hạn vân chỉ nằm bên trong bao bố
 
-      ctx.strokeStyle = 'rgba(80, 40, 10, 0.25)';
+      // Sợi đay ngang
+      ctx.strokeStyle = 'rgba(70, 35, 10, 0.22)';
       ctx.lineWidth = 1;
+      for (let y = sackTop + 2; y <= sackBottom; y += 3) {
+        ctx.beginPath();
+        const curve = Math.sin((y - sackTop) / (sackBottom - sackTop) * Math.PI) * 2;
+        ctx.moveTo(-18, y + curve);
+        ctx.lineTo(18, y + curve);
+        ctx.stroke();
+      }
+
+      // Sợi đay dọc
+      ctx.strokeStyle = 'rgba(255, 235, 200, 0.16)';
+      ctx.lineWidth = 0.8;
+      for (let x = -15; x <= 15; x += 3.5) {
+        ctx.beginPath();
+        ctx.moveTo(x, sackTop);
+        ctx.lineTo(x * 0.95, sackBottom + 2);
+        ctx.stroke();
+      }
+
+      // Nếp gấp căng cơ học (Tension wrinkles) khi 2 tay kéo mạnh miệng bao lên
+      ctx.strokeStyle = 'rgba(60, 25, 5, 0.35)';
+      ctx.lineWidth = 1.6;
       ctx.beginPath();
-      ctx.moveTo(-11, 2); ctx.lineTo(-11, 14);
-      ctx.moveTo(0, 1); ctx.lineTo(0, 15);
-      ctx.moveTo(11, 2); ctx.lineTo(11, 14);
+      // Nếp gấp chữ V tự nhiên từ tay xuống bụng
+      ctx.moveTo(-13, sackTop + 4);
+      ctx.quadraticCurveTo(0, sackTop + 10, 13, sackTop + 4);
+      ctx.moveTo(-11, sackTop + 9);
+      ctx.quadraticCurveTo(0, sackTop + 14, 11, sackTop + 9);
       ctx.stroke();
 
-      ctx.fillStyle = '#fed7aa';
+      // Điểm nhấn mũi giày tì đáy bao
+      ctx.fillStyle = 'rgba(40, 15, 5, 0.3)';
       ctx.beginPath();
-      ctx.arc(-14, -2, 3.5, 0, Math.PI * 2);
-      ctx.arc(14, -2, 3.5, 0, Math.PI * 2);
+      ctx.ellipse(-7, sackBottom - 1, 4, 2, 0, 0, Math.PI * 2);
+      ctx.ellipse(7, sackBottom - 1, 4, 2, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // 2. THÂN HỌC SINH (CHIBI ATHLETE BODY)
-      ctx.fillStyle = p.shirt;
+      ctx.restore(); // Kết thúc clip vân bao bố
+
+      // Viền miệng bao bố may chỉ thừng / gập mép dày dặn
+      ctx.strokeStyle = '#e2b582';
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.roundRect(-12, -16, 24, 14, [4, 4, 0, 0]);
+      ctx.moveTo(-16, sackTop);
+      ctx.quadraticCurveTo(0, sackTop + 2.5, 16, sackTop);
+      ctx.stroke();
+
+      // Tai xách bao bố 2 bên mà tay nắm chặt
+      ctx.fillStyle = '#b07d47';
+      ctx.strokeStyle = '#5a3412';
+      ctx.lineWidth = 1;
+      // Tai trái
+      ctx.beginPath();
+      ctx.moveTo(-16, sackTop);
+      ctx.lineTo(-19, sackTop - 4);
+      ctx.lineTo(-14, sackTop - 1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // Tai phải
+      ctx.beginPath();
+      ctx.moveTo(16, sackTop);
+      ctx.lineTo(19, sackTop - 4);
+      ctx.lineTo(14, sackTop - 1);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.restore();
+
+      // 4. ÁO THỂ THAO VẬN ĐỘNG VIÊN (ATHLETIC JERSEY & BIB)
+      ctx.save();
+      const shirtGrad = ctx.createLinearGradient(-12, -18, 12, -4);
+      shirtGrad.addColorStop(0, p.shirt);
+      shirtGrad.addColorStop(1, p.band);
+      ctx.fillStyle = shirtGrad;
+      ctx.beginPath();
+      ctx.roundRect(-12, -18, 24, 15, [4, 4, 2, 2]);
+      ctx.fill();
+
+      // Bo viền áo thể thao
+      ctx.strokeStyle = p.trim;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      // Cổ áo thể thao
+      ctx.fillStyle = '#fed7aa'; // Lộ da cổ
+      ctx.beginPath();
+      ctx.arc(0, -18, 4.5, 0, Math.PI);
       ctx.fill();
       ctx.strokeStyle = p.trim;
       ctx.lineWidth = 1;
       ctx.stroke();
 
+      // Số báo danh (Race Bib) gắn trước ngực
       ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 8px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(r.lane, 0, -9);
-
-      ctx.fillStyle = p.shirt;
-      ctx.fillRect(-15, -14, 4, 10);
-      ctx.fillRect(11, -14, 4, 10);
-
-      // 3. ĐẦU VÀ KHUÔN MẶT CƯỜI RẠNG RỠ (HAPPY FACE)
-      ctx.save();
-      ctx.translate(0, -22);
-
-      ctx.fillStyle = p.hair;
-      ctx.beginPath();
-      ctx.arc(0, 0, 9, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = '#fed7aa';
-      ctx.beginPath();
-      ctx.arc(0, 2, 7.5, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = p.band;
-      ctx.fillRect(-8, -2, 16, 3.5);
-      ctx.fillStyle = p.trim;
-      ctx.fillRect(-3, -2, 6, 3.5);
-
       ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 0.8;
       ctx.beginPath();
-      ctx.arc(-3, 2, 1.8, Math.PI, 0, false);
-      ctx.arc(3, 2, 1.8, Math.PI, 0, false);
+      ctx.roundRect(-7, -13, 14, 9, 2);
+      ctx.fill();
       ctx.stroke();
 
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath();
-      ctx.arc(0, 5, 2.2, 0, Math.PI);
-      ctx.fill();
+      ctx.fillStyle = '#1e293b';
+      ctx.font = '900 7.5px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(r.lane, 0, -8.5);
 
       ctx.restore();
 
-      // 4. BIỂN TÊN HỌC SINH PHÍA TRÊN ĐẦU (STUDENT NAME TAG)
-      ctx.save();
-      const badgeY = -38;
-      const isLead = (sackWinner === r) || (sackRaceState === 'racing' && r.x === Math.max(...sackRunners.map(s => s.x)));
-      ctx.font = 'bold 11px system-ui, sans-serif';
-      const textW = ctx.measureText(r.displayName).width;
-      const padW = Math.max(textW + 16, 54);
+      // 5. CÁNH TAY & BÀN TAY NẮM CHẶT MIỆNG BAO (ARMS & CLENCHED HANDS)
+      // Cầu vai / tay áo
+      ctx.fillStyle = p.shirt;
+      ctx.fillRect(-15, -16, 4, 6);
+      ctx.fillRect(11, -16, 4, 6);
 
-      ctx.fillStyle = isLead ? '#b45309' : 'rgba(15, 23, 42, 0.88)';
-      ctx.strokeStyle = isLead ? '#fef08a' : p.trim;
-      ctx.lineWidth = isLead ? 2 : 1.2;
+      // Cánh tay da nắm chặt miệng bao
+      ctx.fillStyle = '#fed7aa';
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 0.8;
+
+      // Tay trái cong xuống bấu vào tai bao
       ctx.beginPath();
-      ctx.roundRect(-padW / 2, badgeY - 8, padW, 16, 8);
+      ctx.moveTo(-15, -13);
+      ctx.quadraticCurveTo(-18, -8, -14, -5);
+      ctx.lineTo(-12, -5);
+      ctx.quadraticCurveTo(-15, -9, -12, -13);
+      ctx.closePath();
       ctx.fill();
       ctx.stroke();
 
+      // Nắm tay trái
+      ctx.beginPath();
+      ctx.arc(-14, -4.5, 3.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Tay phải cong xuống bấu vào tai bao
+      ctx.beginPath();
+      ctx.moveTo(15, -13);
+      ctx.quadraticCurveTo(18, -8, 14, -5);
+      ctx.lineTo(12, -5);
+      ctx.quadraticCurveTo(15, -9, 12, -13);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Nắm tay phải
+      ctx.beginPath();
+      ctx.arc(14, -4.5, 3.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // 6. ĐẦU VÀ KHUÔN MẶT SINH ĐỘNG (EXPRESSIVE FACE & FLUTTERING HEADBAND)
+      ctx.save();
+      const headBob = Math.sin(r.hopProgress * Math.PI * 2) * 1.2;
+      ctx.translate(0, -23 + headBob);
+
+      // Tóc phía sau
+      ctx.fillStyle = p.hair;
+      ctx.beginPath();
+      ctx.arc(0, -1, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Khuôn mặt
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, 1.5, 8.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2 Má ửng hồng dễ thương
+      ctx.fillStyle = 'rgba(244, 63, 94, 0.4)';
+      ctx.beginPath();
+      ctx.ellipse(-5, 4, 2, 1.2, 0, 0, Math.PI * 2);
+      ctx.ellipse(5, 4, 2, 1.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tóc mái phía trước
+      ctx.fillStyle = p.hair;
+      ctx.beginPath();
+      ctx.moveTo(-8, -2);
+      ctx.quadraticCurveTo(-3, -1, 0, -4);
+      ctx.quadraticCurveTo(4, -1, 8, -3);
+      ctx.quadraticCurveTo(5, -9, 0, -9);
+      ctx.quadraticCurveTo(-5, -9, -8, -2);
+      ctx.closePath();
+      ctx.fill();
+
+      // Băng đô thể thao (Headband)
+      ctx.fillStyle = p.band;
+      ctx.beginPath();
+      ctx.roundRect(-8.5, -3, 17, 4, 1.5);
+      ctx.fill();
+      // Huy hiệu giữa băng đô
+      ctx.fillStyle = p.trim;
+      ctx.fillRect(-2.5, -3, 5, 4);
+
+      // DẢI RUY BĂNG BUỘC ĐẦU PHẤP PHỚI VỀ PHÍA SAU THEO GIÓ (WIND FLUTTER RIBBONS)
+      const windWave1 = Math.sin(now * 0.016 + r.lane * 1.5) * 4;
+      const windWave2 = Math.cos(now * 0.014 + r.lane * 1.2) * 3.5;
+      ctx.fillStyle = p.band;
+      ctx.beginPath();
+      ctx.moveTo(-8, -1);
+      ctx.quadraticCurveTo(-14, -3 + windWave1, -20, 1 + windWave1);
+      ctx.lineTo(-18, 3 + windWave1);
+      ctx.quadraticCurveTo(-13, -0.5 + windWave1, -8, 1);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = p.trim;
+      ctx.beginPath();
+      ctx.moveTo(-7.5, 0);
+      ctx.quadraticCurveTo(-13, 1 + windWave2, -18, 5 + windWave2);
+      ctx.lineTo(-16, 7 + windWave2);
+      ctx.quadraticCurveTo(-12, 3 + windWave2, -7.5, 1.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Mắt cười híp tít hoặc tập trung thể thao
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.3;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      // Mắt trái hình cánh cung cười
+      ctx.arc(-3.5, 1.8, 2, Math.PI * 1.1, Math.PI * 1.9, false);
+      // Mắt phải hình cánh cung cười
+      ctx.arc(3.5, 1.8, 2, Math.PI * 1.1, Math.PI * 1.9, false);
+      ctx.stroke();
+
+      // Miệng cười tươi hô vang khí thế
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, 5, 2.6, 0, Math.PI);
+      ctx.fill();
+      // Răng trắng
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.rect(-1.8, 5, 3.6, 1.2);
+      ctx.fill();
+
+      // Giọt mồ hôi thi đấu nỗ lực khi ở nửa sau chặng đua
+      if (sackRaceState === 'racing' && r.x > (sackFinishX - sackStartX) * 0.45) {
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(7.5, -1, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+
+      // 7. BIỂN TÊN HỌC SINH NỔI BẬT DỄ NHÌN TRÊN MÁY CHIẾU (CLEAR NAME BADGE)
+      ctx.save();
+      const badgeY = -40;
+      const isLead = (sackWinner === r) || (sackRaceState === 'racing' && r.x === Math.max(...sackRunners.map(s => s.x)));
+      ctx.font = 'bold 11px system-ui, -apple-system, sans-serif';
+      const textW = ctx.measureText(r.displayName).width;
+      const padW = Math.max(textW + 18, 58);
+
+      // Hiệu ứng bóng đổ biển tên
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.beginPath();
+      ctx.roundRect(-padW / 2 + 1, badgeY - 8 + 1.5, padW, 17, 8);
+      ctx.fill();
+
+      // Thân biển tên
+      if (isLead) {
+        const leadGrad = ctx.createLinearGradient(-padW / 2, 0, padW / 2, 0);
+        leadGrad.addColorStop(0, '#b45309');
+        leadGrad.addColorStop(0.5, '#f59e0b');
+        leadGrad.addColorStop(1, '#b45309');
+        ctx.fillStyle = leadGrad;
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2;
+      } else {
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+        ctx.strokeStyle = p.trim;
+        ctx.lineWidth = 1.3;
+      }
+
+      ctx.beginPath();
+      ctx.roundRect(-padW / 2, badgeY - 8, padW, 17, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      // Tên học sinh
       ctx.fillStyle = '#ffffff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(r.displayName, 0, badgeY);
+      ctx.fillText(r.displayName, isLead ? 4 : 0, badgeY);
 
       if (isLead) {
-        ctx.font = '9px sans-serif';
-        ctx.fillText('👑', -padW / 2 + 6, badgeY);
+        // Vương miện dập dờn
+        const crownBob = Math.sin(now * 0.008) * 2;
+        ctx.font = '10px sans-serif';
+        ctx.fillText('👑', -padW / 2 + 8, badgeY + crownBob);
       }
+
       ctx.restore();
 
       ctx.restore();
@@ -25947,14 +26220,35 @@
         const g = sackGrassParticles[i];
         g.x += g.vx;
         g.y += g.vy;
-        g.alpha -= 1.8 * dt;
+        g.vy += 4.5 * dt; // Trọng lực hút cỏ xuống
+        if (g.vRot) g.rot = (g.rot || 0) + g.vRot * dt;
+        g.alpha -= 1.6 * dt;
         if (g.alpha <= 0) {
           sackGrassParticles.splice(i, 1);
           continue;
         }
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, g.alpha);
+        ctx.translate(g.x, g.y);
+        if (g.rot) ctx.rotate(g.rot);
+
         ctx.fillStyle = g.color;
-        ctx.globalAlpha = g.alpha;
-        ctx.fillRect(g.x, g.y, g.size, g.size);
+        if (g.type === 'grass') {
+          // Ngọn cỏ nhọn bay xoay
+          ctx.beginPath();
+          ctx.moveTo(-1, 0);
+          ctx.lineTo(g.len || 5, -1);
+          ctx.lineTo(g.len || 5, 1);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          // Hạt bụi đất tơi xốp
+          ctx.beginPath();
+          ctx.arc(0, 0, g.width || 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
       }
       ctx.restore();
     }
