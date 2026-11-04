@@ -891,7 +891,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-3.5 transition-all" id="home-game-cards-container">
 
         <!-- Card: Đua Vịt Trên Sông -->
-        <div onclick="launchGame('duck')" data-mode="duck" data-category="speed" data-search="đua vịt trên sông các chú vịt rẽ sóng lắc lư sinh động, bứt phá nước rút nghẹt thở ở mét cuối! 🌊 lướt sóng ⚡ nước rút" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-sky-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('duck')" data-mode="duck" data-category="speed" data-search="đua vịt trên sông các chú vịt rẽ sóng lắc lư sinh động, bứt phá nước rút nghẹt thở ở mét cuối! 🌊 lướt sóng ⚡ nước rút" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-sky-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -928,7 +928,7 @@
         </div>
 
         <!-- Card: Đua Xe Đạp Thể Thao -->
-        <div onclick="launchGame('bike')" data-mode="bike" data-category="speed" data-search="đua xe đạp thể thao sprint tour de france! núp gió khí động học xé gió lao nhanh về đích. 🚴 núp gió 🏁 cổng sprint" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('bike')" data-mode="bike" data-category="speed" data-search="đua xe đạp thể thao sprint tour de france! núp gió khí động học xé gió lao nhanh về đích. 🚴 núp gió 🏁 cổng sprint" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -965,7 +965,7 @@
         </div>
 
         <!-- Card: Đua Xe Moto GP -->
-        <div onclick="launchGame('motogp')" data-mode="motogp" data-category="speed" data-search="đua xe moto gp siêu mô tô 1000cc gầm rú, xả lửa nitro rực rỡ cán đích 350 km/h. 🔥 lửa nitro ⚡ 350 km/h" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-orange-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('motogp')" data-mode="motogp" data-category="speed" data-search="đua xe moto gp siêu mô tô 1000cc gầm rú, xả lửa nitro rực rỡ cán đích 350 km/h. 🔥 lửa nitro ⚡ 350 km/h" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-orange-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1002,7 +1002,7 @@
         </div>
 
         <!-- Card: Đua Xe F1 Chuyên Nghiệp -->
-        <div onclick="launchGame('f1')" data-mode="f1" data-category="speed" data-search="đua xe f1 chuyên nghiệp đường đua sa mạc & rừng rậm! cua chữ s kỹ thuật, mở cánh gió drs bứt phá. 💨 mở drs 📈 bảng hạng" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-rose-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('f1')" data-mode="f1" data-category="speed" data-search="đua xe f1 chuyên nghiệp đường đua sa mạc & rừng rậm! cua chữ s kỹ thuật, mở cánh gió drs bứt phá. 💨 mở drs 📈 bảng hạng" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-rose-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1039,7 +1039,7 @@
         </div>
 
         <!-- Card: Đua Ngựa Thể Thao -->
-        <div onclick="launchGame('horse')" data-mode="horse" data-category="speed" data-search="đua ngựa thể thao chiến mã phi nước đại dũng mãnh trên thảo nguyên xanh và trường đua mùa thu. 🏇 nước đại 🌾 4 mùa" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('horse')" data-mode="horse" data-category="speed" data-search="đua ngựa thể thao chiến mã phi nước đại dũng mãnh trên thảo nguyên xanh và trường đua mùa thu. 🏇 nước đại 🌾 4 mùa" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1076,7 +1076,7 @@
         </div>
 
         <!-- Card: Vòng Quay May Mắn -->
-        <div onclick="launchGame('wheel_pie')" data-mode="wheel_pie" data-category="lucky" data-search="vòng quay may mắn vòng quay cổ điển 100% công bằng, kim chỉ quay tít hồi hộp đến giây cuối. 🎡 quay số ⚖️ công bằng" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-indigo-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('wheel_pie')" data-mode="wheel_pie" data-category="lucky" data-search="vòng quay may mắn vòng quay cổ điển 100% công bằng, kim chỉ quay tít hồi hộp đến giây cuối. 🎡 quay số ⚖️ công bằng" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-indigo-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1113,7 +1113,7 @@
         </div>
 
         <!-- Card: Hộp Quà Lễ Hội -->
-        <div onclick="launchGame('gift')" data-mode="gift" data-category="lucky" data-search="hộp quà lễ hội mở hộp quà bí ẩn theo mùa: giáng sinh, tết, trung thu bất ngờ thú vị. 🎀 quà bí ẩn 🎊 3 lễ hội" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-pink-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('gift')" data-mode="gift" data-category="lucky" data-search="hộp quà lễ hội mở hộp quà bí ẩn theo mùa: giáng sinh, tết, trung thu bất ngờ thú vị. 🎀 quà bí ẩn 🎊 3 lễ hội" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-pink-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-pink-50 border border-pink-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1150,7 +1150,7 @@
         </div>
 
         <!-- Card: Bắn Bóng Bay Gọi Tên -->
-        <div onclick="launchGame('balloon')" data-mode="balloon" data-category="challenge" data-search="bắn bóng bay gọi tên chùm bóng bay ngũ sắc bay lơ lửng, phi tiêu ngắm bắn nổ tung gọi tên. 🎯 phi tiêu 🎈 nổ bóng" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-cyan-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('balloon')" data-mode="balloon" data-category="challenge" data-search="bắn bóng bay gọi tên chùm bóng bay ngũ sắc bay lơ lửng, phi tiêu ngắm bắn nổ tung gọi tên. 🎯 phi tiêu 🎈 nổ bóng" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-cyan-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1187,7 +1187,7 @@
         </div>
 
         <!-- Card: Trượt Tuyết Mùa Đông -->
-        <div onclick="launchGame('ski')" data-mode="ski" data-category="speed" data-search="trượt tuyết mùa đông lao dốc núi tuyết trắng xóa mùa giáng sinh, né cây thông và bay qua gờ tuyết. ❄️ tuyết trắng 🎿 lao dốc" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-blue-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('ski')" data-mode="ski" data-category="speed" data-search="trượt tuyết mùa đông lao dốc núi tuyết trắng xóa mùa giáng sinh, né cây thông và bay qua gờ tuyết. ❄️ tuyết trắng 🎿 lao dốc" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-blue-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-blue-50 border border-blue-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1224,7 +1224,7 @@
         </div>
 
         <!-- Card: Lì Xì Tết May Mắn -->
-        <div onclick="launchGame('lixi')" data-mode="lixi" data-category="lucky" data-search="lì xì tết may mắn bé nhận bao lì xì đỏ may mắn đầu năm, pháo hoa rực rỡ đón lộc xuân. 🧧 phong bao 🎆 pháo hoa" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-red-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('lixi')" data-mode="lixi" data-category="lucky" data-search="lì xì tết may mắn bé nhận bao lì xì đỏ may mắn đầu năm, pháo hoa rực rỡ đón lộc xuân. 🧧 phong bao 🎆 pháo hoa" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-red-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-red-50 border border-red-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1261,7 +1261,7 @@
         </div>
 
         <!-- Card: Lồng Cầu Quay Số -->
-        <div onclick="launchGame('wheel_slot')" data-mode="wheel_slot" data-category="lucky" data-search="lồng cầu quay số lồng cầu quay lốc xoáy thổi bóng số nhảy nhót, hút bóng trúng thưởng kịch tính. 🔮 thổi bóng 🎰 lốc xoáy" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-purple-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('wheel_slot')" data-mode="wheel_slot" data-category="lucky" data-search="lồng cầu quay số lồng cầu quay lốc xoáy thổi bóng số nhảy nhót, hút bóng trúng thưởng kịch tính. 🔮 thổi bóng 🎰 lốc xoáy" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-purple-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1298,7 +1298,7 @@
         </div>
 
         <!-- Card: Điền Kinh 200m Nước Rút -->
-        <div onclick="launchGame('athletics')" data-mode="athletics" data-category="speed" data-search="điền kinh 200m nước rút sân điền kinh tiêu chuẩn olympic, sải bước thần tốc lao qua vạch đích 200m. 🏃 sải chân dài ⏱️ bấm giờ" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-lime-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('athletics')" data-mode="athletics" data-category="speed" data-search="điền kinh 200m nước rút sân điền kinh tiêu chuẩn olympic, sải bước thần tốc lao qua vạch đích 200m. 🏃 sải chân dài ⏱️ bấm giờ" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-lime-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-lime-50 border border-lime-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1335,7 +1335,7 @@
         </div>
 
         <!-- Card: Bơi Lội 200m Kình Ngư -->
-        <div onclick="launchGame('swimming')" data-mode="swimming" data-category="festival" data-search="bơi lội 200m kình ngư đường bơi làn xanh olympic, kình ngư vung sải tay rẽ sóng cuộn trào bọt nước. 🏊 sải tay bơi 🌊 làn xanh" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-teal-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('swimming')" data-mode="swimming" data-category="festival" data-search="bơi lội 200m kình ngư đường bơi làn xanh olympic, kình ngư vung sải tay rẽ sóng cuộn trào bọt nước. 🏊 sải tay bơi 🌊 làn xanh" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-teal-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1372,7 +1372,7 @@
         </div>
 
         <!-- Card: Đập Ếch Bắt Tên -->
-        <div onclick="launchGame('frog')" data-mode="frog" data-category="challenge" data-search="đập ếch bắt tên chú ếch xanh nhấp nhô trên lá sen hồ sen xanh ngát, nhanh tay chộp tên trúng thưởng. 🐸 nhảy lá sen 🪷 hồ sen" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-green-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('frog')" data-mode="frog" data-category="challenge" data-search="đập ếch bắt tên chú ếch xanh nhấp nhô trên lá sen hồ sen xanh ngát, nhanh tay chộp tên trúng thưởng. 🐸 nhảy lá sen 🪷 hồ sen" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-green-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-green-50 border border-green-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1409,7 +1409,7 @@
         </div>
 
         <!-- Card: Bé Câu Cá Đại Dương -->
-        <div onclick="launchGame('fishing')" data-mode="fishing" data-category="challenge" data-search="bé câu cá đại dương buông cần câu giữa đại dương xanh thẳm, kéo cá lớn mang tên học sinh may mắn. 🎣 thả mồi 🐟 cá đại dương" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-sky-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('fishing')" data-mode="fishing" data-category="challenge" data-search="bé câu cá đại dương buông cần câu giữa đại dương xanh thẳm, kéo cá lớn mang tên học sinh may mắn. 🎣 thả mồi 🐟 cá đại dương" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-sky-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1446,7 +1446,7 @@
         </div>
 
         <!-- Card: Múa Lân Hái Lộc -->
-        <div onclick="launchGame('lion')" data-mode="lion" data-category="festival" data-search="múa lân hái lộc trống lân rộn rã tùng dinh dinh, đầu lân lắc lư chớp mắt hái lộc đầu cành. 🥁 trống lân 🏮 hái lộc" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('lion')" data-mode="lion" data-category="festival" data-search="múa lân hái lộc trống lân rộn rã tùng dinh dinh, đầu lân lắc lư chớp mắt hái lộc đầu cành. 🥁 trống lân 🏮 hái lộc" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-amber-400 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1483,7 +1483,7 @@
         </div>
 
         <!-- Card: Sút Luân Lưu Penalty -->
-        <div onclick="launchGame('penalty')" data-mode="penalty" data-category="challenge" data-search="sút luân lưu penalty kịch tính chấm 11m! sút vào: an toàn bỏ qua • trượt: bị gọi tên lên bảng! 🧤 chấm 11m ⚽ vào là thoát" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('penalty')" data-mode="penalty" data-category="challenge" data-search="sút luân lưu penalty kịch tính chấm 11m! sút vào: an toàn bỏ qua • trượt: bị gọi tên lên bảng! 🧤 chấm 11m ⚽ vào là thoát" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1520,7 +1520,7 @@
         </div>
 
         <!-- Card: Đua Thuyền Rồng -->
-        <div onclick="launchGame('dragon_boat')" data-mode="dragon_boat" data-category="festival" data-search="đua thuyền rồng trống hội giục giã sông nước non xanh, tay chèo nhịp nhàng đầu rồng rẽ sóng. 🚣 thuyền rồng 🥁 trống hội" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-teal-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('dragon_boat')" data-mode="dragon_boat" data-category="festival" data-search="đua thuyền rồng trống hội giục giã sông nước non xanh, tay chèo nhịp nhàng đầu rồng rẽ sóng. 🚣 thuyền rồng 🥁 trống hội" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-teal-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -1557,7 +1557,7 @@
         </div>
 
         <!-- Card: Nhảy Bao Bố Dân Gian -->
-        <div onclick="launchGame('sack_race')" data-mode="sack_race" data-category="festival" data-search="nhảy bao bố dân gian vận động viên thu mình trong bao bố gai, nhún chân bật nhảy tanh tách về đích! 🦘 bật đạn đạo 🎒 bao bố gai" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-amber-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+        <div onclick="openGameIntroModal('sack_race')" data-mode="sack_race" data-category="festival" data-search="nhảy bao bố dân gian vận động viên thu mình trong bao bố gai, nhún chân bật nhảy tanh tách về đích! 🦘 bật đạn đạo 🎒 bao bố gai" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-amber-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
           <!-- Top Row: Icon, Badges -->
           <div class="flex items-start justify-between gap-2 mb-2">
             <div class="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
@@ -2472,7 +2472,137 @@
 
   </div>
 
-  <!-- ================= MODAL: THÔNG BÁO / CONFIRM DIALOG ================= -->
+  
+  <!-- ================= MODAL 1: MÔ TẢ & HƯỚNG DẪN TRÒ CHƠI ================= -->
+  <div id="game-intro-modal" onclick="if (event.target === this) closeGameIntroModal()" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm hidden items-center justify-center z-[550] p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white border border-slate-200 rounded-3xl max-w-lg w-full shadow-2xl p-5 sm:p-6 text-slate-800 space-y-4 my-auto relative animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Close Button (X) -->
+      <button onclick="closeGameIntroModal()" title="Đóng hướng dẫn" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center text-sm font-bold transition cursor-pointer">
+        ✕
+      </button>
+
+      <!-- Modal Header: Icon, Title, Badges -->
+      <div class="flex items-start gap-3.5 pr-8">
+        <div id="intro-game-icon" class="w-13 h-13 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-3xl shadow-xs shrink-0">
+          🦆
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span id="intro-game-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-300">
+              ⭐ Phổ Biến
+            </span>
+            <span id="intro-game-category" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">
+              🏎️ Đua Tốc Độ
+            </span>
+          </div>
+          <h3 id="intro-game-title" class="text-lg sm:text-xl font-black text-slate-900 tracking-tight mt-1 truncate">
+            Đua Vịt Trên Sông
+          </h3>
+        </div>
+      </div>
+
+      <!-- Informative Content Cards -->
+      <div class="space-y-2.5 max-h-[60vh] overflow-y-auto pr-1 text-xs">
+        
+        <!-- Section 1: Bối cảnh & Cốt truyện -->
+        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/90 space-y-1">
+          <div class="font-extrabold text-slate-800 flex items-center gap-1.5">
+            <span>📖</span> <span>Bối cảnh trò chơi:</span>
+          </div>
+          <p id="intro-game-context" class="text-slate-600 leading-relaxed font-medium">
+            <!-- Populated by JS -->
+          </p>
+        </div>
+
+        <!-- Section 2: Luật chơi & Cách gọi tên -->
+        <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+          <div class="font-black text-amber-900 flex items-center gap-1.5">
+            <span>📜</span> <span>Luật chơi & Cơ chế chọn tên:</span>
+          </div>
+          <p id="intro-game-rules" class="text-amber-900 leading-relaxed font-medium whitespace-pre-line">
+            <!-- Populated by JS -->
+          </p>
+        </div>
+
+        <!-- Section 3: Gợi ý giảng dạy cho Thầy/Cô -->
+        <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+          <div class="font-black text-emerald-900 flex items-center gap-1.5">
+            <span>💡</span> <span>Gợi ý cho Thầy/Cô:</span>
+          </div>
+          <p id="intro-game-tips" class="text-emerald-800 leading-relaxed font-medium">
+            <!-- Populated by JS -->
+          </p>
+        </div>
+
+        <!-- Section 4: Phím tắt -->
+        <div class="p-2.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex items-center justify-between text-[11px] font-bold text-indigo-900">
+          <span class="flex items-center gap-1.5">
+            <span>⌨️</span> <span>Phím tắt nhanh:</span>
+          </span>
+          <span id="intro-game-shortcut" class="text-indigo-700 font-extrabold">
+            Bấm Space để xuất phát
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Footer: Button "ĐÃ HIỂU" -->
+      <div class="pt-2">
+        <button type="button" onclick="onGameIntroUnderstood()" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black py-3 px-6 rounded-2xl shadow-md text-sm sm:text-base flex items-center justify-center gap-2 transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer badge-white">
+          <i class="fa-solid fa-thumbs-up"></i> Đã Hiểu
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: POPUP XÁC NHẬN BẮT ĐẦU CHƠI / TẮT ================= -->
+  <div id="game-confirm-modal" onclick="if (event.target === this) closeGameConfirmModal()" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-[560] p-4">
+    <div class="bg-white border border-slate-200 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4 animate-in fade-in zoom-in-95 duration-200 relative">
+      
+      <!-- Top Animated Icon -->
+      <div class="w-16 h-16 mx-auto rounded-3xl bg-gradient-to-tr from-amber-400 via-orange-500 to-rose-500 flex items-center justify-center shadow-lg text-white">
+        <span id="confirm-game-icon" class="text-3xl">🦆</span>
+      </div>
+
+      <!-- Confirmation Headings -->
+      <div class="space-y-1">
+        <h3 class="text-lg font-black text-slate-900">
+          Sẵn Sàng Bắt Đầu?
+        </h3>
+        <p class="text-xs text-slate-600 font-medium">
+          Đấu trường đã chuẩn bị xong cho trò chơi:
+        </p>
+        <div id="confirm-game-title" class="text-base font-black text-indigo-600 bg-indigo-50 border border-indigo-200 py-1.5 px-3 rounded-xl mt-1.5">
+          Đua Vịt Trên Sông
+        </div>
+      </div>
+
+      <!-- Quick Session Details (Class & Duration) -->
+      <div class="grid grid-cols-2 gap-2 text-[11px] font-bold text-slate-700 bg-slate-50 border border-slate-200 p-2.5 rounded-2xl">
+        <div class="flex items-center justify-center gap-1 truncate">
+          <span>🏫</span> <span id="confirm-game-class" class="truncate">Lớp 12A1</span>
+        </div>
+        <div class="flex items-center justify-center gap-1 border-l border-slate-200">
+          <span>⏱️</span> <span id="confirm-game-duration">5 giây</span>
+        </div>
+      </div>
+
+      <!-- Actions: BẮT ĐẦU CHƠI / TẮT -->
+      <div class="grid grid-cols-2 gap-2.5 pt-1">
+        <button type="button" onclick="closeGameConfirmModal()" class="w-full bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 font-extrabold py-2.5 px-4 rounded-xl text-xs sm:text-sm transition cursor-pointer flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-xmark"></i> Tắt
+        </button>
+        <button type="button" onclick="confirmLaunchCurrentGame()" class="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow-md transition hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center gap-1.5 badge-white">
+          <i class="fa-solid fa-play text-xs"></i> Bắt Đầu Chơi
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+<!-- ================= MODAL: THÔNG BÁO / CONFIRM DIALOG ================= -->
   <div id="app-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden items-center justify-center z-[600] p-4 opacity-0 transition-opacity duration-300">
     <div id="app-modal-content" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full shadow-2xl transform scale-95 transition-transform duration-300 text-center space-y-4">
       <div id="app-modal-icon" class="w-12 h-12 rounded-full mx-auto flex items-center justify-center text-2xl bg-amber-500/20 text-amber-400">
@@ -4858,7 +4988,7 @@
       if (typeof showCloudToast === 'function') {
         showCloudToast('🎲 Đã chọn ngẫu nhiên: ' + gameName, '🎲');
       }
-      launchGame(randomMode);
+      openGameIntroModal(randomMode);
     }
 
     function launchCurrentOrFastGame() {
@@ -4913,6 +5043,325 @@
         alert(`Chức năng "${featureName || 'này'}" đang được cập nhật, tạm thời chưa sử dụng được!`);
       }
     }
+
+    
+    // ==========================================
+    // GAME INTRO MODAL & CONFIRM FLOW
+    // ==========================================
+    let pendingGameMode = 'duck';
+
+    const ALL_GAME_METADATA = {
+  "duck": {
+    "name": "Đua Vịt Trên Sông",
+    "icon": "🦆",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "⭐ Phổ Biến Nhất",
+    "color": "sky",
+    "context": "Dòng sông quê hương hiền hòa xanh mát, nơi đàn vịt nhiều màu cùng nhau so tài bơi lội trong tiếng vỗ cánh rộn ràng.",
+    "rules": "Tất cả học sinh bơi trên các làn nước song song. Đàn vịt lắc lư theo từng nhịp sóng, áp dụng chiến thuật núp gió và bất ngờ tung cú nước rút nghẹt thở ở những mét cuối cùng. Chú vịt nào chạm vạch đích trước tiên sẽ đại diện cho học sinh chiến thắng được gọi tên!",
+    "tips": "Cực kỳ phù hợp cho phần Khởi động đầu giờ, tạo tiếng cười sảng khoái và xua tan căng thẳng mệt mỏi cho cả lớp học.",
+    "shortcut": "Bấm phím Space (Phím cách) để xuất phát đàn vịt lướt sóng."
+  },
+  "bike": {
+    "name": "Đua Xe Đạp Thể Thao",
+    "icon": "🚴",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "🏆 Hội Thao",
+    "color": "emerald",
+    "context": "Chặng đua nước rút Tour de France đường trường thẳng tắp, với hàng cây râm mát và khán đài reo hò cuồng nhiệt hai bên đường.",
+    "rules": "Các cua-rơ đạp xe với vận tốc cao, phân bổ thể lực thông minh và núp gió khí động học phía sau đối thủ. Khi tới gần vạch đích, cua-rơ dốc toàn lực bứt phá xé gió lao qua cổng chào.",
+    "tips": "Rất thích hợp cho các câu hỏi nhanh, kiểm tra phản xạ hoặc giải nhanh bài tập trắc nghiệm ngắn trong 1-2 phút.",
+    "shortcut": "Bấm phím Space để bắt đầu cuộc đua xe đạp."
+  },
+  "motogp": {
+    "name": "Đua Xe Moto GP",
+    "icon": "🏍️",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "⚡ Siêu Tốc 350 km/h",
+    "color": "orange",
+    "context": "Trường đua Grand Prix tiêu chuẩn quốc tế với mặt đường nhựa xé gió và các vệt bánh xe phanh gấp đầy kỹ thuật.",
+    "rules": "Dàn siêu mô tô 1000cc gầm rú động cơ đinh tai nhức óc, bốc đầu tăng tốc và xả lửa Nitro xanh rực rỡ với vận tốc lên tới 350 km/h để giành ngôi vị số 1.",
+    "tips": "Thích hợp cho các bài toán khó, câu hỏi điểm 10 hoặc phần thi thử thách cân não giữa các học sinh xuất sắc.",
+    "shortcut": "Bấm phím Space để rồ ga xuất phát moto."
+  },
+  "f1": {
+    "name": "Đua Xe F1 Chuyên Nghiệp",
+    "icon": "🏎️",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "⭐ Phổ Biến",
+    "color": "rose",
+    "context": "Đường đua vòng quanh sa mạc và rừng cọ khép kín với góc cua chữ S gắt và bảng xếp hạng trực tiếp theo thời gian thực.",
+    "rules": "Xe đua Công thức 1 chạy theo vòng đua thực tế (1 - 5 vòng), ôm cua điêu luyện và kích hoạt cánh gió DRS tăng tốc vượt mặt đối thủ qua từng khúc cua.",
+    "tips": "Tuyệt vời cho các tiết ôn tập tổng kết chương, thi đấu tính điểm theo tổ / nhóm học sinh.",
+    "shortcut": "Bấm phím Space để đèn xanh bật sáng và xuất phát F1."
+  },
+  "horse": {
+    "name": "Đua Ngựa Thể Thao",
+    "icon": "🏇",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "🏆 Hội Thao Hoàng Gia",
+    "color": "amber",
+    "context": "Thảo nguyên xanh ngát trải dài theo 4 mùa (Xuân, Hạ, Thu, Đông) cùng tiếng vó ngựa rộn rã trên đường đua hoàng gia.",
+    "rules": "Những chiến mã dũng mãnh phi nước đại với cơ bắp cuồn cuộn, người nài ngựa thúc cương nhịp nhàng vượt qua từng cột mốc cự ly để chạm dải ruy băng chiến thắng.",
+    "tips": "Phù hợp khi gọi học sinh đọc diễn cảm bài văn, giải thích định lý hoặc thuyết trình ngắn.",
+    "shortcut": "Bấm phím Space để chiến mã phi nước đại."
+  },
+  "wheel_pie": {
+    "name": "Vòng Quay May Mắn",
+    "icon": "🎡",
+    "category": "🎁 May Mắn & Quay Số",
+    "badge": "⭐ Cổ Điển 100% Công Bằng",
+    "color": "indigo",
+    "context": "Bánh xe đa sắc màu truyền thống với mũi kim định mệnh và âm thanh lách cách hồi hộp quen thuộc trong lớp học.",
+    "rules": "Toàn bộ danh sách học sinh được chia đều vào các nan quạt trên vòng quay. Vòng quay quay tít với gia tốc thực tế và chậm dần đều 100% ngẫu nhiên, kim dừng ở tên ai thì bạn đó được chọn.",
+    "tips": "Trò chơi kinh điển và thông dụng nhất cho mọi môn học, mọi độ tuổi học sinh từ Tiểu học đến THPT.",
+    "shortcut": "Bấm phím Space để kích hoạt vòng quay quay tít."
+  },
+  "gift": {
+    "name": "Hộp Quà Lễ Hội",
+    "icon": "🎁",
+    "category": "🎁 May Mắn & Quay Số",
+    "badge": "🎉 3 Mùa Lễ Hội",
+    "color": "pink",
+    "context": "Không gian lễ hội ấm cúng thay đổi linh hoạt theo 3 mùa: Giáng Sinh tuyết trắng, Tết Nguyên Đán rực rỡ và Trung Thu trăng rằm.",
+    "rules": "Các hộp quà thắt nơ rực rỡ bồng bềnh lơ lửng giữa trời, khi mở sẽ bung nắp trong ánh pháo hoa kim tuyến lung linh hé lộ bạn học sinh may mắn nhận quà.",
+    "tips": "Dành cho các tiết sinh hoạt lớp, ngày lễ đặc biệt, tuyên dương học sinh hoặc phát thưởng cuối tuần.",
+    "shortcut": "Bấm phím Space để mở bung nắp hộp quà."
+  },
+  "balloon": {
+    "name": "Bắn Bóng Bay Gọi Tên",
+    "icon": "🎈",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🎯 Bắn Phi Tiêu",
+    "color": "cyan",
+    "context": "Bầu trời dã ngoại trong xanh với chùm bóng bay ngũ sắc bay lơ lửng theo làn gió nhẹ.",
+    "rules": "Cung thủ nhắm bắn phi tiêu chính xác vào chùm bóng bay, quả bóng nổ tung \"Bụp!\" tạo nên màn pháo hoa lung linh và lộ ra tên học sinh trúng thưởng.",
+    "tips": "Tăng cường sự tập trung thị giác, làm giảm căng thẳng mệt mỏi giữa các tiết học dài.",
+    "shortcut": "Bấm phím Space để phóng phi tiêu nổ bóng."
+  },
+  "ski": {
+    "name": "Trượt Tuyết Mùa Đông",
+    "icon": "⛷️",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "❄️ Giáng Sinh Tuyết Trắng",
+    "color": "blue",
+    "context": "Đỉnh núi tuyết Alps phủ sương trắng xóa với rừng thông xanh và người tuyết đáng yêu mùa Noel.",
+    "rules": "Các vận động viên trượt tuyết lao dốc vun vút với tốc độ cao, né tránh chướng ngại vật và tung mình bay lượn qua các gờ tuyết ngoạn mục để cán đích.",
+    "tips": "Mang lại bầu không khí mát mẻ, sảng khoái và năng động cho phòng học vào những ngày hè nóng bức.",
+    "shortcut": "Bấm phím Space để bắt đầu lao dốc tuyết."
+  },
+  "lixi": {
+    "name": "Lì Xì Tết May Mắn",
+    "icon": "🧧",
+    "category": "🎁 May Mắn & Quay Số",
+    "badge": "⭐ Tết Cổ Truyền",
+    "color": "red",
+    "context": "Không khí Tết cổ truyền rực rỡ với cành đào thắm, cành mai vàng, bánh chưng xanh và dây pháo đỏ.",
+    "rules": "Em bé mặc áo dài gấm truyền thống vui vẻ nhận phong bao lì xì đỏ may mắn đầu xuân, mở ra phong bao chứa tên bạn học sinh nhận lộc đầu năm.",
+    "tips": "Rất tuyệt vời cho các buổi học đầu tuần, đầu năm mới hoặc phần mừng tuổi điểm tốt đầu tiết học.",
+    "shortcut": "Bấm phím Space để trao phong bao lì xì may mắn."
+  },
+  "wheel_slot": {
+    "name": "Lồng Cầu Quay Số",
+    "icon": "🔮",
+    "category": "🎁 May Mắn & Quay Số",
+    "badge": "🎟️ Xổ Số Lốc Xoáy",
+    "color": "purple",
+    "context": "Lồng cầu trong suốt tiêu chuẩn xổ số kiến thiết với máy thổi khí áp suất cao hiện đại.",
+    "rules": "Luồng gió lốc xoáy thổi các quả bóng nhiều màu nhảy nhót điên cuồng bên trong lồng, ống hút tự động hút lên quả bóng mang số báo danh và tên học sinh may mắn.",
+    "tips": "Dùng cho phần bốc thăm câu hỏi kiểm tra, bốc thăm bài tập lớn hoặc chọn thứ tự thuyết trình cho các nhóm.",
+    "shortcut": "Bấm phím Space để bật máy thổi lốc xoáy trong lồng cầu."
+  },
+  "athletics": {
+    "name": "Điền Kinh 200m Nước Rút",
+    "icon": "🏃",
+    "category": "🏎️ Đua Tốc Độ",
+    "badge": "🏆 Tiêu Chuẩn Olympic",
+    "color": "lime",
+    "context": "Sân vận động Olympic với đường chạy cao su màu đỏ gạch tiêu chuẩn quốc tế và đồng hồ điện tử bấm giờ chính xác.",
+    "rules": "Vận động viên vào bàn đạp xuất phát, tiếng súng lệnh vang lên sải bước thần tốc với cơ bắp căng tràn lao về đích trên các làn chạy riêng biệt.",
+    "tips": "Kiểm tra bài cũ theo thời gian đếm ngược nhanh, rèn luyện sự quyết đoán và tinh thần thể thao cho học sinh.",
+    "shortcut": "Bấm phím Space để nổ súng lệnh xuất phát chạy."
+  },
+  "swimming": {
+    "name": "Bơi Lội 200m Kình Ngư",
+    "icon": "🏊",
+    "category": "🎪 Dân Gian & Sông Nước",
+    "badge": "🏆 Bể Bơi Olympic",
+    "color": "teal",
+    "context": "Bể bơi Olympic làn xanh trong vắt với hệ thống phao chia làn và bục xuất phát chuyên nghiệp.",
+    "rules": "Các kình ngư tung mình xuống làn nước xanh ngắt, quẫy bọt sóng cuộn trào với sải tay bơi bướm/sải lực lưỡng, chạm thành hồ về đích trong tiếng vỗ tay vang dội.",
+    "tips": "Phù hợp cho các hoạt động tiếp sức kiến thức, trả lời câu hỏi theo chuỗi liên hoàn nhiều học sinh.",
+    "shortcut": "Bấm phím Space để các kình ngư lao mình xuống nước."
+  },
+  "frog": {
+    "name": "Đập Ếch Bắt Tên",
+    "icon": "🐸",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🎯 Vui Nhộn Hồ Sen",
+    "color": "green",
+    "context": "Hồ sen xanh ngát hương thơm mùa hạ với những chiếc lá sen bập bềnh trên mặt nước trong veo.",
+    "rules": "Chú ếch xanh tinh nghịch nhảy nhót qua từng búp sen, chiếc búa đồ chơi bông êm ái gõ nhẹ vào chú ếch giữ tên học sinh may mắn.",
+    "tips": "Rất được các bạn học sinh tiểu học và THCS yêu thích bởi tính ngộ nghĩnh, vui vẻ và gần gũi với thiên nhiên.",
+    "shortcut": "Bấm phím Space để gõ búa bắt chú ếch may mắn."
+  },
+  "fishing": {
+    "name": "Bé Câu Cá Đại Dương",
+    "icon": "🎣",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🐠 Thư Thái Đại Dương",
+    "color": "sky",
+    "context": "Đại dương bao la xanh ngắt với rạn san hô rực rỡ và các đàn cá bơi lội tung tăng dưới đáy biển sâu.",
+    "rules": "Thả dây câu xuống làn nước sâu, phao câu nhấp nhô báo hiệu cá cắn câu, kéo lên chú cá đại dương khổng lồ mang theo bảng tên học sinh trúng thưởng.",
+    "tips": "Tạo tâm lý thư thái, nhẹ nhàng cho học sinh trước khi bước vào các bài học tư duy sâu và giải toán.",
+    "shortcut": "Bấm phím Space để giật cần câu cá lên."
+  },
+  "lion": {
+    "name": "Múa Lân Hái Lộc",
+    "icon": "🦁",
+    "category": "🎪 Dân Gian & Sông Nước",
+    "badge": "🎉 Lễ Hội Rước Đèn",
+    "color": "amber",
+    "context": "Lễ hội rước đèn Trung Thu / Tết cổ truyền với lồng đèn đỏ, câu đối đỏ và tiếng trống lân rộn rã tùng dinh dinh.",
+    "rules": "Đội lân nhảy múa uyển chuyển theo nhịp trống, vươn cao đầu lân há miệng đớp cành lộc trên cao mang tên học sinh may mắn.",
+    "tips": "Rất thích hợp cho các hoạt động ngoại khóa, môn Ngữ Văn, Lịch Sử, Giáo dục công dân và Tiếng Việt.",
+    "shortcut": "Bấm phím Space để đội lân bật nhảy hái lộc đầu cành."
+  },
+  "penalty": {
+    "name": "Sút Luân Lưu Penalty",
+    "icon": "⚽",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🔥 Luật Ngược Kịch Tính",
+    "color": "emerald",
+    "context": "Sân cỏ chảo lửa bóng đá World Cup nghẹt thở ở chấm phạt đền 11 mét đối mặt thủ môn.",
+    "rules": "Cơ chế ngược cực kỳ kịch tính: Cầu thủ tung cú sút sấm sét vào khung thành:\n• ⚽ SÚT VÀO LƯỚI: Học sinh AN TOÀN, thở phào nhẹ nhõm không bị gọi tên!\n• 🧤 SÚT TRƯỢT / BỊ THỦ MÔN BẮT: Học sinh BỊ GỌI TÊN lên bảng kiểm tra bài cũ!",
+    "tips": "Cực kỳ hồi hộp, cả lớp sẽ cùng nín thở theo dõi đường bay của trái bóng và reo hò cuồng nhiệt!",
+    "shortcut": "Bấm phím Space để tung cú sút phạt đền 11 mét."
+  },
+  "dragon_boat": {
+    "name": "Đua Thuyền Rồng",
+    "icon": "🚣",
+    "category": "🎪 Dân Gian & Sông Nước",
+    "badge": "🔥 Hội Sông Nước Non Xanh",
+    "color": "teal",
+    "context": "Lễ hội đua thuyền sông nước non xanh hùng vĩ, núi đá vôi bồng bềnh mây trắng lấy cảm hứng từ danh thắng Tràng An.",
+    "rules": "Thuyền rồng sơn son thếp vàng xé sóng lướt đi, tay trống ở mũi thuyền gióng trống dồn dập giục giã các tay chèo cúi rạp người vung mái chèo lao nhanh qua vạch đích.",
+    "tips": "Tăng cường tinh thần đoàn kết, thi đua tập thể sôi nổi và khí thế hào hùng trong giờ học.",
+    "shortcut": "Bấm phím Space để gióng trống giục giã chèo thuyền."
+  },
+  "sack_race": {
+    "name": "Nhảy Bao Bố Dân Gian",
+    "icon": "🦘",
+    "category": "🎪 Dân Gian & Sông Nước",
+    "badge": "🔥 Hội Thao Học Đường",
+    "color": "amber",
+    "context": "Sân cỏ hội thao trường học với dải cờ đuôi nheo ngũ sắc bay phấp phới trong gió mát ban mai.",
+    "rules": "Vận động viên thu mình trong chiếc bao bố gai dệt thô, hai tay nắm chặt quai bao, nhún gối bật nhảy đạn đạo bồng bềnh trên không trung và chạm đất hất văng tia cỏ xanh về đích.",
+    "tips": "Mang lại tiếng cười giòn giã và năng lượng tích cực bất tận cho cả lớp học.",
+    "shortcut": "Bấm phím Space để các vận động viên nhún chân bật nhảy bao bố."
+  }
+};
+
+    function openGameIntroModal(mode) {
+      if (!mode) mode = 'duck';
+      pendingGameMode = mode;
+      const details = ALL_GAME_METADATA[mode] || {
+        name: 'Trò Chơi Gọi Tên',
+        icon: '🎮',
+        category: 'Trò Chơi',
+        badge: 'Phổ Biến',
+        color: 'amber',
+        context: 'Trò chơi gọi tên học sinh ngẫu nhiên vui nhộn.',
+        rules: 'Hệ thống tự động quay số hoặc đua về đích để chọn học sinh may mắn.',
+        tips: 'Thầy/Cô có thể tùy chỉnh thời lượng và danh sách học sinh.',
+        shortcut: 'Bấm phím Space để bắt đầu.'
+      };
+
+      const modal = document.getElementById('game-intro-modal');
+      const iconEl = document.getElementById('intro-game-icon');
+      const titleEl = document.getElementById('intro-game-title');
+      const badgeEl = document.getElementById('intro-game-badge');
+      const catEl = document.getElementById('intro-game-category');
+      const contextEl = document.getElementById('intro-game-context');
+      const rulesEl = document.getElementById('intro-game-rules');
+      const tipsEl = document.getElementById('intro-game-tips');
+      const shortcutEl = document.getElementById('intro-game-shortcut');
+
+      if (iconEl) iconEl.innerText = details.icon;
+      if (titleEl) titleEl.innerText = details.name;
+      if (badgeEl) badgeEl.innerText = details.badge;
+      if (catEl) catEl.innerText = details.category;
+      if (contextEl) contextEl.innerText = details.context;
+      if (rulesEl) rulesEl.innerText = details.rules;
+      if (tipsEl) tipsEl.innerText = details.tips;
+      if (shortcutEl) shortcutEl.innerText = details.shortcut;
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeGameIntroModal() {
+      const modal = document.getElementById('game-intro-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function onGameIntroUnderstood() {
+      // 1. Đóng modal mô tả
+      closeGameIntroModal();
+
+      // 2. Mở popup xác nhận "Bắt đầu chơi / Tắt"
+      const confirmModal = document.getElementById('game-confirm-modal');
+      const details = ALL_GAME_METADATA[pendingGameMode] || { name: 'Trò Chơi', icon: '🎮' };
+      
+      const iconEl = document.getElementById('confirm-game-icon');
+      const titleEl = document.getElementById('confirm-game-title');
+      const classEl = document.getElementById('confirm-game-class');
+      const durationEl = document.getElementById('confirm-game-duration');
+
+      if (iconEl) iconEl.innerText = details.icon;
+      if (titleEl) titleEl.innerText = details.name;
+
+      // Populate current class name and duration
+      const classes = getAllSavedClasses();
+      const currentCls = classes.find(c => c.id === currentClassId);
+      if (classEl) {
+        classEl.innerText = currentCls ? (currentCls.name + ' (' + currentCls.students.length + ' HS)') : 'Chưa có lớp';
+      }
+      const durSec = document.getElementById('spin-duration')?.value || '5';
+      if (durationEl) {
+        durationEl.innerText = durSec + ' giây';
+      }
+
+      if (confirmModal) {
+        confirmModal.classList.remove('hidden');
+        confirmModal.classList.add('flex');
+      }
+    }
+
+    function closeGameConfirmModal() {
+      const confirmModal = document.getElementById('game-confirm-modal');
+      if (confirmModal) {
+        confirmModal.classList.add('hidden');
+        confirmModal.classList.remove('flex');
+      }
+    }
+
+    function confirmLaunchCurrentGame() {
+      closeGameConfirmModal();
+      launchGame(pendingGameMode);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeGameIntroModal();
+        closeGameConfirmModal();
+      }
+    });
 
     function launchGame(mode) {
       if (!requireAuth(() => launchGame(mode), 'Vui lòng đăng nhập hoặc đăng ký tài khoản để bắt đầu trải nghiệm trò chơi!')) {
