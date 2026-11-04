@@ -931,45 +931,45 @@
       <div id="home-studio-view" class="w-full">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
           
-          <!-- ================= CỘT TRÁI: DANH SÁCH 19 TRÒ CHƠI ================= -->
-          <div class="lg:col-span-5 xl:col-span-4 bg-white border border-slate-200/90 rounded-3xl p-3.5 sm:p-4 shadow-xs flex flex-col space-y-3">
+          <!-- ================= CỘT TRÁI: DANH SÁCH 19 TRÒ CHƠI (GỌN GÀNG, HẸP HƠN) ================= -->
+          <div class="lg:col-span-4 xl:col-span-3 bg-white border border-slate-200/90 rounded-2xl p-2.5 sm:p-3 shadow-xs flex flex-col space-y-2.5">
             
             <!-- Header List -->
-            <div class="flex items-center justify-between pb-1.5 border-b border-slate-100">
-              <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center text-xs font-black shadow-2xs">🎮</span>
-                <h3 class="text-xs sm:text-sm font-black text-slate-900 uppercase tracking-tight">Trò Chơi Gọi Tên</h3>
+            <div class="flex items-center justify-between pb-1 border-b border-slate-100">
+              <div class="flex items-center gap-1.5">
+                <span class="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 flex items-center justify-center text-[11px] font-black shadow-2xs">🎮</span>
+                <h3 class="text-xs font-black text-slate-900 uppercase tracking-tight">Trò Chơi</h3>
               </div>
-              <span id="studio-game-counter" class="text-[11px] font-black px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+              <span id="studio-game-counter" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                 19 trò
               </span>
             </div>
 
             <!-- Tìm Kiếm Nhanh Trong Studio -->
             <div class="relative">
-              <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input type="text" id="studio-search-input" oninput="onStudioSearch(this.value)" placeholder="Tìm trò chơi (vịt, bao bố, thuyền...)" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-7 py-2 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none transition">
-              <button id="studio-search-clear" onclick="clearStudioSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 rounded-full flex items-center justify-center cursor-pointer">✕</button>
+              <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"></i>
+              <input type="text" id="studio-search-input" oninput="onStudioSearch(this.value)" placeholder="Tìm trò chơi..." class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-6 py-1.5 text-[11px] font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none transition">
+              <button id="studio-search-clear" onclick="clearStudioSearch()" class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs w-4 h-4 rounded-full flex items-center justify-center cursor-pointer">✕</button>
             </div>
 
             <!-- Bộ Lọc Danh Mục Phân Loại -->
-            <div class="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none" id="studio-category-pills">
-              <button type="button" onclick="filterStudioList('all')" class="studio-cat-btn is-active shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-black transition cursor-pointer" data-cat="all">Tất Cả</button>
-              <button type="button" onclick="filterStudioList('speed')" class="studio-cat-btn shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="speed">Tốc Độ</button>
-              <button type="button" onclick="filterStudioList('festival')" class="studio-cat-btn shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="festival">Dân Gian</button>
-              <button type="button" onclick="filterStudioList('lucky')" class="studio-cat-btn shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="lucky">May Mắn</button>
-              <button type="button" onclick="filterStudioList('challenge')" class="studio-cat-btn shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="challenge">Kỹ Năng</button>
+            <div class="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-none" id="studio-category-pills">
+              <button type="button" onclick="filterStudioList('all')" class="studio-cat-btn is-active shrink-0 px-2 py-0.5 rounded-md text-[10px] font-black transition cursor-pointer" data-cat="all">Tất Cả</button>
+              <button type="button" onclick="filterStudioList('speed')" class="studio-cat-btn shrink-0 px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="speed">Tốc Độ</button>
+              <button type="button" onclick="filterStudioList('festival')" class="studio-cat-btn shrink-0 px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="festival">Dân Gian</button>
+              <button type="button" onclick="filterStudioList('lucky')" class="studio-cat-btn shrink-0 px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="lucky">May Mắn</button>
+              <button type="button" onclick="filterStudioList('challenge')" class="studio-cat-btn shrink-0 px-2 py-0.5 rounded-md text-[10px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 transition cursor-pointer" data-cat="challenge">Kỹ Năng</button>
             </div>
 
             <!-- Danh Sách Cuộn 19 Trò Chơi -->
-            <div id="studio-games-container" class="space-y-1.5 overflow-y-auto max-h-[620px] pr-1">
+            <div id="studio-games-container" class="space-y-1 overflow-y-auto max-h-[640px] pr-0.5">
               <!-- Rendered dynamically by renderStudioGameList() -->
             </div>
 
           </div>
 
           <!-- ================= CỘT PHẢI: CHI TIẾT & CẤU HÌNH (MASTER-DETAIL) ================= -->
-          <div class="lg:col-span-7 xl:col-span-8 grid grid-cols-1 xl:grid-cols-12 gap-4">
+          <div class="lg:col-span-8 xl:col-span-9 grid grid-cols-1 xl:grid-cols-12 gap-4">
             
             <!-- Panel 1: Card Giới Thiệu Hoành Tráng (xl:col-span-7) -->
             <div class="xl:col-span-7 bg-white border border-slate-200/90 rounded-3xl overflow-hidden shadow-xs flex flex-col justify-between">
@@ -5471,19 +5471,19 @@
         visibleCount++;
         var isActive = (key === currentStudioMode);
 
-        return '<button type="button" onclick="selectStudioGame(\'' + key + '\')" id="studio-item-' + key + '" class="studio-game-item w-full flex items-center justify-between p-2 rounded-2xl border text-left transition cursor-pointer ' +
-          (isActive ? 'is-active bg-indigo-50/90 border-indigo-400 ring-2 ring-indigo-400/20' : 'bg-white hover:bg-slate-50 border-slate-200/80') + '">' +
-          '<div class="flex items-center gap-2.5 min-w-0">' +
-            '<div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 shadow-2xs ' + (isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-800') + '">' +
+        return '<button type="button" onclick="selectStudioGame(\'' + key + '\')" id="studio-item-' + key + '" class="studio-game-item w-full flex items-center justify-between py-1.5 px-2 rounded-xl border text-left transition cursor-pointer ' +
+          (isActive ? 'is-active bg-indigo-50/90 border-indigo-400 ring-2 ring-indigo-400/20 shadow-2xs' : 'bg-white hover:bg-slate-50 border-slate-200/80') + '">' +
+          '<div class="flex items-center gap-2 min-w-0 flex-1">' +
+            '<div class="w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 shadow-2xs ' + (isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700') + '">' +
               g.icon +
             '</div>' +
-            '<div class="min-w-0">' +
-              '<div class="text-xs font-extrabold truncate game-title ' + (isActive ? 'text-indigo-900 font-black' : 'text-slate-800') + '">' + g.name + '</div>' +
-              '<div class="text-[10px] font-semibold text-slate-500 truncate">' + g.category + '</div>' +
+            '<div class="min-w-0 flex-1">' +
+              '<div class="text-[11px] sm:text-xs font-black truncate game-title ' + (isActive ? 'text-indigo-900' : 'text-slate-800') + '">' + g.name + '</div>' +
+              '<div class="text-[9px] font-semibold text-slate-400 truncate">' + g.category + '</div>' +
             '</div>' +
           '</div>' +
-          '<div class="flex items-center gap-1 shrink-0">' +
-            '<span class="px-2 py-0.5 rounded-full text-[10px] font-black ' + (isActive ? 'bg-indigo-600 text-white' : 'bg-emerald-50 text-emerald-700 border border-emerald-200') + '">Online</span>' +
+          '<div class="flex items-center gap-1 shrink-0 ml-1">' +
+            '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black ' + (isActive ? 'bg-indigo-600 text-white' : 'bg-emerald-50 text-emerald-700 border border-emerald-200') + '">Online</span>' +
           '</div>' +
         '</button>';
       }).join('');
