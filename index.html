@@ -2581,11 +2581,26 @@
 
       <!-- Quick Session Details (Class & Duration) -->
       <div class="grid grid-cols-2 gap-2 text-[11px] font-bold text-slate-700 bg-slate-50 border border-slate-200 p-2.5 rounded-2xl">
-        <div class="flex items-center justify-center gap-1 truncate">
-          <span>🏫</span> <span id="confirm-game-class" class="truncate">Lớp 12A1</span>
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="shrink-0">🏫</span>
+          <select id="confirm-class-select" onchange="onConfirmClassChange(this.value)"
+            class="w-full bg-white border border-slate-300 rounded-lg px-1.5 py-1 text-[11px] font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 cursor-pointer truncate appearance-none"
+            style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%221 1 4 4 4-4%22 fill=%22none%22 stroke=%22%23475569%22 stroke-width=%221.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>'); background-repeat: no-repeat; background-position: right 6px center; padding-right: 20px;">
+          </select>
         </div>
-        <div class="flex items-center justify-center gap-1 border-l border-slate-200">
-          <span>⏱️</span> <span id="confirm-game-duration">5 giây</span>
+        <div class="flex items-center gap-1.5 border-l border-slate-200 pl-2 min-w-0">
+          <span class="shrink-0">⏱️</span>
+          <select id="confirm-duration-select" onchange="onConfirmDurationChange(this.value)"
+            class="w-full bg-white border border-slate-300 rounded-lg px-1.5 py-1 text-[11px] font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 cursor-pointer appearance-none"
+            style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2210%22 height=%226%22><path d=%221 1 4 4 4-4%22 fill=%22none%22 stroke=%22%23475569%22 stroke-width=%221.5%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>'); background-repeat: no-repeat; background-position: right 6px center; padding-right: 20px;">
+            <option value="3">3 giây</option>
+            <option value="5">5 giây</option>
+            <option value="7">7 giây</option>
+            <option value="10">10 giây</option>
+            <option value="15">15 giây</option>
+            <option value="20">20 giây</option>
+            <option value="30">30 giây</option>
+          </select>
         </div>
       </div>
 
@@ -3927,6 +3942,7 @@
       const classes = getAllSavedClasses();
       const wheelSelect = document.getElementById('wheel-class-select');
       const homeSelect = document.getElementById('home-class-select');
+      const confirmSelect = document.getElementById('confirm-class-select');
 
       if (!classes || classes.length === 0) {
         currentClassId = '';
@@ -3934,6 +3950,7 @@
         const emptyOpt = '<option value="" class="bg-slate-900 text-slate-400 font-bold">(Chưa có lớp - Vui lòng tải Excel / Thêm lớp)</option>';
         if (wheelSelect) wheelSelect.innerHTML = emptyOpt;
         if (homeSelect) homeSelect.innerHTML = emptyOpt;
+        if (confirmSelect) confirmSelect.innerHTML = '<option value="">(Chưa có lớp)</option>';
         renderClassesListTab();
         renderStage();
         return;
@@ -3945,6 +3962,13 @@
 
       if (wheelSelect) wheelSelect.innerHTML = optionsHtml;
       if (homeSelect) homeSelect.innerHTML = optionsHtml;
+
+      // Also update confirm modal class dropdown (lighter styling)
+      if (confirmSelect) {
+        confirmSelect.innerHTML = classes.map(c =>
+          '<option value="' + c.id + '"' + (c.id === currentClassId ? ' selected' : '') + '>' + c.name + ' (' + c.students.length + ' HS)</option>'
+        ).join('');
+      }
 
       if (!currentClassId || !classes.some(c => c.id === currentClassId)) {
         currentClassId = classes[0].id;
@@ -5320,27 +5344,56 @@
       
       const iconEl = document.getElementById('confirm-game-icon');
       const titleEl = document.getElementById('confirm-game-title');
-      const classEl = document.getElementById('confirm-game-class');
-      const durationEl = document.getElementById('confirm-game-duration');
+      const classSelect = document.getElementById('confirm-class-select');
+      const durationSelect = document.getElementById('confirm-duration-select');
 
       if (iconEl) iconEl.innerText = details.icon;
       if (titleEl) titleEl.innerText = details.name;
 
-      // Populate current class name and duration
+      // Populate class dropdown with all saved classes
       const classes = getAllSavedClasses();
-      const currentCls = classes.find(c => c.id === currentClassId);
-      if (classEl) {
-        classEl.innerText = currentCls ? (currentCls.name + ' (' + currentCls.students.length + ' HS)') : 'Chưa có lớp';
+      if (classSelect) {
+        if (!classes || classes.length === 0) {
+          classSelect.innerHTML = '<option value="">(Chưa có lớp)</option>';
+        } else {
+          classSelect.innerHTML = classes.map(function(c) {
+            return '<option value="' + c.id + '"' + (c.id === currentClassId ? ' selected' : '') + '>' + c.name + ' (' + c.students.length + ' HS)</option>';
+          }).join('');
+        }
       }
-      const durSec = document.getElementById('spin-duration')?.value || '5';
-      if (durationEl) {
-        durationEl.innerText = durSec + ' giây';
+
+      // Sync duration dropdown with current spin-duration value
+      var durSec = document.getElementById('spin-duration') ? document.getElementById('spin-duration').value : '5';
+      if (durationSelect) {
+        durationSelect.value = durSec;
       }
 
       if (confirmModal) {
         confirmModal.classList.remove('hidden');
         confirmModal.classList.add('flex');
       }
+    }
+
+    function onConfirmClassChange(classId) {
+      if (!classId) return;
+      loadClassIntoStage(classId);
+      // Sync other class dropdowns
+      var wheelSelect = document.getElementById('wheel-class-select');
+      var homeSelect = document.getElementById('home-class-select');
+      if (wheelSelect) wheelSelect.value = classId;
+      if (homeSelect) homeSelect.value = classId;
+      // Update home student count badge
+      var classes = getAllSavedClasses();
+      var cls = classes.find(function(c) { return c.id === classId; });
+      var homeBadge = document.getElementById('home-student-count-badge');
+      if (homeBadge && cls) homeBadge.innerText = cls.students.length + ' HS';
+    }
+
+    function onConfirmDurationChange(sec) {
+      var spinDur = document.getElementById('spin-duration');
+      if (spinDur) spinDur.value = sec;
+      // Also sync home duration buttons if setAppDuration exists
+      if (typeof setAppDuration === 'function') setAppDuration(parseInt(sec, 10));
     }
 
     function closeGameConfirmModal() {
