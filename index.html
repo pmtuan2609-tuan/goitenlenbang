@@ -27208,7 +27208,7 @@
       sackStartX = 180;
       const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
       const durationFactor = Math.max(0.6, durationSec / 5);
-      const baseDist = Math.max(((rect.width || 800)) * 2.8, 2400);
+      const baseDist = Math.max(((rect.width || 800)) * 1.85, 1600);
       const raceDist = Math.round(baseDist * durationFactor);
       sackFinishX = sackStartX + raceDist;
       sackTrackLength = sackFinishX + 350;
@@ -27280,7 +27280,7 @@
       const durationFactor = Math.max(0.6, durationSec / 5);
       const container = document.getElementById('sack-race-container');
       const rect = container?.getBoundingClientRect() || { width: 800 };
-      const baseDist = Math.max(rect.width * 2.8, 2400);
+      const baseDist = Math.max(rect.width * 1.85, 1600);
       const raceDist = Math.round(baseDist * durationFactor);
       sackFinishX = sackStartX + raceDist;
       sackTrackLength = sackFinishX + 350;
@@ -27378,7 +27378,7 @@
         const totalDist = sackFinishX - sackStartX;
         const nominalSpeed = totalDist / (sackRaceDuration / 1000);
 
-        if (now - sackLastHopSoundTime > 310) {
+        if (now - sackLastHopSoundTime > 440) {
           sackLastHopSoundTime = now;
           SackRaceAudio.playHop();
         }
@@ -27411,8 +27411,8 @@
               }
             }
 
-            // Nhịp bật nhảy tự nhiên riêng cho từng VĐV (tránh trùng lặp đồng bộ)
-            const runnerFreq = 3.4 + ((r.lane * 3) % 4) * 0.12;
+            // Nhịp bật nhảy tự nhiên vừa phải cho từng VĐV (tránh nhanh quá)
+            const runnerFreq = 2.15 + ((r.lane * 3) % 4) * 0.08;
             r.hopProgress = (r.hopProgress + runnerFreq * dt) % 1.0;
             const p = r.hopProgress;
 
@@ -28365,6 +28365,21 @@
         ctx.arc(kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3, 2.1, 0, Math.PI * 2);
         ctx.arc(kickDir * 9 - stride * 0.5, 15, 2.1, 0, Math.PI * 2);
         ctx.fill();
+      } else if (pose === 'read') {
+        // Ngồi vắt chân đọc sách
+        ctx.strokeStyle = pants;
+        ctx.beginPath();
+        ctx.moveTo(-2, 4); ctx.lineTo(-8, 10); ctx.lineTo(-4, 13);
+        ctx.moveTo(2, 4); ctx.lineTo(8, 10); ctx.lineTo(4, 13);
+        ctx.stroke();
+      } else if (pose === 'bike') {
+        // Chân đạp bàn đạp xe đạp
+        const pedalAng = now * 0.012 + phase;
+        ctx.strokeStyle = pants;
+        ctx.beginPath();
+        ctx.moveTo(-2, 4); ctx.lineTo(-2 + Math.cos(pedalAng) * 4, 10 + Math.sin(pedalAng) * 3.5);
+        ctx.moveTo(2, 4); ctx.lineTo(2 - Math.cos(pedalAng) * 4, 10 - Math.sin(pedalAng) * 3.5);
+        ctx.stroke();
       } else {
         ctx.strokeStyle = pants;
         ctx.beginPath();
@@ -28441,6 +28456,23 @@
         ctx.lineTo(-11, -14);
         ctx.moveTo(6, -5);
         ctx.lineTo(11, -14);
+        ctx.stroke();
+      } else if (pose === 'read') {
+        // Hai tay ôm quyển sách mở đọc chăm chú
+        ctx.beginPath();
+        ctx.moveTo(-6, -4); ctx.lineTo(-4, 2);
+        ctx.moveTo(6, -4); ctx.lineTo(4, 2);
+        ctx.stroke();
+        // Quyển sách mở
+        ctx.fillStyle = '#fef9c3';
+        ctx.strokeStyle = '#92400e';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.roundRect(-7.5, -1, 7.5, 7, 1); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(0, -1, 7.5, 7, 1); ctx.fill(); ctx.stroke();
+      } else if (pose === 'bike') {
+        // Hai tay vươn tới cầm ghi đông xe đạp
+        ctx.beginPath();
+        ctx.moveTo(facing * 2, -5); ctx.lineTo(facing * 10, -2);
         ctx.stroke();
       } else if (pose === 'run' || pose === 'walk') {
         ctx.beginPath();
@@ -29202,6 +29234,15 @@
           const side = (slot % 2 === 0) ? -1 : 1;
           const tier = Math.floor(slot / 2);
 
+          // Phân bổ hoạt động đời thường sinh động trên phố (đạp xe, đọc sách, đi bộ, chơi cầu)
+          let activity = 'walk';
+          if (idleNy >= 0.75) {
+            activity = (i % 2 === 0) ? 'bike' : 'walk';
+          } else {
+            const pick = i % 3;
+            activity = pick === 0 ? 'read' : (pick === 1 ? 'play' : 'walk');
+          }
+
           return {
             id: st.id,
             student: st,
@@ -29211,6 +29252,8 @@
             walkDir: (i % 2 === 0) ? 1 : -1,
             nx: idleNx,
             ny: idleNy,
+            activity: activity,
+            droppedBike: null,
             propIdx: bestIdx,
             clingSlot: slot,
             clingNx: Math.max(0.04, Math.min(0.96, prop.nx + side * (0.024 + tier * 0.012))),
@@ -29226,14 +29269,65 @@
       }
       ufoState = 'idle';
       ufoPosX = 0.5;
-      ufoPosY = 0.17;
+      ufoPosY = 0.16;
       ufoParticles = [];
       ufoTargetWinner = null;
       ufoDecoyTargets = [];
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = 'Các bạn học sinh đang đi dạo trên con đường phố! Bấm QUÉT TIA SÁNG để xem cả lớp chạy bám cây, ghế đá, nắp cống!';
+      if (statusEl) statusEl.innerText = 'Học sinh đang đạp xe, đi bộ, đọc sách trên đường phố! Bấm QUÉT TIA SÁNG để phi thuyền khổng lồ xuất hiện!';
 
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
+    }
+
+    function drawStreetBicycle(ctx, x, y, facing, frameColor, now, isRiding) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(facing, 1);
+
+      const wheelRot = isRiding ? (now * 0.012) : 0;
+      // Ground shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.28)';
+      ctx.beginPath(); ctx.ellipse(0, 14, 17, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Rear & Front spoked wheels
+      [-10, 10].forEach(wx => {
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.arc(wx, 8, 6.2, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1;
+        for (let sp = 0; sp < 4; sp++) {
+          const a = wheelRot + sp * (Math.PI / 4);
+          ctx.beginPath();
+          ctx.moveTo(wx - Math.cos(a) * 5.2, 8 - Math.sin(a) * 5.2);
+          ctx.lineTo(wx + Math.cos(a) * 5.2, 8 + Math.sin(a) * 5.2);
+          ctx.stroke();
+        }
+      });
+
+      // Bicycle diamond frame
+      ctx.strokeStyle = frameColor;
+      ctx.lineWidth = 2.2;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-10, 8); ctx.lineTo(-2, 0); ctx.lineTo(8, 0); ctx.lineTo(10, 8);
+      ctx.moveTo(-2, 0); ctx.lineTo(0, 8); ctx.lineTo(8, 0);
+      ctx.moveTo(-10, 8); ctx.lineTo(0, 8);
+      ctx.stroke();
+
+      // Handlebar & Seat
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(7, -6); ctx.lineTo(11, -7); ctx.stroke();
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath(); ctx.roundRect(-5, -3.5, 6, 2.5, 1); ctx.fill();
+
+      // Tiny front headlight
+      if (isRiding) {
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath(); ctx.arc(10.5, -4, 2, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
     }
 
     function startUfoAbductGame(winnerStudent, durationMs = 6500, callback) {
@@ -29467,55 +29561,108 @@
       const ux = ufoPosX * w;
       const uy = ufoPosY * h;
 
-      // 3. Draw Field Props (Trees, Rocks, Lampposts, Benches, Tents, Fences)
+      // 3. Draw Field Props (Trees, Rocks, Lampposts, Benches, Bus Stop, Hydrants, Manholes, Cones)
       ufoProps.forEach(pr => drawUfoProp(ctx, pr, w, h, now));
 
-      // 4. Draw Suction Wind Streaks during running
+      // Draw abandoned/parked bicycles on road when cyclists sprint to cling to props
+      if (ufoState !== 'idle') {
+        ufoStudents.forEach(s => {
+          if (s.droppedBike) {
+            drawStreetBicycle(ctx, s.droppedBike.nx * w, s.droppedBike.ny * h, s.droppedBike.facing, s.color, now, false);
+          }
+        });
+      }
+
+      // 4. Draw Suction Wind Streaks across the ENTIRE street during running
       if (ufoState === 'running') {
         ctx.save();
-        ctx.strokeStyle = 'rgba(165, 243, 252, 0.25)';
-        ctx.lineWidth = 1.5;
-        for (let ws = 0; ws < 12; ws++) {
-          const wx = ((ws * 97 + now * 0.04) % w);
-          const wy = h * 0.88 - ((now * 0.18 + ws * 55) % (h * 0.58));
+        ctx.strokeStyle = 'rgba(165, 243, 252, 0.28)';
+        ctx.lineWidth = 1.6;
+        for (let ws = 0; ws < 18; ws++) {
+          const wx = ((ws * 83 + now * 0.04) % w);
+          const wy = h * 0.90 - ((now * 0.20 + ws * 55) % (h * 0.62));
           ctx.beginPath();
           ctx.moveTo(wx, wy);
-          ctx.lineTo(wx + (ux - wx) * 0.08, wy - 18);
+          ctx.lineTo(wx + (ux - wx) * 0.10, wy - 22);
           ctx.stroke();
         }
         ctx.restore();
       }
 
-      // 5. Draw Tractor Beam Cone
+      // 5. Draw GIANT Wide-Coverage Tractor Beam Cone (Covers ALL students during scan, focuses on target for abduction)
       ctx.save();
-      const beamGrad = ctx.createLinearGradient(ux, uy + 14, ux, h * 0.92);
+      let topHalfW = 48;
+      let botHalfW = Math.max(w * 0.46, 360);
+      let focusAlpha = beamAlpha;
+
+      if (ufoState === 'idle') {
+        topHalfW = 44;
+        botHalfW = Math.max(w * 0.36, 260);
+        focusAlpha = 0.14;
+      } else if (ufoState === 'running') {
+        if (t < 0.62) {
+          // Ánh sáng bao trùm toàn bộ con đường & tất cả học sinh!
+          topHalfW = 58;
+          botHalfW = Math.max(w * 0.64, 540);
+          focusAlpha = 0.38 + Math.sin(now * 0.01) * 0.06;
+        } else if (t < 0.76) {
+          // Thu hẹp dần tập trung vào học sinh chuẩn bị bị bắt
+          const p = (t - 0.62) / 0.14;
+          topHalfW = 58 - 22 * p;
+          botHalfW = Math.max(w * 0.64, 540) * (1 - p) + 84 * p;
+          focusAlpha = 0.44 + 0.28 * p;
+        } else {
+          topHalfW = 36;
+          botHalfW = 80;
+          focusAlpha = 0.78;
+        }
+      } else if (ufoState === 'finished') {
+        topHalfW = 36;
+        botHalfW = 80;
+        focusAlpha = 0.78;
+      }
+
+      const beamGrad = ctx.createLinearGradient(ux, uy + 24, ux, h * 0.95);
       const beamRGB = isAbducting ? '52, 211, 153' : '56, 189, 248';
-      beamGrad.addColorStop(0, 'rgba(' + beamRGB + ', ' + beamAlpha + ')');
-      beamGrad.addColorStop(1, 'rgba(' + beamRGB + ', 0.04)');
+      beamGrad.addColorStop(0, 'rgba(' + beamRGB + ', ' + focusAlpha + ')');
+      beamGrad.addColorStop(0.65, 'rgba(' + beamRGB + ', ' + (focusAlpha * 0.45).toFixed(2) + ')');
+      beamGrad.addColorStop(1, 'rgba(' + beamRGB + ', 0.05)');
       ctx.fillStyle = beamGrad;
       ctx.beginPath();
-      ctx.moveTo(ux - 18, uy + 14);
-      ctx.lineTo(ux + 18, uy + 14);
-      ctx.lineTo(ux + (isAbducting ? 68 : 95), h * 0.94);
-      ctx.lineTo(ux - (isAbducting ? 68 : 95), h * 0.94);
+      ctx.moveTo(ux - topHalfW, uy + 24);
+      ctx.lineTo(ux + topHalfW, uy + 24);
+      ctx.lineTo(ux + botHalfW, h * 0.96);
+      ctx.lineTo(ux - botHalfW, h * 0.96);
       ctx.closePath();
       ctx.fill();
 
-      if (isAbducting) {
-        ctx.strokeStyle = 'rgba(167, 243, 208, 0.8)';
+      // Subtle vertical laser scan rays inside the wide cone
+      if (ufoState === 'running' && !isAbducting) {
+        ctx.strokeStyle = 'rgba(186, 230, 253, 0.22)';
         ctx.lineWidth = 2;
-        for (let r = 0; r < 4; r++) {
-          const ringProg = ((now * 0.0016 + r * 0.25) % 1);
-          const ryPos = (h * 0.85) - ringProg * (h * 0.52);
-          const rw = 46 - ringProg * 28;
+        [-0.7, -0.35, 0, 0.35, 0.7].forEach(ratio => {
           ctx.beginPath();
-          ctx.ellipse(ux, ryPos, rw, 6.5, 0, 0, Math.PI * 2);
+          ctx.moveTo(ux + topHalfW * ratio, uy + 24);
+          ctx.lineTo(ux + botHalfW * ratio, h * 0.95);
+          ctx.stroke();
+        });
+      }
+
+      if (isAbducting) {
+        ctx.strokeStyle = 'rgba(167, 243, 208, 0.85)';
+        ctx.lineWidth = 2.4;
+        for (let r = 0; r < 5; r++) {
+          const ringProg = ((now * 0.0017 + r * 0.2) % 1);
+          const ryPos = (h * 0.86) - ringProg * (h * 0.54);
+          const rw = 54 - ringProg * 30;
+          ctx.beginPath();
+          ctx.ellipse(ux, ryPos, rw, 7.5, 0, 0, Math.PI * 2);
           ctx.stroke();
         }
       }
       ctx.restore();
 
-      // 6. Update & Draw Articulated Human Students (Running -> Clinging to Nearest Prop -> Winner Abducted!)
+      // 6. Update & Draw Articulated Human Students (Idle: Bike / Read / Play / Walk -> Running -> Clinging -> Abducted!)
       ufoStudents.forEach(s => {
         let pose = 'idle';
         let facing = s.facing;
@@ -29523,18 +29670,49 @@
         let bob = Math.sin(now * 0.006 + s.phase) * 1.8;
 
         if (ufoState === 'idle') {
-          const strollAngle = now * 0.0009 + s.phase;
-          const strollOffset = Math.sin(strollAngle) * 0.03;
-          s.nx = Math.max(0.05, Math.min(0.95, s.idleNx + strollOffset));
-          s.ny = s.idleNy;
-          s.walkStartNx = s.nx;
+          s.droppedBike = null;
           s.liftY = 0;
-          facing = Math.cos(strollAngle) >= 0 ? 1 : -1;
-          pose = 'walk';
-          bob = Math.abs(Math.sin(now * 0.008 + s.phase)) * -1.4;
+          if (s.activity === 'bike') {
+            // Đạp xe đạp lướt qua lại trên làn đường nhựa
+            const cycleAng = now * 0.0011 + s.phase;
+            s.nx = Math.max(0.06, Math.min(0.94, s.idleNx + Math.sin(cycleAng) * 0.055));
+            s.ny = s.idleNy;
+            s.walkStartNx = s.nx;
+            facing = Math.cos(cycleAng) >= 0 ? 1 : -1;
+            s.walkFacing = facing;
+            pose = 'bike';
+            bob = Math.sin(now * 0.015 + s.phase) * 0.7;
+          } else if (s.activity === 'read') {
+            // Ngồi đọc sách chăm chú trên vỉa hè / ghế đá
+            s.nx = s.idleNx;
+            s.ny = s.idleNy;
+            s.walkStartNx = s.nx;
+            facing = 1;
+            pose = 'read';
+            bob = 0;
+          } else if (s.activity === 'play') {
+            // Vui chơi tung cầu / bóng trên vỉa hè
+            s.nx = s.idleNx;
+            s.ny = s.idleNy;
+            s.walkStartNx = s.nx;
+            facing = 1;
+            pose = 'idle';
+            bob = Math.abs(Math.sin(now * 0.007 + s.phase)) * -3.5;
+          } else {
+            // Đi bộ dạo phố
+            const strollAngle = now * 0.0009 + s.phase;
+            s.nx = Math.max(0.05, Math.min(0.95, s.idleNx + Math.sin(strollAngle) * 0.032));
+            s.ny = s.idleNy;
+            s.walkStartNx = s.nx;
+            facing = Math.cos(strollAngle) >= 0 ? 1 : -1;
+            pose = 'walk';
+            bob = Math.abs(Math.sin(now * 0.008 + s.phase)) * -1.4;
+          }
         } else if (ufoState === 'running') {
+          if (s.activity === 'bike' && !s.droppedBike) {
+            s.droppedBike = { nx: s.walkStartNx || s.idleNx, ny: s.idleNy, facing: s.walkFacing || 1 };
+          }
           if (t < 0.24) {
-            // Sprint from current walking spot on road to nearest prop!
             const p = Math.min(1, t / 0.22);
             const ease = 1 - Math.pow(1 - p, 2);
             const startNx = (s.walkStartNx !== undefined) ? s.walkStartNx : s.idleNx;
@@ -29544,21 +29722,18 @@
             pose = p < 0.95 ? 'run' : 'cling';
             bob = 0;
           } else if (s.isWinner && isAbducting) {
-            // Lost grip! Spinning/flailing upward in tractor beam!
             s.nx = s.clingNx + Math.sin(now * 0.015) * 0.008;
             s.ny = s.clingNy;
             pose = 'abducted';
             tilt = Math.sin(now * 0.014) * 0.35;
             bob = 0;
           } else {
-            // Clinging tightly onto nearest prop!
             s.nx = s.clingNx;
             s.ny = s.clingNy;
             facing = s.clingSide === -1 ? 1 : -1;
             pose = 'cling';
             const distToBeam = Math.abs(s.nx * w - ux);
-            const pullStrength = distToBeam < 110 ? (1 - distToBeam / 110) : 0.25;
-            // Tilt legs/body upward toward the UFO pull while gripping prop!
+            const pullStrength = distToBeam < botHalfW ? (1 - distToBeam / botHalfW) : 0.25;
             tilt = (s.clingSide === -1 ? -0.45 : 0.45) * (0.45 + pullStrength * 0.55) + Math.sin(now * 0.04 + s.phase) * 0.06;
             bob = 0;
           }
@@ -29579,20 +29754,25 @@
 
         const sx = s.nx * w;
         const sy = s.ny * h - (s.liftY || 0) + bob;
-        const isUnderBeam = Math.abs(sx - ux) < 58;
+        const isUnderBeam = Math.abs(sx - ux) <= (isAbducting ? 72 : botHalfW);
 
         ctx.save();
-        if (!s.liftY) {
+        if (!s.liftY && pose !== 'bike') {
           ctx.fillStyle = 'rgba(0,0,0,0.28)';
           ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 13, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
         }
-        if (isUnderBeam && ufoState === 'running') {
-          ctx.strokeStyle = isLocked && s.isWinner ? '#34d399' : '#38bdf8';
-          ctx.lineWidth = 2;
+        if (isUnderBeam && ufoState === 'running' && (!isAbducting || s.isWinner)) {
+          ctx.strokeStyle = isLocked && s.isWinner ? '#34d399' : 'rgba(56, 189, 248, 0.7)';
+          ctx.lineWidth = isLocked && s.isWinner ? 2.5 : 1.5;
           ctx.beginPath(); ctx.arc(sx, sy - 4, 17, 0, Math.PI * 2); ctx.stroke();
         }
 
-        drawCartoonHuman(ctx, sx, sy, {
+        // Draw bicycle underneath cyclist during idle
+        if (ufoState === 'idle' && pose === 'bike') {
+          drawStreetBicycle(ctx, sx, sy + 6, facing, s.color, now, true);
+        }
+
+        drawCartoonHuman(ctx, sx, sy - (pose === 'bike' ? 5 : 0), {
           shirt: s.color,
           pants: '#1e3a8a',
           backpackColor: s.color,
@@ -29605,8 +29785,15 @@
           now: now
         });
 
-        // Panic "!" / "Á!" callout when clinging under UFO beam
-        if (ufoState === 'running' && isUnderBeam && !isAbducting) {
+        // Draw bouncing shuttlecock / ball above 'play' student in idle
+        if (ufoState === 'idle' && s.activity === 'play') {
+          const ballBounce = Math.abs(Math.sin(now * 0.008 + s.phase)) * 22;
+          ctx.font = '12px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText((s.phase % 2 > 1) ? '⚽' : '🪶', sx + 10, sy - 10 - ballBounce);
+        }
+
+        if (ufoState === 'running' && isUnderBeam && !isAbducting && (Math.abs(sx - ux) < 120)) {
           ctx.fillStyle = '#fef08a';
           ctx.font = '900 10px system-ui, sans-serif';
           ctx.textAlign = 'center';
@@ -29624,36 +29811,72 @@
         ctx.restore();
       });
 
-      // 7. Draw UFO Saucer
+      // 7. Draw GIANT UFO MOTHERSHIP (Phóng to phi thuyền khổng lồ!)
       ctx.save();
       ctx.translate(ux, uy);
-      ctx.rotate(Math.sin(now * 0.004) * 0.05);
+      ctx.rotate(Math.sin(now * 0.0035) * 0.04);
 
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.38)';
+      // Glowing tractor emitter ring underneath hull
+      ctx.fillStyle = isAbducting ? 'rgba(52, 211, 153, 0.7)' : 'rgba(56, 189, 248, 0.55)';
+      ctx.shadowColor = isAbducting ? '#34d399' : '#38bdf8';
+      ctx.shadowBlur = 24;
+      ctx.beginPath(); ctx.ellipse(0, 24, 52, 11, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Translucent Glass Cockpit Dome
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.36)';
       ctx.strokeStyle = '#bae6fd';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(0, -8, 25, Math.PI, 0); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(0, -14, 46, Math.PI, 0); ctx.fill(); ctx.stroke();
 
+      // Big Alien Commander waving inside Dome
       ctx.fillStyle = '#4ade80';
-      ctx.beginPath(); ctx.arc(0, -14, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(0, -25, 14, 0, Math.PI * 2); ctx.fill();
+      // Alien antennae
+      ctx.strokeStyle = '#4ade80';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(-6, -37); ctx.lineTo(-11, -45);
+      ctx.moveTo(6, -37); ctx.lineTo(11, -45);
+      ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath(); ctx.arc(-11, -46, 2.5, 0, Math.PI * 2); ctx.arc(11, -46, 2.5, 0, Math.PI * 2); ctx.fill();
+      // Alien eyes & grin
       ctx.fillStyle = '#0f172a';
-      ctx.beginPath(); ctx.ellipse(-3, -15, 2, 3, 0, 0, Math.PI * 2); ctx.ellipse(3, -15, 2, 3, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(-5, -26, 3.5, 5, -0.15, 0, Math.PI * 2); ctx.ellipse(5, -26, 3.5, 5, 0.15, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.arc(-6, -28, 1.2, 0, Math.PI * 2); ctx.arc(4, -28, 1.2, 0, Math.PI * 2); ctx.fill();
 
-      const rimGrad = ctx.createLinearGradient(-58, 0, 58, 0);
-      rimGrad.addColorStop(0, '#475569');
-      rimGrad.addColorStop(0.5, '#cbd5e1');
-      rimGrad.addColorStop(1, '#334155');
+      // Upper Metallic Hull Band
+      const upperGrad = ctx.createLinearGradient(-85, -14, 85, 8);
+      upperGrad.addColorStop(0, '#64748b');
+      upperGrad.addColorStop(0.5, '#e2e8f0');
+      upperGrad.addColorStop(1, '#475569');
+      ctx.fillStyle = upperGrad;
+      ctx.beginPath(); ctx.ellipse(0, -6, 86, 18, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Giant Main Rim Disc
+      const rimGrad = ctx.createLinearGradient(-116, 0, 116, 0);
+      rimGrad.addColorStop(0, '#334155');
+      rimGrad.addColorStop(0.25, '#94a3b8');
+      rimGrad.addColorStop(0.5, '#f1f5f9');
+      rimGrad.addColorStop(0.75, '#94a3b8');
+      rimGrad.addColorStop(1, '#1e293b');
       ctx.fillStyle = rimGrad;
-      ctx.beginPath(); ctx.ellipse(0, 2, 60, 16, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = '#94a3b8';
-      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.ellipse(0, 6, 118, 28, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 2.5;
       ctx.stroke();
 
-      const lightColors = ['#34d399', '#facc15', '#38bdf8', '#f472b6'];
-      for (let l = -42; l <= 42; l += 14) {
-        const idx = Math.floor((now * 0.01 + l) % lightColors.length);
-        ctx.fillStyle = lightColors[Math.abs(idx)];
-        ctx.beginPath(); ctx.arc(l, 4, 3.2, 0, Math.PI * 2); ctx.fill();
+      // 13 Bright Rotating Neon Rim Lights
+      const lightColors = ['#34d399', '#facc15', '#38bdf8', '#f472b6', '#a855f7'];
+      for (let l = -96; l <= 96; l += 16) {
+        const idx = Math.floor((now * 0.012 + Math.abs(l)) % lightColors.length);
+        const arcY = 8 + Math.cos((l / 118) * Math.PI * 0.5) * 10;
+        ctx.fillStyle = lightColors[idx];
+        ctx.shadowColor = lightColors[idx];
+        ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.arc(l, arcY, 4.5, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
 
