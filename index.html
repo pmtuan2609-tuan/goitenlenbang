@@ -6269,8 +6269,8 @@
     "category": "🎁 May Mắn & Quay Số",
     "badge": "✨ UFO Mới Nhất",
     "color": "emerald",
-    "context": "Thảo nguyên đêm trăng đầy sao lấp lánh, nơi chiếc đĩa bay UFO phát sáng lượn lờ tìm kiếm nhân vật đặc biệt.",
-    "rules": "Khi đĩa bay UFO hạ cánh phát tia hút, tất cả học sinh hoảng hốt chạy bám chặt vào các vật dụng gần nhất (cây cối, tảng đá, cột đèn, hàng rào...). Sau vài pha quét thót tim, 1 bạn bị trượt tay và bị tia sáng hút thẳng lên tàu!",
+    "context": "Con đường phố buổi tối rực ánh đèn với vỉa hè lát gạch, hàng cây xanh, ghế đá, tảng đá và nắp cống, nơi các bạn học sinh đeo ba lô đang đi dạo.",
+    "rules": "Khi đĩa bay UFO hạ cánh phát tia hút, tất cả học sinh mặc đồng phục đeo ba lô hốt hoảng chạy bám chặt vào vật dụng gần nhất (cây cối, ghế đá, tảng đá, cột đèn, nắp cống). Sau vài pha rà soát thót tim, 1 bạn bị tuột tay và bị hút thẳng lên tàu!",
     "tips": "Tạo những tràng cười vỡ òa mỗi khi đĩa bay dừng lại lơ lửng ngay trên đầu các bạn trong lớp.",
     "shortcut": "Bấm phím Space để phi thuyền UFO bắt đầu quét tia sáng."
   },
@@ -28301,9 +28301,26 @@
       if (tilt) ctx.rotate(tilt);
 
       const stride = pose === 'run' ? Math.sin(now * 0.018 + phase) * 5.5
+                   : pose === 'walk' ? Math.sin(now * 0.008 + phase) * 3.8
                    : pose === 'cling' ? Math.sin(now * 0.025 + phase) * 4.5
                    : pose === 'abducted' ? Math.sin(now * 0.03 + phase) * 6
                    : 0;
+
+      // School backpack behind body (if student uniform mode)
+      if (o.isStudent) {
+        const bpColor = o.backpackColor || shirt;
+        const bpX = (pose === 'walk' || pose === 'run' || pose === 'cling') ? (-facing * 6.5) : 0;
+        ctx.fillStyle = bpColor;
+        ctx.strokeStyle = 'rgba(15,23,42,0.8)';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.roundRect(bpX - 5.5, -8.5, 11, 12.5, 3.5);
+        ctx.fill();
+        ctx.stroke();
+        // Backpack flap/pocket accent
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillRect(bpX - 3.5, -3, 7, 4);
+      }
 
       // Hero cape behind body (if Summon SSR hero)
       if (o.isHero) {
@@ -28365,7 +28382,7 @@
       }
 
       // 2. TORSO / SHIRT
-      ctx.fillStyle = o.isAstronaut ? '#f8fafc' : shirt;
+      ctx.fillStyle = o.isAstronaut ? '#f8fafc' : (o.isStudent ? '#ffffff' : shirt);
       ctx.strokeStyle = 'rgba(15,23,42,0.75)';
       ctx.lineWidth = 1.2;
       ctx.beginPath();
@@ -28373,12 +28390,24 @@
       ctx.fill();
       ctx.stroke();
 
-      // Shirt collar / astronaut chest stripe
-      ctx.fillStyle = o.isAstronaut ? shirt : 'rgba(255,255,255,0.35)';
-      ctx.fillRect(-3.5, -5.5, 7, 3);
+      // Shirt collar / red school scarf / astronaut chest stripe
+      if (o.isStudent) {
+        // Red school scarf (khăn quàng đỏ)
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.moveTo(-4.8, -7.8);
+        ctx.lineTo(4.8, -7.8);
+        ctx.lineTo(0, -1.2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillRect(-1.1, -2.5, 2.2, 5.2);
+      } else {
+        ctx.fillStyle = o.isAstronaut ? shirt : 'rgba(255,255,255,0.35)';
+        ctx.fillRect(-3.5, -5.5, 7, 3);
+      }
 
       // 3. ARMS (Articulated by pose)
-      ctx.strokeStyle = o.isAstronaut ? '#e2e8f0' : skin;
+      ctx.strokeStyle = o.isAstronaut ? '#e2e8f0' : (o.isStudent ? '#ffffff' : skin);
       ctx.lineWidth = 3.1;
       ctx.lineCap = 'round';
       if (pose === 'cling') {
@@ -28413,7 +28442,7 @@
         ctx.moveTo(6, -5);
         ctx.lineTo(11, -14);
         ctx.stroke();
-      } else if (pose === 'run') {
+      } else if (pose === 'run' || pose === 'walk') {
         ctx.beginPath();
         ctx.moveTo(-6, -5);
         ctx.lineTo(-9 + stride * 0.7, 2);
@@ -28453,7 +28482,7 @@
       ctx.fill();
 
       // Eyes & Mouth
-      const eyeShift = (pose === 'cling' || pose === 'run') ? facing * 1.4 : 0;
+      const eyeShift = (pose === 'cling' || pose === 'run' || pose === 'walk') ? facing * 1.4 : 0;
       if (pose === 'cling' || pose === 'abducted') {
         // Wide shocked eyes + O-mouth!
         ctx.fillStyle = '#ffffff';
@@ -28957,14 +28986,21 @@
 
     function buildUfoFieldProps() {
       return [
-        { type: 'tree',     nx: 0.11, ny: 0.72, label: 'Cây cổ thụ' },
-        { type: 'lamppost', nx: 0.22, ny: 0.85, label: 'Cột đèn' },
-        { type: 'rock',     nx: 0.34, ny: 0.72, label: 'Tảng đá' },
-        { type: 'bench',    nx: 0.45, ny: 0.86, label: 'Ghế đá' },
-        { type: 'tent',     nx: 0.56, ny: 0.72, label: 'Lều trại' },
-        { type: 'fence',    nx: 0.67, ny: 0.86, label: 'Hàng rào' },
-        { type: 'tree',     nx: 0.78, ny: 0.73, label: 'Cây sồi' },
-        { type: 'lamppost', nx: 0.89, ny: 0.84, label: 'Cột đèn' }
+        // Hàng cây cối, cột đèn, ghế đá, tảng đá dọc vỉa hè (y ~ 0.63 - 0.69)
+        { type: 'tree',     nx: 0.08, ny: 0.64, label: 'Cây xanh' },
+        { type: 'bench',    nx: 0.19, ny: 0.66, label: 'Ghế đá' },
+        { type: 'lamppost', nx: 0.29, ny: 0.64, label: 'Cột đèn' },
+        { type: 'tree',     nx: 0.40, ny: 0.63, label: 'Cây cổ thụ' },
+        { type: 'rock',     nx: 0.51, ny: 0.67, label: 'Tảng đá' },
+        { type: 'bench',    nx: 0.62, ny: 0.66, label: 'Ghế đá' },
+        { type: 'tree',     nx: 0.73, ny: 0.63, label: 'Cây xanh' },
+        { type: 'lamppost', nx: 0.83, ny: 0.64, label: 'Cột đèn' },
+        { type: 'tree',     nx: 0.93, ny: 0.64, label: 'Cây sồi' },
+        // Nắp cống & tảng đá rải dọc lòng đường (y ~ 0.79 - 0.88)
+        { type: 'manhole',  nx: 0.23, ny: 0.84, label: 'Nắp cống' },
+        { type: 'manhole',  nx: 0.54, ny: 0.84, label: 'Nắp cống' },
+        { type: 'rock',     nx: 0.77, ny: 0.88, label: 'Tảng đá' },
+        { type: 'manhole',  nx: 0.87, ny: 0.82, label: 'Nắp cống' }
       ];
     }
 
@@ -28974,83 +29010,92 @@
       ctx.save();
       ctx.translate(px, py);
 
+      if (prop.type === 'manhole') {
+        // Nắp cống tròn bằng gang ngay trên mặt đường nhựa
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.ellipse(0, 4, 24, 10, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle = '#334155';
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.ellipse(0, 4, 18, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+        // Khe rãnh thoát nước nắp cống
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        [-10, -3, 4, 11].forEach(ox => {
+          ctx.beginPath(); ctx.moveTo(ox, 1); ctx.lineTo(ox, 7); ctx.stroke();
+        });
+        ctx.restore();
+        return;
+      }
+
       // Ground shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.28)';
+      ctx.fillStyle = 'rgba(0,0,0,0.32)';
       ctx.beginPath(); ctx.ellipse(0, 12, 22, 6, 0, 0, Math.PI * 2); ctx.fill();
 
       if (prop.type === 'tree') {
-        // Trunk
+        // Bồn cây nhỏ dưới gốc
+        ctx.fillStyle = '#475569';
+        ctx.beginPath(); ctx.ellipse(0, 10, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
+        // Thân cây
         ctx.fillStyle = '#78350f';
         ctx.strokeStyle = '#451a03';
         ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.roundRect(-6, -34, 12, 46, 3); ctx.fill(); ctx.stroke();
-        // Leafy canopy
+        ctx.beginPath(); ctx.roundRect(-6.5, -42, 13, 52, 3); ctx.fill(); ctx.stroke();
+        // Tán lá xum xuê
         ctx.fillStyle = '#15803d';
-        ctx.beginPath(); ctx.arc(0, -44, 24, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, -52, 26, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#16a34a';
-        ctx.beginPath(); ctx.arc(-14, -36, 16, 0, Math.PI * 2); ctx.arc(14, -36, 16, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(-16, -42, 17, 0, Math.PI * 2); ctx.arc(16, -42, 17, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#22c55e';
-        ctx.beginPath(); ctx.arc(-4, -50, 14, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(-4, -58, 15, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'lamppost') {
         ctx.fillStyle = '#334155';
-        ctx.fillRect(-3.5, -52, 7, 64);
+        ctx.fillRect(-3.5, -58, 7, 70);
         ctx.fillStyle = '#1e293b';
-        ctx.beginPath(); ctx.roundRect(-8, 8, 16, 5, 2); ctx.fill();
-        // Glowing lantern head
+        ctx.beginPath(); ctx.roundRect(-9, 8, 18, 5, 2); ctx.fill();
+        // Tay đèn cong
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath(); ctx.moveTo(0, -56); ctx.quadraticCurveTo(10, -64, 16, -56); ctx.stroke();
+        // Ánh sáng vàng ấm chiếu xuống đường
+        const lampGlow = ctx.createRadialGradient(16, -54, 2, 16, 0, 62);
+        lampGlow.addColorStop(0, 'rgba(254, 240, 138, 0.35)');
+        lampGlow.addColorStop(1, 'rgba(254, 240, 138, 0)');
+        ctx.fillStyle = lampGlow;
+        ctx.beginPath(); ctx.moveTo(16, -54); ctx.lineTo(-22, 24); ctx.lineTo(54, 24); ctx.closePath(); ctx.fill();
+        // Bóng đèn phát sáng
         ctx.fillStyle = '#fef08a';
         ctx.shadowColor = '#facc15';
-        ctx.shadowBlur = 16;
-        ctx.beginPath(); ctx.arc(0, -56, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 18;
+        ctx.beginPath(); ctx.arc(16, -54, 6.5, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'rock') {
         ctx.fillStyle = '#64748b';
         ctx.strokeStyle = '#334155';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(-22, 11);
-        ctx.quadraticCurveTo(-24, -12, -6, -18);
-        ctx.quadraticCurveTo(14, -20, 22, 11);
+        ctx.moveTo(-24, 11);
+        ctx.quadraticCurveTo(-26, -13, -6, -19);
+        ctx.quadraticCurveTo(16, -21, 24, 11);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = '#94a3b8';
-        ctx.beginPath(); ctx.ellipse(-5, -8, 8, 4, -0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(-5, -8, 9, 4.5, -0.3, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'bench') {
-        ctx.fillStyle = '#475569';
-        ctx.fillRect(-20, 4, 4, 8);
-        ctx.fillRect(16, 4, 4, 8);
-        ctx.fillStyle = '#b45309';
-        ctx.strokeStyle = '#78350f';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.roundRect(-24, -8, 48, 8, 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.roundRect(-25, 0, 50, 6, 2); ctx.fill(); ctx.stroke();
-      } else if (prop.type === 'tent') {
-        ctx.fillStyle = '#ea580c';
-        ctx.strokeStyle = '#9a3412';
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(0, -34);
-        ctx.lineTo(26, 11);
-        ctx.lineTo(-26, 11);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.fillStyle = '#1e293b';
-        ctx.beginPath();
-        ctx.moveTo(0, -10);
-        ctx.lineTo(9, 11);
-        ctx.lineTo(-9, 11);
-        ctx.closePath();
-        ctx.fill();
-      } else if (prop.type === 'fence') {
-        ctx.fillStyle = '#92400e';
-        ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 1.3;
-        [-18, 0, 18].forEach(fx => {
-          ctx.beginPath(); ctx.roundRect(fx - 3.5, -18, 7, 30, 2); ctx.fill(); ctx.stroke();
-        });
-        ctx.fillStyle = '#b45309';
-        ctx.fillRect(-24, -12, 48, 5);
-        ctx.fillRect(-24, -2, 48, 5);
+        // Ghế đá công viên màu đá sáng trắng xám
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(-20, 4, 5, 8);
+        ctx.fillRect(15, 4, 5, 8);
+        ctx.fillStyle = '#e2e8f0';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect(-25, -10, 50, 9, 2.5); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#cbd5e1';
+        ctx.beginPath(); ctx.roundRect(-26, -1, 52, 6.5, 2.5); ctx.fill(); ctx.stroke();
       }
       ctx.restore();
     }
@@ -29071,14 +29116,15 @@
           const cols = Math.min(count, 10);
           const col = i % cols;
           const row = Math.floor(i / cols);
-          const idleNx = 0.09 + ((col + 0.5) / Math.max(1, cols)) * 0.82 + (Math.random() - 0.5) * 0.03;
-          const idleNy = Math.min(0.90, 0.70 + row * 0.065 + (Math.random() - 0.5) * 0.02);
+          // Học sinh ban đầu đi bộ trên lòng đường và vỉa hè (y từ 0.67 đến 0.90)
+          const idleNx = 0.08 + ((col + 0.5) / Math.max(1, cols)) * 0.84 + (Math.random() - 0.5) * 0.03;
+          const idleNy = Math.min(0.91, 0.69 + row * 0.062 + (Math.random() - 0.5) * 0.02);
 
-          // Find nearest prop to run and cling onto!
+          // Tìm vật dụng gần nhất (cây, ghế đá, tảng đá, cột đèn, nắp cống) để chạy tới bám chặt!
           let bestIdx = i % ufoProps.length;
           let bestDist = Infinity;
           ufoProps.forEach((pr, idx) => {
-            const d = Math.hypot(pr.nx - idleNx, (pr.ny - idleNy) * 1.4);
+            const d = Math.hypot(pr.nx - idleNx, (pr.ny - idleNy) * 1.35);
             if (d < bestDist) {
               bestDist = d;
               bestIdx = idx;
@@ -29086,7 +29132,7 @@
           });
           const prop = ufoProps[bestIdx];
           const slot = propLoad[bestIdx]++;
-          const side = (slot % 2 === 0) ? -1 : 1; // -1 = grab from left facing right, 1 = grab from right facing left
+          const side = (slot % 2 === 0) ? -1 : 1;
           const tier = Math.floor(slot / 2);
 
           return {
@@ -29095,17 +29141,18 @@
             displayName: shortStudentName(st.name),
             idleNx: idleNx,
             idleNy: idleNy,
+            walkDir: (i % 2 === 0) ? 1 : -1,
             nx: idleNx,
             ny: idleNy,
             propIdx: bestIdx,
-            clingNx: prop.nx + side * 0.024,
-            clingNy: prop.ny - tier * 0.028 + 0.005,
+            clingNx: prop.nx + side * (prop.type === 'manhole' ? 0.022 : 0.024),
+            clingNy: prop.ny - tier * 0.024 + 0.005,
             clingSide: side,
-            facing: side === -1 ? 1 : -1,
+            facing: (i % 2 === 0) ? 1 : -1,
             liftY: 0,
             color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length],
             isWinner: false,
-            phase: i * 0.65
+            phase: i * 0.72
           };
         });
       }
@@ -29116,7 +29163,7 @@
       ufoTargetWinner = null;
       ufoDecoyTargets = [];
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = 'Phi thuyền UFO đang lơ lửng ngoài bầu trời! Bấm QUÉT TIA SÁNG để xem cả lớp bám vật dụng né bắt cóc!';
+      if (statusEl) statusEl.innerText = 'Các bạn học sinh đang đi bộ trên con đường phố! Bấm QUÉT TIA SÁNG để xem cả lớp bám cây, ghế đá, nắp cống né UFO!';
 
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
     }
@@ -29140,7 +29187,7 @@
 
       if (ufoSoundEnabled) ArcadePackAudio.tone(240, 0.35, 'sawtooth', 0.12, 620);
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = '🚨 BÁO ĐỘNG UFO! Tất cả chạy mau bám chặt vào cây, đá, cột đèn gần nhất!';
+      if (statusEl) statusEl.innerText = '🚨 BÁO ĐỘNG UFO! Tất cả học sinh mau chạy bám chặt vào cây, ghế đá, tảng đá, nắp cống!';
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
     }
 
@@ -29164,17 +29211,17 @@
       const h = canvas.height / dpr;
       if (w <= 0 || h <= 0) return;
 
-      // 1. Starry Night Sky
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      // 1. Starry Night Sky + City Horizon
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.62);
       skyGrad.addColorStop(0, '#020617');
       skyGrad.addColorStop(0.6, '#1e1b4b');
-      skyGrad.addColorStop(1, '#064e3b');
+      skyGrad.addColorStop(1, '#312e81');
       ctx.fillStyle = skyGrad;
-      ctx.fillRect(0, 0, w, h);
+      ctx.fillRect(0, 0, w, h * 0.62);
 
       for (let i = 0; i < 48; i++) {
         const sx = ((i * 197) % 100) / 100 * w;
-        const sy = ((i * 313) % 62) / 100 * h;
+        const sy = ((i * 313) % 52) / 100 * h;
         const alpha = 0.35 + 0.65 * Math.abs(Math.sin(now * 0.002 + i));
         ctx.fillStyle = 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
         ctx.beginPath(); ctx.arc(sx, sy, (i % 3 === 0) ? 2 : 1.2, 0, Math.PI * 2); ctx.fill();
@@ -29185,24 +29232,89 @@
       ctx.fillStyle = '#fef08a';
       ctx.shadowColor = '#fde047';
       ctx.shadowBlur = 24;
-      ctx.beginPath(); ctx.arc(w * 0.86, h * 0.17, 26, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(w * 0.86, h * 0.16, 25, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
 
-      // Grassy Hills
-      ctx.fillStyle = '#065f46';
-      ctx.beginPath();
-      ctx.moveTo(0, h * 0.64);
-      ctx.quadraticCurveTo(w * 0.3, h * 0.57, w * 0.65, h * 0.63);
-      ctx.quadraticCurveTo(w * 0.85, h * 0.66, w, h * 0.60);
-      ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
-      ctx.fill();
+      // Distant city/school building silhouettes with lit windows
+      const horizonY = h * 0.56;
+      const buildings = [
+        [0.02, 0.09, 56], [0.12, 0.08, 72], [0.21, 0.11, 44], [0.34, 0.09, 64],
+        [0.45, 0.12, 52], [0.59, 0.08, 76], [0.69, 0.10, 48], [0.81, 0.09, 68], [0.91, 0.08, 54]
+      ];
+      buildings.forEach(([bx, bw, bh], idx) => {
+        const rx = w * bx, rw = w * bw, ry = horizonY - bh;
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(rx, ry, rw, bh);
+        ctx.fillStyle = 'rgba(253, 224, 71, 0.45)';
+        for (let wy = ry + 8; wy < horizonY - 10; wy += 12) {
+          for (let wx = rx + 8; wx < rx + rw - 10; wx += 14) {
+            if (((wx + wy + idx) % 3) !== 0) ctx.fillRect(wx, wy, 5, 6);
+          }
+        }
+      });
 
-      ctx.fillStyle = '#047857';
+      // 2. Roadside Grass Strip + Paved Sidewalk + Asphalt Road
+      // Grass strip behind sidewalk
+      ctx.fillStyle = '#065f46';
+      ctx.fillRect(0, horizonY, w, h * 0.05);
+
+      // Bushes along grass strip
+      for (let bx = 28; bx < w; bx += 68) {
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath(); ctx.arc(bx, horizonY + 12, 16, Math.PI, 0); ctx.fill();
+        ctx.fillStyle = '#16a34a';
+        ctx.beginPath(); ctx.arc(bx + 14, horizonY + 14, 12, Math.PI, 0); ctx.fill();
+      }
+
+      // Tiled Sidewalk (Vỉa hè lát gạch)
+      const sidewalkY = h * 0.61;
+      const roadY = h * 0.72;
+      const swGrad = ctx.createLinearGradient(0, sidewalkY, 0, roadY);
+      swGrad.addColorStop(0, '#94a3b8');
+      swGrad.addColorStop(1, '#64748b');
+      ctx.fillStyle = swGrad;
+      ctx.fillRect(0, sidewalkY, w, roadY - sidewalkY);
+
+      // Sidewalk tile lines
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.18)';
+      ctx.lineWidth = 1;
+      for (let tx = 0; tx < w; tx += 36) {
+        ctx.beginPath(); ctx.moveTo(tx, sidewalkY); ctx.lineTo(tx - 10, roadY); ctx.stroke();
+      }
+      // Curb (Bó vỉa hè vàng-xám)
+      ctx.fillStyle = '#475569';
+      ctx.fillRect(0, roadY - 5, w, 6);
+      for (let cx = 0; cx < w; cx += 40) {
+        if ((cx / 40) % 2 === 0) {
+          ctx.fillStyle = '#eab308';
+          ctx.fillRect(cx, roadY - 5, 20, 5);
+        }
+      }
+
+      // Asphalt Road (Con đường nhựa)
+      const roadGrad = ctx.createLinearGradient(0, roadY, 0, h);
+      roadGrad.addColorStop(0, '#1e293b');
+      roadGrad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = roadGrad;
+      ctx.fillRect(0, roadY, w, h - roadY);
+
+      // Zebra Crosswalk on left side
+      ctx.fillStyle = 'rgba(248, 250, 252, 0.55)';
+      for (let zy = roadY + 12; zy < h - 10; zy += 22) {
+        ctx.beginPath();
+        ctx.roundRect(w * 0.12, zy, 52, 11, 2);
+        ctx.fill();
+      }
+
+      // Dashed White Center Lane Line
+      ctx.strokeStyle = 'rgba(248, 250, 252, 0.72)';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([28, 22]);
       ctx.beginPath();
-      ctx.moveTo(0, h * 0.68);
-      ctx.quadraticCurveTo(w * 0.5, h * 0.63, w, h * 0.69);
-      ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
-      ctx.fill();
+      ctx.moveTo(0, roadY + (h - roadY) * 0.46);
+      ctx.lineTo(w, roadY + (h - roadY) * 0.46);
+      ctx.stroke();
+      ctx.setLineDash([]);
 
       // 2. Compute UFO Phases
       let t = 0;
@@ -29343,18 +29455,24 @@
         let bob = Math.sin(now * 0.006 + s.phase) * 1.8;
 
         if (ufoState === 'idle') {
-          s.nx = s.idleNx;
+          const strollAngle = now * 0.0009 + s.phase;
+          const strollOffset = Math.sin(strollAngle) * 0.03;
+          s.nx = Math.max(0.05, Math.min(0.95, s.idleNx + strollOffset));
           s.ny = s.idleNy;
+          s.walkStartNx = s.nx;
           s.liftY = 0;
-          pose = 'idle';
+          facing = Math.cos(strollAngle) >= 0 ? 1 : -1;
+          pose = 'walk';
+          bob = Math.abs(Math.sin(now * 0.008 + s.phase)) * -1.4;
         } else if (ufoState === 'running') {
           if (t < 0.24) {
-            // Sprint from idle position to nearest prop!
+            // Sprint from current walking spot on road to nearest prop!
             const p = Math.min(1, t / 0.22);
             const ease = 1 - Math.pow(1 - p, 2);
-            s.nx = s.idleNx + (s.clingNx - s.idleNx) * ease;
+            const startNx = (s.walkStartNx !== undefined) ? s.walkStartNx : s.idleNx;
+            s.nx = startNx + (s.clingNx - startNx) * ease;
             s.ny = s.idleNy + (s.clingNy - s.idleNy) * ease;
-            facing = s.clingNx >= s.idleNx ? 1 : -1;
+            facing = s.clingNx >= startNx ? 1 : -1;
             pose = p < 0.95 ? 'run' : 'cling';
             bob = 0;
           } else if (s.isWinner && isAbducting) {
@@ -29408,7 +29526,10 @@
 
         drawCartoonHuman(ctx, sx, sy, {
           shirt: s.color,
-          scale: 0.88,
+          pants: '#1e3a8a',
+          backpackColor: s.color,
+          isStudent: true,
+          scale: 0.90,
           pose: pose,
           facing: facing,
           tilt: tilt,
