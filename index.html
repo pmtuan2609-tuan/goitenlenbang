@@ -6270,7 +6270,7 @@
     "badge": "✨ UFO Mới Nhất",
     "color": "emerald",
     "context": "Thảo nguyên đêm trăng đầy sao lấp lánh, nơi chiếc đĩa bay UFO phát sáng lượn lờ tìm kiếm nhân vật đặc biệt.",
-    "rules": "Phi thuyền UFO sà xuống quét chùm tia sáng neon rà soát từng bạn học sinh, tạo vài pha thót tim hù dọa trước khi khóa mục tiêu và phóng tia phản trọng lực hút bạn được chọn bay thẳng lên tàu!",
+    "rules": "Khi đĩa bay UFO hạ cánh phát tia hút, tất cả học sinh hoảng hốt chạy bám chặt vào các vật dụng gần nhất (cây cối, tảng đá, cột đèn, hàng rào...). Sau vài pha quét thót tim, 1 bạn bị trượt tay và bị tia sáng hút thẳng lên tàu!",
     "tips": "Tạo những tràng cười vỡ òa mỗi khi đĩa bay dừng lại lơ lửng ngay trên đầu các bạn trong lớp.",
     "shortcut": "Bấm phím Space để phi thuyền UFO bắt đầu quét tia sáng."
   },
@@ -28279,6 +28279,247 @@
     }
 
     // ==========================================
+    // HELPER VẼ HÌNH NGƯỜI HOẠT HÌNH SINH ĐỘNG (CARTOON HUMAN)
+    // Hỗ trợ tư thế: idle, run, cling (bám vật dụng), abducted (bị hút), winner
+    // ==========================================
+    function drawCartoonHuman(ctx, x, y, opts) {
+      const o = opts || {};
+      const shirt = o.shirt || '#3b82f6';
+      const pants = o.pants || '#1e293b';
+      const hair = o.hair || '#292524';
+      const skin = o.skin || '#fed7aa';
+      const scale = o.scale || 1;
+      const pose = o.pose || 'idle';
+      const facing = o.facing || 1; // 1: right, -1: left
+      const phase = o.phase || 0;
+      const now = o.now || performance.now();
+      const tilt = o.tilt || 0;
+
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+      if (tilt) ctx.rotate(tilt);
+
+      const stride = pose === 'run' ? Math.sin(now * 0.018 + phase) * 5.5
+                   : pose === 'cling' ? Math.sin(now * 0.025 + phase) * 4.5
+                   : pose === 'abducted' ? Math.sin(now * 0.03 + phase) * 6
+                   : 0;
+
+      // Hero cape behind body (if Summon SSR hero)
+      if (o.isHero) {
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.moveTo(-8, -8);
+        ctx.quadraticCurveTo(-16, 4 + Math.sin(now * 0.008) * 3, -12, 14);
+        ctx.lineTo(12, 14);
+        ctx.quadraticCurveTo(16, 4 - Math.sin(now * 0.008) * 3, 8, -8);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Astronaut backpack
+      if (o.isAstronaut) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.roundRect(-8, -9, 16, 13, 3);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // 1. LEGS & SHOES
+      ctx.lineCap = 'round';
+      ctx.lineWidth = 3.6;
+      if (pose === 'cling') {
+        // Legs dangling/kicking behind in suction wind
+        const kickDir = -facing;
+        ctx.strokeStyle = pants;
+        ctx.beginPath();
+        ctx.moveTo(-2, 4);
+        ctx.quadraticCurveTo(kickDir * 6, 9, kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3);
+        ctx.moveTo(2, 4);
+        ctx.quadraticCurveTo(kickDir * 5, 10, kickDir * 9 - stride * 0.5, 15);
+        ctx.stroke();
+
+        // White shoes
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3, 2.1, 0, Math.PI * 2);
+        ctx.arc(kickDir * 9 - stride * 0.5, 15, 2.1, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.strokeStyle = pants;
+        ctx.beginPath();
+        ctx.moveTo(-3, 4);
+        ctx.lineTo(-4 - stride * 0.6, 14);
+        ctx.moveTo(3, 4);
+        ctx.lineTo(4 + stride * 0.6, 14);
+        ctx.stroke();
+
+        ctx.fillStyle = o.isAstronaut ? '#e2e8f0' : '#ffffff';
+        ctx.beginPath();
+        ctx.ellipse(-4 - stride * 0.6, 14.8, 2.8, 1.7, 0, 0, Math.PI * 2);
+        ctx.ellipse(4 + stride * 0.6, 14.8, 2.8, 1.7, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 2. TORSO / SHIRT
+      ctx.fillStyle = o.isAstronaut ? '#f8fafc' : shirt;
+      ctx.strokeStyle = 'rgba(15,23,42,0.75)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.roundRect(-6.5, -8, 13, 13.5, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      // Shirt collar / astronaut chest stripe
+      ctx.fillStyle = o.isAstronaut ? shirt : 'rgba(255,255,255,0.35)';
+      ctx.fillRect(-3.5, -5.5, 7, 3);
+
+      // 3. ARMS (Articulated by pose)
+      ctx.strokeStyle = o.isAstronaut ? '#e2e8f0' : skin;
+      ctx.lineWidth = 3.1;
+      ctx.lineCap = 'round';
+      if (pose === 'cling') {
+        // Both arms reach straight forward to hug/grab the prop!
+        const reachX = facing * 13;
+        ctx.beginPath();
+        ctx.moveTo(facing * 2, -5.5);
+        ctx.quadraticCurveTo(facing * 8, -7, reachX, -4.5);
+        ctx.moveTo(facing * 2, -2);
+        ctx.quadraticCurveTo(facing * 8, -1, reachX, -2.5);
+        ctx.stroke();
+        // Little gripping hands
+        ctx.fillStyle = skin;
+        ctx.beginPath();
+        ctx.arc(reachX, -4.5, 2.2, 0, Math.PI * 2);
+        ctx.arc(reachX, -2.5, 2.2, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (pose === 'abducted') {
+        // Flailing upward in panic!
+        const wave = Math.sin(now * 0.03 + phase) * 4;
+        ctx.beginPath();
+        ctx.moveTo(-6, -5);
+        ctx.lineTo(-12, -13 + wave);
+        ctx.moveTo(6, -5);
+        ctx.lineTo(12, -13 - wave);
+        ctx.stroke();
+      } else if (pose === 'winner') {
+        // Arms raised high in victory!
+        ctx.beginPath();
+        ctx.moveTo(-6, -5);
+        ctx.lineTo(-11, -14);
+        ctx.moveTo(6, -5);
+        ctx.lineTo(11, -14);
+        ctx.stroke();
+      } else if (pose === 'run') {
+        ctx.beginPath();
+        ctx.moveTo(-6, -5);
+        ctx.lineTo(-9 + stride * 0.7, 2);
+        ctx.moveTo(6, -5);
+        ctx.lineTo(9 - stride * 0.7, 2);
+        ctx.stroke();
+      } else {
+        const waveIdle = Math.sin(now * 0.005 + phase) * 2;
+        ctx.beginPath();
+        ctx.moveTo(-6, -5);
+        ctx.lineTo(-9, 3);
+        ctx.moveTo(6, -5);
+        ctx.lineTo(10, -2 + waveIdle);
+        ctx.stroke();
+      }
+
+      // 4. HEAD & HAIR & FACE
+      ctx.save();
+      ctx.translate(0, -14.5);
+
+      // Hair back
+      ctx.fillStyle = hair;
+      ctx.beginPath();
+      ctx.arc(0, -1, 7.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Face circle
+      ctx.fillStyle = skin;
+      ctx.beginPath();
+      ctx.arc(0, 0.5, 6.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Hair bangs
+      ctx.fillStyle = hair;
+      ctx.beginPath();
+      ctx.arc(0, -2.2, 6.3, Math.PI, 0);
+      ctx.fill();
+
+      // Eyes & Mouth
+      const eyeShift = (pose === 'cling' || pose === 'run') ? facing * 1.4 : 0;
+      if (pose === 'cling' || pose === 'abducted') {
+        // Wide shocked eyes + O-mouth!
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-2.1 + eyeShift, 0.2, 1.7, 0, Math.PI * 2);
+        ctx.arc(2.1 + eyeShift, 0.2, 1.7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-2.1 + eyeShift, 0.2, 0.85, 0, Math.PI * 2);
+        ctx.arc(2.1 + eyeShift, 0.2, 0.85, 0, Math.PI * 2);
+        ctx.fill();
+        // Open O mouth
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.ellipse(eyeShift * 0.6, 3.6, 1.5, 1.9, 0, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(-2 + eyeShift, 0.3, 1.1, 0, Math.PI * 2);
+        ctx.arc(2 + eyeShift, 0.3, 1.1, 0, Math.PI * 2);
+        ctx.fill();
+        // Rosy cheeks
+        ctx.fillStyle = 'rgba(244,63,94,0.35)';
+        ctx.beginPath();
+        ctx.arc(-3.8, 2.1, 1.2, 0, Math.PI * 2);
+        ctx.arc(3.8, 2.1, 1.2, 0, Math.PI * 2);
+        ctx.fill();
+        // Smile
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.arc(0, 2.3, 2, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.stroke();
+      }
+
+      // Optional Astronaut Helmet Visor
+      if (o.isAstronaut) {
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1.8;
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.22)';
+        ctx.beginPath();
+        ctx.arc(0, -0.2, 8.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Optional Explorer Helmet or Winner Crown
+      if (o.helmetColor) {
+        ctx.fillStyle = o.helmetColor;
+        ctx.beginPath();
+        ctx.arc(0, -2.5, 6.8, Math.PI, 0);
+        ctx.fill();
+      }
+      if (o.isHero || pose === 'winner') {
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('👑', 0, -9);
+      }
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    // ==========================================
     // 20. MODULE: VÒNG BO MAY MẮN / SINH TỒN (SAFE ZONE)
     // ==========================================
     let safeZoneAnimId = null;
@@ -28341,8 +28582,7 @@
             displayName: shortStudentName(st.name),
             nx: Math.max(0.16, Math.min(0.84, 0.5 + Math.cos(angle) * dist * 1.25)),
             ny: Math.max(0.22, Math.min(0.84, 0.53 + Math.sin(angle) * dist)),
-            vx: (Math.random() - 0.5) * 0.08,
-            vy: (Math.random() - 0.5) * 0.08,
+            facing: 1,
             color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length],
             alive: true,
             isWinner: false,
@@ -28377,7 +28617,6 @@
 
       const others = safeZonePlayers.filter(p => String(p.id) !== String(winnerStudent.id)).sort(() => Math.random() - 0.5);
       others.forEach((p, idx) => {
-        // Stagger eliminations smoothly from 18% to 90% of race duration
         p.isWinner = false;
         p.elimT = 0.18 + ((idx + 1) / Math.max(1, others.length)) * 0.72;
       });
@@ -28390,7 +28629,7 @@
 
       if (safeZoneSoundEnabled) ArcadePackAudio.tone(440, 0.18, 'triangle', 0.16, 660);
       const statusEl = document.getElementById('safe-zone-status');
-      if (statusEl) statusEl.innerText = '⚠️ CẢNH BÁO: Vòng Bo Đang Thu Hẹp! Cả lớp nhanh chân vào vùng an toàn!';
+      if (statusEl) statusEl.innerText = '⚠️ CẢNH BÁO: Vòng Bo Đang Thu Hẹp! Cả lớp nhanh chân chạy vào vùng an toàn!';
       if (!safeZoneAnimId) safeZoneAnimId = requestAnimationFrame(runSafeZoneLoop);
     }
 
@@ -28439,7 +28678,6 @@
       const rx = w * 0.42;
       const ry = h * 0.37;
 
-      // Sand beach
       ctx.fillStyle = '#fde68a';
       ctx.beginPath();
       ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
@@ -28448,7 +28686,6 @@
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
       ctx.stroke();
 
-      // Inner jungle turf
       const grassGrad = ctx.createRadialGradient(cx, cy, 20, cx, cy, rx);
       grassGrad.addColorStop(0, '#34d399');
       grassGrad.addColorStop(1, '#059669');
@@ -28457,7 +28694,6 @@
       ctx.ellipse(cx, cy, rx * 0.89, ry * 0.87, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Tactical Grid overlay
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
       ctx.lineWidth = 1;
       for (let gx = 0; gx < w; gx += 48) {
@@ -28479,7 +28715,6 @@
         ctx.beginPath(); ctx.arc(px - 2, py - 2, 7, 0, Math.PI * 2); ctx.fill();
       });
 
-      // Compute Safe Zone progress
       const zoneX = w * safeZoneCenterX;
       const zoneY = h * safeZoneCenterY;
       const maxRadius = Math.max(w, h) * 0.56;
@@ -28489,7 +28724,6 @@
 
       if (safeZoneState === 'running') {
         t = Math.min(1, (now - safeZoneStartTime) / safeZoneDuration);
-        // Smooth stepped shrinking
         const shrinkFactor = Math.pow(t, 0.85);
         currentRadius = maxRadius - (maxRadius - minRadius) * shrinkFactor;
       } else if (safeZoneState === 'finished') {
@@ -28509,9 +28743,9 @@
       ctx.fillText('👑', zoneX, zoneY);
       ctx.restore();
 
-      // Update and draw players
       let aliveCount = 0;
       safeZonePlayers.forEach(p => {
+        const oldNx = p.nx;
         if (safeZoneState === 'running') {
           if (p.alive && !p.isWinner && t >= p.elimT) {
             p.alive = false;
@@ -28529,23 +28763,19 @@
           }
           if (p.alive) {
             if (p.isWinner) {
-              // Winner steers steadily toward safe center
               p.nx += (safeZoneCenterX - p.nx) * 0.035;
               p.ny += (safeZoneCenterY - p.ny) * 0.035;
             } else {
-              // Wander inside/outside shrinking ring
               const px = p.nx * w, py = p.ny * h;
               const dx = px - zoneX, dy = py - zoneY;
               const dist = Math.hypot(dx, dy) || 1;
               if (t > p.elimT - 0.12) {
-                // Step outside the shrinking circle right before elimination
                 const targetDist = currentRadius + 24;
                 const tx = (zoneX + (dx / dist) * targetDist) / w;
                 const ty = (zoneY + (dy / dist) * targetDist) / h;
                 p.nx += (tx - p.nx) * 0.07;
                 p.ny += (ty - p.ny) * 0.07;
               } else {
-                // Keep inside safe zone
                 if (dist > currentRadius - 22) {
                   p.nx += (safeZoneCenterX - p.nx) * 0.05;
                   p.ny += (safeZoneCenterY - p.ny) * 0.05;
@@ -28562,7 +28792,7 @@
           p.nx += Math.sin(now * 0.0015 + p.phase) * 0.0004;
           p.ny += Math.cos(now * 0.0015 + p.phase) * 0.0004;
         }
-
+        if (Math.abs(p.nx - oldNx) > 0.0001) p.facing = p.nx >= oldNx ? 1 : -1;
         if (p.alive) aliveCount++;
       });
 
@@ -28576,7 +28806,6 @@
         }
       }
 
-      // Draw Storm Zone outside the circle (even-odd mask)
       if (safeZoneState !== 'idle') {
         ctx.save();
         ctx.fillStyle = 'rgba(15, 23, 42, 0.48)';
@@ -28585,7 +28814,6 @@
         ctx.arc(zoneX, zoneY, Math.max(10, currentRadius), 0, Math.PI * 2, true);
         ctx.fill();
 
-        // Electric Glowing Border Ring
         ctx.strokeStyle = t > 0.72 ? '#facc15' : '#38bdf8';
         ctx.lineWidth = 4;
         ctx.shadowColor = t > 0.72 ? '#f59e0b' : '#0ea5e9';
@@ -28596,43 +28824,41 @@
         ctx.restore();
       }
 
-      // Draw alive & fading players
+      // Draw articulated human runners
       safeZonePlayers.forEach(p => {
         if (!p.alive && p.outAlpha <= 0) return;
         const px = p.nx * w;
         const py = p.ny * h;
-        const bob = p.alive ? Math.sin(now * 0.01 + p.phase) * 2.5 : -((1 - p.outAlpha) * 28);
+        const lift = !p.alive ? -((1 - p.outAlpha) * 32) : 0;
         ctx.save();
         ctx.globalAlpha = p.alive ? 1 : p.outAlpha;
 
-        // Shadow
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
-        ctx.beginPath(); ctx.ellipse(px, py + 11, 9, 4, 0, 0, Math.PI * 2); ctx.fill();
+        if (p.alive) {
+          ctx.fillStyle = 'rgba(0,0,0,0.3)';
+          ctx.beginPath(); ctx.ellipse(px, py + 15, 8.5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+        }
 
-        // Survivor Avatar
-        ctx.fillStyle = p.color;
-        ctx.beginPath(); ctx.arc(px, py + bob, 9.5, 0, Math.PI * 2); ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = p.isWinner && safeZoneState === 'finished' ? '#fef08a' : '#ffffff';
-        ctx.stroke();
-
-        // Cute visor / eyes
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath(); ctx.roundRect(px - 5, py + bob - 3, 10, 4.5, 2); ctx.fill();
-        ctx.fillStyle = '#38bdf8';
-        ctx.beginPath(); ctx.roundRect(px - 3.5, py + bob - 2, 7, 2.5, 1); ctx.fill();
+        const pose = !p.alive ? 'abducted' : (p.isWinner && safeZoneState === 'finished' ? 'winner' : (safeZoneState === 'running' ? 'run' : 'idle'));
+        drawCartoonHuman(ctx, px, py + lift, {
+          shirt: p.color,
+          scale: 0.85,
+          pose: pose,
+          facing: p.facing,
+          phase: p.phase,
+          now: now,
+          helmetColor: p.color
+        });
 
         if (!p.alive) {
-          ctx.font = '14px sans-serif';
+          ctx.font = '16px sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText('🪂', px, py + bob - 14);
+          ctx.fillText('🪂', px, py + lift - 26);
         } else {
-          drawHighContrastBadge(ctx, px, py + bob - 19, p.displayName, p.color, p.isWinner && safeZoneState === 'finished');
+          drawHighContrastBadge(ctx, px, py - 31, p.displayName, p.color, p.isWinner && safeZoneState === 'finished');
         }
         ctx.restore();
       });
 
-      // Particles
       for (let i = safeZoneParticles.length - 1; i >= 0; i--) {
         const pt = safeZoneParticles[i];
         pt.x += pt.vx; pt.y += pt.vy; pt.alpha -= 0.03;
@@ -28644,7 +28870,6 @@
         ctx.restore();
       }
 
-      // Finish check
       if (safeZoneState === 'running' && t >= 1) {
         safeZoneState = 'finished';
         if (safeZoneSoundEnabled) ArcadePackAudio.fanfare();
@@ -28669,16 +28894,12 @@
         setTimeout(() => { if (typeof cb === 'function') cb(winSt); }, 950);
       }
 
-      // Winner spotlight banner
       if (safeZoneState === 'finished' && safeZoneTargetWinner) {
         ctx.save();
-        ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
         ctx.strokeStyle = '#facc15';
         ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.roundRect(w / 2 - 170, 62, 340, 44, 16);
-        ctx.fill();
-        ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(w / 2 - 175, 62, 350, 44, 16); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#fef08a';
         ctx.font = '900 15px system-ui, sans-serif';
         ctx.textAlign = 'center';
@@ -28690,14 +28911,17 @@
 
     // ==========================================
     // 21. MODULE: PHI THUYỀN BẮT CÓC (UFO ABDUCTION)
+    // Hình người chạy tán loạn bám vào vật dụng gần nhất (cây, đá, cột đèn, ghế, lều, hàng rào),
+    // sau đó 1 người trượt tay bị hút bay thẳng lên UFO!
     // ==========================================
     let ufoAnimId = null;
     let ufoState = 'idle';
     let ufoStartTime = 0;
-    let ufoDuration = 6000;
+    let ufoDuration = 7000;
     let ufoStudents = [];
+    let ufoProps = [];
     let ufoPosX = 0.5;
-    let ufoPosY = 0.22;
+    let ufoPosY = 0.18;
     let ufoTargetWinner = null;
     let ufoDecoyTargets = [];
     let ufoFinishCallback = null;
@@ -28731,28 +28955,153 @@
       }
     }
 
+    function buildUfoFieldProps() {
+      return [
+        { type: 'tree',     nx: 0.11, ny: 0.72, label: 'Cây cổ thụ' },
+        { type: 'lamppost', nx: 0.22, ny: 0.85, label: 'Cột đèn' },
+        { type: 'rock',     nx: 0.34, ny: 0.72, label: 'Tảng đá' },
+        { type: 'bench',    nx: 0.45, ny: 0.86, label: 'Ghế đá' },
+        { type: 'tent',     nx: 0.56, ny: 0.72, label: 'Lều trại' },
+        { type: 'fence',    nx: 0.67, ny: 0.86, label: 'Hàng rào' },
+        { type: 'tree',     nx: 0.78, ny: 0.73, label: 'Cây sồi' },
+        { type: 'lamppost', nx: 0.89, ny: 0.84, label: 'Cột đèn' }
+      ];
+    }
+
+    function drawUfoProp(ctx, prop, w, h, now) {
+      const px = prop.nx * w;
+      const py = prop.ny * h;
+      ctx.save();
+      ctx.translate(px, py);
+
+      // Ground shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.28)';
+      ctx.beginPath(); ctx.ellipse(0, 12, 22, 6, 0, 0, Math.PI * 2); ctx.fill();
+
+      if (prop.type === 'tree') {
+        // Trunk
+        ctx.fillStyle = '#78350f';
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect(-6, -34, 12, 46, 3); ctx.fill(); ctx.stroke();
+        // Leafy canopy
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath(); ctx.arc(0, -44, 24, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#16a34a';
+        ctx.beginPath(); ctx.arc(-14, -36, 16, 0, Math.PI * 2); ctx.arc(14, -36, 16, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#22c55e';
+        ctx.beginPath(); ctx.arc(-4, -50, 14, 0, Math.PI * 2); ctx.fill();
+      } else if (prop.type === 'lamppost') {
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(-3.5, -52, 7, 64);
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath(); ctx.roundRect(-8, 8, 16, 5, 2); ctx.fill();
+        // Glowing lantern head
+        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 16;
+        ctx.beginPath(); ctx.arc(0, -56, 8, 0, Math.PI * 2); ctx.fill();
+      } else if (prop.type === 'rock') {
+        ctx.fillStyle = '#64748b';
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-22, 11);
+        ctx.quadraticCurveTo(-24, -12, -6, -18);
+        ctx.quadraticCurveTo(14, -20, 22, 11);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#94a3b8';
+        ctx.beginPath(); ctx.ellipse(-5, -8, 8, 4, -0.3, 0, Math.PI * 2); ctx.fill();
+      } else if (prop.type === 'bench') {
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(-20, 4, 4, 8);
+        ctx.fillRect(16, 4, 4, 8);
+        ctx.fillStyle = '#b45309';
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-24, -8, 48, 8, 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(-25, 0, 50, 6, 2); ctx.fill(); ctx.stroke();
+      } else if (prop.type === 'tent') {
+        ctx.fillStyle = '#ea580c';
+        ctx.strokeStyle = '#9a3412';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(0, -34);
+        ctx.lineTo(26, 11);
+        ctx.lineTo(-26, 11);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.moveTo(0, -10);
+        ctx.lineTo(9, 11);
+        ctx.lineTo(-9, 11);
+        ctx.closePath();
+        ctx.fill();
+      } else if (prop.type === 'fence') {
+        ctx.fillStyle = '#92400e';
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 1.3;
+        [-18, 0, 18].forEach(fx => {
+          ctx.beginPath(); ctx.roundRect(fx - 3.5, -18, 7, 30, 2); ctx.fill(); ctx.stroke();
+        });
+        ctx.fillStyle = '#b45309';
+        ctx.fillRect(-24, -12, 48, 5);
+        ctx.fillRect(-24, -2, 48, 5);
+      }
+      ctx.restore();
+    }
+
     function initUfoAbductGame(resetPositions = true) {
       const container = document.getElementById('ufo-abduct-stage-container');
       const canvas = document.getElementById('ufo-abduct-canvas');
       if (!container || !canvas) return;
       resizeUfoCanvas();
 
+      ufoProps = buildUfoFieldProps();
       const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
       if (resetPositions || ufoStudents.length !== visible.length) {
         const count = Math.max(1, visible.length);
-        const rows = count > 24 ? 3 : (count > 10 ? 2 : 1);
+        const propLoad = new Array(ufoProps.length).fill(0);
+
         ufoStudents = visible.map((st, i) => {
-          const row = i % rows;
-          const colsInRow = Math.ceil(count / rows);
-          const col = Math.floor(i / rows);
-          const nx = 0.08 + ((col + 0.5) / Math.max(1, colsInRow)) * 0.84;
-          const ny = rows === 1 ? 0.80 : (rows === 2 ? (row === 0 ? 0.72 : 0.87) : (0.67 + row * 0.11));
+          const cols = Math.min(count, 10);
+          const col = i % cols;
+          const row = Math.floor(i / cols);
+          const idleNx = 0.09 + ((col + 0.5) / Math.max(1, cols)) * 0.82 + (Math.random() - 0.5) * 0.03;
+          const idleNy = Math.min(0.90, 0.70 + row * 0.065 + (Math.random() - 0.5) * 0.02);
+
+          // Find nearest prop to run and cling onto!
+          let bestIdx = i % ufoProps.length;
+          let bestDist = Infinity;
+          ufoProps.forEach((pr, idx) => {
+            const d = Math.hypot(pr.nx - idleNx, (pr.ny - idleNy) * 1.4);
+            if (d < bestDist) {
+              bestDist = d;
+              bestIdx = idx;
+            }
+          });
+          const prop = ufoProps[bestIdx];
+          const slot = propLoad[bestIdx]++;
+          const side = (slot % 2 === 0) ? -1 : 1; // -1 = grab from left facing right, 1 = grab from right facing left
+          const tier = Math.floor(slot / 2);
+
           return {
             id: st.id,
             student: st,
             displayName: shortStudentName(st.name),
-            nx: nx,
-            ny: ny,
+            idleNx: idleNx,
+            idleNy: idleNy,
+            nx: idleNx,
+            ny: idleNy,
+            propIdx: bestIdx,
+            clingNx: prop.nx + side * 0.024,
+            clingNy: prop.ny - tier * 0.028 + 0.005,
+            clingSide: side,
+            facing: side === -1 ? 1 : -1,
             liftY: 0,
             color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length],
             isWinner: false,
@@ -28762,22 +29111,22 @@
       }
       ufoState = 'idle';
       ufoPosX = 0.5;
-      ufoPosY = 0.22;
+      ufoPosY = 0.17;
       ufoParticles = [];
       ufoTargetWinner = null;
       ufoDecoyTargets = [];
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = 'Phi thuyền UFO đang lơ lửng ngoài bầu trời! Bấm QUÉT TIA SÁNG để bắt cóc ngẫu nhiên!';
+      if (statusEl) statusEl.innerText = 'Phi thuyền UFO đang lơ lửng ngoài bầu trời! Bấm QUÉT TIA SÁNG để xem cả lớp bám vật dụng né bắt cóc!';
 
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
     }
 
-    function startUfoAbductGame(winnerStudent, durationMs = 6000, callback) {
+    function startUfoAbductGame(winnerStudent, durationMs = 6500, callback) {
       if (ufoState === 'running') return;
       initUfoAbductGame(true);
       ufoTargetWinner = winnerStudent;
       ufoFinishCallback = callback;
-      ufoDuration = Math.max(3500, durationMs);
+      ufoDuration = Math.max(4000, durationMs);
       ufoStartTime = performance.now();
       ufoState = 'running';
 
@@ -28789,9 +29138,9 @@
         others[1] || others[0] || winObj
       ].filter(Boolean);
 
-      if (ufoSoundEnabled) ArcadePackAudio.tone(240, 0.3, 'sine', 0.14, 520);
+      if (ufoSoundEnabled) ArcadePackAudio.tone(240, 0.35, 'sawtooth', 0.12, 620);
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = '🛸 CẢNH BÁO: Đĩa bay đang hạ độ cao và kích hoạt radar tìm kiếm!';
+      if (statusEl) statusEl.innerText = '🚨 BÁO ĐỘNG UFO! Tất cả chạy mau bám chặt vào cây, đá, cột đèn gần nhất!';
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
     }
 
@@ -28815,7 +29164,7 @@
       const h = canvas.height / dpr;
       if (w <= 0 || h <= 0) return;
 
-      // 1. Deep Starry Sky
+      // 1. Starry Night Sky
       const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
       skyGrad.addColorStop(0, '#020617');
       skyGrad.addColorStop(0.6, '#1e1b4b');
@@ -28823,7 +29172,6 @@
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, w, h);
 
-      // Stars
       for (let i = 0; i < 48; i++) {
         const sx = ((i * 197) % 100) / 100 * w;
         const sy = ((i * 313) % 62) / 100 * h;
@@ -28832,15 +29180,15 @@
         ctx.beginPath(); ctx.arc(sx, sy, (i % 3 === 0) ? 2 : 1.2, 0, Math.PI * 2); ctx.fill();
       }
 
-      // Glowing Moon
+      // Moon
       ctx.save();
       ctx.fillStyle = '#fef08a';
       ctx.shadowColor = '#fde047';
       ctx.shadowBlur = 24;
-      ctx.beginPath(); ctx.arc(w * 0.86, h * 0.18, 28, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(w * 0.86, h * 0.17, 26, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
 
-      // Night Meadow Hills
+      // Grassy Hills
       ctx.fillStyle = '#065f46';
       ctx.beginPath();
       ctx.moveTo(0, h * 0.64);
@@ -28851,75 +29199,87 @@
 
       ctx.fillStyle = '#047857';
       ctx.beginPath();
-      ctx.moveTo(0, h * 0.69);
-      ctx.quadraticCurveTo(w * 0.5, h * 0.64, w, h * 0.70);
+      ctx.moveTo(0, h * 0.68);
+      ctx.quadraticCurveTo(w * 0.5, h * 0.63, w, h * 0.69);
       ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
       ctx.fill();
 
-      // 2. Compute UFO Path & State
+      // 2. Compute UFO Phases
       let t = 0;
-      let beamAlpha = 0.18;
+      let beamAlpha = 0.12;
       let isAbducting = false;
       let isLocked = false;
       const winObj = ufoStudents.find(s => s.isWinner) || ufoStudents[0];
 
       if (ufoState === 'idle') {
-        ufoPosX = 0.5 + Math.sin(now * 0.001) * 0.18;
-        ufoPosY = 0.22 + Math.cos(now * 0.002) * 0.02;
+        ufoPosX = 0.5 + Math.sin(now * 0.001) * 0.20;
+        ufoPosY = 0.17 + Math.cos(now * 0.002) * 0.015;
       } else if (ufoState === 'running') {
         t = Math.min(1, (now - ufoStartTime) / ufoDuration);
         const d1 = ufoDecoyTargets[0] || winObj;
         const d2 = ufoDecoyTargets[1] || winObj;
-        const targetX = winObj ? winObj.nx : 0.5;
+        const targetX = winObj ? winObj.clingNx : 0.5;
 
-        if (t < 0.28) {
-          // Fly toward decoy 1
-          const p = t / 0.28;
-          ufoPosX = 0.5 + ((d1 ? d1.nx : 0.3) - 0.5) * p;
-          ufoPosY = 0.20 + Math.sin(now * 0.008) * 0.015;
-          beamAlpha = 0.35;
-        } else if (t < 0.55) {
-          // Glide to decoy 2
-          const p = (t - 0.28) / 0.27;
-          const x1 = d1 ? d1.nx : 0.3;
-          const x2 = d2 ? d2.nx : 0.7;
-          ufoPosX = x1 + (x2 - x1) * p;
-          ufoPosY = 0.23 + Math.sin(now * 0.008) * 0.015;
-          beamAlpha = 0.42;
-        } else if (t < 0.74) {
-          // Lock onto real winner
-          const p = (t - 0.55) / 0.19;
-          const x2 = d2 ? d2.nx : 0.7;
+        if (t < 0.24) {
+          // Phase 1: UFO swoops down, students sprint to nearest props!
+          const p = t / 0.24;
+          ufoPosX = 0.5 + ((d1 ? d1.clingNx : 0.3) - 0.5) * (p * 0.5);
+          ufoPosY = 0.14 + 0.08 * p;
+          beamAlpha = 0.28;
+        } else if (t < 0.62) {
+          // Phase 2: All clinging onto nearest props while UFO sweeps across teasingly!
+          const p = (t - 0.24) / 0.38;
+          const x1 = d1 ? d1.clingNx : 0.3;
+          const x2 = d2 ? d2.clingNx : 0.7;
+          if (p < 0.5) {
+            ufoPosX = 0.5 + (x1 - 0.5) * Math.min(1, p * 2.5);
+          } else {
+            ufoPosX = x1 + (x2 - x1) * ((p - 0.5) * 2);
+          }
+          ufoPosY = 0.22 + Math.sin(now * 0.008) * 0.012;
+          beamAlpha = 0.48;
+          if (p > 0.35 && p < 0.40) {
+            const statusEl = document.getElementById('ufo-abduct-status');
+            if (statusEl) statusEl.innerText = '😱 Cả lớp đã bám chặt vào vật dụng! Tia hút UFO đang rà soát cực mạnh!';
+          }
+        } else if (t < 0.76) {
+          // Phase 3a: UFO banks and locks over winner's prop!
+          const p = (t - 0.62) / 0.14;
+          const x2 = d2 ? d2.clingNx : 0.7;
           ufoPosX = x2 + (targetX - x2) * (1 - Math.pow(1 - p, 3));
-          ufoPosY = 0.23 + 0.05 * p;
-          beamAlpha = 0.55;
-          isLocked = p > 0.7;
+          ufoPosY = 0.24;
+          beamAlpha = 0.66;
+          isLocked = p > 0.5;
+          if (isLocked) {
+            const statusEl = document.getElementById('ufo-abduct-status');
+            if (statusEl && winObj) statusEl.innerText = '⚠️ Á! [' + winObj.student.name + '] sắp bị tuột tay khỏi chỗ bám rồi!!';
+          }
         } else {
-          // Abduct winner up into the beam!
+          // Phase 3b: Winner loses grip and gets sucked up into UFO while others cling!
           ufoPosX = targetX;
-          ufoPosY = 0.28;
-          beamAlpha = 0.78;
+          ufoPosY = 0.25;
+          beamAlpha = 0.82;
           isLocked = true;
           isAbducting = true;
-          const liftProgress = Math.min(1, (t - 0.74) / 0.22);
+          const liftProgress = Math.min(1, (t - 0.76) / 0.21);
           if (winObj) {
-            winObj.liftY = liftProgress * (h * (winObj.ny - ufoPosY - 0.07));
+            winObj.liftY = liftProgress * (h * (winObj.clingNy - ufoPosY - 0.06));
           }
-          if (Math.random() < 0.4 && winObj) {
+          if (Math.random() < 0.45 && winObj) {
             ufoParticles.push({
               x: winObj.nx * w + (Math.random() - 0.5) * 34,
               y: winObj.ny * h - winObj.liftY,
-              vy: -2.2 - Math.random() * 2,
+              vy: -2.4 - Math.random() * 2,
               alpha: 1,
               color: Math.random() < 0.5 ? '#34d399' : '#67e8f9',
-              size: 3
+              size: 3.2
             });
           }
         }
       } else if (ufoState === 'finished' && winObj) {
-        ufoPosX = winObj.nx;
-        ufoPosY = 0.26;
-        beamAlpha = 0.8;
+        ufoPosX = winObj.clingNx;
+        ufoPosY = 0.24;
+        beamAlpha = 0.84;
         isLocked = true;
         isAbducting = true;
       }
@@ -28927,7 +29287,26 @@
       const ux = ufoPosX * w;
       const uy = ufoPosY * h;
 
-      // 3. Draw Tractor Beam Cone
+      // 3. Draw Field Props (Trees, Rocks, Lampposts, Benches, Tents, Fences)
+      ufoProps.forEach(pr => drawUfoProp(ctx, pr, w, h, now));
+
+      // 4. Draw Suction Wind Streaks during running
+      if (ufoState === 'running') {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(165, 243, 252, 0.25)';
+        ctx.lineWidth = 1.5;
+        for (let ws = 0; ws < 12; ws++) {
+          const wx = ((ws * 97 + now * 0.04) % w);
+          const wy = h * 0.88 - ((now * 0.18 + ws * 55) % (h * 0.58));
+          ctx.beginPath();
+          ctx.moveTo(wx, wy);
+          ctx.lineTo(wx + (ux - wx) * 0.08, wy - 18);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // 5. Draw Tractor Beam Cone
       ctx.save();
       const beamGrad = ctx.createLinearGradient(ux, uy + 14, ux, h * 0.92);
       const beamRGB = isAbducting ? '52, 211, 153' : '56, 189, 248';
@@ -28937,92 +29316,148 @@
       ctx.beginPath();
       ctx.moveTo(ux - 18, uy + 14);
       ctx.lineTo(ux + 18, uy + 14);
-      ctx.lineTo(ux + (isAbducting ? 68 : 95), h * 0.93);
-      ctx.lineTo(ux - (isAbducting ? 68 : 95), h * 0.93);
+      ctx.lineTo(ux + (isAbducting ? 68 : 95), h * 0.94);
+      ctx.lineTo(ux - (isAbducting ? 68 : 95), h * 0.94);
       ctx.closePath();
       ctx.fill();
 
-      // Anti-gravity rising rings inside beam when abducting
       if (isAbducting) {
-        ctx.strokeStyle = 'rgba(167, 243, 208, 0.75)';
+        ctx.strokeStyle = 'rgba(167, 243, 208, 0.8)';
         ctx.lineWidth = 2;
         for (let r = 0; r < 4; r++) {
-          const ringProg = ((now * 0.0015 + r * 0.25) % 1);
+          const ringProg = ((now * 0.0016 + r * 0.25) % 1);
           const ryPos = (h * 0.85) - ringProg * (h * 0.52);
-          const rw = 48 - ringProg * 28;
+          const rw = 46 - ringProg * 28;
           ctx.beginPath();
-          ctx.ellipse(ux, ryPos, rw, 7, 0, 0, Math.PI * 2);
+          ctx.ellipse(ux, ryPos, rw, 6.5, 0, 0, Math.PI * 2);
           ctx.stroke();
         }
       }
       ctx.restore();
 
-      // 4. Draw Students on Meadow
+      // 6. Update & Draw Articulated Human Students (Running -> Clinging to Nearest Prop -> Winner Abducted!)
       ufoStudents.forEach(s => {
-        const sx = s.nx * w;
-        const bob = (s.isWinner && isAbducting) ? 0 : Math.sin(now * 0.006 + s.phase) * 2;
-        const sy = s.ny * h - (s.liftY || 0) + bob;
-        const isUnderBeam = Math.abs(sx - ux) < 55;
+        let pose = 'idle';
+        let facing = s.facing;
+        let tilt = 0;
+        let bob = Math.sin(now * 0.006 + s.phase) * 1.8;
 
-        ctx.save();
-        // Ground shadow shrinks as lifted
-        if (!s.liftY) {
-          ctx.fillStyle = 'rgba(0,0,0,0.3)';
-          ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 12, 8, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+        if (ufoState === 'idle') {
+          s.nx = s.idleNx;
+          s.ny = s.idleNy;
+          s.liftY = 0;
+          pose = 'idle';
+        } else if (ufoState === 'running') {
+          if (t < 0.24) {
+            // Sprint from idle position to nearest prop!
+            const p = Math.min(1, t / 0.22);
+            const ease = 1 - Math.pow(1 - p, 2);
+            s.nx = s.idleNx + (s.clingNx - s.idleNx) * ease;
+            s.ny = s.idleNy + (s.clingNy - s.idleNy) * ease;
+            facing = s.clingNx >= s.idleNx ? 1 : -1;
+            pose = p < 0.95 ? 'run' : 'cling';
+            bob = 0;
+          } else if (s.isWinner && isAbducting) {
+            // Lost grip! Spinning/flailing upward in tractor beam!
+            s.nx = s.clingNx + Math.sin(now * 0.015) * 0.008;
+            s.ny = s.clingNy;
+            pose = 'abducted';
+            tilt = Math.sin(now * 0.014) * 0.35;
+            bob = 0;
+          } else {
+            // Clinging tightly onto nearest prop!
+            s.nx = s.clingNx;
+            s.ny = s.clingNy;
+            facing = s.clingSide === -1 ? 1 : -1;
+            pose = 'cling';
+            const distToBeam = Math.abs(s.nx * w - ux);
+            const pullStrength = distToBeam < 110 ? (1 - distToBeam / 110) : 0.25;
+            // Tilt legs/body upward toward the UFO pull while gripping prop!
+            tilt = (s.clingSide === -1 ? -0.45 : 0.45) * (0.45 + pullStrength * 0.55) + Math.sin(now * 0.04 + s.phase) * 0.06;
+            bob = 0;
+          }
+        } else if (ufoState === 'finished') {
+          if (s.isWinner) {
+            pose = 'abducted';
+            tilt = Math.sin(now * 0.008) * 0.2;
+            bob = 0;
+          } else {
+            s.nx = s.clingNx;
+            s.ny = s.clingNy;
+            facing = s.clingSide === -1 ? 1 : -1;
+            pose = 'cling';
+            tilt = (s.clingSide === -1 ? -0.25 : 0.25);
+            bob = 0;
+          }
         }
 
-        // Glow ring if under beam
+        const sx = s.nx * w;
+        const sy = s.ny * h - (s.liftY || 0) + bob;
+        const isUnderBeam = Math.abs(sx - ux) < 58;
+
+        ctx.save();
+        if (!s.liftY) {
+          ctx.fillStyle = 'rgba(0,0,0,0.28)';
+          ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 13, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
+        }
         if (isUnderBeam && ufoState === 'running') {
           ctx.strokeStyle = isLocked && s.isWinner ? '#34d399' : '#38bdf8';
           ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI * 2); ctx.stroke();
+          ctx.beginPath(); ctx.arc(sx, sy - 4, 17, 0, Math.PI * 2); ctx.stroke();
         }
 
-        // Character
-        ctx.fillStyle = s.color;
-        ctx.beginPath(); ctx.arc(sx, sy, 9, 0, Math.PI * 2); ctx.fill();
-        ctx.lineWidth = 1.8;
-        ctx.strokeStyle = '#ffffff';
-        ctx.stroke();
-        // Face
-        ctx.fillStyle = '#fde68a';
-        ctx.beginPath(); ctx.arc(sx, sy - 1, 5.5, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath(); ctx.arc(sx - 2, sy - 2, 1.1, 0, Math.PI * 2); ctx.arc(sx + 2, sy - 2, 1.1, 0, Math.PI * 2); ctx.fill();
+        drawCartoonHuman(ctx, sx, sy, {
+          shirt: s.color,
+          scale: 0.88,
+          pose: pose,
+          facing: facing,
+          tilt: tilt,
+          phase: s.phase,
+          now: now
+        });
 
-        drawHighContrastBadge(ctx, sx, sy - 17, s.displayName, s.color, s.isWinner && (isAbducting || ufoState === 'finished'));
+        // Panic "!" / "Á!" callout when clinging under UFO beam
+        if (ufoState === 'running' && isUnderBeam && !isAbducting) {
+          ctx.fillStyle = '#fef08a';
+          ctx.font = '900 10px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('Á! GIỮ CHẶT!', sx, sy - 44);
+        } else if (s.isWinner && isAbducting && ufoState === 'running') {
+          ctx.fillStyle = '#6ee7b7';
+          ctx.font = '900 11px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('TUỘT TAY RỒI!!', sx, sy - 44);
+        }
+
+        drawHighContrastBadge(ctx, sx, sy - 30, s.displayName, s.color, s.isWinner && (isAbducting || ufoState === 'finished'));
         ctx.restore();
       });
 
-      // 5. Draw UFO Saucer
+      // 7. Draw UFO Saucer
       ctx.save();
       ctx.translate(ux, uy);
       ctx.rotate(Math.sin(now * 0.004) * 0.05);
 
-      // Glass Dome + Cute Alien
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.38)';
       ctx.strokeStyle = '#bae6fd';
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(0, -8, 24, Math.PI, 0); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -8, 25, Math.PI, 0); ctx.fill(); ctx.stroke();
 
-      // Alien pilot
       ctx.fillStyle = '#4ade80';
       ctx.beginPath(); ctx.arc(0, -14, 8, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#0f172a';
       ctx.beginPath(); ctx.ellipse(-3, -15, 2, 3, 0, 0, Math.PI * 2); ctx.ellipse(3, -15, 2, 3, 0, 0, Math.PI * 2); ctx.fill();
 
-      // Metallic Rim
-      const rimGrad = ctx.createLinearGradient(-56, 0, 56, 0);
+      const rimGrad = ctx.createLinearGradient(-58, 0, 58, 0);
       rimGrad.addColorStop(0, '#475569');
       rimGrad.addColorStop(0.5, '#cbd5e1');
       rimGrad.addColorStop(1, '#334155');
       ctx.fillStyle = rimGrad;
-      ctx.beginPath(); ctx.ellipse(0, 2, 58, 16, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0, 2, 60, 16, 0, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#94a3b8';
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Rotating Neon Lights on Rim
       const lightColors = ['#34d399', '#facc15', '#38bdf8', '#f472b6'];
       for (let l = -42; l <= 42; l += 14) {
         const idx = Math.floor((now * 0.01 + l) % lightColors.length);
@@ -29031,7 +29466,6 @@
       }
       ctx.restore();
 
-      // Particles
       for (let i = ufoParticles.length - 1; i >= 0; i--) {
         const pt = ufoParticles[i];
         pt.y += pt.vy; pt.alpha -= 0.03;
@@ -29048,7 +29482,7 @@
         if (ufoSoundEnabled) ArcadePackAudio.fanfare();
         const statusEl = document.getElementById('ufo-abduct-status');
         if (statusEl && ufoTargetWinner) {
-          statusEl.innerText = '🛸 BẮT CÓC THÀNH CÔNG: ' + ufoTargetWinner.name + ' đã lên phi thuyền UFO!';
+          statusEl.innerText = '🛸 BẮT CÓC THÀNH CÔNG: ' + ufoTargetWinner.name + ' đã tuột tay bay lên đĩa bay UFO!';
         }
         const cb = ufoFinishCallback;
         const winSt = ufoTargetWinner;
@@ -29060,7 +29494,7 @@
         ctx.fillStyle = 'rgba(6, 78, 59, 0.88)';
         ctx.strokeStyle = '#34d399';
         ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.roundRect(w / 2 - 175, 58, 350, 44, 16); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(w / 2 - 180, 58, 360, 44, 16); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#a7f3d0';
         ctx.font = '900 15px system-ui, sans-serif';
         ctx.textAlign = 'center';
@@ -29171,7 +29605,6 @@
       const h = canvas.height / dpr;
       if (w <= 0 || h <= 0) return;
 
-      // 1. Mystical Sanctuary Gradient
       const bg = ctx.createRadialGradient(w / 2, h / 2, 20, w / 2, h / 2, Math.max(w, h) * 0.7);
       bg.addColorStop(0, '#3b0764');
       bg.addColorStop(0.55, '#1e1b4b');
@@ -29180,16 +29613,13 @@
       ctx.fillRect(0, 0, w, h);
 
       let t = 0;
-      if (summonState === 'running') {
-        t = Math.min(1, (now - summonStartTime) / summonDuration);
-      } else if (summonState === 'finished') {
-        t = 1;
-      }
+      if (summonState === 'running') t = Math.min(1, (now - summonStartTime) / summonDuration);
+      else if (summonState === 'finished') t = 1;
 
       const cx = w / 2;
       const cy = h * 0.54;
 
-      // 2. Rotating Magic Circle
+      // Rotating Magic Circle
       ctx.save();
       ctx.translate(cx, cy);
       const spinSpeed = summonState === 'running' ? (0.002 + t * 0.008) : 0.0008;
@@ -29203,7 +29633,6 @@
       ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(0, 0, Math.min(w, h) * 0.28, 0, Math.PI * 2); ctx.stroke();
 
-      // Hexagram star
       const sr = Math.min(w, h) * 0.31;
       for (let tri = 0; tri < 2; tri++) {
         ctx.beginPath();
@@ -29217,12 +29646,10 @@
       }
       ctx.restore();
 
-      // 3. Orbiting Hero Cards (Phase 0..0.6)
       if (t < 0.65) {
         const orbitExpand = t > 0.52 ? (1 + (t - 0.52) * 8) : 1;
-        const cardCount = summonCards.length;
         const speed = summonState === 'running' ? (0.003 + t * 0.01) : 0.001;
-        summonCards.forEach((c, idx) => {
+        summonCards.forEach((c) => {
           const ang = c.angle + now * speed;
           const rx = w * 0.34 * orbitExpand;
           const ry = h * 0.19 * orbitExpand;
@@ -29234,22 +29661,18 @@
           ctx.translate(x, y);
           ctx.scale(scale, scale);
           ctx.fillStyle = '#1e1b4b';
-          ctx.strokeStyle = '#a855f7';
+          ctx.strokeStyle = c.color;
           ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.roundRect(-28, -40, 56, 80, 9); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = '#facc15';
-          ctx.font = '18px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('★', 0, -10);
+          ctx.beginPath(); ctx.roundRect(-30, -42, 60, 84, 9); ctx.fill(); ctx.stroke();
+          drawCartoonHuman(ctx, 0, -4, { shirt: c.color, scale: 0.78, pose: 'idle', now: now });
           ctx.fillStyle = '#e9d5ff';
           ctx.font = 'bold 9px system-ui, sans-serif';
-          ctx.fillText(c.displayName.slice(0, 10), 0, 18);
+          ctx.textAlign = 'center';
+          ctx.fillText(c.displayName.slice(0, 10), 0, 28);
           ctx.restore();
         });
       }
 
-      // 4. SSR Flash & Golden Hero Card Flip Reveal (t >= 0.55)
       if (t >= 0.45 && t < 0.68) {
         const flashAlpha = Math.sin(((t - 0.45) / 0.23) * Math.PI);
         ctx.save();
@@ -29262,9 +29685,8 @@
         const revealP = Math.min(1, (t - 0.60) / 0.25);
         const flipScaleX = Math.abs(Math.cos((1 - revealP) * Math.PI));
         const showFront = revealP > 0.5;
-        const cardScale = 0.7 + revealP * 0.4;
+        const cardScale = 0.75 + revealP * 0.38;
 
-        // Spinning golden god rays behind SSR card
         ctx.save();
         ctx.translate(cx, cy);
         ctx.rotate(now * 0.0009);
@@ -29275,7 +29697,6 @@
         }
         ctx.restore();
 
-        // Main SSR Card
         ctx.save();
         ctx.translate(cx, cy);
         ctx.scale(flipScaleX * cardScale, cardScale);
@@ -29299,31 +29720,36 @@
         ctx.stroke();
 
         if (showFront) {
-          // Inner dark emblem panel
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
           ctx.beginPath(); ctx.roundRect(-82, -120, 164, 240, 12); ctx.fill();
 
           ctx.fillStyle = '#fde047';
-          ctx.font = '900 18px system-ui, sans-serif';
+          ctx.font = '900 17px system-ui, sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText('★ ★ SSR ★ ★', 0, -90);
+          ctx.fillText('★ ★ SSR ★ ★', 0, -94);
 
-          ctx.font = '48px sans-serif';
-          ctx.fillText('👑', 0, -25);
+          // Draw Articulated Champion Human Hero inside SSR Card!
+          drawCartoonHuman(ctx, 0, -24, {
+            shirt: '#f59e0b',
+            pants: '#1e293b',
+            scale: 1.95,
+            pose: 'winner',
+            isHero: true,
+            now: now
+          });
 
           ctx.fillStyle = '#38bdf8';
-          ctx.font = '800 11px system-ui, sans-serif';
-          ctx.fillText('CHIẾN BINH ĐƯỢC TRIỆU HỒI', 0, 28);
+          ctx.font = '800 10.5px system-ui, sans-serif';
+          ctx.fillText('CHIẾN BINH ĐƯỢC TRIỆU HỒI', 0, 34);
 
-          // Winner Name
           ctx.fillStyle = '#ffffff';
           ctx.font = '900 17px system-ui, sans-serif';
           const winName = summonTargetWinner.name || 'Học Sinh';
-          ctx.fillText(winName.length > 20 ? shortStudentName(winName) : winName, 0, 62);
+          ctx.fillText(winName.length > 20 ? shortStudentName(winName) : winName, 0, 66);
 
           ctx.fillStyle = '#34d399';
           ctx.font = 'bold 11px system-ui, sans-serif';
-          ctx.fillText('⚡ ĐẶC QUYỀN LÊN BẢNG ⚡', 0, 96);
+          ctx.fillText('⚡ ĐẶC QUYỀN LÊN BẢNG ⚡', 0, 98);
         }
         ctx.restore();
       }
@@ -29410,7 +29836,7 @@
       meteorShards = [];
       meteorTargetWinner = null;
       const statusEl = document.getElementById('meteor-call-status');
-      if (statusEl) statusEl.innerText = 'Các khoang pha lê học sinh đang lơ lửng trong tinh vân! Bấm PHÓNG THIÊN THẠCH để chọn tên!';
+      if (statusEl) statusEl.innerText = 'Các phi hành gia học sinh đang trôi nổi trong khoang pha lê! Bấm PHÓNG THIÊN THẠCH để chọn tên!';
 
       if (!meteorAnimId) meteorAnimId = requestAnimationFrame(runMeteorLoop);
     }
@@ -29453,7 +29879,6 @@
       const h = canvas.height / dpr;
       if (w <= 0 || h <= 0) return;
 
-      // 1. Deep Nebula Space
       const spaceGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 30, w * 0.5, h * 0.5, Math.max(w, h) * 0.8);
       spaceGrad.addColorStop(0, '#1e1b4b');
       spaceGrad.addColorStop(0.55, '#0f172a');
@@ -29461,7 +29886,6 @@
       ctx.fillStyle = spaceGrad;
       ctx.fillRect(0, 0, w, h);
 
-      // Stars
       for (let i = 0; i < 60; i++) {
         const sx = ((i * 137) % 100) / 100 * w;
         const sy = ((i * 271) % 100) / 100 * h;
@@ -29477,14 +29901,11 @@
       const targetX = winPod ? winPod.nx * w : w * 0.5;
       const targetY = winPod ? winPod.ny * h : h * 0.55;
 
-      // Subtle screen shake right on impact
       ctx.save();
       if (t >= 0.72 && t <= 0.82) {
         ctx.translate((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 8);
       }
 
-      // 2. Draw Floating Crystal Pods
-      const orbitRot = meteorState === 'running' && t < 0.72 ? t * 2.5 : 0;
       meteorPods.forEach(p => {
         const floatX = Math.sin(now * 0.0015 + p.phase) * 5;
         const floatY = Math.cos(now * 0.0018 + p.phase) * 5;
@@ -29492,54 +29913,49 @@
         let py = p.ny * h + floatY;
 
         if (p.isWinner && t >= 0.72) {
-          // Winner drifts proudly toward center after impact
           const pull = Math.min(1, (t - 0.72) / 0.16);
           px = px + (w * 0.5 - px) * pull;
           py = py + (h * 0.54 - py) * pull;
         }
 
         if (p.isWinner && t >= 0.72) {
-          // Radiating Supernova Crystal Winner
           ctx.save();
           ctx.fillStyle = 'rgba(250, 204, 21, 0.25)';
-          ctx.beginPath(); ctx.arc(px, py, 34 + Math.sin(now * 0.01) * 6, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#fbbf24';
-          ctx.strokeStyle = '#ffffff';
-          ctx.lineWidth = 3;
-          ctx.beginPath(); ctx.arc(px, py, 16, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-          ctx.font = '18px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('👑', px, py);
-          drawHighContrastBadge(ctx, px, py - 28, p.displayName, '#facc15', true);
+          ctx.beginPath(); ctx.arc(px, py, 42 + Math.sin(now * 0.01) * 6, 0, Math.PI * 2); ctx.fill();
+          drawCartoonHuman(ctx, px, py + 4, {
+            shirt: '#f59e0b',
+            scale: 1.35,
+            pose: 'winner',
+            isAstronaut: true,
+            now: now
+          });
+          drawHighContrastBadge(ctx, px, py - 38, p.displayName, '#facc15', true);
           ctx.restore();
         } else {
           ctx.save();
           ctx.globalAlpha = t >= 0.72 ? 0.35 : 0.95;
-          // Crystal Hexagon Pod
-          ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.arc(px, py, 11, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = p.color;
-          ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill();
-          drawHighContrastBadge(ctx, px, py - 19, p.displayName, p.color, false);
+          drawCartoonHuman(ctx, px, py + 4, {
+            shirt: p.color,
+            scale: 0.78,
+            pose: (meteorState === 'running' && t > 0.3) ? 'abducted' : 'idle',
+            isAstronaut: true,
+            phase: p.phase,
+            now: now
+          });
+          drawHighContrastBadge(ctx, px, py - 24, p.displayName, p.color, false);
           ctx.restore();
         }
       });
 
-      // 3. Giant Blazing Meteor (t: 0.15 -> 0.74)
       if (meteorState === 'running' && t >= 0.12 && t <= 0.76 && winPod) {
         const mp = Math.min(1, (t - 0.12) / 0.60);
         const startX = -60;
         const startY = -60;
-        // Dramatic curve sweeping across before slamming targetX, targetY
         const ctrlX = w * 0.78;
         const ctrlY = h * 0.14;
         const mx = (1 - mp) * (1 - mp) * startX + 2 * (1 - mp) * mp * ctrlX + mp * mp * targetX;
         const my = (1 - mp) * (1 - mp) * startY + 2 * (1 - mp) * mp * ctrlY + mp * mp * targetY;
 
-        // Fiery meteor trail
         ctx.save();
         const trailGrad = ctx.createRadialGradient(mx, my, 4, mx, my, 48);
         trailGrad.addColorStop(0, '#fef08a');
@@ -29554,7 +29970,6 @@
         ctx.fillText('☄️', mx, my);
         ctx.restore();
 
-        // Spawn impact shards at impact moment
         if (mp >= 0.98 && !winPod.shattered) {
           winPod.shattered = true;
           if (meteorSoundEnabled) ArcadePackAudio.tone(110, 0.45, 'sawtooth', 0.18, 45);
@@ -29572,7 +29987,6 @@
         }
       }
 
-      // Impact Shockwave Ring
       if (t >= 0.72 && t <= 0.95) {
         const ringP = (t - 0.72) / 0.23;
         ctx.save();
@@ -29582,7 +29996,6 @@
         ctx.restore();
       }
 
-      // Shards
       for (let i = meteorShards.length - 1; i >= 0; i--) {
         const s = meteorShards[i];
         s.x += s.vx; s.y += s.vy; s.alpha -= 0.025;
@@ -29594,7 +30007,7 @@
         ctx.restore();
       }
 
-      ctx.restore(); // end shake
+      ctx.restore();
 
       if (meteorState === 'running' && t >= 1) {
         meteorState = 'finished';
