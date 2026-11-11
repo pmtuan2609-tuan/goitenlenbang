@@ -853,7 +853,7 @@
 
         <!-- Right: Action Buttons (Chọn Ngẫu Nhiên & Vào Đua) -->
         <div class="flex items-center gap-2 md:border-l md:border-slate-200 md:pl-3 shrink-0 ml-auto sm:ml-0">
-          <button onclick="pickRandomGame()" title="Để máy tính chọn ngẫu nhiên 1 trong 19 trò chơi!" class="bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-black px-3 py-1.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer whitespace-nowrap">
+          <button onclick="pickRandomGame()" title="Để máy tính chọn ngẫu nhiên 1 trong 23 trò chơi!" class="bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 font-black px-3 py-1.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer whitespace-nowrap">
             <i class="fa-solid fa-dice text-indigo-600"></i> Ngẫu Nhiên
           </button>
           <button onclick="launchCurrentOrFastGame()" title="Bước vào đấu trường trò chơi đang chọn" class="bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-black px-3.5 py-1.5 rounded-xl shadow-xs text-xs flex items-center justify-center gap-1.5 transition hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap badge-white">
@@ -871,10 +871,10 @@
           <div class="flex items-center gap-2">
             <h2 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-              KHO 19 TRÒ CHƠI GỌI TÊN
+              KHO 23 TRÒ CHƠI GỌI TÊN
             </h2>
             <span id="home-games-counter" class="text-xs font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-              19 trò
+              23 trò
             </span>
           </div>
 
@@ -906,7 +906,7 @@
         <!-- Category Pills (Cuộn mượt mà trên mobile/tablet) -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none" id="home-category-pills">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs transition cursor-pointer">
-            Tất Cả (19)
+            Tất Cả (23)
           </button>
           <button type="button" onclick="filterHomeGames('speed')" id="home-filter-speed" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition cursor-pointer">
             🏎️ Đua Tốc Độ (7)
@@ -915,10 +915,10 @@
             🎪 Dân Gian & Sông Nước (4)
           </button>
           <button type="button" onclick="filterHomeGames('lucky')" id="home-filter-lucky" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition cursor-pointer">
-            🎁 May Mắn & Quay Số (5)
+            🎁 May Mắn & Quay Số (7)
           </button>
           <button type="button" onclick="filterHomeGames('challenge')" id="home-filter-challenge" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition cursor-pointer">
-            ⚽ Kỹ Năng & Thú Vị (3)
+            ⚽ Kỹ Năng & Thú Vị (5)
           </button>
         </div>
 
@@ -941,7 +941,7 @@
                 <h3 class="text-xs font-black text-slate-900 uppercase tracking-tight">Trò Chơi</h3>
               </div>
               <span id="studio-game-counter" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                19 trò
+                23 trò
               </span>
             </div>
 
@@ -1935,6 +1935,143 @@
           </div>
         </div>
 
+        
+        <!-- Card: Vòng Bo May Mắn (Sinh Tồn) -->
+        <div onclick="openGameIntroModal('safe_zone')" data-mode="safe_zone" data-category="challenge" data-search="vòng bo may mắn sinh tồn cả lớp vào bo, thu hẹp dần đến người sống sót cuối cùng! 🏝️ vòng bo ⚡ sinh tồn" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-cyan-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              🏝️
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-cyan-50 text-cyan-700 border-cyan-200 border">
+                🔥 Mới & Hot
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #20
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-cyan-600 transition-colors line-clamp-1">
+              Vòng Bo May Mắn
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Cả lớp chạy bo sinh tồn trên đảo nhiệt đới, vòng bo thu hẹp dần đến người cuối cùng!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🏝️ Chạy Bo</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">👑 Top 1</span>
+            </div>
+            <span class="text-cyan-600 group-hover:text-cyan-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- Card: Phi Thuyền Bắt Cóc (UFO) -->
+        <div onclick="openGameIntroModal('ufo_abduct')" data-mode="ufo_abduct" data-category="lucky" data-search="phi thuyền bắt cóc ufo đĩa bay quét tia sáng xanh hút 1 bạn lên tàu vũ trụ! 🛸 đĩa bay ✨ tia hút" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-emerald-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              🛸
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-50 text-emerald-700 border-emerald-200 border">
+                ✨ Mới Nhất
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #21
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
+              Phi Thuyền Bắt Cóc
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Đĩa bay UFO quét tia sáng neon rà khắp lớp học rồi hút 1 bạn may mắn lên tàu!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🛸 Đĩa Bay</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">👽 Tia Sáng</span>
+            </div>
+            <span class="text-emerald-600 group-hover:text-emerald-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- Card: Triệu Hồi Thẻ Tướng (Gacha SSR) -->
+        <div onclick="openGameIntroModal('summon_card')" data-mode="summon_card" data-category="lucky" data-search="triệu hồi thẻ tướng gacha ssr rút thẻ r sr ssr hào quang rực rỡ gọi tên chiến binh! 🌟 thẻ ssr 🔮 triệu hồi" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-purple-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              🌟
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-purple-50 text-purple-700 border-purple-200 border">
+                💎 Gacha SSR
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #22
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-purple-600 transition-colors line-clamp-1">
+              Triệu Hồi Thẻ Tướng
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Vòng tròn ma pháp xoay chuyển bùng nổ hào quang vàng SSR triệu hồi học sinh xuất sắc!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🌟 Thẻ SSR</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🔮 Ma Pháp</span>
+            </div>
+            <span class="text-purple-600 group-hover:text-purple-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
+
+        <!-- Card: Thiên Thạch Gọi Tên -->
+        <div onclick="openGameIntroModal('meteor_call')" data-mode="meteor_call" data-category="challenge" data-search="thiên thạch gọi tên vũ trụ sao băng va chạm khoang pha lê lộ diện người được chọn! ☄️ thiên thạch 🌌 vũ trụ" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-rose-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-rose-50 border border-rose-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              ☄️
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-rose-50 text-rose-700 border-rose-200 border">
+                🌠 Siêu Ấn Tượng
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #23
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-rose-600 transition-colors line-clamp-1">
+              Thiên Thạch Gọi Tên
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Thiên thạch rực lửa lao xuyên ngân hà va chạm khoang pha lê lộ diện người được chọn!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">☄️ Sao Băng</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">💎 Pha Lê</span>
+            </div>
+            <span class="text-rose-600 group-hover:text-rose-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
+
         <!-- Empty Search State -->
         <div id="home-empty-search" class="hidden col-span-full py-12 px-4 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-2xl shadow-xs">
@@ -1945,7 +2082,7 @@
             <p class="text-xs text-slate-500 mt-0.5">Vui lòng thử tìm từ khóa khác như "vịt", "thuyền", "bao bố", "penalty", "lì xì"...</p>
           </div>
           <button onclick="clearHomeSearch()" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 hover:bg-slate-200 text-slate-800 transition cursor-pointer">
-            Xem Tất Cả 19 Trò Chơi
+            Xem Tất Cả 23 Trò Chơi
           </button>
         </div>
 
@@ -2012,6 +2149,10 @@
               <option value="penalty" class="bg-slate-900 text-emerald-300 font-bold">⚽ Sút Luân Lưu Penalty (Vào: Bỏ qua • Trượt: Gọi tên)</option>
               <option value="dragon_boat" class="bg-slate-900 text-teal-300 font-bold">🚣 Đua Thuyền Rồng (Hội Đua Thuyền Sông Nước)</option>
               <option value="sack_race" class="bg-slate-900 text-amber-300 font-bold">🦘 Nhảy Bao Bố (Hội Thao Dân Gian Vui Nhộn)</option>
+              <option value="safe_zone" class="bg-slate-900 text-cyan-300 font-bold">🏝️ Vòng Bo May Mắn (Sinh Tồn Thu Hẹp Vòng Bo)</option>
+              <option value="ufo_abduct" class="bg-slate-900 text-emerald-300 font-bold">🛸 Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)</option>
+              <option value="summon_card" class="bg-slate-900 text-purple-300 font-bold">🌟 Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)</option>
+              <option value="meteor_call" class="bg-slate-900 text-rose-300 font-bold">☄️ Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)</option>
             </select>
           </div>
 
@@ -2608,6 +2749,95 @@
           <div id="sack-countdown-overlay" class="hidden absolute inset-0 bg-slate-950/70 backdrop-blur-sm z-40 flex items-center justify-center pointer-events-none transition-all">
             <div id="sack-countdown-text" class="text-7xl sm:text-9xl font-black text-amber-300 drop-shadow-[0_0_35px_rgba(245,158,11,0.8)] scale-110 transition-transform">3</div>
           </div>
+        </div>
+
+        <!-- STAGE 20: VÒNG BO MAY MẮN / SINH TỒN (SAFE ZONE) -->
+        <div id="safe-zone-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-cyan-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-cyan-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-cyan-400 font-extrabold text-sm">🏝️</span>
+              <span id="safe-zone-status">Đảo Sinh Tồn đã sẵn sàng! Bấm THU HẸP VÒNG BO để tìm người may mắn cuối cùng!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span id="safe-zone-alive-badge" class="bg-cyan-950/90 text-cyan-200 text-xs font-black px-2.5 py-1.5 rounded-xl border border-cyan-500/40 shadow-md">Còn: 0 HS</span>
+              <button onclick="toggleSafeZoneSound()" id="safe-zone-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleSafeZoneFullscreen()" id="safe-zone-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-cyan-400"></i> Phóng to
+              </button>
+              <button onclick="initSafeZoneGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới bản đồ sinh tồn">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-cyan-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="safe-zone-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 21: PHI THUYỀN BẮT CÓC (UFO ABDUCTION) -->
+        <div id="ufo-abduct-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-emerald-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-emerald-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-emerald-400 font-extrabold text-sm">🛸</span>
+              <span id="ufo-abduct-status">Phi thuyền UFO đang lơ lửng ngoài bầu trời! Bấm QUÉT TIA SÁNG để bắt cóc ngẫu nhiên!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleUfoSound()" id="ufo-abduct-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleUfoFullscreen()" id="ufo-abduct-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-emerald-400"></i> Phóng to
+              </button>
+              <button onclick="initUfoAbductGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đưa đĩa bay về vị trí chờ">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-emerald-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="ufo-abduct-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 22: TRIỆU HỒI THẺ TƯỚNG (GACHA SSR) -->
+        <div id="summon-card-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-purple-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-purple-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-purple-400 font-extrabold text-sm">🌟</span>
+              <span id="summon-card-status">Đài Triệu Hồi Ma Pháp đã khai mở! Bấm TRIỆU HỒI SSR để rút thẻ tướng!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleSummonSound()" id="summon-card-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleSummonFullscreen()" id="summon-card-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-purple-400"></i> Phóng to
+              </button>
+              <button onclick="initSummonCardGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới đài triệu hồi">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-purple-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="summon-card-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 23: THIÊN THẠCH GỌI TÊN (METEOR CALL) -->
+        <div id="meteor-call-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-rose-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-rose-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-rose-400 font-extrabold text-sm">☄️</span>
+              <span id="meteor-call-status">Các khoang pha lê học sinh đang lơ lửng trong tinh vân! Bấm PHÓNG THIÊN THẠCH để chọn tên!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleMeteorSound()" id="meteor-call-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleMeteorFullscreen()" id="meteor-call-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-rose-400"></i> Phóng to
+              </button>
+              <button onclick="initMeteorCallGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới tinh vân">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-rose-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="meteor-call-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -4457,6 +4687,14 @@
       else if (mode === 'penalty') initPenaltyGame(true);
       else if (mode === 'dragon_boat') initDragonBoatRace(true);
       else if (mode === 'sack_race') initSackRace(true);
+        else if (mode === 'safe_zone') initSafeZoneGame(true);
+        else if (mode === 'ufo_abduct') initUfoAbductGame(true);
+        else if (mode === 'summon_card') initSummonCardGame(true);
+        else if (mode === 'meteor_call') initMeteorCallGame(true);
+      else if (mode === 'safe_zone') initSafeZoneGame(true);
+      else if (mode === 'ufo_abduct') initUfoAbductGame(true);
+      else if (mode === 'summon_card') initSummonCardGame(true);
+      else if (mode === 'meteor_call') initMeteorCallGame(true);
     }
 
     function renderClassesListTab() {
@@ -5439,7 +5677,11 @@
       lion: 'from-red-950 via-slate-900 to-orange-950',
       penalty: 'from-green-950 via-slate-900 to-teal-950',
       dragon_boat: 'from-teal-950 via-slate-900 to-blue-950',
-      sack_race: 'from-amber-950 via-slate-900 to-orange-950'
+      sack_race: 'from-amber-950 via-slate-900 to-orange-950',
+      safe_zone: 'from-cyan-950 via-slate-900 to-emerald-950',
+      ufo_abduct: 'from-emerald-950 via-slate-950 to-indigo-950',
+      summon_card: 'from-purple-950 via-indigo-950 to-slate-950',
+      meteor_call: 'from-rose-950 via-slate-950 to-indigo-950'
     };
 
     function renderStudioGameList() {
@@ -5660,7 +5902,7 @@
       var allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call'
       ];
       var randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       selectStudioGame(randomMode);
@@ -5730,7 +5972,7 @@
       const allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call'
       ];
       const randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       const opt = document.querySelector(`#spin-mode option[value="${randomMode}"]`);
@@ -6009,6 +6251,50 @@
     "rules": "Vận động viên thu mình trong chiếc bao bố gai dệt thô, hai tay nắm chặt quai bao, nhún gối bật nhảy đạn đạo bồng bềnh trên không trung và chạm đất hất văng tia cỏ xanh về đích.",
     "tips": "Mang lại tiếng cười giòn giã và năng lượng tích cực bất tận cho cả lớp học.",
     "shortcut": "Bấm phím Space để các vận động viên nhún chân bật nhảy bao bố."
+  },
+  "safe_zone": {
+    "name": "Vòng Bo May Mắn",
+    "icon": "🏝️",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🔥 Sinh Tồn Top 1",
+    "color": "cyan",
+    "context": "Hòn đảo nhiệt đới xanh mát giữa đại dương với vòng bo năng lượng xanh dương rực sáng trên bản đồ chiến thuật.",
+    "rules": "Toàn bộ học sinh đổ bộ lên đảo. Vòng bo an toàn thu hẹp dần qua các đợt sóng điện từ. Ai lọt ra ngoài bo sẽ bung dù rời đảo cho đến khi chỉ còn đúng 1 người sống sót cuối cùng trong vòng bo vàng!",
+    "tips": "Cực kỳ hồi hộp khi cả lớp dõi theo sĩ số thu hẹp từng giây từ 40 xuống Top 3 rồi Top 1.",
+    "shortcut": "Bấm phím Space để kích hoạt thu hẹp vòng bo sinh tồn."
+  },
+  "ufo_abduct": {
+    "name": "Phi Thuyền Bắt Cóc",
+    "icon": "🛸",
+    "category": "🎁 May Mắn & Quay Số",
+    "badge": "✨ UFO Mới Nhất",
+    "color": "emerald",
+    "context": "Thảo nguyên đêm trăng đầy sao lấp lánh, nơi chiếc đĩa bay UFO phát sáng lượn lờ tìm kiếm nhân vật đặc biệt.",
+    "rules": "Phi thuyền UFO sà xuống quét chùm tia sáng neon rà soát từng bạn học sinh, tạo vài pha thót tim hù dọa trước khi khóa mục tiêu và phóng tia phản trọng lực hút bạn được chọn bay thẳng lên tàu!",
+    "tips": "Tạo những tràng cười vỡ òa mỗi khi đĩa bay dừng lại lơ lửng ngay trên đầu các bạn trong lớp.",
+    "shortcut": "Bấm phím Space để phi thuyền UFO bắt đầu quét tia sáng."
+  },
+  "summon_card": {
+    "name": "Triệu Hồi Thẻ Tướng",
+    "icon": "🌟",
+    "category": "🎁 May Mắn & Quay Số",
+    "badge": "💎 Gacha SSR",
+    "color": "purple",
+    "context": "Đài triệu hồi ma pháp cổ đại lung linh ánh sáng tím huyền bí với những lá bài anh hùng xoay quanh tâm điểm.",
+    "rules": "Vòng tròn ma pháp tăng tốc tụ lực, lóe sáng qua các cấp độ R - SR rồi bùng nổ hào quang vàng rực SSR, lật mở lá bài huyền thoại khắc tên người chiến thắng.",
+    "tips": "Rất hợp phong cách game hiện đại, khiến học sinh phấn khích như vừa mở được thẻ tướng cực hiếm.",
+    "shortcut": "Bấm phím Space để khai mở vòng tròn triệu hồi SSR."
+  },
+  "meteor_call": {
+    "name": "Thiên Thạch Gọi Tên",
+    "icon": "☄️",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🌠 Siêu Ấn Tượng",
+    "color": "rose",
+    "context": "Tinh vân vũ trụ sâu thẳm rực rỡ sắc hồng lam, nơi tên các học sinh nằm bên trong những khoang pha lê trôi nổi.",
+    "rules": "Một thiên thạch rực lửa lao xé bầu trời ngân hà, lượn qua vài khoang pha lê rồi giáng xuống va chạm mạnh làm vỡ lớp vỏ tinh thể, tỏa sáng rực rỡ tên bạn được chọn!",
+    "tips": "Hiệu ứng ánh sáng và âm thanh vũ trụ hoành tráng giúp giữ trọn sự tập trung của cả lớp.",
+    "shortcut": "Bấm phím Space để phóng thiên thạch triệu hồi."
   }
 };
 
@@ -6211,6 +6497,14 @@
         if (typeof initDragonBoatRace === 'function') initDragonBoatRace(false);
       } else if (mode === 'sack_race' && (typeof sackRaceState !== 'undefined' && (sackRaceState === 'idle' || sackRaceState === 'countdown'))) {
         if (typeof initSackRace === 'function') initSackRace(false);
+      } else if (mode === 'safe_zone') {
+        if (typeof resizeSafeZoneCanvas === 'function') resizeSafeZoneCanvas();
+      } else if (mode === 'ufo_abduct') {
+        if (typeof resizeUfoCanvas === 'function') resizeUfoCanvas();
+      } else if (mode === 'summon_card') {
+        if (typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
+      } else if (mode === 'meteor_call') {
+        if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
       }
     }
 
@@ -6239,6 +6533,10 @@
       const penaltyContainer = document.getElementById('penalty-stage-container');
       const dragonBoatContainer = document.getElementById('dragon-boat-race-container');
       const sackContainer = document.getElementById('sack-race-container');
+      const safeZoneContainer = document.getElementById('safe-zone-stage-container');
+      const ufoContainer = document.getElementById('ufo-abduct-stage-container');
+      const summonContainer = document.getElementById('summon-card-stage-container');
+      const meteorContainer = document.getElementById('meteor-call-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -6260,6 +6558,10 @@
       if (penaltyContainer) penaltyContainer.classList.add('hidden');
       if (dragonBoatContainer) dragonBoatContainer.classList.add('hidden');
       if (sackContainer) sackContainer.classList.add('hidden');
+      if (safeZoneContainer) safeZoneContainer.classList.add('hidden');
+      if (ufoContainer) ufoContainer.classList.add('hidden');
+      if (summonContainer) summonContainer.classList.add('hidden');
+      if (meteorContainer) meteorContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -6392,6 +6694,30 @@
           if (typeof resizeSackCanvas === 'function') resizeSackCanvas();
           if (typeof renderSackRaceCanvas === 'function') renderSackRaceCanvas(performance.now());
         }, 40);
+      } else if (mode === 'safe_zone') {
+        if (safeZoneContainer) safeZoneContainer.classList.remove('hidden');
+        if (typeof initSafeZoneGame === 'function') initSafeZoneGame(true);
+        setTimeout(() => {
+          if (typeof resizeSafeZoneCanvas === 'function') resizeSafeZoneCanvas();
+        }, 40);
+      } else if (mode === 'ufo_abduct') {
+        if (ufoContainer) ufoContainer.classList.remove('hidden');
+        if (typeof initUfoAbductGame === 'function') initUfoAbductGame(true);
+        setTimeout(() => {
+          if (typeof resizeUfoCanvas === 'function') resizeUfoCanvas();
+        }, 40);
+      } else if (mode === 'summon_card') {
+        if (summonContainer) summonContainer.classList.remove('hidden');
+        if (typeof initSummonCardGame === 'function') initSummonCardGame(true);
+        setTimeout(() => {
+          if (typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
+        }, 40);
+      } else if (mode === 'meteor_call') {
+        if (meteorContainer) meteorContainer.classList.remove('hidden');
+        if (typeof initMeteorCallGame === 'function') initMeteorCallGame(true);
+        setTimeout(() => {
+          if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -6423,7 +6749,11 @@
         lion: { title: 'Múa Lân Hái Lộc (Lồng Đèn, Lì Xì, Quà Giáng Sinh)', icon: '🦁' },
         penalty: { title: 'Sút Luân Lưu Penalty (Sút Vào Bỏ Qua, Sút Trượt Bị Gọi Tên)', icon: '⚽' },
         dragon_boat: { title: 'Đua Thuyền Rồng (Hội Đua Thuyền Sông Nước)', icon: '🚣' },
-        sack_race: { title: 'Nhảy Bao Bố (Hội Thao Dân Gian Vui Nhộn)', icon: '🦘' }
+        sack_race: { title: 'Nhảy Bao Bố (Hội Thao Dân Gian Vui Nhộn)', icon: '🦘' },
+        safe_zone: { title: 'Vòng Bo May Mắn (Đảo Sinh Tồn Top 1)', icon: '🏝️' },
+        ufo_abduct: { title: 'Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)', icon: '🛸' },
+        summon_card: { title: 'Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)', icon: '🌟' },
+        meteor_call: { title: 'Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)', icon: '☄️' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -6460,6 +6790,14 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-water"></i> XUẤT PHÁT ĐUA THUYỀN';
         } else if (mode === 'sack_race') {
           spinBtn.innerHTML = '<i class="fa-solid fa-person-running"></i> XUẤT PHÁT BẬT NHẢY';
+        } else if (mode === 'safe_zone') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-bullseye"></i> THU HẸP VÒNG BO';
+        } else if (mode === 'ufo_abduct') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-shuttle-space"></i> QUÉT TIA SÁNG UFO';
+        } else if (mode === 'summon_card') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> TRIỆU HỒI THẺ SSR';
+        } else if (mode === 'meteor_call') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH';
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -6532,6 +6870,10 @@
         else if (mode === 'penalty') initPenaltyGame(true);
         else if (mode === 'dragon_boat') initDragonBoatRace(true);
         else if (mode === 'sack_race') initSackRace(true);
+        else if (mode === 'safe_zone') initSafeZoneGame(true);
+        else if (mode === 'ufo_abduct') initUfoAbductGame(true);
+        else if (mode === 'summon_card') initSummonCardGame(true);
+        else if (mode === 'meteor_call') initMeteorCallGame(true);
       }
     }
 
@@ -11763,7 +12105,7 @@
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) {
         const m = modeSelect.value;
-        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi') {
+        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call') {
           if (grid) grid.classList.add('hidden');
         }
         if (m === 'wheel_pie') {
@@ -11806,6 +12148,22 @@
           const c = document.getElementById('lixi-stage-container');
           if (c) c.classList.remove('hidden');
           if (typeof initLixiGame === 'function') initLixiGame(false);
+        } else if (m === 'safe_zone') {
+          const c = document.getElementById('safe-zone-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initSafeZoneGame === 'function') initSafeZoneGame(false);
+        } else if (m === 'ufo_abduct') {
+          const c = document.getElementById('ufo-abduct-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initUfoAbductGame === 'function') initUfoAbductGame(false);
+        } else if (m === 'summon_card') {
+          const c = document.getElementById('summon-card-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initSummonCardGame === 'function') initSummonCardGame(false);
+        } else if (m === 'meteor_call') {
+          const c = document.getElementById('meteor-call-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initMeteorCallGame === 'function') initMeteorCallGame(false);
         }
       }
     }
@@ -14784,6 +15142,10 @@
       else if (mode === 'penalty' && typeof resizePenaltyCanvas === 'function') resizePenaltyCanvas();
       else if (mode === 'dragon_boat' && typeof resizeDragonBoatCanvas === 'function') resizeDragonBoatCanvas();
       else if (mode === 'sack_race' && typeof resizeSackCanvas === 'function') resizeSackCanvas();
+      else if (mode === 'safe_zone' && typeof resizeSafeZoneCanvas === 'function') resizeSafeZoneCanvas();
+      else if (mode === 'ufo_abduct' && typeof resizeUfoCanvas === 'function') resizeUfoCanvas();
+      else if (mode === 'summon_card' && typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
+      else if (mode === 'meteor_call' && typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -14808,7 +15170,11 @@
         { id: 'lion-fullscreen-btn', color: 'text-amber-400' },
         { id: 'penalty-fullscreen-btn', color: 'text-emerald-400' },
         { id: 'dragon-boat-fullscreen-btn', color: 'text-teal-400' },
-        { id: 'sack-fullscreen-btn', color: 'text-amber-400' }
+        { id: 'sack-fullscreen-btn', color: 'text-amber-400' },
+        { id: 'safe-zone-fullscreen-btn', color: 'text-cyan-400' },
+        { id: 'ufo-abduct-fullscreen-btn', color: 'text-emerald-400' },
+        { id: 'summon-card-fullscreen-btn', color: 'text-purple-400' },
+        { id: 'meteor-call-fullscreen-btn', color: 'text-rose-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -14882,7 +15248,11 @@
         'lion-stage-container',
         'penalty-stage-container',
         'dragon-boat-race-container',
-        'sack-race-container'
+        'sack-race-container',
+        'safe-zone-stage-container',
+        'ufo-abduct-stage-container',
+        'summon-card-stage-container',
+        'meteor-call-stage-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -14913,6 +15283,10 @@
       if (mode === 'penalty') return penaltyGameState === 'kicking' || penaltyGameState === 'celebrating';
       if (mode === 'dragon_boat') return dragonBoatRaceState === 'racing' || dragonBoatRaceState === 'countdown';
       if (mode === 'sack_race') return sackRaceState === 'racing' || sackRaceState === 'countdown';
+      if (mode === 'safe_zone') return safeZoneState === 'running';
+      if (mode === 'ufo_abduct') return ufoState === 'running';
+      if (mode === 'summon_card') return summonState === 'running';
+      if (mode === 'meteor_call') return meteorState === 'running';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -27819,6 +28193,1436 @@
     }
 
 
+
+    // ==========================================
+    // SHARED HELPER FOR NEW ARCADE GAMES (AUDIO & FULLSCREEN)
+    // ==========================================
+    const ArcadePackAudio = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+      },
+      tone(freq, dur, type = 'sine', vol = 0.14, endFreq = null) {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, t);
+          if (endFreq) osc.frequency.exponentialRampToValueAtTime(Math.max(30, endFreq), t + dur);
+          gain.gain.setValueAtTime(vol, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + dur + 0.02);
+        } catch(e) {}
+      },
+      fanfare() {
+        const notes = [523.25, 659.25, 783.99, 1046.5];
+        notes.forEach((f, idx) => {
+          setTimeout(() => this.tone(f, 0.24, 'triangle', 0.16), idx * 90);
+        });
+      }
+    };
+
+    function shortStudentName(name) {
+      const parts = (name || '').trim().split(/\s+/);
+      return parts.length > 2 ? parts.slice(-2).join(' ') : (name || 'Học sinh');
+    }
+
+    function toggleContainerFullscreen(containerId, resizeFn) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (container.requestFullscreen) container.requestFullscreen();
+        else if (container.webkitRequestFullscreen) container.webkitRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
+      setTimeout(resizeFn, 80);
+      setTimeout(resizeFn, 220);
+    }
+
+    function drawHighContrastBadge(ctx, x, y, text, borderColor = '#38bdf8', isHighlight = false) {
+      ctx.save();
+      ctx.font = isHighlight ? '900 13px system-ui, -apple-system, sans-serif' : '800 11px system-ui, -apple-system, sans-serif';
+      const w = Math.max(ctx.measureText(text).width + 16, 52);
+      const h = isHighlight ? 22 : 18;
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.beginPath();
+      ctx.roundRect(x - w / 2 + 1, y - h / 2 + 2, w, h, 9);
+      ctx.fill();
+
+      ctx.fillStyle = isHighlight ? '#b45309' : 'rgba(15, 23, 42, 0.9)';
+      ctx.strokeStyle = isHighlight ? '#fef08a' : borderColor;
+      ctx.lineWidth = isHighlight ? 2.2 : 1.3;
+      ctx.beginPath();
+      ctx.roundRect(x - w / 2, y - h / 2, w, h, 9);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, x, y + 0.5);
+      ctx.restore();
+    }
+
+    // ==========================================
+    // 20. MODULE: VÒNG BO MAY MẮN / SINH TỒN (SAFE ZONE)
+    // ==========================================
+    let safeZoneAnimId = null;
+    let safeZoneState = 'idle';
+    let safeZoneStartTime = 0;
+    let safeZoneDuration = 6000;
+    let safeZonePlayers = [];
+    let safeZoneParticles = [];
+    let safeZoneCenterX = 0.5;
+    let safeZoneCenterY = 0.52;
+    let safeZoneLastAliveCount = 0;
+    let safeZoneTargetWinner = null;
+    let safeZoneFinishCallback = null;
+    let safeZoneSoundEnabled = true;
+    const SAFE_ZONE_COLORS = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4', '#f97316'];
+
+    function toggleSafeZoneSound() {
+      safeZoneSoundEnabled = !safeZoneSoundEnabled;
+      const btn = document.getElementById('safe-zone-sound-btn');
+      if (btn) btn.innerHTML = safeZoneSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleSafeZoneFullscreen() {
+      toggleContainerFullscreen('safe-zone-stage-container', resizeSafeZoneCanvas);
+    }
+
+    function resizeSafeZoneCanvas() {
+      const canvas = document.getElementById('safe-zone-canvas');
+      const container = document.getElementById('safe-zone-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    function initSafeZoneGame(resetPositions = true) {
+      const container = document.getElementById('safe-zone-stage-container');
+      const canvas = document.getElementById('safe-zone-canvas');
+      if (!container || !canvas) return;
+      resizeSafeZoneCanvas();
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      if (resetPositions || safeZonePlayers.length !== visible.length) {
+        safeZoneCenterX = 0.5 + (Math.random() - 0.5) * 0.14;
+        safeZoneCenterY = 0.53 + (Math.random() - 0.5) * 0.1;
+        safeZonePlayers = visible.map((st, i) => {
+          const angle = (i / Math.max(1, visible.length)) * Math.PI * 2 + (Math.random() - 0.5) * 0.35;
+          const dist = 0.14 + Math.random() * 0.24;
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortStudentName(st.name),
+            nx: Math.max(0.16, Math.min(0.84, 0.5 + Math.cos(angle) * dist * 1.25)),
+            ny: Math.max(0.22, Math.min(0.84, 0.53 + Math.sin(angle) * dist)),
+            vx: (Math.random() - 0.5) * 0.08,
+            vy: (Math.random() - 0.5) * 0.08,
+            color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length],
+            alive: true,
+            isWinner: false,
+            elimT: 0.99,
+            outAlpha: 1,
+            phase: Math.random() * Math.PI * 2
+          };
+        });
+      }
+      safeZoneState = 'idle';
+      safeZoneParticles = [];
+      safeZoneTargetWinner = null;
+      safeZoneLastAliveCount = safeZonePlayers.length;
+      const aliveBadge = document.getElementById('safe-zone-alive-badge');
+      if (aliveBadge) aliveBadge.innerText = 'Còn: ' + safeZonePlayers.length + ' HS';
+      const statusEl = document.getElementById('safe-zone-status');
+      if (statusEl) statusEl.innerText = 'Đảo Sinh Tồn đã sẵn sàng! Bấm THU HẸP VÒNG BO để tìm người may mắn cuối cùng!';
+
+      if (!safeZoneAnimId) {
+        safeZoneAnimId = requestAnimationFrame(runSafeZoneLoop);
+      }
+    }
+
+    function startSafeZoneGame(winnerStudent, durationMs = 6000, callback) {
+      if (safeZoneState === 'running') return;
+      initSafeZoneGame(true);
+      safeZoneTargetWinner = winnerStudent;
+      safeZoneFinishCallback = callback;
+      safeZoneDuration = Math.max(3500, durationMs);
+      safeZoneStartTime = performance.now();
+      safeZoneState = 'running';
+
+      const others = safeZonePlayers.filter(p => String(p.id) !== String(winnerStudent.id)).sort(() => Math.random() - 0.5);
+      others.forEach((p, idx) => {
+        // Stagger eliminations smoothly from 18% to 90% of race duration
+        p.isWinner = false;
+        p.elimT = 0.18 + ((idx + 1) / Math.max(1, others.length)) * 0.72;
+      });
+      safeZonePlayers.forEach(p => {
+        if (String(p.id) === String(winnerStudent.id)) {
+          p.isWinner = true;
+          p.elimT = 9.9;
+        }
+      });
+
+      if (safeZoneSoundEnabled) ArcadePackAudio.tone(440, 0.18, 'triangle', 0.16, 660);
+      const statusEl = document.getElementById('safe-zone-status');
+      if (statusEl) statusEl.innerText = '⚠️ CẢNH BÁO: Vòng Bo Đang Thu Hẹp! Cả lớp nhanh chân vào vùng an toàn!';
+      if (!safeZoneAnimId) safeZoneAnimId = requestAnimationFrame(runSafeZoneLoop);
+    }
+
+    function runSafeZoneLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const container = document.getElementById('safe-zone-stage-container');
+      if (mode !== 'safe_zone' || !container || container.classList.contains('hidden')) {
+        safeZoneAnimId = null;
+        return;
+      }
+      renderSafeZoneCanvas(now);
+      safeZoneAnimId = requestAnimationFrame(runSafeZoneLoop);
+    }
+
+    function renderSafeZoneCanvas(now) {
+      const canvas = document.getElementById('safe-zone-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      if (w <= 0 || h <= 0) return;
+
+      // 1. Ocean & Animated Waves
+      const oceanGrad = ctx.createLinearGradient(0, 0, 0, h);
+      oceanGrad.addColorStop(0, '#0284c7');
+      oceanGrad.addColorStop(1, '#0369a1');
+      ctx.fillStyle = oceanGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+      ctx.lineWidth = 2;
+      for (let wy = 24; wy < h; wy += 44) {
+        ctx.beginPath();
+        for (let wx = 0; wx <= w; wx += 28) {
+          const offset = Math.sin(wx * 0.03 + now * 0.002 + wy) * 4;
+          if (wx === 0) ctx.moveTo(wx, wy + offset);
+          else ctx.lineTo(wx, wy + offset);
+        }
+        ctx.stroke();
+      }
+
+      // 2. Tropical Island (Sand + Lush Grass)
+      const cx = w * 0.5;
+      const cy = h * 0.53;
+      const rx = w * 0.42;
+      const ry = h * 0.37;
+
+      // Sand beach
+      ctx.fillStyle = '#fde68a';
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.stroke();
+
+      // Inner jungle turf
+      const grassGrad = ctx.createRadialGradient(cx, cy, 20, cx, cy, rx);
+      grassGrad.addColorStop(0, '#34d399');
+      grassGrad.addColorStop(1, '#059669');
+      ctx.fillStyle = grassGrad;
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx * 0.89, ry * 0.87, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Tactical Grid overlay
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx < w; gx += 48) {
+        ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+      }
+      for (let gy = 0; gy < h; gy += 48) {
+        ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
+      }
+
+      // Decorative Trees & Rocks
+      const treeCoords = [[0.24, 0.33], [0.76, 0.34], [0.22, 0.72], [0.78, 0.71], [0.38, 0.25], [0.65, 0.76]];
+      treeCoords.forEach(([tx, ty]) => {
+        const px = w * tx, py = h * ty;
+        ctx.fillStyle = 'rgba(6, 78, 59, 0.35)';
+        ctx.beginPath(); ctx.ellipse(px + 3, py + 7, 13, 6, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#065f46';
+        ctx.beginPath(); ctx.arc(px, py, 11, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath(); ctx.arc(px - 2, py - 2, 7, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // Compute Safe Zone progress
+      const zoneX = w * safeZoneCenterX;
+      const zoneY = h * safeZoneCenterY;
+      const maxRadius = Math.max(w, h) * 0.56;
+      const minRadius = 46;
+      let t = 0;
+      let currentRadius = maxRadius;
+
+      if (safeZoneState === 'running') {
+        t = Math.min(1, (now - safeZoneStartTime) / safeZoneDuration);
+        // Smooth stepped shrinking
+        const shrinkFactor = Math.pow(t, 0.85);
+        currentRadius = maxRadius - (maxRadius - minRadius) * shrinkFactor;
+      } else if (safeZoneState === 'finished') {
+        t = 1;
+        currentRadius = minRadius;
+      }
+
+      // Golden Crown marker at zone center
+      ctx.save();
+      ctx.fillStyle = 'rgba(250, 204, 21, 0.22)';
+      ctx.beginPath();
+      ctx.arc(zoneX, zoneY, 26 + Math.sin(now * 0.006) * 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = '20px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('👑', zoneX, zoneY);
+      ctx.restore();
+
+      // Update and draw players
+      let aliveCount = 0;
+      safeZonePlayers.forEach(p => {
+        if (safeZoneState === 'running') {
+          if (p.alive && !p.isWinner && t >= p.elimT) {
+            p.alive = false;
+            p.outAlpha = 1;
+            if (safeZoneSoundEnabled) ArcadePackAudio.tone(360, 0.12, 'square', 0.08, 140);
+            for (let k = 0; k < 10; k++) {
+              const ang = Math.random() * Math.PI * 2;
+              safeZoneParticles.push({
+                x: p.nx * w, y: p.ny * h,
+                vx: Math.cos(ang) * (1.5 + Math.random() * 2.5),
+                vy: Math.sin(ang) * (1.5 + Math.random() * 2.5) - 1,
+                alpha: 1, color: '#38bdf8', size: 3.5
+              });
+            }
+          }
+          if (p.alive) {
+            if (p.isWinner) {
+              // Winner steers steadily toward safe center
+              p.nx += (safeZoneCenterX - p.nx) * 0.035;
+              p.ny += (safeZoneCenterY - p.ny) * 0.035;
+            } else {
+              // Wander inside/outside shrinking ring
+              const px = p.nx * w, py = p.ny * h;
+              const dx = px - zoneX, dy = py - zoneY;
+              const dist = Math.hypot(dx, dy) || 1;
+              if (t > p.elimT - 0.12) {
+                // Step outside the shrinking circle right before elimination
+                const targetDist = currentRadius + 24;
+                const tx = (zoneX + (dx / dist) * targetDist) / w;
+                const ty = (zoneY + (dy / dist) * targetDist) / h;
+                p.nx += (tx - p.nx) * 0.07;
+                p.ny += (ty - p.ny) * 0.07;
+              } else {
+                // Keep inside safe zone
+                if (dist > currentRadius - 22) {
+                  p.nx += (safeZoneCenterX - p.nx) * 0.05;
+                  p.ny += (safeZoneCenterY - p.ny) * 0.05;
+                } else {
+                  p.nx += Math.sin(now * 0.002 + p.phase) * 0.0012;
+                  p.ny += Math.cos(now * 0.0025 + p.phase) * 0.0012;
+                }
+              }
+            }
+          } else {
+            p.outAlpha = Math.max(0, p.outAlpha - 0.025);
+          }
+        } else if (safeZoneState === 'idle') {
+          p.nx += Math.sin(now * 0.0015 + p.phase) * 0.0004;
+          p.ny += Math.cos(now * 0.0015 + p.phase) * 0.0004;
+        }
+
+        if (p.alive) aliveCount++;
+      });
+
+      if (safeZoneState === 'running' && aliveCount !== safeZoneLastAliveCount) {
+        safeZoneLastAliveCount = aliveCount;
+        const aliveBadge = document.getElementById('safe-zone-alive-badge');
+        if (aliveBadge) aliveBadge.innerText = 'Còn: ' + aliveCount + ' HS';
+        const statusEl = document.getElementById('safe-zone-status');
+        if (statusEl && aliveCount <= 5 && aliveCount > 1) {
+          statusEl.innerText = '🔥 GAY CẤN TOP ' + aliveCount + '! Ai sẽ là người sống sót cuối cùng trong Vòng Bo?';
+        }
+      }
+
+      // Draw Storm Zone outside the circle (even-odd mask)
+      if (safeZoneState !== 'idle') {
+        ctx.save();
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.48)';
+        ctx.beginPath();
+        ctx.rect(0, 0, w, h);
+        ctx.arc(zoneX, zoneY, Math.max(10, currentRadius), 0, Math.PI * 2, true);
+        ctx.fill();
+
+        // Electric Glowing Border Ring
+        ctx.strokeStyle = t > 0.72 ? '#facc15' : '#38bdf8';
+        ctx.lineWidth = 4;
+        ctx.shadowColor = t > 0.72 ? '#f59e0b' : '#0ea5e9';
+        ctx.shadowBlur = 16;
+        ctx.beginPath();
+        ctx.arc(zoneX, zoneY, Math.max(10, currentRadius), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Draw alive & fading players
+      safeZonePlayers.forEach(p => {
+        if (!p.alive && p.outAlpha <= 0) return;
+        const px = p.nx * w;
+        const py = p.ny * h;
+        const bob = p.alive ? Math.sin(now * 0.01 + p.phase) * 2.5 : -((1 - p.outAlpha) * 28);
+        ctx.save();
+        ctx.globalAlpha = p.alive ? 1 : p.outAlpha;
+
+        // Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.beginPath(); ctx.ellipse(px, py + 11, 9, 4, 0, 0, Math.PI * 2); ctx.fill();
+
+        // Survivor Avatar
+        ctx.fillStyle = p.color;
+        ctx.beginPath(); ctx.arc(px, py + bob, 9.5, 0, Math.PI * 2); ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = p.isWinner && safeZoneState === 'finished' ? '#fef08a' : '#ffffff';
+        ctx.stroke();
+
+        // Cute visor / eyes
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath(); ctx.roundRect(px - 5, py + bob - 3, 10, 4.5, 2); ctx.fill();
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath(); ctx.roundRect(px - 3.5, py + bob - 2, 7, 2.5, 1); ctx.fill();
+
+        if (!p.alive) {
+          ctx.font = '14px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('🪂', px, py + bob - 14);
+        } else {
+          drawHighContrastBadge(ctx, px, py + bob - 19, p.displayName, p.color, p.isWinner && safeZoneState === 'finished');
+        }
+        ctx.restore();
+      });
+
+      // Particles
+      for (let i = safeZoneParticles.length - 1; i >= 0; i--) {
+        const pt = safeZoneParticles[i];
+        pt.x += pt.vx; pt.y += pt.vy; pt.alpha -= 0.03;
+        if (pt.alpha <= 0) { safeZoneParticles.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = pt.alpha;
+        ctx.fillStyle = pt.color;
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      // Finish check
+      if (safeZoneState === 'running' && t >= 1) {
+        safeZoneState = 'finished';
+        if (safeZoneSoundEnabled) ArcadePackAudio.fanfare();
+        const statusEl = document.getElementById('safe-zone-status');
+        if (statusEl && safeZoneTargetWinner) {
+          statusEl.innerText = '🏆 TOP 1 SINH TỒN: ' + safeZoneTargetWinner.name + ' đã chiến thắng Vòng Bo May Mắn!';
+        }
+        const winPlayer = safeZonePlayers.find(p => p.isWinner);
+        if (winPlayer) {
+          for (let k = 0; k < 55; k++) {
+            const ang = Math.random() * Math.PI * 2;
+            const spd = 2 + Math.random() * 5;
+            safeZoneParticles.push({
+              x: winPlayer.nx * w, y: winPlayer.ny * h,
+              vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
+              alpha: 1.2, color: SAFE_ZONE_COLORS[k % SAFE_ZONE_COLORS.length], size: 4
+            });
+          }
+        }
+        const cb = safeZoneFinishCallback;
+        const winSt = safeZoneTargetWinner;
+        setTimeout(() => { if (typeof cb === 'function') cb(winSt); }, 950);
+      }
+
+      // Winner spotlight banner
+      if (safeZoneState === 'finished' && safeZoneTargetWinner) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.82)';
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.roundRect(w / 2 - 170, 62, 340, 44, 16);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#fef08a';
+        ctx.font = '900 15px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('👑 TOP 1 SINH TỒN: ' + safeZoneTargetWinner.name, w / 2, 84);
+        ctx.restore();
+      }
+    }
+
+    // ==========================================
+    // 21. MODULE: PHI THUYỀN BẮT CÓC (UFO ABDUCTION)
+    // ==========================================
+    let ufoAnimId = null;
+    let ufoState = 'idle';
+    let ufoStartTime = 0;
+    let ufoDuration = 6000;
+    let ufoStudents = [];
+    let ufoPosX = 0.5;
+    let ufoPosY = 0.22;
+    let ufoTargetWinner = null;
+    let ufoDecoyTargets = [];
+    let ufoFinishCallback = null;
+    let ufoParticles = [];
+    let ufoSoundEnabled = true;
+
+    function toggleUfoSound() {
+      ufoSoundEnabled = !ufoSoundEnabled;
+      const btn = document.getElementById('ufo-abduct-sound-btn');
+      if (btn) btn.innerHTML = ufoSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleUfoFullscreen() {
+      toggleContainerFullscreen('ufo-abduct-stage-container', resizeUfoCanvas);
+    }
+
+    function resizeUfoCanvas() {
+      const canvas = document.getElementById('ufo-abduct-canvas');
+      const container = document.getElementById('ufo-abduct-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    function initUfoAbductGame(resetPositions = true) {
+      const container = document.getElementById('ufo-abduct-stage-container');
+      const canvas = document.getElementById('ufo-abduct-canvas');
+      if (!container || !canvas) return;
+      resizeUfoCanvas();
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      if (resetPositions || ufoStudents.length !== visible.length) {
+        const count = Math.max(1, visible.length);
+        const rows = count > 24 ? 3 : (count > 10 ? 2 : 1);
+        ufoStudents = visible.map((st, i) => {
+          const row = i % rows;
+          const colsInRow = Math.ceil(count / rows);
+          const col = Math.floor(i / rows);
+          const nx = 0.08 + ((col + 0.5) / Math.max(1, colsInRow)) * 0.84;
+          const ny = rows === 1 ? 0.80 : (rows === 2 ? (row === 0 ? 0.72 : 0.87) : (0.67 + row * 0.11));
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortStudentName(st.name),
+            nx: nx,
+            ny: ny,
+            liftY: 0,
+            color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length],
+            isWinner: false,
+            phase: i * 0.65
+          };
+        });
+      }
+      ufoState = 'idle';
+      ufoPosX = 0.5;
+      ufoPosY = 0.22;
+      ufoParticles = [];
+      ufoTargetWinner = null;
+      ufoDecoyTargets = [];
+      const statusEl = document.getElementById('ufo-abduct-status');
+      if (statusEl) statusEl.innerText = 'Phi thuyền UFO đang lơ lửng ngoài bầu trời! Bấm QUÉT TIA SÁNG để bắt cóc ngẫu nhiên!';
+
+      if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
+    }
+
+    function startUfoAbductGame(winnerStudent, durationMs = 6000, callback) {
+      if (ufoState === 'running') return;
+      initUfoAbductGame(true);
+      ufoTargetWinner = winnerStudent;
+      ufoFinishCallback = callback;
+      ufoDuration = Math.max(3500, durationMs);
+      ufoStartTime = performance.now();
+      ufoState = 'running';
+
+      const winObj = ufoStudents.find(s => String(s.id) === String(winnerStudent.id));
+      if (winObj) winObj.isWinner = true;
+      const others = ufoStudents.filter(s => !s.isWinner).sort(() => Math.random() - 0.5);
+      ufoDecoyTargets = [
+        others[0] || winObj,
+        others[1] || others[0] || winObj
+      ].filter(Boolean);
+
+      if (ufoSoundEnabled) ArcadePackAudio.tone(240, 0.3, 'sine', 0.14, 520);
+      const statusEl = document.getElementById('ufo-abduct-status');
+      if (statusEl) statusEl.innerText = '🛸 CẢNH BÁO: Đĩa bay đang hạ độ cao và kích hoạt radar tìm kiếm!';
+      if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
+    }
+
+    function runUfoLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const container = document.getElementById('ufo-abduct-stage-container');
+      if (mode !== 'ufo_abduct' || !container || container.classList.contains('hidden')) {
+        ufoAnimId = null;
+        return;
+      }
+      renderUfoCanvas(now);
+      ufoAnimId = requestAnimationFrame(runUfoLoop);
+    }
+
+    function renderUfoCanvas(now) {
+      const canvas = document.getElementById('ufo-abduct-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      if (w <= 0 || h <= 0) return;
+
+      // 1. Deep Starry Sky
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      skyGrad.addColorStop(0, '#020617');
+      skyGrad.addColorStop(0.6, '#1e1b4b');
+      skyGrad.addColorStop(1, '#064e3b');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Stars
+      for (let i = 0; i < 48; i++) {
+        const sx = ((i * 197) % 100) / 100 * w;
+        const sy = ((i * 313) % 62) / 100 * h;
+        const alpha = 0.35 + 0.65 * Math.abs(Math.sin(now * 0.002 + i));
+        ctx.fillStyle = 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, (i % 3 === 0) ? 2 : 1.2, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Glowing Moon
+      ctx.save();
+      ctx.fillStyle = '#fef08a';
+      ctx.shadowColor = '#fde047';
+      ctx.shadowBlur = 24;
+      ctx.beginPath(); ctx.arc(w * 0.86, h * 0.18, 28, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+
+      // Night Meadow Hills
+      ctx.fillStyle = '#065f46';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.64);
+      ctx.quadraticCurveTo(w * 0.3, h * 0.57, w * 0.65, h * 0.63);
+      ctx.quadraticCurveTo(w * 0.85, h * 0.66, w, h * 0.60);
+      ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#047857';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.69);
+      ctx.quadraticCurveTo(w * 0.5, h * 0.64, w, h * 0.70);
+      ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+      ctx.fill();
+
+      // 2. Compute UFO Path & State
+      let t = 0;
+      let beamAlpha = 0.18;
+      let isAbducting = false;
+      let isLocked = false;
+      const winObj = ufoStudents.find(s => s.isWinner) || ufoStudents[0];
+
+      if (ufoState === 'idle') {
+        ufoPosX = 0.5 + Math.sin(now * 0.001) * 0.18;
+        ufoPosY = 0.22 + Math.cos(now * 0.002) * 0.02;
+      } else if (ufoState === 'running') {
+        t = Math.min(1, (now - ufoStartTime) / ufoDuration);
+        const d1 = ufoDecoyTargets[0] || winObj;
+        const d2 = ufoDecoyTargets[1] || winObj;
+        const targetX = winObj ? winObj.nx : 0.5;
+
+        if (t < 0.28) {
+          // Fly toward decoy 1
+          const p = t / 0.28;
+          ufoPosX = 0.5 + ((d1 ? d1.nx : 0.3) - 0.5) * p;
+          ufoPosY = 0.20 + Math.sin(now * 0.008) * 0.015;
+          beamAlpha = 0.35;
+        } else if (t < 0.55) {
+          // Glide to decoy 2
+          const p = (t - 0.28) / 0.27;
+          const x1 = d1 ? d1.nx : 0.3;
+          const x2 = d2 ? d2.nx : 0.7;
+          ufoPosX = x1 + (x2 - x1) * p;
+          ufoPosY = 0.23 + Math.sin(now * 0.008) * 0.015;
+          beamAlpha = 0.42;
+        } else if (t < 0.74) {
+          // Lock onto real winner
+          const p = (t - 0.55) / 0.19;
+          const x2 = d2 ? d2.nx : 0.7;
+          ufoPosX = x2 + (targetX - x2) * (1 - Math.pow(1 - p, 3));
+          ufoPosY = 0.23 + 0.05 * p;
+          beamAlpha = 0.55;
+          isLocked = p > 0.7;
+        } else {
+          // Abduct winner up into the beam!
+          ufoPosX = targetX;
+          ufoPosY = 0.28;
+          beamAlpha = 0.78;
+          isLocked = true;
+          isAbducting = true;
+          const liftProgress = Math.min(1, (t - 0.74) / 0.22);
+          if (winObj) {
+            winObj.liftY = liftProgress * (h * (winObj.ny - ufoPosY - 0.07));
+          }
+          if (Math.random() < 0.4 && winObj) {
+            ufoParticles.push({
+              x: winObj.nx * w + (Math.random() - 0.5) * 34,
+              y: winObj.ny * h - winObj.liftY,
+              vy: -2.2 - Math.random() * 2,
+              alpha: 1,
+              color: Math.random() < 0.5 ? '#34d399' : '#67e8f9',
+              size: 3
+            });
+          }
+        }
+      } else if (ufoState === 'finished' && winObj) {
+        ufoPosX = winObj.nx;
+        ufoPosY = 0.26;
+        beamAlpha = 0.8;
+        isLocked = true;
+        isAbducting = true;
+      }
+
+      const ux = ufoPosX * w;
+      const uy = ufoPosY * h;
+
+      // 3. Draw Tractor Beam Cone
+      ctx.save();
+      const beamGrad = ctx.createLinearGradient(ux, uy + 14, ux, h * 0.92);
+      const beamRGB = isAbducting ? '52, 211, 153' : '56, 189, 248';
+      beamGrad.addColorStop(0, 'rgba(' + beamRGB + ', ' + beamAlpha + ')');
+      beamGrad.addColorStop(1, 'rgba(' + beamRGB + ', 0.04)');
+      ctx.fillStyle = beamGrad;
+      ctx.beginPath();
+      ctx.moveTo(ux - 18, uy + 14);
+      ctx.lineTo(ux + 18, uy + 14);
+      ctx.lineTo(ux + (isAbducting ? 68 : 95), h * 0.93);
+      ctx.lineTo(ux - (isAbducting ? 68 : 95), h * 0.93);
+      ctx.closePath();
+      ctx.fill();
+
+      // Anti-gravity rising rings inside beam when abducting
+      if (isAbducting) {
+        ctx.strokeStyle = 'rgba(167, 243, 208, 0.75)';
+        ctx.lineWidth = 2;
+        for (let r = 0; r < 4; r++) {
+          const ringProg = ((now * 0.0015 + r * 0.25) % 1);
+          const ryPos = (h * 0.85) - ringProg * (h * 0.52);
+          const rw = 48 - ringProg * 28;
+          ctx.beginPath();
+          ctx.ellipse(ux, ryPos, rw, 7, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+
+      // 4. Draw Students on Meadow
+      ufoStudents.forEach(s => {
+        const sx = s.nx * w;
+        const bob = (s.isWinner && isAbducting) ? 0 : Math.sin(now * 0.006 + s.phase) * 2;
+        const sy = s.ny * h - (s.liftY || 0) + bob;
+        const isUnderBeam = Math.abs(sx - ux) < 55;
+
+        ctx.save();
+        // Ground shadow shrinks as lifted
+        if (!s.liftY) {
+          ctx.fillStyle = 'rgba(0,0,0,0.3)';
+          ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 12, 8, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+        }
+
+        // Glow ring if under beam
+        if (isUnderBeam && ufoState === 'running') {
+          ctx.strokeStyle = isLocked && s.isWinner ? '#34d399' : '#38bdf8';
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(sx, sy, 14, 0, Math.PI * 2); ctx.stroke();
+        }
+
+        // Character
+        ctx.fillStyle = s.color;
+        ctx.beginPath(); ctx.arc(sx, sy, 9, 0, Math.PI * 2); ctx.fill();
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+        // Face
+        ctx.fillStyle = '#fde68a';
+        ctx.beginPath(); ctx.arc(sx, sy - 1, 5.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath(); ctx.arc(sx - 2, sy - 2, 1.1, 0, Math.PI * 2); ctx.arc(sx + 2, sy - 2, 1.1, 0, Math.PI * 2); ctx.fill();
+
+        drawHighContrastBadge(ctx, sx, sy - 17, s.displayName, s.color, s.isWinner && (isAbducting || ufoState === 'finished'));
+        ctx.restore();
+      });
+
+      // 5. Draw UFO Saucer
+      ctx.save();
+      ctx.translate(ux, uy);
+      ctx.rotate(Math.sin(now * 0.004) * 0.05);
+
+      // Glass Dome + Cute Alien
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.strokeStyle = '#bae6fd';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(0, -8, 24, Math.PI, 0); ctx.fill(); ctx.stroke();
+
+      // Alien pilot
+      ctx.fillStyle = '#4ade80';
+      ctx.beginPath(); ctx.arc(0, -14, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath(); ctx.ellipse(-3, -15, 2, 3, 0, 0, Math.PI * 2); ctx.ellipse(3, -15, 2, 3, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Metallic Rim
+      const rimGrad = ctx.createLinearGradient(-56, 0, 56, 0);
+      rimGrad.addColorStop(0, '#475569');
+      rimGrad.addColorStop(0.5, '#cbd5e1');
+      rimGrad.addColorStop(1, '#334155');
+      ctx.fillStyle = rimGrad;
+      ctx.beginPath(); ctx.ellipse(0, 2, 58, 16, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Rotating Neon Lights on Rim
+      const lightColors = ['#34d399', '#facc15', '#38bdf8', '#f472b6'];
+      for (let l = -42; l <= 42; l += 14) {
+        const idx = Math.floor((now * 0.01 + l) % lightColors.length);
+        ctx.fillStyle = lightColors[Math.abs(idx)];
+        ctx.beginPath(); ctx.arc(l, 4, 3.2, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+
+      // Particles
+      for (let i = ufoParticles.length - 1; i >= 0; i--) {
+        const pt = ufoParticles[i];
+        pt.y += pt.vy; pt.alpha -= 0.03;
+        if (pt.alpha <= 0) { ufoParticles.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = pt.alpha;
+        ctx.fillStyle = pt.color;
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      if (ufoState === 'running' && t >= 1) {
+        ufoState = 'finished';
+        if (ufoSoundEnabled) ArcadePackAudio.fanfare();
+        const statusEl = document.getElementById('ufo-abduct-status');
+        if (statusEl && ufoTargetWinner) {
+          statusEl.innerText = '🛸 BẮT CÓC THÀNH CÔNG: ' + ufoTargetWinner.name + ' đã lên phi thuyền UFO!';
+        }
+        const cb = ufoFinishCallback;
+        const winSt = ufoTargetWinner;
+        setTimeout(() => { if (typeof cb === 'function') cb(winSt); }, 850);
+      }
+
+      if (ufoState === 'finished' && ufoTargetWinner) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(6, 78, 59, 0.88)';
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.roundRect(w / 2 - 175, 58, 350, 44, 16); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#a7f3d0';
+        ctx.font = '900 15px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🛸 ĐÃ BẮT CÓC: ' + ufoTargetWinner.name, w / 2, 80);
+        ctx.restore();
+      }
+    }
+
+    // ==========================================
+    // 22. MODULE: TRIỆU HỒI THẺ TƯỚNG (GACHA SSR)
+    // ==========================================
+    let summonAnimId = null;
+    let summonState = 'idle';
+    let summonStartTime = 0;
+    let summonDuration = 6000;
+    let summonCards = [];
+    let summonTargetWinner = null;
+    let summonFinishCallback = null;
+    let summonParticles = [];
+    let summonSoundEnabled = true;
+
+    function toggleSummonSound() {
+      summonSoundEnabled = !summonSoundEnabled;
+      const btn = document.getElementById('summon-card-sound-btn');
+      if (btn) btn.innerHTML = summonSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleSummonFullscreen() {
+      toggleContainerFullscreen('summon-card-stage-container', resizeSummonCanvas);
+    }
+
+    function resizeSummonCanvas() {
+      const canvas = document.getElementById('summon-card-canvas');
+      const container = document.getElementById('summon-card-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    function initSummonCardGame(reset = true) {
+      const container = document.getElementById('summon-card-stage-container');
+      const canvas = document.getElementById('summon-card-canvas');
+      if (!container || !canvas) return;
+      resizeSummonCanvas();
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      const displayList = visible.slice(0, 14);
+      if (reset || summonCards.length !== displayList.length) {
+        summonCards = displayList.map((st, i) => ({
+          id: st.id,
+          student: st,
+          displayName: shortStudentName(st.name),
+          angle: (i / Math.max(1, displayList.length)) * Math.PI * 2,
+          color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length]
+        }));
+      }
+      summonState = 'idle';
+      summonParticles = [];
+      summonTargetWinner = null;
+      const statusEl = document.getElementById('summon-card-status');
+      if (statusEl) statusEl.innerText = 'Đài Triệu Hồi Ma Pháp đã khai mở! Bấm TRIỆU HỒI SSR để rút thẻ tướng!';
+
+      if (!summonAnimId) summonAnimId = requestAnimationFrame(runSummonLoop);
+    }
+
+    function startSummonCardGame(winnerStudent, durationMs = 6000, callback) {
+      if (summonState === 'running') return;
+      initSummonCardGame(true);
+      summonTargetWinner = winnerStudent;
+      summonFinishCallback = callback;
+      summonDuration = Math.max(3500, durationMs);
+      summonStartTime = performance.now();
+      summonState = 'running';
+
+      if (summonSoundEnabled) ArcadePackAudio.tone(330, 0.35, 'triangle', 0.15, 780);
+      const statusEl = document.getElementById('summon-card-status');
+      if (statusEl) statusEl.innerText = '🔮 Vòng tròn ma pháp đang tụ lực! Chuẩn bị bùng nổ hào quang SSR...';
+      if (!summonAnimId) summonAnimId = requestAnimationFrame(runSummonLoop);
+    }
+
+    function runSummonLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const container = document.getElementById('summon-card-stage-container');
+      if (mode !== 'summon_card' || !container || container.classList.contains('hidden')) {
+        summonAnimId = null;
+        return;
+      }
+      renderSummonCanvas(now);
+      summonAnimId = requestAnimationFrame(runSummonLoop);
+    }
+
+    function renderSummonCanvas(now) {
+      const canvas = document.getElementById('summon-card-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      if (w <= 0 || h <= 0) return;
+
+      // 1. Mystical Sanctuary Gradient
+      const bg = ctx.createRadialGradient(w / 2, h / 2, 20, w / 2, h / 2, Math.max(w, h) * 0.7);
+      bg.addColorStop(0, '#3b0764');
+      bg.addColorStop(0.55, '#1e1b4b');
+      bg.addColorStop(1, '#090414');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      let t = 0;
+      if (summonState === 'running') {
+        t = Math.min(1, (now - summonStartTime) / summonDuration);
+      } else if (summonState === 'finished') {
+        t = 1;
+      }
+
+      const cx = w / 2;
+      const cy = h * 0.54;
+
+      // 2. Rotating Magic Circle
+      ctx.save();
+      ctx.translate(cx, cy);
+      const spinSpeed = summonState === 'running' ? (0.002 + t * 0.008) : 0.0008;
+      ctx.rotate(now * spinSpeed);
+      const circleColor = (t > 0.45) ? '#facc15' : '#c084fc';
+      ctx.strokeStyle = circleColor;
+      ctx.shadowColor = circleColor;
+      ctx.shadowBlur = 18;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.arc(0, 0, Math.min(w, h) * 0.34, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(0, 0, Math.min(w, h) * 0.28, 0, Math.PI * 2); ctx.stroke();
+
+      // Hexagram star
+      const sr = Math.min(w, h) * 0.31;
+      for (let tri = 0; tri < 2; tri++) {
+        ctx.beginPath();
+        for (let k = 0; k < 3; k++) {
+          const a = (k / 3) * Math.PI * 2 + (tri * Math.PI / 3);
+          const px = Math.cos(a) * sr, py = Math.sin(a) * sr;
+          if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // 3. Orbiting Hero Cards (Phase 0..0.6)
+      if (t < 0.65) {
+        const orbitExpand = t > 0.52 ? (1 + (t - 0.52) * 8) : 1;
+        const cardCount = summonCards.length;
+        const speed = summonState === 'running' ? (0.003 + t * 0.01) : 0.001;
+        summonCards.forEach((c, idx) => {
+          const ang = c.angle + now * speed;
+          const rx = w * 0.34 * orbitExpand;
+          const ry = h * 0.19 * orbitExpand;
+          const x = cx + Math.cos(ang) * rx;
+          const y = cy + Math.sin(ang) * ry;
+          const scale = 0.72 + (Math.sin(ang) + 1) * 0.18;
+
+          ctx.save();
+          ctx.translate(x, y);
+          ctx.scale(scale, scale);
+          ctx.fillStyle = '#1e1b4b';
+          ctx.strokeStyle = '#a855f7';
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.roundRect(-28, -40, 56, 80, 9); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#facc15';
+          ctx.font = '18px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('★', 0, -10);
+          ctx.fillStyle = '#e9d5ff';
+          ctx.font = 'bold 9px system-ui, sans-serif';
+          ctx.fillText(c.displayName.slice(0, 10), 0, 18);
+          ctx.restore();
+        });
+      }
+
+      // 4. SSR Flash & Golden Hero Card Flip Reveal (t >= 0.55)
+      if (t >= 0.45 && t < 0.68) {
+        const flashAlpha = Math.sin(((t - 0.45) / 0.23) * Math.PI);
+        ctx.save();
+        ctx.fillStyle = 'rgba(253, 224, 71, ' + (flashAlpha * 0.65).toFixed(2) + ')';
+        ctx.fillRect(0, 0, w, h);
+        ctx.restore();
+      }
+
+      if (t >= 0.60 && summonTargetWinner) {
+        const revealP = Math.min(1, (t - 0.60) / 0.25);
+        const flipScaleX = Math.abs(Math.cos((1 - revealP) * Math.PI));
+        const showFront = revealP > 0.5;
+        const cardScale = 0.7 + revealP * 0.4;
+
+        // Spinning golden god rays behind SSR card
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(now * 0.0009);
+        for (let r = 0; r < 12; r++) {
+          ctx.rotate(Math.PI / 6);
+          ctx.fillStyle = 'rgba(250, 204, 21, 0.14)';
+          ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-18, -260); ctx.lineTo(18, -260); ctx.closePath(); ctx.fill();
+        }
+        ctx.restore();
+
+        // Main SSR Card
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(flipScaleX * cardScale, cardScale);
+
+        const cardGrad = ctx.createLinearGradient(-95, -135, 95, 135);
+        if (showFront) {
+          cardGrad.addColorStop(0, '#fef08a');
+          cardGrad.addColorStop(0.35, '#f59e0b');
+          cardGrad.addColorStop(0.7, '#b45309');
+          cardGrad.addColorStop(1, '#fbbf24');
+        } else {
+          cardGrad.addColorStop(0, '#4c1d95');
+          cardGrad.addColorStop(1, '#1e1b4b');
+        }
+        ctx.fillStyle = cardGrad;
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 32;
+        ctx.beginPath(); ctx.roundRect(-95, -135, 190, 270, 18); ctx.fill();
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        if (showFront) {
+          // Inner dark emblem panel
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+          ctx.beginPath(); ctx.roundRect(-82, -120, 164, 240, 12); ctx.fill();
+
+          ctx.fillStyle = '#fde047';
+          ctx.font = '900 18px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('★ ★ SSR ★ ★', 0, -90);
+
+          ctx.font = '48px sans-serif';
+          ctx.fillText('👑', 0, -25);
+
+          ctx.fillStyle = '#38bdf8';
+          ctx.font = '800 11px system-ui, sans-serif';
+          ctx.fillText('CHIẾN BINH ĐƯỢC TRIỆU HỒI', 0, 28);
+
+          // Winner Name
+          ctx.fillStyle = '#ffffff';
+          ctx.font = '900 17px system-ui, sans-serif';
+          const winName = summonTargetWinner.name || 'Học Sinh';
+          ctx.fillText(winName.length > 20 ? shortStudentName(winName) : winName, 0, 62);
+
+          ctx.fillStyle = '#34d399';
+          ctx.font = 'bold 11px system-ui, sans-serif';
+          ctx.fillText('⚡ ĐẶC QUYỀN LÊN BẢNG ⚡', 0, 96);
+        }
+        ctx.restore();
+      }
+
+      if (summonState === 'running' && t >= 1) {
+        summonState = 'finished';
+        if (summonSoundEnabled) ArcadePackAudio.fanfare();
+        const statusEl = document.getElementById('summon-card-status');
+        if (statusEl && summonTargetWinner) {
+          statusEl.innerText = '🌟 TRIỆU HỒI SSR THÀNH CÔNG: Chào mừng chiến binh ' + summonTargetWinner.name + '!';
+        }
+        const cb = summonFinishCallback;
+        const winSt = summonTargetWinner;
+        setTimeout(() => { if (typeof cb === 'function') cb(winSt); }, 900);
+      }
+    }
+
+    // ==========================================
+    // 23. MODULE: THIÊN THẠCH GỌI TÊN (METEOR CALL)
+    // ==========================================
+    let meteorAnimId = null;
+    let meteorState = 'idle';
+    let meteorStartTime = 0;
+    let meteorDuration = 6000;
+    let meteorPods = [];
+    let meteorTargetWinner = null;
+    let meteorFinishCallback = null;
+    let meteorShards = [];
+    let meteorSoundEnabled = true;
+
+    function toggleMeteorSound() {
+      meteorSoundEnabled = !meteorSoundEnabled;
+      const btn = document.getElementById('meteor-call-sound-btn');
+      if (btn) btn.innerHTML = meteorSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleMeteorFullscreen() {
+      toggleContainerFullscreen('meteor-call-stage-container', resizeMeteorCanvas);
+    }
+
+    function resizeMeteorCanvas() {
+      const canvas = document.getElementById('meteor-call-canvas');
+      const container = document.getElementById('meteor-call-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    function initMeteorCallGame(reset = true) {
+      const container = document.getElementById('meteor-call-stage-container');
+      const canvas = document.getElementById('meteor-call-canvas');
+      if (!container || !canvas) return;
+      resizeMeteorCanvas();
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      if (reset || meteorPods.length !== visible.length) {
+        const count = Math.max(1, visible.length);
+        meteorPods = visible.map((st, i) => {
+          const ring = (i % 2 === 0) ? 0.34 : 0.21;
+          const angle = (i / count) * Math.PI * 2;
+          return {
+            id: st.id,
+            student: st,
+            displayName: shortStudentName(st.name),
+            nx: 0.5 + Math.cos(angle) * ring * 1.15,
+            ny: 0.54 + Math.sin(angle) * ring * 0.9,
+            color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length],
+            isWinner: false,
+            shattered: false,
+            phase: i * 0.7
+          };
+        });
+      }
+      meteorState = 'idle';
+      meteorShards = [];
+      meteorTargetWinner = null;
+      const statusEl = document.getElementById('meteor-call-status');
+      if (statusEl) statusEl.innerText = 'Các khoang pha lê học sinh đang lơ lửng trong tinh vân! Bấm PHÓNG THIÊN THẠCH để chọn tên!';
+
+      if (!meteorAnimId) meteorAnimId = requestAnimationFrame(runMeteorLoop);
+    }
+
+    function startMeteorCallGame(winnerStudent, durationMs = 6000, callback) {
+      if (meteorState === 'running') return;
+      initMeteorCallGame(true);
+      meteorTargetWinner = winnerStudent;
+      meteorFinishCallback = callback;
+      meteorDuration = Math.max(3500, durationMs);
+      meteorStartTime = performance.now();
+      meteorState = 'running';
+
+      const winPod = meteorPods.find(p => String(p.id) === String(winnerStudent.id));
+      if (winPod) winPod.isWinner = true;
+
+      if (meteorSoundEnabled) ArcadePackAudio.tone(180, 0.45, 'sawtooth', 0.1, 480);
+      const statusEl = document.getElementById('meteor-call-status');
+      if (statusEl) statusEl.innerText = '☄️ CẢNH BÁO VŨ TRỤ: Thiên thạch rực lửa đang lao tới khoang pha lê!';
+      if (!meteorAnimId) meteorAnimId = requestAnimationFrame(runMeteorLoop);
+    }
+
+    function runMeteorLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const container = document.getElementById('meteor-call-stage-container');
+      if (mode !== 'meteor_call' || !container || container.classList.contains('hidden')) {
+        meteorAnimId = null;
+        return;
+      }
+      renderMeteorCanvas(now);
+      meteorAnimId = requestAnimationFrame(runMeteorLoop);
+    }
+
+    function renderMeteorCanvas(now) {
+      const canvas = document.getElementById('meteor-call-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      if (w <= 0 || h <= 0) return;
+
+      // 1. Deep Nebula Space
+      const spaceGrad = ctx.createRadialGradient(w * 0.5, h * 0.5, 30, w * 0.5, h * 0.5, Math.max(w, h) * 0.8);
+      spaceGrad.addColorStop(0, '#1e1b4b');
+      spaceGrad.addColorStop(0.55, '#0f172a');
+      spaceGrad.addColorStop(1, '#020617');
+      ctx.fillStyle = spaceGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Stars
+      for (let i = 0; i < 60; i++) {
+        const sx = ((i * 137) % 100) / 100 * w;
+        const sy = ((i * 271) % 100) / 100 * h;
+        ctx.fillStyle = i % 4 === 0 ? 'rgba(244, 114, 182, 0.5)' : 'rgba(255, 255, 255, 0.55)';
+        ctx.beginPath(); ctx.arc(sx, sy, i % 3 === 0 ? 1.8 : 1, 0, Math.PI * 2); ctx.fill();
+      }
+
+      let t = 0;
+      if (meteorState === 'running') t = Math.min(1, (now - meteorStartTime) / meteorDuration);
+      else if (meteorState === 'finished') t = 1;
+
+      const winPod = meteorPods.find(p => p.isWinner) || meteorPods[0];
+      const targetX = winPod ? winPod.nx * w : w * 0.5;
+      const targetY = winPod ? winPod.ny * h : h * 0.55;
+
+      // Subtle screen shake right on impact
+      ctx.save();
+      if (t >= 0.72 && t <= 0.82) {
+        ctx.translate((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 8);
+      }
+
+      // 2. Draw Floating Crystal Pods
+      const orbitRot = meteorState === 'running' && t < 0.72 ? t * 2.5 : 0;
+      meteorPods.forEach(p => {
+        const floatX = Math.sin(now * 0.0015 + p.phase) * 5;
+        const floatY = Math.cos(now * 0.0018 + p.phase) * 5;
+        let px = p.nx * w + floatX;
+        let py = p.ny * h + floatY;
+
+        if (p.isWinner && t >= 0.72) {
+          // Winner drifts proudly toward center after impact
+          const pull = Math.min(1, (t - 0.72) / 0.16);
+          px = px + (w * 0.5 - px) * pull;
+          py = py + (h * 0.54 - py) * pull;
+        }
+
+        if (p.isWinner && t >= 0.72) {
+          // Radiating Supernova Crystal Winner
+          ctx.save();
+          ctx.fillStyle = 'rgba(250, 204, 21, 0.25)';
+          ctx.beginPath(); ctx.arc(px, py, 34 + Math.sin(now * 0.01) * 6, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#fbbf24';
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.arc(px, py, 16, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.font = '18px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('👑', px, py);
+          drawHighContrastBadge(ctx, px, py - 28, p.displayName, '#facc15', true);
+          ctx.restore();
+        } else {
+          ctx.save();
+          ctx.globalAlpha = t >= 0.72 ? 0.35 : 0.95;
+          // Crystal Hexagon Pod
+          ctx.fillStyle = 'rgba(30, 41, 59, 0.85)';
+          ctx.strokeStyle = p.color;
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.arc(px, py, 11, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = p.color;
+          ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fill();
+          drawHighContrastBadge(ctx, px, py - 19, p.displayName, p.color, false);
+          ctx.restore();
+        }
+      });
+
+      // 3. Giant Blazing Meteor (t: 0.15 -> 0.74)
+      if (meteorState === 'running' && t >= 0.12 && t <= 0.76 && winPod) {
+        const mp = Math.min(1, (t - 0.12) / 0.60);
+        const startX = -60;
+        const startY = -60;
+        // Dramatic curve sweeping across before slamming targetX, targetY
+        const ctrlX = w * 0.78;
+        const ctrlY = h * 0.14;
+        const mx = (1 - mp) * (1 - mp) * startX + 2 * (1 - mp) * mp * ctrlX + mp * mp * targetX;
+        const my = (1 - mp) * (1 - mp) * startY + 2 * (1 - mp) * mp * ctrlY + mp * mp * targetY;
+
+        // Fiery meteor trail
+        ctx.save();
+        const trailGrad = ctx.createRadialGradient(mx, my, 4, mx, my, 48);
+        trailGrad.addColorStop(0, '#fef08a');
+        trailGrad.addColorStop(0.4, '#f97316');
+        trailGrad.addColorStop(1, 'rgba(225, 29, 72, 0)');
+        ctx.fillStyle = trailGrad;
+        ctx.beginPath(); ctx.arc(mx, my, 44, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = '32px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('☄️', mx, my);
+        ctx.restore();
+
+        // Spawn impact shards at impact moment
+        if (mp >= 0.98 && !winPod.shattered) {
+          winPod.shattered = true;
+          if (meteorSoundEnabled) ArcadePackAudio.tone(110, 0.45, 'sawtooth', 0.18, 45);
+          for (let k = 0; k < 40; k++) {
+            const ang = Math.random() * Math.PI * 2;
+            const spd = 2 + Math.random() * 6;
+            meteorShards.push({
+              x: targetX, y: targetY,
+              vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
+              alpha: 1.2,
+              color: k % 2 === 0 ? '#facc15' : '#fb7185',
+              size: 4
+            });
+          }
+        }
+      }
+
+      // Impact Shockwave Ring
+      if (t >= 0.72 && t <= 0.95) {
+        const ringP = (t - 0.72) / 0.23;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(250, 204, 21, ' + (1 - ringP).toFixed(2) + ')';
+        ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(targetX, targetY, 20 + ringP * 180, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+      }
+
+      // Shards
+      for (let i = meteorShards.length - 1; i >= 0; i--) {
+        const s = meteorShards[i];
+        s.x += s.vx; s.y += s.vy; s.alpha -= 0.025;
+        if (s.alpha <= 0) { meteorShards.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, s.alpha);
+        ctx.fillStyle = s.color;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      ctx.restore(); // end shake
+
+      if (meteorState === 'running' && t >= 1) {
+        meteorState = 'finished';
+        if (meteorSoundEnabled) ArcadePackAudio.fanfare();
+        const statusEl = document.getElementById('meteor-call-status');
+        if (statusEl && meteorTargetWinner) {
+          statusEl.innerText = '☄️ VA CHẠM THÀNH CÔNG: Thiên thạch đã gọi tên ' + meteorTargetWinner.name + '!';
+        }
+        const cb = meteorFinishCallback;
+        const winSt = meteorTargetWinner;
+        setTimeout(() => { if (typeof cb === 'function') cb(winSt); }, 850);
+      }
+
+      if (meteorState === 'finished' && meteorTargetWinner) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(76, 5, 25, 0.88)';
+        ctx.strokeStyle = '#fb7185';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.roundRect(w / 2 - 175, 58, 350, 44, 16); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#fecdd3';
+        ctx.font = '900 15px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('☄️ THIÊN THẠCH CHỌN: ' + meteorTargetWinner.name, w / 2, 80);
+        ctx.restore();
+      }
+    }
+
     // ==========================================
     // MODULE: ĐUA XE F1 QUANH CO (FORMULA 1 GRAND PRIX)
     // ==========================================
@@ -35801,6 +37605,66 @@
         return;
       }
 
+      // 20. Vòng Bo May Mắn (Safe Zone)
+      if (mode === 'safe_zone') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3500, durationSec * 1000);
+        btn.innerHTML = "🏝️ ĐANG THU HẸP VÒNG BO...";
+        if (typeof startSafeZoneGame === 'function') {
+          startSafeZoneGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
+      // 21. Phi Thuyền Bắt Cóc (UFO Abduct)
+      if (mode === 'ufo_abduct') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3500, durationSec * 1000);
+        btn.innerHTML = "🛸 UFO ĐANG QUÉT TIA SÁNG...";
+        if (typeof startUfoAbductGame === 'function') {
+          startUfoAbductGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
+      // 22. Triệu Hồi Thẻ Tướng (Summon Card SSR)
+      if (mode === 'summon_card') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3500, durationSec * 1000);
+        btn.innerHTML = "🌟 ĐANG TRIỆU HỒI THẺ SSR...";
+        if (typeof startSummonCardGame === 'function') {
+          startSummonCardGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
+      // 23. Thiên Thạch Gọi Tên (Meteor Call)
+      if (mode === 'meteor_call') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(3500, durationSec * 1000);
+        btn.innerHTML = "☄️ THIÊN THẠCH ĐANG LAO XUỐNG...";
+        if (typeof startMeteorCallGame === 'function') {
+          startMeteorCallGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
       // 19. Nhảy Bao Bố (Sack Race)
       if (mode === 'sack_race') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
@@ -35889,6 +37753,14 @@
           btnElement.innerHTML = '<i class="fa-solid fa-water"></i> TIẾP TỤC ĐUA THUYỀN';
         } else if (mode === 'sack_race') {
           btnElement.innerHTML = '<i class="fa-solid fa-person-running"></i> TIẾP TỤC BẬT NHẢY';
+        } else if (mode === 'safe_zone') {
+          btnElement.innerHTML = '<i class="fa-solid fa-bullseye"></i> CHẠY BO VÁN MỚI';
+        } else if (mode === 'ufo_abduct') {
+          btnElement.innerHTML = '<i class="fa-solid fa-shuttle-space"></i> TIẾP TỤC QUÉT UFO';
+        } else if (mode === 'summon_card') {
+          btnElement.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> TRIỆU HỒI THẺ MỚI';
+        } else if (mode === 'meteor_call') {
+          btnElement.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH MỚI';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
@@ -35974,6 +37846,14 @@
           text = `Chúc mừng bạn ${currentWinner.name} đã cùng đội thuyền rồng rẽ sóng về đích!`;
         } else if (document.getElementById('spin-mode')?.value === 'sack_race') {
           text = `Chúc mừng bạn ${currentWinner.name} đã giành chiến thắng trong chặng đua nhảy bao bố!`;
+        } else if (document.getElementById('spin-mode')?.value === 'safe_zone') {
+          text = `Chúc mừng bạn ${currentWinner.name} là người sống sót cuối cùng trong vòng bo may mắn!`;
+        } else if (document.getElementById('spin-mode')?.value === 'ufo_abduct') {
+          text = `Phi thuyền u f o đã chọn và đưa bạn ${currentWinner.name} lên tàu vũ trụ!`;
+        } else if (document.getElementById('spin-mode')?.value === 'summon_card') {
+          text = `Chúc mừng thẻ tướng ét ét rờ đã triệu hồi thành công bạn ${currentWinner.name}!`;
+        } else if (document.getElementById('spin-mode')?.value === 'meteor_call') {
+          text = `Thiên thạch vũ trụ đã rơi trúng khoang pha lê gọi tên bạn ${currentWinner.name}!`;
         }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
