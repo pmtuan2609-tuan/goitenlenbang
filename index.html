@@ -28986,21 +28986,36 @@
 
     function buildUfoFieldProps() {
       return [
-        // Hàng cây cối, cột đèn, ghế đá, tảng đá dọc vỉa hè (y ~ 0.63 - 0.69)
-        { type: 'tree',     nx: 0.08, ny: 0.64, label: 'Cây xanh' },
-        { type: 'bench',    nx: 0.19, ny: 0.66, label: 'Ghế đá' },
-        { type: 'lamppost', nx: 0.29, ny: 0.64, label: 'Cột đèn' },
-        { type: 'tree',     nx: 0.40, ny: 0.63, label: 'Cây cổ thụ' },
-        { type: 'rock',     nx: 0.51, ny: 0.67, label: 'Tảng đá' },
-        { type: 'bench',    nx: 0.62, ny: 0.66, label: 'Ghế đá' },
-        { type: 'tree',     nx: 0.73, ny: 0.63, label: 'Cây xanh' },
-        { type: 'lamppost', nx: 0.83, ny: 0.64, label: 'Cột đèn' },
-        { type: 'tree',     nx: 0.93, ny: 0.64, label: 'Cây sồi' },
-        // Nắp cống & tảng đá rải dọc lòng đường (y ~ 0.79 - 0.88)
-        { type: 'manhole',  nx: 0.23, ny: 0.84, label: 'Nắp cống' },
-        { type: 'manhole',  nx: 0.54, ny: 0.84, label: 'Nắp cống' },
-        { type: 'rock',     nx: 0.77, ny: 0.88, label: 'Tảng đá' },
-        { type: 'manhole',  nx: 0.87, ny: 0.82, label: 'Nắp cống' }
+        // Hàng 1: Dọc lề cỏ & vỉa hè trên (y ~ 0.60 - 0.65)
+        { type: 'tree',     nx: 0.06, ny: 0.62, label: 'Cây xanh' },
+        { type: 'bench',    nx: 0.17, ny: 0.64, label: 'Ghế đá' },
+        { type: 'tree',     nx: 0.28, ny: 0.61, label: 'Cây cổ thụ' },
+        { type: 'lamppost', nx: 0.39, ny: 0.62, label: 'Cột đèn' },
+        { type: 'busstop',  nx: 0.50, ny: 0.63, label: 'Trạm xe buýt' },
+        { type: 'tree',     nx: 0.61, ny: 0.61, label: 'Cây bàng' },
+        { type: 'bench',    nx: 0.72, ny: 0.64, label: 'Ghế đá' },
+        { type: 'lamppost', nx: 0.83, ny: 0.62, label: 'Cột đèn' },
+        { type: 'tree',     nx: 0.94, ny: 0.62, label: 'Cây sồi' },
+
+        // Hàng 2: Mép vỉa hè & làn đường trên (y ~ 0.72 - 0.77)
+        { type: 'trashbin', nx: 0.11, ny: 0.72, label: 'Thùng rác' },
+        { type: 'hydrant',  nx: 0.23, ny: 0.73, label: 'Trụ cứu hỏa' },
+        { type: 'rock',     nx: 0.35, ny: 0.74, label: 'Tảng đá' },
+        { type: 'manhole',  nx: 0.46, ny: 0.77, label: 'Nắp cống' },
+        { type: 'cone',     nx: 0.58, ny: 0.75, label: 'Rào chắn' },
+        { type: 'mailbox',  nx: 0.69, ny: 0.72, label: 'Hộp thư' },
+        { type: 'manhole',  nx: 0.80, ny: 0.77, label: 'Nắp cống' },
+        { type: 'rock',     nx: 0.91, ny: 0.73, label: 'Tảng đá' },
+
+        // Hàng 3: Làn đường dưới & lề đường dưới (y ~ 0.86 - 0.92)
+        { type: 'manhole',  nx: 0.09, ny: 0.88, label: 'Nắp cống' },
+        { type: 'cone',     nx: 0.21, ny: 0.90, label: 'Cọc tiêu' },
+        { type: 'rock',     nx: 0.33, ny: 0.91, label: 'Tảng đá lớn' },
+        { type: 'bench',    nx: 0.45, ny: 0.91, label: 'Ghế đá' },
+        { type: 'manhole',  nx: 0.57, ny: 0.88, label: 'Nắp cống' },
+        { type: 'tree',     nx: 0.69, ny: 0.91, label: 'Cây cảnh' },
+        { type: 'hydrant',  nx: 0.81, ny: 0.90, label: 'Trụ cứu hỏa' },
+        { type: 'rock',     nx: 0.92, ny: 0.90, label: 'Tảng đá' }
       ];
     }
 
@@ -29015,87 +29030,133 @@
         ctx.fillStyle = '#1e293b';
         ctx.strokeStyle = '#64748b';
         ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.ellipse(0, 4, 24, 10, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(0, 4, 22, 9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
         ctx.fillStyle = '#334155';
         ctx.strokeStyle = '#94a3b8';
         ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.ellipse(0, 4, 18, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(0, 4, 16, 6.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-        // Khe rãnh thoát nước nắp cống
         ctx.strokeStyle = '#0f172a';
         ctx.lineWidth = 2;
-        [-10, -3, 4, 11].forEach(ox => {
-          ctx.beginPath(); ctx.moveTo(ox, 1); ctx.lineTo(ox, 7); ctx.stroke();
+        [-9, -3, 3, 9].forEach(ox => {
+          ctx.beginPath(); ctx.moveTo(ox, 1.5); ctx.lineTo(ox, 6.5); ctx.stroke();
         });
         ctx.restore();
         return;
       }
 
       // Ground shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.32)';
-      ctx.beginPath(); ctx.ellipse(0, 12, 22, 6, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.30)';
+      ctx.beginPath(); ctx.ellipse(0, 12, 20, 5.5, 0, 0, Math.PI * 2); ctx.fill();
 
       if (prop.type === 'tree') {
-        // Bồn cây nhỏ dưới gốc
         ctx.fillStyle = '#475569';
-        ctx.beginPath(); ctx.ellipse(0, 10, 14, 5, 0, 0, Math.PI * 2); ctx.fill();
-        // Thân cây
+        ctx.beginPath(); ctx.ellipse(0, 10, 13, 4.5, 0, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#78350f';
         ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.roundRect(-6.5, -42, 13, 52, 3); ctx.fill(); ctx.stroke();
-        // Tán lá xum xuê
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-5.5, -38, 11, 48, 3); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#15803d';
-        ctx.beginPath(); ctx.arc(0, -52, 26, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(0, -48, 24, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#16a34a';
-        ctx.beginPath(); ctx.arc(-16, -42, 17, 0, Math.PI * 2); ctx.arc(16, -42, 17, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(-15, -39, 15, 0, Math.PI * 2); ctx.arc(15, -39, 15, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#22c55e';
-        ctx.beginPath(); ctx.arc(-4, -58, 15, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(-4, -54, 13, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'lamppost') {
         ctx.fillStyle = '#334155';
-        ctx.fillRect(-3.5, -58, 7, 70);
+        ctx.fillRect(-3, -56, 6, 68);
         ctx.fillStyle = '#1e293b';
-        ctx.beginPath(); ctx.roundRect(-9, 8, 18, 5, 2); ctx.fill();
-        // Tay đèn cong
+        ctx.beginPath(); ctx.roundRect(-8, 8, 16, 5, 2); ctx.fill();
         ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 3.5;
-        ctx.beginPath(); ctx.moveTo(0, -56); ctx.quadraticCurveTo(10, -64, 16, -56); ctx.stroke();
-        // Ánh sáng vàng ấm chiếu xuống đường
-        const lampGlow = ctx.createRadialGradient(16, -54, 2, 16, 0, 62);
-        lampGlow.addColorStop(0, 'rgba(254, 240, 138, 0.35)');
+        ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(0, -54); ctx.quadraticCurveTo(9, -62, 15, -54); ctx.stroke();
+        const lampGlow = ctx.createRadialGradient(15, -52, 2, 15, 0, 58);
+        lampGlow.addColorStop(0, 'rgba(254, 240, 138, 0.34)');
         lampGlow.addColorStop(1, 'rgba(254, 240, 138, 0)');
         ctx.fillStyle = lampGlow;
-        ctx.beginPath(); ctx.moveTo(16, -54); ctx.lineTo(-22, 24); ctx.lineTo(54, 24); ctx.closePath(); ctx.fill();
-        // Bóng đèn phát sáng
+        ctx.beginPath(); ctx.moveTo(15, -52); ctx.lineTo(-20, 22); ctx.lineTo(50, 22); ctx.closePath(); ctx.fill();
         ctx.fillStyle = '#fef08a';
         ctx.shadowColor = '#facc15';
-        ctx.shadowBlur = 18;
-        ctx.beginPath(); ctx.arc(16, -54, 6.5, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 16;
+        ctx.beginPath(); ctx.arc(15, -52, 6, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'rock') {
         ctx.fillStyle = '#64748b';
         ctx.strokeStyle = '#334155';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(-24, 11);
-        ctx.quadraticCurveTo(-26, -13, -6, -19);
-        ctx.quadraticCurveTo(16, -21, 24, 11);
+        ctx.moveTo(-22, 11);
+        ctx.quadraticCurveTo(-24, -12, -5, -17);
+        ctx.quadraticCurveTo(15, -19, 22, 11);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
         ctx.fillStyle = '#94a3b8';
-        ctx.beginPath(); ctx.ellipse(-5, -8, 9, 4.5, -0.3, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(-5, -7, 8, 4, -0.3, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'bench') {
-        // Ghế đá công viên màu đá sáng trắng xám
         ctx.fillStyle = '#64748b';
-        ctx.fillRect(-20, 4, 5, 8);
-        ctx.fillRect(15, 4, 5, 8);
+        ctx.fillRect(-18, 4, 4.5, 8);
+        ctx.fillRect(13.5, 4, 4.5, 8);
         ctx.fillStyle = '#e2e8f0';
         ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.roundRect(-25, -10, 50, 9, 2.5); ctx.fill(); ctx.stroke();
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-22, -9, 44, 8, 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#cbd5e1';
-        ctx.beginPath(); ctx.roundRect(-26, -1, 52, 6.5, 2.5); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(-23, -1, 46, 6, 2); ctx.fill(); ctx.stroke();
+      } else if (prop.type === 'hydrant') {
+        // Trụ cứu hỏa đỏ nổi bật bên đường
+        ctx.fillStyle = '#dc2626';
+        ctx.strokeStyle = '#7f1d1d';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-6.5, -15, 13, 25, 3); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath(); ctx.arc(0, -15, 6.5, Math.PI, 0); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#cbd5e1';
+        ctx.fillRect(-10, -10, 4, 5);
+        ctx.fillRect(6, -10, 4, 5);
+      } else if (prop.type === 'trashbin') {
+        // Thùng rác xanh ven đường
+        ctx.fillStyle = '#059669';
+        ctx.strokeStyle = '#064e3b';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-8, -16, 16, 26, 2.5); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath(); ctx.roundRect(-9.5, -19, 19, 5, 2); ctx.fill(); ctx.stroke();
+      } else if (prop.type === 'cone') {
+        // Rào chắn / cọc tiêu giao thông cam-trắng
+        ctx.fillStyle = '#f97316';
+        ctx.strokeStyle = '#9a3412';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(-3, -18); ctx.lineTo(3, -18);
+        ctx.lineTo(10, 9); ctx.lineTo(-10, 9);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-5.5, -8, 11, 4.5);
+        ctx.fillStyle = '#ea580c';
+        ctx.fillRect(-12, 8, 24, 4);
+      } else if (prop.type === 'mailbox') {
+        // Hộp thư / tủ điện phố
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(-3, -6, 6, 18);
+        ctx.fillStyle = '#2563eb';
+        ctx.strokeStyle = '#1e3a8a';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-9, -22, 18, 17, 3); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-5, -17, 10, 2.5);
+      } else if (prop.type === 'busstop') {
+        // Trụ biển báo trạm xe buýt
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(-2.5, -42, 5, 54);
+        ctx.fillStyle = '#0284c7';
+        ctx.strokeStyle = '#bae6fd';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect(-12, -52, 24, 16, 3); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('BUS', 0, -41);
       }
       ctx.restore();
     }
@@ -29111,22 +29172,28 @@
       if (resetPositions || ufoStudents.length !== visible.length) {
         const count = Math.max(1, visible.length);
         const propLoad = new Array(ufoProps.length).fill(0);
+        const maxPerProp = Math.max(2, Math.ceil(count / ufoProps.length));
+
+        // Dãn đều học sinh theo 4 hàng dọc con đường & vỉa hè để không co cụm
+        const rows = count > 24 ? 4 : (count > 12 ? 3 : 2);
+        const cols = Math.ceil(count / rows);
 
         ufoStudents = visible.map((st, i) => {
-          const cols = Math.min(count, 10);
           const col = i % cols;
           const row = Math.floor(i / cols);
-          // Học sinh ban đầu đi bộ trên lòng đường và vỉa hè (y từ 0.67 đến 0.90)
-          const idleNx = 0.08 + ((col + 0.5) / Math.max(1, cols)) * 0.84 + (Math.random() - 0.5) * 0.03;
-          const idleNy = Math.min(0.91, 0.69 + row * 0.062 + (Math.random() - 0.5) * 0.02);
+          const staggerShift = (row % 2 === 1) ? (0.45 / Math.max(1, cols)) : 0;
+          const idleNx = Math.max(0.05, Math.min(0.95, 0.06 + ((col + 0.4) / Math.max(1, cols)) * 0.86 + staggerShift * 0.6));
+          const idleNy = Math.min(0.93, 0.64 + (row / Math.max(1, rows - 1)) * 0.27);
 
-          // Tìm vật dụng gần nhất (cây, ghế đá, tảng đá, cột đèn, nắp cống) để chạy tới bám chặt!
-          let bestIdx = i % ufoProps.length;
-          let bestDist = Infinity;
+          // Tìm vật dụng gần nhất còn chỗ trống (cân bằng tối đa 1-2 HS mỗi vật dụng để dãn đều!)
+          let bestIdx = 0;
+          let bestScore = Infinity;
           ufoProps.forEach((pr, idx) => {
-            const d = Math.hypot(pr.nx - idleNx, (pr.ny - idleNy) * 1.35);
-            if (d < bestDist) {
-              bestDist = d;
+            const d = Math.hypot(pr.nx - idleNx, (pr.ny - idleNy) * 1.3);
+            const loadPenalty = propLoad[idx] >= maxPerProp ? 2.5 + propLoad[idx] : propLoad[idx] * 0.14;
+            const score = d + loadPenalty;
+            if (score < bestScore) {
+              bestScore = score;
               bestIdx = idx;
             }
           });
@@ -29145,8 +29212,9 @@
             nx: idleNx,
             ny: idleNy,
             propIdx: bestIdx,
-            clingNx: prop.nx + side * (prop.type === 'manhole' ? 0.022 : 0.024),
-            clingNy: prop.ny - tier * 0.024 + 0.005,
+            clingSlot: slot,
+            clingNx: Math.max(0.04, Math.min(0.96, prop.nx + side * (0.024 + tier * 0.012))),
+            clingNy: Math.min(0.94, prop.ny + (side === 1 ? 0.012 : -0.006) - tier * 0.018),
             clingSide: side,
             facing: (i % 2 === 0) ? 1 : -1,
             liftY: 0,
@@ -29163,7 +29231,7 @@
       ufoTargetWinner = null;
       ufoDecoyTargets = [];
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = 'Các bạn học sinh đang đi bộ trên con đường phố! Bấm QUÉT TIA SÁNG để xem cả lớp bám cây, ghế đá, nắp cống né UFO!';
+      if (statusEl) statusEl.innerText = 'Các bạn học sinh đang đi dạo trên con đường phố! Bấm QUÉT TIA SÁNG để xem cả lớp chạy bám cây, ghế đá, nắp cống!';
 
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
     }
@@ -29550,7 +29618,9 @@
           ctx.fillText('TUỘT TAY RỒI!!', sx, sy - 44);
         }
 
-        drawHighContrastBadge(ctx, sx, sy - 30, s.displayName, s.color, s.isWinner && (isAbducting || ufoState === 'finished'));
+        const badgeOffsetX = (pose === 'cling') ? s.clingSide * 10 : 0;
+        const badgeOffsetY = (pose === 'cling' && s.clingSide === 1) ? -38 : -29;
+        drawHighContrastBadge(ctx, sx + badgeOffsetX, sy + badgeOffsetY, s.displayName, s.color, s.isWinner && (isAbducting || ufoState === 'finished'));
         ctx.restore();
       });
 
