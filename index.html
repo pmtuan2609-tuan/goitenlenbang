@@ -29397,7 +29397,7 @@
       ];
     }
 
-    function drawUfoProp(ctx, prop, w, h, now) {
+    function drawUfoProp(ctx, prop, w, h, now, darkness = 1) {
       const px = prop.nx * w;
       const py = prop.ny * h;
       ctx.save();
@@ -29486,20 +29486,28 @@
         ctx.lineWidth = 3.2;
         ctx.beginPath(); ctx.moveTo(0, -56); ctx.quadraticCurveTo(9, -65, 16, -56); ctx.stroke();
 
-        // Warm light cone onto pavement
-        const lampGlow = ctx.createRadialGradient(16, -53, 2, 16, 8, 68);
-        lampGlow.addColorStop(0, 'rgba(254, 240, 138, 0.42)');
-        lampGlow.addColorStop(0.55, 'rgba(253, 224, 71, 0.14)');
-        lampGlow.addColorStop(1, 'rgba(254, 240, 138, 0)');
-        ctx.fillStyle = lampGlow;
-        ctx.beginPath(); ctx.moveTo(16, -53); ctx.lineTo(-28, 28); ctx.lineTo(60, 28); ctx.closePath(); ctx.fill();
+        // Warm light cone onto pavement (chỉ bật sáng khi trời tối)
+        if (darkness > 0.25) {
+          const glowAlpha = Math.min(1, (darkness - 0.25) / 0.55);
+          const lampGlow = ctx.createRadialGradient(16, -53, 2, 16, 8, 68);
+          lampGlow.addColorStop(0, 'rgba(254, 240, 138, ' + (0.44 * glowAlpha).toFixed(2) + ')');
+          lampGlow.addColorStop(0.55, 'rgba(253, 224, 71, ' + (0.15 * glowAlpha).toFixed(2) + ')');
+          lampGlow.addColorStop(1, 'rgba(254, 240, 138, 0)');
+          ctx.fillStyle = lampGlow;
+          ctx.beginPath(); ctx.moveTo(16, -53); ctx.lineTo(-28, 28); ctx.lineTo(60, 28); ctx.closePath(); ctx.fill();
+        }
 
-        // Lantern cap & glowing bulb
+        // Lantern cap & bulb (ban ngày bóng thủy tinh trắng đục, ban đêm phát sáng vàng)
         ctx.fillStyle = '#0f172a';
         ctx.beginPath(); ctx.arc(16, -55, 7, Math.PI, 0); ctx.fill();
-        ctx.fillStyle = '#fef08a';
-        ctx.shadowColor = '#facc15';
-        ctx.shadowBlur = 18;
+        if (darkness > 0.25) {
+          ctx.fillStyle = '#fef08a';
+          ctx.shadowColor = '#facc15';
+          ctx.shadowBlur = 18 * Math.min(1, darkness);
+        } else {
+          ctx.fillStyle = '#e2e8f0';
+          ctx.shadowBlur = 0;
+        }
         ctx.beginPath(); ctx.arc(16, -51, 5.5, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
       } else if (prop.type === 'rock') {
@@ -29697,12 +29705,12 @@
       ufoTargetWinner = null;
       ufoDecoyTargets = [];
       const statusEl = document.getElementById('ufo-abduct-status');
-      if (statusEl) statusEl.innerText = 'Học sinh đang đạp xe, đi bộ, đọc sách trên đường phố! Bấm QUÉT TIA SÁNG để phi thuyền khổng lồ xuất hiện!';
+      if (statusEl) statusEl.innerText = '☀️ Trời nắng đẹp trước cổng trường! Học sinh đang đạp xe, đi bộ, đọc sách... Bấm BẮT ĐẦU để xem chuyện gì xảy ra!';
 
       if (!ufoAnimId) ufoAnimId = requestAnimationFrame(runUfoLoop);
     }
 
-    function drawStreetBicycle(ctx, x, y, facing, frameColor, now, isRiding) {
+    function drawStreetBicycle(ctx, x, y, facing, frameColor, now, isRiding, isDark = false) {
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(facing, 1);
@@ -29758,8 +29766,8 @@
       ctx.fillStyle = '#1e293b';
       ctx.beginPath(); ctx.roundRect(-5.5, -3.5, 6.2, 2.6, 1.2); ctx.fill();
 
-      // Front headlight + light beam when riding
-      if (isRiding) {
+      // Front headlight + light beam when riding at night
+      if (isRiding && isDark) {
         const beam = ctx.createLinearGradient(11, -4, 34, 4);
         beam.addColorStop(0, 'rgba(254, 240, 138, 0.45)');
         beam.addColorStop(1, 'rgba(254, 240, 138, 0)');
@@ -29814,52 +29822,92 @@
       const h = canvas.height / dpr;
       if (w <= 0 || h <= 0) return;
 
-      // 1. Starry Night Sky + Nebula Glow + Moon + School Campus & Shophouse Skyline
-      const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.62);
-      skyGrad.addColorStop(0, '#020617');
-      skyGrad.addColorStop(0.5, '#17153b');
-      skyGrad.addColorStop(0.85, '#1e1b4b');
-      skyGrad.addColorStop(1, '#312e81');
-      ctx.fillStyle = skyGrad;
+      // 0. Compute Progress & Day-to-Night Darkness Factor (Ban ngày bình thường -> Bấm bắt đầu mới tối sầm & UFO xuất hiện!)
+      let t = 0;
+      let darkness = 0;
+      let ufoVisible = false;
+      if (ufoState === 'running') {
+        t = Math.min(1, (now - ufoStartTime) / ufoDuration);
+        darkness = Math.min(1, t / 0.14);
+        ufoVisible = t >= 0.02;
+      } else if (ufoState === 'finished') {
+        t = 1;
+        darkness = 1;
+        ufoVisible = true;
+      }
+      const isNightLit = darkness >= 0.35;
+
+      // 1. Bright Daytime Sky -> Dramatic Dark Alien Night Sky on Start
+      const daySky = ctx.createLinearGradient(0, 0, 0, h * 0.62);
+      daySky.addColorStop(0, '#38bdf8');
+      daySky.addColorStop(0.55, '#bae6fd');
+      daySky.addColorStop(1, '#fef9c3');
+      ctx.fillStyle = daySky;
       ctx.fillRect(0, 0, w, h * 0.62);
 
-      // Subtle glowing Milky Way / aurora band
-      const nebula = ctx.createRadialGradient(w * 0.35, h * 0.20, 20, w * 0.35, h * 0.22, w * 0.48);
-      nebula.addColorStop(0, 'rgba(56, 189, 248, 0.14)');
-      nebula.addColorStop(0.5, 'rgba(168, 85, 247, 0.08)');
-      nebula.addColorStop(1, 'rgba(15, 23, 42, 0)');
-      ctx.fillStyle = nebula;
-      ctx.fillRect(0, 0, w, h * 0.55);
+      // Sun & fluffy white daytime clouds (fade out as darkness falls)
+      if (darkness < 0.95) {
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, 1 - darkness * 1.35);
+        const sunX = w * 0.86, sunY = h * 0.14;
+        const sunHalo = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, 64);
+        sunHalo.addColorStop(0, 'rgba(254, 240, 138, 0.95)');
+        sunHalo.addColorStop(0.45, 'rgba(253, 224, 71, 0.35)');
+        sunHalo.addColorStop(1, 'rgba(253, 224, 71, 0)');
+        ctx.fillStyle = sunHalo;
+        ctx.beginPath(); ctx.arc(sunX, sunY, 64, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath(); ctx.arc(sunX, sunY, 22, 0, Math.PI * 2); ctx.fill();
 
-      for (let i = 0; i < 64; i++) {
-        const sx = ((i * 197 + 41) % 100) / 100 * w;
-        const sy = ((i * 313 + 17) % 52) / 100 * h;
-        const alpha = 0.3 + 0.7 * Math.abs(Math.sin(now * 0.002 + i * 0.9));
-        ctx.fillStyle = i % 7 === 0 ? 'rgba(186,230,253,' + alpha.toFixed(2) + ')' : 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
-        ctx.beginPath(); ctx.arc(sx, sy, (i % 4 === 0) ? 2.1 : 1.15, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+        [[0.15, 0.14, 54], [0.46, 0.10, 68], [0.70, 0.21, 48]].forEach(([cx, cy, cw], ci) => {
+          const drift = ((cx * w + now * 0.010 * (ci % 2 === 0 ? 1 : 0.7)) % (w + 180)) - 90;
+          ctx.beginPath();
+          ctx.ellipse(drift, h * cy, cw, 14, 0, 0, Math.PI * 2);
+          ctx.ellipse(drift - cw * 0.42, h * cy + 5, cw * 0.58, 10, 0, 0, Math.PI * 2);
+          ctx.ellipse(drift + cw * 0.40, h * cy + 4, cw * 0.52, 9, 0, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.restore();
       }
 
-      // Glowing Moon with subtle craters
-      ctx.save();
-      const mx = w * 0.86, my = h * 0.15;
-      ctx.fillStyle = '#fef08a';
-      ctx.shadowColor = '#fde047';
-      ctx.shadowBlur = 30;
-      ctx.beginPath(); ctx.arc(mx, my, 27, 0, Math.PI * 2); ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = 'rgba(202, 138, 4, 0.24)';
-      ctx.beginPath(); ctx.arc(mx - 8, my - 5, 5, 0, Math.PI * 2); ctx.arc(mx + 9, my + 7, 6.5, 0, Math.PI * 2); ctx.arc(mx - 2, my + 11, 3.5, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
+      // Eerie Night Sky + Nebula + Stars + Moon (fades in when Start is clicked)
+      if (darkness > 0.01) {
+        ctx.save();
+        ctx.globalAlpha = darkness;
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.62);
+        skyGrad.addColorStop(0, '#020617');
+        skyGrad.addColorStop(0.5, '#17153b');
+        skyGrad.addColorStop(0.85, '#1e1b4b');
+        skyGrad.addColorStop(1, '#312e81');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, w, h * 0.62);
 
-      // Distant soft night clouds drifting slowly
-      ctx.fillStyle = 'rgba(148, 163, 184, 0.10)';
-      [[0.18, 0.20, 66], [0.56, 0.14, 82], [0.76, 0.26, 58]].forEach(([cx, cy, cw], ci) => {
-        const drift = ((cx * w + now * 0.008 * (ci % 2 === 0 ? 1 : 0.7)) % (w + 160)) - 80;
-        ctx.beginPath();
-        ctx.ellipse(drift, h * cy, cw, 12, 0, 0, Math.PI * 2);
-        ctx.ellipse(drift - cw * 0.4, h * cy + 4, cw * 0.6, 9, 0, 0, Math.PI * 2);
-        ctx.fill();
-      });
+        const nebula = ctx.createRadialGradient(w * 0.35, h * 0.20, 20, w * 0.35, h * 0.22, w * 0.48);
+        nebula.addColorStop(0, 'rgba(56, 189, 248, 0.16)');
+        nebula.addColorStop(0.5, 'rgba(168, 85, 247, 0.10)');
+        nebula.addColorStop(1, 'rgba(15, 23, 42, 0)');
+        ctx.fillStyle = nebula;
+        ctx.fillRect(0, 0, w, h * 0.55);
+
+        for (let i = 0; i < 64; i++) {
+          const sx = ((i * 197 + 41) % 100) / 100 * w;
+          const sy = ((i * 313 + 17) % 52) / 100 * h;
+          const alpha = 0.3 + 0.7 * Math.abs(Math.sin(now * 0.002 + i * 0.9));
+          ctx.fillStyle = i % 7 === 0 ? 'rgba(186,230,253,' + alpha.toFixed(2) + ')' : 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
+          ctx.beginPath(); ctx.arc(sx, sy, (i % 4 === 0) ? 2.1 : 1.15, 0, Math.PI * 2); ctx.fill();
+        }
+
+        const mx = w * 0.86, my = h * 0.15;
+        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = '#fde047';
+        ctx.shadowBlur = 30;
+        ctx.beginPath(); ctx.arc(mx, my, 27, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'rgba(202, 138, 4, 0.24)';
+        ctx.beginPath(); ctx.arc(mx - 8, my - 5, 5, 0, Math.PI * 2); ctx.arc(mx + 9, my + 7, 6.5, 0, Math.PI * 2); ctx.arc(mx - 2, my + 11, 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
 
       // Street Facade: Flanking Townhouses + Authentic Multi-Wing School Campus & School Gate
       const horizonY = h * 0.56;
@@ -29867,15 +29915,15 @@
       const roadY = h * 0.72;
 
       const townHouses = [
-        { x: 0.01, w: 0.105, h: 66, wall: '#1e293b', roof: '#991b1b', awning: '#ef4444' },
-        { x: 0.125, w: 0.10, h: 74, wall: '#334155', roof: '#0f172a', awning: '#f59e0b' },
-        { x: 0.775, w: 0.10, h: 68, wall: '#334155', roof: '#b45309', awning: '#f97316' },
-        { x: 0.885, w: 0.105, h: 64, wall: '#1e293b', roof: '#0f172a', awning: '#10b981' }
+        { x: 0.01, w: 0.105, h: 66, wall: '#fef3c7', roof: '#b91c1c', awning: '#ef4444' },
+        { x: 0.125, w: 0.10, h: 74, wall: '#e2e8f0', roof: '#334155', awning: '#f59e0b' },
+        { x: 0.775, w: 0.10, h: 68, wall: '#fed7aa', roof: '#b45309', awning: '#f97316' },
+        { x: 0.885, w: 0.105, h: 64, wall: '#e0f2fe', roof: '#334155', awning: '#10b981' }
       ];
       townHouses.forEach((b, idx) => {
         const rx = w * b.x, rw = w * b.w, ry = horizonY - b.h;
         ctx.fillStyle = b.wall;
-        ctx.strokeStyle = '#020617';
+        ctx.strokeStyle = '#334155';
         ctx.lineWidth = 1.2;
         ctx.fillRect(rx, ry, rw, b.h);
         ctx.strokeRect(rx, ry, rw, b.h);
@@ -29888,9 +29936,13 @@
         ctx.fill();
         for (let wy = ry + 10; wy < horizonY - 22; wy += 16) {
           for (let wx = rx + 9; wx < rx + rw - 13; wx += 18) {
-            ctx.fillStyle = ((wx + wy + idx) % 4 === 0) ? '#334155' : 'rgba(253, 224, 71, 0.72)';
+            if (isNightLit) {
+              ctx.fillStyle = ((wx + wy + idx) % 4 === 0) ? '#334155' : 'rgba(253, 224, 71, 0.82)';
+            } else {
+              ctx.fillStyle = '#7dd3fc';
+            }
             ctx.fillRect(wx, wy, 9, 10);
-            ctx.strokeStyle = '#0f172a';
+            ctx.strokeStyle = '#1e293b';
             ctx.lineWidth = 0.8;
             ctx.strokeRect(wx, wy, 9, 10);
           }
@@ -29907,16 +29959,16 @@
 
       // Sân trường & dãy lớp học 3 tầng với hành lang ban công + mái ngói đỏ
       const schWallGrad = ctx.createLinearGradient(0, bldgTop, 0, horizonY);
-      schWallGrad.addColorStop(0, '#cbd5e1');
-      schWallGrad.addColorStop(1, '#94a3b8');
+      schWallGrad.addColorStop(0, '#f8fafc');
+      schWallGrad.addColorStop(1, '#cbd5e1');
       ctx.fillStyle = schWallGrad;
-      ctx.strokeStyle = '#1e293b';
+      ctx.strokeStyle = '#334155';
       ctx.lineWidth = 1.4;
       ctx.fillRect(bldgX, bldgTop, bldgW, 88);
       ctx.strokeRect(bldgX, bldgTop, bldgW, 88);
 
       // Mái ngói đỏ đặc trưng dãy lớp học + sảnh đồng hồ nhô cao ở giữa
-      ctx.fillStyle = '#991b1b';
+      ctx.fillStyle = '#b91c1c';
       ctx.beginPath();
       ctx.moveTo(bldgX - 8, bldgTop + 2);
       ctx.lineTo(bldgX + 14, bldgTop - 16);
@@ -29929,10 +29981,10 @@
       // Khối sảnh chính nhô lên ở giữa tòa trường học + mặt đồng hồ tròn
       const midLobbyW = Math.min(72, bldgW * 0.22);
       const midLobbyX = w * 0.5 - midLobbyW * 0.5;
-      ctx.fillStyle = '#e2e8f0';
+      ctx.fillStyle = '#ffffff';
       ctx.fillRect(midLobbyX, bldgTop - 12, midLobbyW, 100);
       ctx.strokeRect(midLobbyX, bldgTop - 12, midLobbyW, 100);
-      ctx.fillStyle = '#b91c1c';
+      ctx.fillStyle = '#dc2626';
       ctx.beginPath();
       ctx.moveTo(midLobbyX - 6, bldgTop - 10);
       ctx.lineTo(w * 0.5, bldgTop - 32);
@@ -29952,20 +30004,22 @@
       ctx.moveTo(w * 0.5, bldgTop - 3); ctx.lineTo(w * 0.5 + 3.5, bldgTop - 1);
       ctx.stroke();
 
-      // Hành lang ban công 2 tầng & các ô cửa sổ lớp học sáng đèn
+      // Hành lang ban công 2 tầng & các ô cửa sổ lớp học (ban ngày kính xanh, ban đêm bật đèn ấm)
       [bldgTop + 24, bldgTop + 52].forEach(floorY => {
-        // Cửa sổ lớp học trái & phải sảnh
         const winStep = Math.max(22, Math.floor(bldgW / 12));
         for (let wx = bldgX + 12; wx < bldgX + bldgW - 18; wx += winStep) {
           if (wx > midLobbyX - 10 && wx < midLobbyX + midLobbyW + 2) continue;
-          ctx.fillStyle = ((Math.round(wx + floorY) % 3) === 0) ? '#334155' : 'rgba(254, 240, 138, 0.85)';
+          if (isNightLit) {
+            ctx.fillStyle = ((Math.round(wx + floorY) % 3) === 0) ? '#334155' : 'rgba(254, 240, 138, 0.88)';
+          } else {
+            ctx.fillStyle = '#7dd3fc';
+          }
           ctx.fillRect(wx, floorY - 16, 13, 13);
           ctx.strokeStyle = '#1e293b';
           ctx.lineWidth = 0.8;
           ctx.strokeRect(wx, floorY - 16, 13, 13);
         }
-        // Thanh lan can hành lang dài
-        ctx.fillStyle = '#475569';
+        ctx.fillStyle = '#64748b';
         ctx.fillRect(bldgX, floorY, bldgW, 4);
         ctx.strokeStyle = '#cbd5e1';
         ctx.lineWidth = 1;
@@ -29993,20 +30047,17 @@
       const gateL = w * 0.435, gateR = w * 0.565;
       const drawFenceWing = (x1, x2) => {
         const fw = x2 - x1;
-        // Chân tường xây vàng kem
-        ctx.fillStyle = '#d6c7a9';
+        ctx.fillStyle = '#e7d8b9';
         ctx.strokeStyle = '#475569';
         ctx.lineWidth = 1;
         ctx.fillRect(x1, horizonY - 14, fw, 14);
         ctx.strokeRect(x1, horizonY - 14, fw, 14);
-        // Thanh chắn song sắt phía trên
-        ctx.strokeStyle = '#0f172a';
+        ctx.strokeStyle = '#1e293b';
         ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.moveTo(x1, horizonY - 27); ctx.lineTo(x2, horizonY - 27); ctx.stroke();
         for (let bx = x1 + 6; bx < x2 - 4; bx += 7) {
           ctx.beginPath(); ctx.moveTo(bx, horizonY - 29); ctx.lineTo(bx, horizonY - 14); ctx.stroke();
         }
-        // Trụ gạch xen kẽ trên tường rào
         for (let px = x1; px <= x2 - 6; px += Math.max(36, fw * 0.45)) {
           ctx.fillStyle = '#b45309';
           ctx.fillRect(px - 3, horizonY - 30, 6, 30);
@@ -30015,7 +30066,7 @@
       drawFenceWing(campLeft, gateL - 12);
       drawFenceWing(gateR + 12, campRight);
 
-      // Phòng bảo vệ nhỏ có đèn ấm cạnh trụ cổng bên trái
+      // Phòng bảo vệ nhỏ cạnh trụ cổng bên trái
       ctx.fillStyle = '#fef3c7';
       ctx.strokeStyle = '#334155';
       ctx.lineWidth = 1.2;
@@ -30023,22 +30074,26 @@
       ctx.strokeRect(gateL - 36, horizonY - 32, 22, 32);
       ctx.fillStyle = '#991b1b';
       ctx.fillRect(gateL - 38, horizonY - 36, 26, 5);
-      ctx.fillStyle = 'rgba(253, 224, 71, 0.85)';
+      ctx.fillStyle = isNightLit ? 'rgba(253, 224, 71, 0.88)' : '#7dd3fc';
       ctx.fillRect(gateL - 32, horizonY - 26, 12, 10);
 
       // HAI TRỤ CỔNG TRƯỜNG LỚN + ĐÈN TRỤ + BIỂN CỔNG CHÀO TRƯỜNG HỌC BẮC NGANG
       [gateL, gateR].forEach(gx => {
-        ctx.fillStyle = '#cbd5e1';
+        ctx.fillStyle = '#f1f5f9';
         ctx.strokeStyle = '#1e293b';
         ctx.lineWidth = 1.4;
         ctx.fillRect(gx - 8, horizonY - 48, 16, 48);
         ctx.strokeRect(gx - 8, horizonY - 48, 16, 48);
-        // Mũ trụ & đèn cổng tròn phát sáng dịu
         ctx.fillStyle = '#991b1b';
         ctx.fillRect(gx - 10, horizonY - 52, 20, 5);
-        ctx.fillStyle = '#fef08a';
-        ctx.shadowColor = '#facc15';
-        ctx.shadowBlur = 10;
+        if (isNightLit) {
+          ctx.fillStyle = '#fef08a';
+          ctx.shadowColor = '#facc15';
+          ctx.shadowBlur = 10;
+        } else {
+          ctx.fillStyle = '#e2e8f0';
+          ctx.shadowBlur = 0;
+        }
         ctx.beginPath(); ctx.arc(gx, horizonY - 57, 4.2, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
       });
@@ -30053,7 +30108,7 @@
       ctx.moveTo(gateR - 8, horizonY - 8); ctx.lineTo(gateR - 26, horizonY - 7);
       ctx.stroke();
 
-      // Mái vòm & Biển hiệu Trường Học bắc ngang qua 2 trụ cổng (hài hòa cân đối!)
+      // Mái vòm & Biển hiệu Trường Học bắc ngang qua 2 trụ cổng
       const archW = (gateR - gateL) + 18;
       const archX = w * 0.5 - archW * 0.5;
       ctx.fillStyle = '#b91c1c';
@@ -30067,11 +30122,11 @@
       ctx.fillText('TRƯỜNG HỌC', w * 0.5, horizonY - 45);
 
       // 2. Roadside Grass Strip + School Driveway + Paved Sidewalk + Asphalt Road
-      ctx.fillStyle = '#065f46';
+      ctx.fillStyle = '#16a34a';
       ctx.fillRect(0, horizonY, w, h * 0.05);
 
       // Đường dẫn lát đá nối thẳng từ Cổng Trường ra Vỉa Hè
-      ctx.fillStyle = '#cbd5e1';
+      ctx.fillStyle = '#e2e8f0';
       ctx.beginPath();
       ctx.moveTo(gateL + 6, horizonY);
       ctx.lineTo(gateR - 6, horizonY);
@@ -30085,24 +30140,24 @@
         if (bx > gateL - 16 && bx < gateR + 16) continue;
         ctx.fillStyle = '#15803d';
         ctx.beginPath(); ctx.arc(bx, horizonY + 12, 16, Math.PI, 0); ctx.fill();
-        ctx.fillStyle = '#16a34a';
+        ctx.fillStyle = '#22c55e';
         ctx.beginPath(); ctx.arc(bx + 14, horizonY + 14, 12, Math.PI, 0); ctx.fill();
       }
 
       // Tiled Sidewalk (Vỉa hè lát gạch)
       const swGrad = ctx.createLinearGradient(0, sidewalkY, 0, roadY);
-      swGrad.addColorStop(0, '#94a3b8');
-      swGrad.addColorStop(1, '#64748b');
+      swGrad.addColorStop(0, '#cbd5e1');
+      swGrad.addColorStop(1, '#94a3b8');
       ctx.fillStyle = swGrad;
       ctx.fillRect(0, sidewalkY, w, roadY - sidewalkY);
 
-      ctx.strokeStyle = 'rgba(15, 23, 42, 0.18)';
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.16)';
       ctx.lineWidth = 1;
       for (let tx = 0; tx < w; tx += 36) {
         ctx.beginPath(); ctx.moveTo(tx, sidewalkY); ctx.lineTo(tx - 10, roadY); ctx.stroke();
       }
-      // Curb (Bó vỉa hè vàng-xám, hạ cốt êm ở đoạn lối cổng trường)
-      ctx.fillStyle = '#475569';
+      // Curb (Bó vỉa hè vàng-xám)
+      ctx.fillStyle = '#64748b';
       ctx.fillRect(0, roadY - 5, w, 6);
       for (let cx = 0; cx < w; cx += 40) {
         if (cx > gateL - 10 && cx < gateR + 10) continue;
@@ -30112,15 +30167,15 @@
         }
       }
 
-      // Asphalt Road (Con đường nhựa)
+      // Asphalt Road (Con đường nhựa ban ngày thực tế)
       const roadGrad = ctx.createLinearGradient(0, roadY, 0, h);
-      roadGrad.addColorStop(0, '#1e293b');
-      roadGrad.addColorStop(1, '#0f172a');
+      roadGrad.addColorStop(0, '#475569');
+      roadGrad.addColorStop(1, '#334155');
       ctx.fillStyle = roadGrad;
       ctx.fillRect(0, roadY, w, h - roadY);
 
       // Vạch qua đường cho học sinh đặt ngay trước Cổng Trường!
-      ctx.fillStyle = 'rgba(248, 250, 252, 0.60)';
+      ctx.fillStyle = 'rgba(248, 250, 252, 0.86)';
       for (let zy = roadY + 10; zy < h - 10; zy += 22) {
         ctx.beginPath();
         ctx.roundRect(w * 0.5 - 30, zy, 60, 11, 2);
@@ -30128,7 +30183,7 @@
       }
 
       // Dashed White Center Lane Line
-      ctx.strokeStyle = 'rgba(248, 250, 252, 0.72)';
+      ctx.strokeStyle = 'rgba(248, 250, 252, 0.85)';
       ctx.lineWidth = 4;
       ctx.setLineDash([28, 22]);
       ctx.beginPath();
@@ -30139,28 +30194,34 @@
       ctx.stroke();
       ctx.setLineDash([]);
 
+      // Màn đêm tối òm phủ xuống phố xá & sân trường khi bấm BẮT ĐẦU (để đèn đường & tia sáng UFO nổi bật!)
+      if (darkness > 0.01) {
+        ctx.fillStyle = 'rgba(2, 6, 23, ' + (darkness * 0.52).toFixed(3) + ')';
+        ctx.fillRect(0, horizonY - 125, w, h - (horizonY - 125));
+      }
+
       // 2. Compute UFO Phases
-      let t = 0;
-      let beamAlpha = 0.12;
+      let beamAlpha = 0;
       let isAbducting = false;
       let isLocked = false;
       const winObj = ufoStudents.find(s => s.isWinner) || ufoStudents[0];
 
       if (ufoState === 'idle') {
-        ufoPosX = 0.5 + Math.sin(now * 0.001) * 0.20;
-        ufoPosY = 0.17 + Math.cos(now * 0.002) * 0.015;
+        ufoPosX = 0.5;
+        ufoPosY = -0.25;
       } else if (ufoState === 'running') {
-        t = Math.min(1, (now - ufoStartTime) / ufoDuration);
         const d1 = ufoDecoyTargets[0] || winObj;
         const d2 = ufoDecoyTargets[1] || winObj;
         const targetX = winObj ? winObj.clingNx : 0.5;
 
         if (t < 0.24) {
-          // Phase 1: UFO swoops down, students sprint to nearest props!
+          // Phase 1: Bầu trời tối sầm, UFO lao từ trên cao xuống!
           const p = t / 0.24;
+          const entryP = Math.min(1, t / 0.16);
+          const easeOut = 1 - Math.pow(1 - entryP, 3);
           ufoPosX = 0.5 + ((d1 ? d1.clingNx : 0.3) - 0.5) * (p * 0.5);
-          ufoPosY = 0.14 + 0.08 * p;
-          beamAlpha = 0.28;
+          ufoPosY = -0.18 + (0.21 - (-0.18)) * easeOut;
+          beamAlpha = entryP < 0.35 ? 0 : ((entryP - 0.35) / 0.65) * 0.32;
         } else if (t < 0.62) {
           // Phase 2: All clinging onto nearest props while UFO sweeps across teasingly!
           const p = (t - 0.24) / 0.38;
@@ -30223,7 +30284,7 @@
       const uy = ufoPosY * h;
 
       // 3. Draw Field Props (Trees, Rocks, Lampposts, Benches, Bus Stop, Hydrants, Manholes, Cones)
-      ufoProps.forEach(pr => drawUfoProp(ctx, pr, w, h, now));
+      ufoProps.forEach(pr => drawUfoProp(ctx, pr, w, h, now, darkness));
 
       // Draw abandoned/parked bicycles on road when cyclists sprint to cling to props
       if (ufoState !== 'idle') {
@@ -30250,78 +30311,73 @@
         ctx.restore();
       }
 
-      // 5. Draw GIANT Wide-Coverage Tractor Beam Cone (Covers ALL students during scan, focuses on target for abduction)
-      ctx.save();
-      let topHalfW = 48;
+      // 5. Draw GIANT Wide-Coverage Tractor Beam Cone (Chỉ xuất hiện sau khi bấm BẮT ĐẦU!)
       let botHalfW = Math.max(w * 0.46, 360);
-      let focusAlpha = beamAlpha;
+      if (ufoVisible && beamAlpha > 0.01) {
+        ctx.save();
+        let topHalfW = 48;
+        let focusAlpha = beamAlpha;
 
-      if (ufoState === 'idle') {
-        topHalfW = 44;
-        botHalfW = Math.max(w * 0.36, 260);
-        focusAlpha = 0.14;
-      } else if (ufoState === 'running') {
-        if (t < 0.62) {
-          // Ánh sáng bao trùm toàn bộ con đường & tất cả học sinh!
-          topHalfW = 58;
-          botHalfW = Math.max(w * 0.64, 540);
-          focusAlpha = 0.38 + Math.sin(now * 0.01) * 0.06;
-        } else if (t < 0.76) {
-          // Thu hẹp dần tập trung vào học sinh chuẩn bị bị bắt
-          const p = (t - 0.62) / 0.14;
-          topHalfW = 58 - 22 * p;
-          botHalfW = Math.max(w * 0.64, 540) * (1 - p) + 84 * p;
-          focusAlpha = 0.44 + 0.28 * p;
-        } else {
+        if (ufoState === 'running') {
+          if (t < 0.62) {
+            topHalfW = 58;
+            botHalfW = Math.max(w * 0.64, 540);
+            focusAlpha = Math.min(beamAlpha, 0.38 + Math.sin(now * 0.01) * 0.06);
+          } else if (t < 0.76) {
+            const p = (t - 0.62) / 0.14;
+            topHalfW = 58 - 22 * p;
+            botHalfW = Math.max(w * 0.64, 540) * (1 - p) + 84 * p;
+            focusAlpha = 0.44 + 0.28 * p;
+          } else {
+            topHalfW = 36;
+            botHalfW = 80;
+            focusAlpha = 0.78;
+          }
+        } else if (ufoState === 'finished') {
           topHalfW = 36;
           botHalfW = 80;
           focusAlpha = 0.78;
         }
-      } else if (ufoState === 'finished') {
-        topHalfW = 36;
-        botHalfW = 80;
-        focusAlpha = 0.78;
-      }
 
-      const beamGrad = ctx.createLinearGradient(ux, uy + 24, ux, h * 0.95);
-      const beamRGB = isAbducting ? '52, 211, 153' : '56, 189, 248';
-      beamGrad.addColorStop(0, 'rgba(' + beamRGB + ', ' + focusAlpha + ')');
-      beamGrad.addColorStop(0.65, 'rgba(' + beamRGB + ', ' + (focusAlpha * 0.45).toFixed(2) + ')');
-      beamGrad.addColorStop(1, 'rgba(' + beamRGB + ', 0.05)');
-      ctx.fillStyle = beamGrad;
-      ctx.beginPath();
-      ctx.moveTo(ux - topHalfW, uy + 24);
-      ctx.lineTo(ux + topHalfW, uy + 24);
-      ctx.lineTo(ux + botHalfW, h * 0.96);
-      ctx.lineTo(ux - botHalfW, h * 0.96);
-      ctx.closePath();
-      ctx.fill();
+        const beamGrad = ctx.createLinearGradient(ux, uy + 24, ux, h * 0.95);
+        const beamRGB = isAbducting ? '52, 211, 153' : '56, 189, 248';
+        beamGrad.addColorStop(0, 'rgba(' + beamRGB + ', ' + focusAlpha + ')');
+        beamGrad.addColorStop(0.65, 'rgba(' + beamRGB + ', ' + (focusAlpha * 0.45).toFixed(2) + ')');
+        beamGrad.addColorStop(1, 'rgba(' + beamRGB + ', 0.05)');
+        ctx.fillStyle = beamGrad;
+        ctx.beginPath();
+        ctx.moveTo(ux - topHalfW, uy + 24);
+        ctx.lineTo(ux + topHalfW, uy + 24);
+        ctx.lineTo(ux + botHalfW, h * 0.96);
+        ctx.lineTo(ux - botHalfW, h * 0.96);
+        ctx.closePath();
+        ctx.fill();
 
-      // Subtle vertical laser scan rays inside the wide cone
-      if (ufoState === 'running' && !isAbducting) {
-        ctx.strokeStyle = 'rgba(186, 230, 253, 0.22)';
-        ctx.lineWidth = 2;
-        [-0.7, -0.35, 0, 0.35, 0.7].forEach(ratio => {
-          ctx.beginPath();
-          ctx.moveTo(ux + topHalfW * ratio, uy + 24);
-          ctx.lineTo(ux + botHalfW * ratio, h * 0.95);
-          ctx.stroke();
-        });
-      }
-
-      if (isAbducting) {
-        ctx.strokeStyle = 'rgba(167, 243, 208, 0.85)';
-        ctx.lineWidth = 2.4;
-        for (let r = 0; r < 5; r++) {
-          const ringProg = ((now * 0.0017 + r * 0.2) % 1);
-          const ryPos = (h * 0.86) - ringProg * (h * 0.54);
-          const rw = 54 - ringProg * 30;
-          ctx.beginPath();
-          ctx.ellipse(ux, ryPos, rw, 7.5, 0, 0, Math.PI * 2);
-          ctx.stroke();
+        if (ufoState === 'running' && !isAbducting) {
+          ctx.strokeStyle = 'rgba(186, 230, 253, 0.22)';
+          ctx.lineWidth = 2;
+          [-0.7, -0.35, 0, 0.35, 0.7].forEach(ratio => {
+            ctx.beginPath();
+            ctx.moveTo(ux + topHalfW * ratio, uy + 24);
+            ctx.lineTo(ux + botHalfW * ratio, h * 0.95);
+            ctx.stroke();
+          });
         }
+
+        if (isAbducting) {
+          ctx.strokeStyle = 'rgba(167, 243, 208, 0.85)';
+          ctx.lineWidth = 2.4;
+          for (let r = 0; r < 5; r++) {
+            const ringProg = ((now * 0.0017 + r * 0.2) % 1);
+            const ryPos = (h * 0.86) - ringProg * (h * 0.54);
+            const rw = 54 - ringProg * 30;
+            ctx.beginPath();
+            ctx.ellipse(ux, ryPos, rw, 7.5, 0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+        ctx.restore();
       }
-      ctx.restore();
 
       // 6. Update & Draw Articulated Human Students (Idle: Bike / Read / Play / Walk -> Running -> Clinging -> Abducted!)
       ufoStudents.forEach((s, sIdx) => {
@@ -30430,7 +30486,7 @@
 
         // Draw bicycle underneath cyclist during idle
         if (ufoState === 'idle' && pose === 'bike') {
-          drawStreetBicycle(ctx, sx, sy + 6, facing, s.color, now, true);
+          drawStreetBicycle(ctx, sx, sy + 6, facing, s.color, now, true, isNightLit);
         }
 
         drawCartoonHuman(ctx, sx, sy - (pose === 'bike' ? 5 : 0), {
@@ -30473,9 +30529,10 @@
         ctx.restore();
       });
 
-      // 7. Draw GIANT UFO MOTHERSHIP (Phóng to phi thuyền khổng lồ chi tiết cao!)
-      ctx.save();
-      ctx.translate(ux, uy);
+      // 7. Draw GIANT UFO MOTHERSHIP (Chỉ xuất hiện khi bấm BẮT ĐẦU!)
+      if (ufoVisible) {
+        ctx.save();
+        ctx.translate(ux, uy);
       ctx.rotate(Math.sin(now * 0.0035) * 0.04);
 
       // Glowing multi-ring tractor emitter underneath hull
@@ -30583,6 +30640,7 @@
         ctx.beginPath(); ctx.arc(l - 1, arcY - 1, 1.4, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
+      }
 
       for (let i = ufoParticles.length - 1; i >= 0; i--) {
         const pt = ufoParticles[i];
