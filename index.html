@@ -31174,15 +31174,142 @@
     let narutoSoundEnabled = true;
 
     const NARUTO_HAND_SEALS = [
-      { name: 'ẤN HỢI (亥)', icon: '🤞', color: '#38bdf8' },
-      { name: 'ẤN TUẤT (戌)', icon: '🙌', color: '#818cf8' },
-      { name: 'ẤN DẬU (酉)', icon: '👐', color: '#f472b6' },
-      { name: 'ẤN THÂN (申)', icon: '🙏', color: '#fbbf24' },
-      { name: 'ẤN MÙI (未)', icon: '💥', color: '#f97316' }
+      { name: 'ẤN HỢI (亥)', icon: '🤞', color: '#38bdf8', jpSay: 'い！', romaji: 'I!' },
+      { name: 'ẤN TUẤT (戌)', icon: '🙌', color: '#818cf8', jpSay: 'いぬ！', romaji: 'Inu!' },
+      { name: 'ẤN DẬU (酉)', icon: '👐', color: '#f472b6', jpSay: 'とり！', romaji: 'Tori!' },
+      { name: 'ẤN THÂN (申)', icon: '🙏', color: '#fbbf24', jpSay: 'さる！', romaji: 'Saru!' },
+      { name: 'ẤN MÙI (未)', icon: '💥', color: '#f97316', jpSay: 'ひつじ！', romaji: 'Hitsuji!' }
     ];
+
+    const NarutoAnimeAudio = {
+      speechToken: 0,
+      isEnabled() {
+        return narutoSoundEnabled && (typeof isAppSoundActive === 'undefined' || isAppSoundActive);
+      },
+      getJpVoice() {
+        if (!('speechSynthesis' in window)) return null;
+        const voices = window.speechSynthesis.getVoices() || [];
+        const jaVoices = voices.filter(v => (v.lang || '').toLowerCase().startsWith('ja'));
+        if (!jaVoices.length) return null;
+        return jaVoices.find(v => /otoya|keita|kyoko|nanami|google/i.test(v.name || '')) || jaVoices[0];
+      },
+      speakJp(text, opts = {}) {
+        if (!this.isEnabled() || !('speechSynthesis' in window)) return;
+        try {
+          if (opts.interrupt !== false) {
+            this.speechToken++;
+            window.speechSynthesis.cancel();
+          }
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'ja-JP';
+          const v = this.getJpVoice();
+          if (v) u.voice = v;
+          u.rate = opts.rate || 1.20;
+          u.pitch = opts.pitch || 1.16;
+          u.volume = 1.0;
+          window.speechSynthesis.speak(u);
+        } catch(e) {}
+      },
+      speakWinnerJapanese(winnerName) {
+        if (!this.isEnabled() || !('speechSynthesis' in window)) return;
+        try {
+          const token = ++this.speechToken;
+          window.speechSynthesis.cancel();
+          const jpVoice = this.getJpVoice();
+
+          const u1 = new SpeechSynthesisUtterance('くちよせせいこう！');
+          u1.lang = 'ja-JP';
+          if (jpVoice) u1.voice = jpVoice;
+          u1.rate = 1.15;
+          u1.pitch = 1.16;
+
+          const u2 = new SpeechSynthesisUtterance(winnerName || '');
+          u2.lang = 'vi-VN';
+          u2.rate = 1.02;
+          u2.pitch = 1.05;
+
+          const u3 = new SpeechSynthesisUtterance('だってばよ！');
+          u3.lang = 'ja-JP';
+          if (jpVoice) u3.voice = jpVoice;
+          u3.rate = 1.22;
+          u3.pitch = 1.20;
+
+          u1.onend = () => { if (this.speechToken === token) window.speechSynthesis.speak(u2); };
+          u2.onend = () => { if (this.speechToken === token) window.speechSynthesis.speak(u3); };
+          window.speechSynthesis.speak(u1);
+        } catch(e) {}
+      },
+      playNoiseBurst(dur, filterFreq, filterType = 'bandpass', vol = 0.16, endFreq = null) {
+        try {
+          ArcadePackAudio.init();
+          const actx = ArcadePackAudio.ctx;
+          if (!actx) return;
+          const len = Math.max(1, Math.floor(actx.sampleRate * dur));
+          const buf = actx.createBuffer(1, len, actx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+          const src = actx.createBufferSource();
+          src.buffer = buf;
+          const filter = actx.createBiquadFilter();
+          filter.type = filterType;
+          const t = actx.currentTime;
+          filter.frequency.setValueAtTime(filterFreq, t);
+          if (endFreq) filter.frequency.exponentialRampToValueAtTime(Math.max(60, endFreq), t + dur);
+          const gain = actx.createGain();
+          gain.gain.setValueAtTime(vol, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+          src.connect(filter);
+          filter.connect(gain);
+          gain.connect(actx.destination);
+          src.start(t);
+          src.stop(t + dur + 0.02);
+        } catch(e) {}
+      },
+      playChakraStart() {
+        if (!this.isEnabled()) return;
+        [293.66, 440, 587.33].forEach((f, idx) => {
+          setTimeout(() => ArcadePackAudio.tone(f, 0.24, 'triangle', 0.11, f * 1.06), idx * 55);
+        });
+        this.speakJp('いくぞ！', { rate: 1.22, pitch: 1.18 });
+      },
+      playSeal(sealIdx) {
+        if (!this.isEnabled()) return;
+        const notes = [587.33, 659.25, 783.99, 880, 1046.5];
+        this.playNoiseBurst(0.055, 2200, 'bandpass', 0.14);
+        ArcadePackAudio.tone(notes[sealIdx % notes.length], 0.15, 'triangle', 0.14);
+        const seal = NARUTO_HAND_SEALS[sealIdx];
+        if (seal && seal.jpSay) this.speakJp(seal.jpSay, { rate: 1.36, pitch: 1.18 });
+      },
+      playKuchiyoseSlam() {
+        if (!this.isEnabled()) return;
+        ArcadePackAudio.tone(150, 0.42, 'sine', 0.28, 36);
+        ArcadePackAudio.tone(95, 0.35, 'sawtooth', 0.12, 42);
+        this.playNoiseBurst(0.42, 850, 'lowpass', 0.24, 220);
+        setTimeout(() => {
+          ArcadePackAudio.tone(587.33, 0.35, 'triangle', 0.10);
+          ArcadePackAudio.tone(880, 0.40, 'sine', 0.10);
+        }, 90);
+        this.speakJp('くちよせのじゅつ！', { rate: 1.16, pitch: 1.20 });
+      },
+      playVictory() {
+        if (!this.isEnabled()) return;
+        // Japanese anime shinobi pentatonic fanfare (D-E-G-A-D)
+        [587.33, 659.25, 783.99, 880, 1174.66].forEach((f, idx) => {
+          setTimeout(() => {
+            ArcadePackAudio.tone(f, idx === 4 ? 0.42 : 0.20, 'triangle', 0.16);
+            if (idx === 4) ArcadePackAudio.tone(146.83, 0.32, 'sine', 0.20, 48);
+          }, idx * 85);
+        });
+        this.speakJp('よし！', { rate: 1.22, pitch: 1.20 });
+      }
+    };
 
     function toggleNarutoSound() {
       narutoSoundEnabled = !narutoSoundEnabled;
+      if (!narutoSoundEnabled && ('speechSynthesis' in window)) {
+        NarutoAnimeAudio.speechToken++;
+        window.speechSynthesis.cancel();
+      }
       const btn = document.getElementById('naruto-summon-sound-btn');
       if (btn) btn.innerHTML = narutoSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
     }
@@ -31260,9 +31387,9 @@
       narutoLastSealIdx = -1;
       narutoSmokePlayed = false;
 
-      if (narutoSoundEnabled) ArcadePackAudio.tone(440, 0.2, 'triangle', 0.14, 660);
+      if (narutoSoundEnabled) NarutoAnimeAudio.playChakraStart();
       const statusEl = document.getElementById('naruto-summon-status');
-      if (statusEl) statusEl.innerText = '🍥 Naruto đang tụ Chakra xanh và kết hợp chuỗi ấn chú triệu hồi!';
+      if (statusEl) statusEl.innerText = '🍥 Ikuzo! Naruto đang tụ Chakra xanh và kết ấn chú!';
       if (!narutoAnimId) narutoAnimId = requestAnimationFrame(runNarutoLoop);
     }
 
@@ -32173,17 +32300,17 @@
           currentSealIdx = Math.min(NARUTO_HAND_SEALS.length - 1, Math.floor((t / 0.48) * NARUTO_HAND_SEALS.length));
           if (currentSealIdx !== narutoLastSealIdx) {
             narutoLastSealIdx = currentSealIdx;
-            if (narutoSoundEnabled) ArcadePackAudio.tone(480 + currentSealIdx * 110, 0.12, 'sine', 0.14);
+            if (narutoSoundEnabled) NarutoAnimeAudio.playSeal(currentSealIdx);
             const statusEl = document.getElementById('naruto-summon-status');
-            if (statusEl) statusEl.innerText = '🍥 Naruto đang kết ấn: ' + NARUTO_HAND_SEALS[currentSealIdx].name + '...';
+            if (statusEl) statusEl.innerText = '🍥 Naruto đang kết ấn: ' + NARUTO_HAND_SEALS[currentSealIdx].name + ' • ' + NARUTO_HAND_SEALS[currentSealIdx].romaji;
           }
         } else if (t < 0.72) {
           narutoPose = 'slam';
           if (!narutoSmokePlayed) {
             narutoSmokePlayed = true;
-            if (narutoSoundEnabled) ArcadePackAudio.tone(95, 0.45, 'sawtooth', 0.22, 40);
+            if (narutoSoundEnabled) NarutoAnimeAudio.playKuchiyoseSlam();
             const statusEl = document.getElementById('naruto-summon-status');
-            if (statusEl) statusEl.innerText = '💥 KUCHIYOSE NO JUTSU! TRIỆU HỒI CHI THUẬT!!';
+            if (statusEl) statusEl.innerText = '💥 KUCHIYOSE NO JUTSU! (口寄せの術)!!';
             // Burst giant anime white smoke clouds!
             for (let k = 0; k < 28; k++) {
               const ang = Math.random() * Math.PI * 2;
@@ -32225,12 +32352,12 @@
         ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
         ctx.strokeStyle = seal.color;
         ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.roundRect(narutoX - 78, narutoY - 108, 156, 36, 14); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(narutoX - 96, narutoY - 108, 192, 36, 14); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#ffffff';
         ctx.font = '900 13px system-ui, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(seal.icon + ' ' + seal.name, narutoX, narutoY - 90);
+        ctx.fillText(seal.icon + ' ' + seal.name + ' ' + seal.romaji, narutoX, narutoY - 90);
         ctx.restore();
       }
 
@@ -32298,10 +32425,10 @@
       // 9. Completion Check
       if (narutoState === 'running' && t >= 1) {
         narutoState = 'finished';
-        if (narutoSoundEnabled) ArcadePackAudio.fanfare();
+        if (narutoSoundEnabled) NarutoAnimeAudio.playVictory();
         const statusEl = document.getElementById('naruto-summon-status');
         if (statusEl && narutoTargetWinner) {
-          statusEl.innerText = '🍃 TRIỆU HỒI THÀNH CÔNG: Học sinh ' + narutoTargetWinner.name + ' đã xuất hiện tại Làng Lá!';
+          statusEl.innerText = '🍃 KUCHIYOSE SEIKŌ! Đã triệu hồi ' + narutoTargetWinner.name + ', Dattebayo!';
         }
         const cb = narutoFinishCallback;
         const winSt = narutoTargetWinner;
@@ -40572,6 +40699,10 @@
         } else if (document.getElementById('spin-mode')?.value === 'meteor_call') {
           text = `Thiên thạch vũ trụ đã rơi trúng khoang pha lê gọi tên bạn ${currentWinner.name}!`;
         } else if (document.getElementById('spin-mode')?.value === 'naruto_summon') {
+          if (typeof NarutoAnimeAudio !== 'undefined' && NarutoAnimeAudio.isEnabled()) {
+            NarutoAnimeAudio.speakWinnerJapanese(currentWinner.name);
+            return;
+          }
           text = `Nhẫn giả Naruto đã kết ấn triệu hồi chi thuật gọi tên bạn ${currentWinner.name} tại Làng Lá!`;
         }
         const utterance = new SpeechSynthesisUtterance(text);
