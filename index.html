@@ -29861,15 +29861,16 @@
         ctx.fill();
       });
 
-      // Street Facade: Townhouses, Bakery Awnings & Center School Campus Gate
+      // Street Facade: Flanking Townhouses + Authentic Multi-Wing School Campus & School Gate
       const horizonY = h * 0.56;
+      const sidewalkY = h * 0.61;
+      const roadY = h * 0.72;
+
       const townHouses = [
-        { x: 0.01, w: 0.11, h: 64, wall: '#1e293b', roof: '#991b1b', awning: '#ef4444' },
-        { x: 0.13, w: 0.11, h: 76, wall: '#334155', roof: '#0f172a', awning: '#f59e0b' },
-        { x: 0.25, w: 0.11, h: 56, wall: '#1e293b', roof: '#0284c7', awning: null },
-        { x: 0.64, w: 0.11, h: 72, wall: '#1e293b', roof: '#0f172a', awning: '#10b981' },
-        { x: 0.76, w: 0.11, h: 58, wall: '#334155', roof: '#b45309', awning: '#f97316' },
-        { x: 0.88, w: 0.11, h: 68, wall: '#1e293b', roof: '#0f172a', awning: null }
+        { x: 0.01, w: 0.105, h: 66, wall: '#1e293b', roof: '#991b1b', awning: '#ef4444' },
+        { x: 0.125, w: 0.10, h: 74, wall: '#334155', roof: '#0f172a', awning: '#f59e0b' },
+        { x: 0.775, w: 0.10, h: 68, wall: '#334155', roof: '#b45309', awning: '#f97316' },
+        { x: 0.885, w: 0.105, h: 64, wall: '#1e293b', roof: '#0f172a', awning: '#10b981' }
       ];
       townHouses.forEach((b, idx) => {
         const rx = w * b.x, rw = w * b.w, ry = horizonY - b.h;
@@ -29878,7 +29879,6 @@
         ctx.lineWidth = 1.2;
         ctx.fillRect(rx, ry, rw, b.h);
         ctx.strokeRect(rx, ry, rw, b.h);
-        // Sloped tiled roof
         ctx.fillStyle = b.roof;
         ctx.beginPath();
         ctx.moveTo(rx - 4, ry + 2);
@@ -29886,7 +29886,6 @@
         ctx.lineTo(rx + rw + 4, ry + 2);
         ctx.closePath();
         ctx.fill();
-        // Warm lit windows with frames
         for (let wy = ry + 10; wy < horizonY - 22; wy += 16) {
           for (let wx = rx + 9; wx < rx + rw - 13; wx += 18) {
             ctx.fillStyle = ((wx + wy + idx) % 4 === 0) ? '#334155' : 'rgba(253, 224, 71, 0.72)';
@@ -29896,57 +29895,194 @@
             ctx.strokeRect(wx, wy, 9, 10);
           }
         }
-        // Colorful shop awning on ground floor
         if (b.awning) {
           ctx.fillStyle = b.awning;
           ctx.beginPath(); ctx.roundRect(rx + 4, horizonY - 18, rw - 8, 7, 2); ctx.fill();
         }
       });
 
-      // School Building & Gate Arch in Center Background
-      const schX = w * 0.37, schW = w * 0.26, schY = horizonY - 82;
-      ctx.fillStyle = '#334155';
-      ctx.strokeStyle = '#0f172a';
+      // --- AUTHENTIC SCHOOL CAMPUS (Khuôn viên Trường Học nhiều tầng + Hàng rào + Cổng trường mở rộng) ---
+      const campLeft = w * 0.24, campRight = w * 0.76, campW = campRight - campLeft;
+      const bldgX = w * 0.27, bldgW = w * 0.46, bldgTop = horizonY - 88;
+
+      // Sân trường & dãy lớp học 3 tầng với hành lang ban công + mái ngói đỏ
+      const schWallGrad = ctx.createLinearGradient(0, bldgTop, 0, horizonY);
+      schWallGrad.addColorStop(0, '#cbd5e1');
+      schWallGrad.addColorStop(1, '#94a3b8');
+      ctx.fillStyle = schWallGrad;
+      ctx.strokeStyle = '#1e293b';
       ctx.lineWidth = 1.4;
-      ctx.fillRect(schX, schY, schW, 82);
-      ctx.strokeRect(schX, schY, schW, 82);
-      // School sloped terracotta roof + clock tower gable
+      ctx.fillRect(bldgX, bldgTop, bldgW, 88);
+      ctx.strokeRect(bldgX, bldgTop, bldgW, 88);
+
+      // Mái ngói đỏ đặc trưng dãy lớp học + sảnh đồng hồ nhô cao ở giữa
       ctx.fillStyle = '#991b1b';
       ctx.beginPath();
-      ctx.moveTo(schX - 8, schY + 2);
-      ctx.lineTo(schX + schW * 0.5, schY - 18);
-      ctx.lineTo(schX + schW + 8, schY + 2);
+      ctx.moveTo(bldgX - 8, bldgTop + 2);
+      ctx.lineTo(bldgX + 14, bldgTop - 16);
+      ctx.lineTo(bldgX + bldgW - 14, bldgTop - 16);
+      ctx.lineTo(bldgX + bldgW + 8, bldgTop + 2);
       ctx.closePath();
       ctx.fill();
-      // Clock face
+      ctx.stroke();
+
+      // Khối sảnh chính nhô lên ở giữa tòa trường học + mặt đồng hồ tròn
+      const midLobbyW = Math.min(72, bldgW * 0.22);
+      const midLobbyX = w * 0.5 - midLobbyW * 0.5;
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillRect(midLobbyX, bldgTop - 12, midLobbyW, 100);
+      ctx.strokeRect(midLobbyX, bldgTop - 12, midLobbyW, 100);
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath();
+      ctx.moveTo(midLobbyX - 6, bldgTop - 10);
+      ctx.lineTo(w * 0.5, bldgTop - 32);
+      ctx.lineTo(midLobbyX + midLobbyW + 6, bldgTop - 10);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      // Đồng hồ trường học
       ctx.fillStyle = '#fef3c7';
       ctx.strokeStyle = '#78350f';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.arc(schX + schW * 0.5, schY + 12, 8.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(w * 0.5, bldgTop - 3, 8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       ctx.strokeStyle = '#0f172a';
-      ctx.beginPath(); ctx.moveTo(schX + schW * 0.5, schY + 12); ctx.lineTo(schX + schW * 0.5, schY + 6.5); ctx.moveTo(schX + schW * 0.5, schY + 12); ctx.lineTo(schX + schW * 0.5 + 4, schY + 14); ctx.stroke();
-      // Classroom lit windows
-      ctx.fillStyle = 'rgba(254, 240, 138, 0.78)';
-      for (let cwx = schX + 14; cwx < schX + schW - 22; cwx += 24) {
-        ctx.fillRect(cwx, schY + 28, 14, 15);
-      }
-      // School Gate Arch Signboard
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.5, bldgTop - 3); ctx.lineTo(w * 0.5, bldgTop - 8);
+      ctx.moveTo(w * 0.5, bldgTop - 3); ctx.lineTo(w * 0.5 + 3.5, bldgTop - 1);
+      ctx.stroke();
+
+      // Hành lang ban công 2 tầng & các ô cửa sổ lớp học sáng đèn
+      [bldgTop + 24, bldgTop + 52].forEach(floorY => {
+        // Cửa sổ lớp học trái & phải sảnh
+        const winStep = Math.max(22, Math.floor(bldgW / 12));
+        for (let wx = bldgX + 12; wx < bldgX + bldgW - 18; wx += winStep) {
+          if (wx > midLobbyX - 10 && wx < midLobbyX + midLobbyW + 2) continue;
+          ctx.fillStyle = ((Math.round(wx + floorY) % 3) === 0) ? '#334155' : 'rgba(254, 240, 138, 0.85)';
+          ctx.fillRect(wx, floorY - 16, 13, 13);
+          ctx.strokeStyle = '#1e293b';
+          ctx.lineWidth = 0.8;
+          ctx.strokeRect(wx, floorY - 16, 13, 13);
+        }
+        // Thanh lan can hành lang dài
+        ctx.fillStyle = '#475569';
+        ctx.fillRect(bldgX, floorY, bldgW, 4);
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(bldgX, floorY - 5); ctx.lineTo(bldgX + bldgW, floorY - 5); ctx.stroke();
+      });
+
+      // Cột cờ sân trường bên phải sảnh chính với lá cờ bay nhẹ
+      const flagX = midLobbyX + midLobbyW + 18;
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(flagX, horizonY - 18); ctx.lineTo(flagX, bldgTop - 26); ctx.stroke();
+      const flagWave = Math.sin(now * 0.006) * 1.8;
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.moveTo(flagX, bldgTop - 26);
+      ctx.quadraticCurveTo(flagX + 10, bldgTop - 28 + flagWave, flagX + 20, bldgTop - 25);
+      ctx.lineTo(flagX + 20, bldgTop - 13);
+      ctx.quadraticCurveTo(flagX + 10, bldgTop - 15 + flagWave, flagX, bldgTop - 13);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath(); ctx.arc(flagX + 10, bldgTop - 19.5 + flagWave * 0.4, 2.3, 0, Math.PI * 2); ctx.fill();
+
+      // Hàng rào gạch & chấn song sắt trường học trải dọc hai bên cổng (Left Wing & Right Wing)
+      const gateL = w * 0.435, gateR = w * 0.565;
+      const drawFenceWing = (x1, x2) => {
+        const fw = x2 - x1;
+        // Chân tường xây vàng kem
+        ctx.fillStyle = '#d6c7a9';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1;
+        ctx.fillRect(x1, horizonY - 14, fw, 14);
+        ctx.strokeRect(x1, horizonY - 14, fw, 14);
+        // Thanh chắn song sắt phía trên
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(x1, horizonY - 27); ctx.lineTo(x2, horizonY - 27); ctx.stroke();
+        for (let bx = x1 + 6; bx < x2 - 4; bx += 7) {
+          ctx.beginPath(); ctx.moveTo(bx, horizonY - 29); ctx.lineTo(bx, horizonY - 14); ctx.stroke();
+        }
+        // Trụ gạch xen kẽ trên tường rào
+        for (let px = x1; px <= x2 - 6; px += Math.max(36, fw * 0.45)) {
+          ctx.fillStyle = '#b45309';
+          ctx.fillRect(px - 3, horizonY - 30, 6, 30);
+        }
+      };
+      drawFenceWing(campLeft, gateL - 12);
+      drawFenceWing(gateR + 12, campRight);
+
+      // Phòng bảo vệ nhỏ có đèn ấm cạnh trụ cổng bên trái
+      ctx.fillStyle = '#fef3c7';
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.2;
+      ctx.fillRect(gateL - 36, horizonY - 32, 22, 32);
+      ctx.strokeRect(gateL - 36, horizonY - 32, 22, 32);
+      ctx.fillStyle = '#991b1b';
+      ctx.fillRect(gateL - 38, horizonY - 36, 26, 5);
+      ctx.fillStyle = 'rgba(253, 224, 71, 0.85)';
+      ctx.fillRect(gateL - 32, horizonY - 26, 12, 10);
+
+      // HAI TRỤ CỔNG TRƯỜNG LỚN + ĐÈN TRỤ + BIỂN CỔNG CHÀO TRƯỜNG HỌC BẮC NGANG
+      [gateL, gateR].forEach(gx => {
+        ctx.fillStyle = '#cbd5e1';
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1.4;
+        ctx.fillRect(gx - 8, horizonY - 48, 16, 48);
+        ctx.strokeRect(gx - 8, horizonY - 48, 16, 48);
+        // Mũ trụ & đèn cổng tròn phát sáng dịu
+        ctx.fillStyle = '#991b1b';
+        ctx.fillRect(gx - 10, horizonY - 52, 20, 5);
+        ctx.fillStyle = '#fef08a';
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 10;
+        ctx.beginPath(); ctx.arc(gx, horizonY - 57, 4.2, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      // Cánh cổng sắt mở hé sang hai bên đón học sinh
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(gateL + 8, horizonY - 26); ctx.lineTo(gateL + 26, horizonY - 24);
+      ctx.moveTo(gateL + 8, horizonY - 8); ctx.lineTo(gateL + 26, horizonY - 7);
+      ctx.moveTo(gateR - 8, horizonY - 26); ctx.lineTo(gateR - 26, horizonY - 24);
+      ctx.moveTo(gateR - 8, horizonY - 8); ctx.lineTo(gateR - 26, horizonY - 7);
+      ctx.stroke();
+
+      // Mái vòm & Biển hiệu Trường Học bắc ngang qua 2 trụ cổng (hài hòa cân đối!)
+      const archW = (gateR - gateL) + 18;
+      const archX = w * 0.5 - archW * 0.5;
       ctx.fillStyle = '#b91c1c';
       ctx.strokeStyle = '#fde047';
-      ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.roundRect(schX + schW * 0.5 - 46, horizonY - 26, 92, 16, 4); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.roundRect(archX, horizonY - 54, archW, 18, 4); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#fef08a';
-      ctx.font = '800 8.5px system-ui, sans-serif';
+      ctx.font = '800 9.5px system-ui, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('🏫 CỔNG TRƯỜNG HỌC', schX + schW * 0.5, horizonY - 15);
+      ctx.textBaseline = 'middle';
+      ctx.fillText('TRƯỜNG HỌC', w * 0.5, horizonY - 45);
 
-      // 2. Roadside Grass Strip + Paved Sidewalk + Asphalt Road
-      // Grass strip behind sidewalk
+      // 2. Roadside Grass Strip + School Driveway + Paved Sidewalk + Asphalt Road
       ctx.fillStyle = '#065f46';
       ctx.fillRect(0, horizonY, w, h * 0.05);
 
-      // Bushes along grass strip
+      // Đường dẫn lát đá nối thẳng từ Cổng Trường ra Vỉa Hè
+      ctx.fillStyle = '#cbd5e1';
+      ctx.beginPath();
+      ctx.moveTo(gateL + 6, horizonY);
+      ctx.lineTo(gateR - 6, horizonY);
+      ctx.lineTo(gateR + 10, sidewalkY);
+      ctx.lineTo(gateL - 10, sidewalkY);
+      ctx.closePath();
+      ctx.fill();
+
+      // Bụi cây dọc dải cỏ (chừa lối đi cổng trường!)
       for (let bx = 28; bx < w; bx += 68) {
+        if (bx > gateL - 16 && bx < gateR + 16) continue;
         ctx.fillStyle = '#15803d';
         ctx.beginPath(); ctx.arc(bx, horizonY + 12, 16, Math.PI, 0); ctx.fill();
         ctx.fillStyle = '#16a34a';
@@ -29954,24 +30090,22 @@
       }
 
       // Tiled Sidewalk (Vỉa hè lát gạch)
-      const sidewalkY = h * 0.61;
-      const roadY = h * 0.72;
       const swGrad = ctx.createLinearGradient(0, sidewalkY, 0, roadY);
       swGrad.addColorStop(0, '#94a3b8');
       swGrad.addColorStop(1, '#64748b');
       ctx.fillStyle = swGrad;
       ctx.fillRect(0, sidewalkY, w, roadY - sidewalkY);
 
-      // Sidewalk tile lines
       ctx.strokeStyle = 'rgba(15, 23, 42, 0.18)';
       ctx.lineWidth = 1;
       for (let tx = 0; tx < w; tx += 36) {
         ctx.beginPath(); ctx.moveTo(tx, sidewalkY); ctx.lineTo(tx - 10, roadY); ctx.stroke();
       }
-      // Curb (Bó vỉa hè vàng-xám)
+      // Curb (Bó vỉa hè vàng-xám, hạ cốt êm ở đoạn lối cổng trường)
       ctx.fillStyle = '#475569';
       ctx.fillRect(0, roadY - 5, w, 6);
       for (let cx = 0; cx < w; cx += 40) {
+        if (cx > gateL - 10 && cx < gateR + 10) continue;
         if ((cx / 40) % 2 === 0) {
           ctx.fillStyle = '#eab308';
           ctx.fillRect(cx, roadY - 5, 20, 5);
@@ -29985,11 +30119,11 @@
       ctx.fillStyle = roadGrad;
       ctx.fillRect(0, roadY, w, h - roadY);
 
-      // Zebra Crosswalk on left side
-      ctx.fillStyle = 'rgba(248, 250, 252, 0.55)';
-      for (let zy = roadY + 12; zy < h - 10; zy += 22) {
+      // Vạch qua đường cho học sinh đặt ngay trước Cổng Trường!
+      ctx.fillStyle = 'rgba(248, 250, 252, 0.60)';
+      for (let zy = roadY + 10; zy < h - 10; zy += 22) {
         ctx.beginPath();
-        ctx.roundRect(w * 0.12, zy, 52, 11, 2);
+        ctx.roundRect(w * 0.5 - 30, zy, 60, 11, 2);
         ctx.fill();
       }
 
@@ -29999,6 +30133,8 @@
       ctx.setLineDash([28, 22]);
       ctx.beginPath();
       ctx.moveTo(0, roadY + (h - roadY) * 0.46);
+      ctx.lineTo(w * 0.5 - 42, roadY + (h - roadY) * 0.46);
+      ctx.moveTo(w * 0.5 + 42, roadY + (h - roadY) * 0.46);
       ctx.lineTo(w, roadY + (h - roadY) * 0.46);
       ctx.stroke();
       ctx.setLineDash([]);
@@ -31142,538 +31278,370 @@
     }
 
     function drawKonohaVillage(ctx, w, h, now) {
-      // 1. Bright Anime Sky & Sunlit Mountain Mist behind Konoha Valley
-      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.52);
-      sky.addColorStop(0, '#7dd3fc');
-      sky.addColorStop(0.55, '#e0f2fe');
+      // True 1-point perspective vanishing point matching reference anime street canyon
+      const vpX = w * 0.495;
+      const vpY = h * 0.47;
+      const proj = (x, y, t) => [x + (vpX - x) * t, y + (vpY - y) * t];
+
+      const fillPoly = (pts, fillStyle, strokeStyle, lw) => {
+        ctx.fillStyle = fillStyle;
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+        ctx.closePath();
+        ctx.fill();
+        if (strokeStyle) {
+          ctx.strokeStyle = strokeStyle;
+          ctx.lineWidth = lw || 1;
+          ctx.stroke();
+        }
+      };
+
+      // 1. Bright Warm Daylight Anime Sky & Soft Atmospheric Cliff Haze
+      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.50);
+      sky.addColorStop(0, '#bae6fd');
+      sky.addColorStop(0.55, '#f0f9ff');
       sky.addColorStop(1, '#fef9c3');
       ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, w, h * 0.55);
+      ctx.fillRect(0, 0, w, h * 0.52);
 
-      // Soft warm daylight haze around Hokage Cliff
-      const sunHaze = ctx.createRadialGradient(w * 0.52, h * 0.25, 20, w * 0.52, h * 0.25, w * 0.42);
-      sunHaze.addColorStop(0, 'rgba(255, 251, 235, 0.75)');
-      sunHaze.addColorStop(1, 'rgba(255, 251, 235, 0)');
-      ctx.fillStyle = sunHaze;
-      ctx.fillRect(0, 0, w, h * 0.55);
+      // 2. MONUMENTAL HOKAGE ROCK CLIFF (Núi đá sa thạch tạc chân dung 5 Hokage chân thực)
+      const cliffGrad = ctx.createLinearGradient(w * 0.25, 0, w * 0.85, h * 0.42);
+      cliffGrad.addColorStop(0, '#f3e5cb');
+      cliffGrad.addColorStop(0.45, '#cfa97b');
+      cliffGrad.addColorStop(0.85, '#967048');
+      cliffGrad.addColorStop(1, '#583f26');
+      fillPoly([
+        [w * 0.22, h * 0.42], [w * 0.25, h * 0.14], [w * 0.33, h * 0.06],
+        [w * 0.44, h * 0.02], [w * 0.53, 0], [w * 0.65, h * 0.02],
+        [w * 0.77, h * 0.07], [w * 0.85, h * 0.18], [w * 0.88, h * 0.42]
+      ], cliffGrad);
 
-      // 2. MONUMENTAL HOKAGE ROCK MOUNTAIN (Tượng Đài 5 Đời Hokage sừng sững giữa thung lũng!)
-      const mLeft = w * 0.24, mRight = w * 0.85, mBaseY = h * 0.39;
-      // Distant green pine crest behind rock rim
+      // Pine forest crest atop Hokage cliff
       ctx.fillStyle = '#3f6212';
-      for (let fx = mLeft + 10; fx < mRight - 10; fx += 14) {
-        const ridgeY = h * 0.09 + Math.sin(fx * 0.04) * 8;
-        ctx.beginPath(); ctx.arc(fx, ridgeY, 10, Math.PI, 0); ctx.fill();
+      for (let fx = w * 0.26; fx < w * 0.80; fx += 11) {
+        const fy = h * (fx < w * 0.42 ? 0.09 : fx > w * 0.66 ? 0.09 : 0.03) + Math.sin(fx * 0.08) * 3;
+        ctx.beginPath(); ctx.arc(fx, fy, 7, Math.PI, 0); ctx.fill();
       }
 
-      const cliffGrad = ctx.createLinearGradient(w * 0.30, h * 0.05, w * 0.75, mBaseY);
-      cliffGrad.addColorStop(0, '#efe1c8');
-      cliffGrad.addColorStop(0.45, '#cfa97e');
-      cliffGrad.addColorStop(0.85, '#9d7954');
-      cliffGrad.addColorStop(1, '#5e452f');
-      ctx.fillStyle = cliffGrad;
-      ctx.strokeStyle = '#4a3522';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(mLeft, mBaseY);
-      ctx.lineTo(w * 0.27, h * 0.14);
-      ctx.lineTo(w * 0.35, h * 0.07);
-      ctx.lineTo(w * 0.47, h * 0.05);
-      ctx.lineTo(w * 0.54, h * 0.02);
-      ctx.lineTo(w * 0.62, h * 0.06);
-      ctx.lineTo(w * 0.74, h * 0.08);
-      ctx.lineTo(w * 0.82, h * 0.16);
-      ctx.lineTo(mRight, mBaseY);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-
-      // Deep vertical sandstone canyon ridges & shadowed fissures
-      ctx.fillStyle = 'rgba(72, 50, 32, 0.36)';
-      [0.31, 0.36, 0.43, 0.50, 0.57, 0.64, 0.71, 0.77].forEach((cx, ci) => {
-        const topY = h * (0.10 + (ci % 3) * 0.025);
-        ctx.beginPath();
-        ctx.moveTo(w * cx, topY);
-        ctx.lineTo(w * (cx + 0.022), topY + 8);
-        ctx.lineTo(w * (cx + 0.015), mBaseY);
-        ctx.lineTo(w * (cx - 0.012), mBaseY);
-        ctx.closePath();
-        ctx.fill();
+      // Painterly vertical rock fissures & shadowed cliff strata
+      [
+        [0.29, 0.08, 0.035], [0.34, 0.05, 0.028], [0.42, 0.03, 0.032],
+        [0.50, 0.02, 0.025], [0.58, 0.03, 0.032], [0.67, 0.05, 0.030],
+        [0.74, 0.08, 0.036], [0.80, 0.13, 0.035]
+      ].forEach(([rx, topY, rw]) => {
+        const gCleft = ctx.createLinearGradient(w * rx, h * topY, w * (rx + rw), h * topY);
+        gCleft.addColorStop(0, 'rgba(245, 228, 198, 0.35)');
+        gCleft.addColorStop(0.55, 'rgba(92, 64, 38, 0.55)');
+        gCleft.addColorStop(1, 'rgba(54, 36, 20, 0.72)');
+        fillPoly([
+          [w * rx, h * topY], [w * (rx + rw), h * (topY + 0.03)],
+          [w * (rx + rw * 0.7), h * 0.38], [w * (rx - rw * 0.2), h * 0.38]
+        ], gCleft);
       });
 
-      // 5 SCULPTED HOKAGE FACES IN ARC FORMATION (Giống hệt góc nhìn ảnh mẫu!)
-      const scFace = Math.max(0.75, Math.min(1.18, w / 920));
-      const hokageArc = [
-        { fx: 0.395, fy: 0.140, id: 1, s: 1.00 }, // Đệ Nhất Hashirama
-        { fx: 0.468, fy: 0.195, id: 2, s: 0.96 }, // Đệ Nhị Tobirama
-        { fx: 0.532, fy: 0.100, id: 3, s: 1.06 }, // Đệ Tam Hiruzen (cao nhất ở giữa!)
-        { fx: 0.598, fy: 0.210, id: 4, s: 0.96 }, // Đệ Tứ Minato
-        { fx: 0.672, fy: 0.135, id: 5, s: 1.00 }  // Đệ Ngũ Tsunade
+      // 5 SCULPTED REALISTIC HOKAGE PORTRAITS (Ánh sáng nghiêng tạo khối nổi 3D như thật)
+      const faceScale = Math.max(0.75, Math.min(1.20, w / 920));
+      const hokageBusts = [
+        { fx: 0.405, fy: 0.125, id: 1, sc: 1.00 }, // Hashirama
+        { fx: 0.472, fy: 0.180, id: 2, sc: 0.96 }, // Tobirama
+        { fx: 0.534, fy: 0.095, id: 3, sc: 1.08 }, // Hiruzen (cao nhất giữa)
+        { fx: 0.598, fy: 0.195, id: 4, sc: 0.96 }, // Minato
+        { fx: 0.672, fy: 0.120, id: 5, sc: 1.02 }  // Tsunade
       ];
-      hokageArc.forEach(hk => {
+      hokageBusts.forEach(hk => {
         ctx.save();
         ctx.translate(w * hk.fx, h * hk.fy);
-        ctx.scale(scFace * hk.s, scFace * hk.s);
+        ctx.scale(faceScale * hk.sc, faceScale * hk.sc);
 
-        // Chiseled recessed cliff niche behind head
-        ctx.fillStyle = 'rgba(66, 46, 29, 0.38)';
-        ctx.beginPath(); ctx.ellipse(2, 3, 21, 27, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(48, 32, 18, 0.62)';
+        ctx.beginPath(); ctx.ellipse(2, 4, 21, 27, 0, 0, Math.PI * 2); ctx.fill();
 
-        // Sculpted stone face plane (warm sunlit left, deep shadow right)
-        const fGrad = ctx.createLinearGradient(-15, -18, 15, 20);
-        fGrad.addColorStop(0, '#f3e5cc');
-        fGrad.addColorStop(0.55, '#d6ba94');
-        fGrad.addColorStop(1, '#7c5f42');
-        ctx.fillStyle = fGrad;
-        ctx.strokeStyle = '#4a3522';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath();
-        ctx.moveTo(-14.5, -16);
-        ctx.lineTo(14.5, -16);
-        ctx.lineTo(13, 8);
-        ctx.lineTo(6.5, 22);
-        ctx.lineTo(-6.5, 22);
-        ctx.lineTo(-13, 8);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        const hGrad = ctx.createLinearGradient(-15, -16, 15, 22);
+        hGrad.addColorStop(0, '#f6ebd5');
+        hGrad.addColorStop(0.50, '#d8bc93');
+        hGrad.addColorStop(0.82, '#9a7852');
+        hGrad.addColorStop(1, '#573f27');
+        fillPoly([[-14, -15], [14, -15], [12.5, 9], [6, 22], [-6, 22], [-12.5, 9]], hGrad);
 
-        // Deep carved brow shadow & eyes
-        ctx.fillStyle = '#4e3926';
-        ctx.beginPath();
-        ctx.moveTo(-11, -5); ctx.lineTo(-2.5, -3.5); ctx.lineTo(-3, -1); ctx.lineTo(-10.5, -1.5); ctx.closePath();
-        ctx.moveTo(11, -5); ctx.lineTo(2.5, -3.5); ctx.lineTo(3, -1); ctx.lineTo(10.5, -1.5); ctx.closePath();
-        ctx.fill();
+        fillPoly([[-12, -5.5], [-2.5, -3.5], [-3, 0], [-10.5, -0.5]], 'rgba(56, 37, 21, 0.78)');
+        fillPoly([[12, -5.5], [2.5, -3.5], [3, 0], [10.5, -0.5]], 'rgba(48, 32, 18, 0.85)');
+        fillPoly([[-1.2, -4], [1.2, -4], [1.8, 7.5], [-1.5, 7.5]], '#efe0c4');
+        fillPoly([[1.2, -4], [3.5, 7.5], [1.8, 7.5]], 'rgba(56, 37, 21, 0.72)');
+        fillPoly([[-4.5, 11.5], [4.5, 11.5], [3, 13.5], [-3, 13.5]], 'rgba(68, 46, 27, 0.72)');
+        fillPoly([[-4, 17], [4, 17], [0, 21]], 'rgba(56, 37, 21, 0.55)');
 
-        // Chiseled nose bridge + cast shadow under nose & lips
-        ctx.fillStyle = '#8b6d4c';
-        ctx.beginPath(); ctx.moveTo(-1, -4); ctx.lineTo(2.5, -4); ctx.lineTo(3.5, 7); ctx.lineTo(-1.8, 7.5); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = '#5c432b';
-        ctx.fillRect(-5, 12.5, 10, 2);
-        ctx.fillRect(-3.5, 16, 7, 1.5);
-
-        // Iconic Carved Hair & Headbands matching each Hokage in the portrait!
         if (hk.id === 1) {
-          // Hashirama: wide bandana headband + straight side locks framing face
-          ctx.fillStyle = '#a68967';
-          ctx.strokeStyle = '#4a3522';
-          ctx.beginPath(); ctx.roundRect(-16, -22, 32, 12, 3); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = '#6f553b';
-          ctx.fillRect(-17.5, -12, 4.5, 28);
-          ctx.fillRect(13, -12, 4.5, 28);
-          ctx.fillStyle = '#d6ba94';
-          ctx.fillRect(-9, -15, 18, 4.5);
+          fillPoly([[-16.5, -23], [16.5, -23], [15.5, -11], [-15.5, -11]], '#a68763');
+          fillPoly([[-18, -12], [-13, -12], [-12.5, 18], [-17, 15]], '#5e452d');
+          fillPoly([[13, -12], [18, -12], [17, 15], [12.5, 18]], '#483320');
+          fillPoly([[-9.5, -16], [9.5, -16], [9.5, -11], [-9.5, -11]], '#d8bc93');
         } else if (hk.id === 2) {
-          // Tobirama: spiky swept stone hair + headband + jaw armor + cheek lines
-          ctx.fillStyle = '#efe5d2';
-          ctx.strokeStyle = '#4a3522';
-          ctx.beginPath();
-          ctx.moveTo(-16, -10); ctx.lineTo(-18, -22); ctx.lineTo(-9, -19); ctx.lineTo(-3, -27);
-          ctx.lineTo(3, -20); ctx.lineTo(10, -26); ctx.lineTo(16, -18); ctx.lineTo(15, -10);
-          ctx.closePath(); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = '#7c5f42';
-          ctx.fillRect(-13.5, -12, 27, 5.5);
-          ctx.fillRect(-13, 5, 4, 15); ctx.fillRect(9, 5, 4, 15);
-          ctx.fillRect(-8, 16, 16, 6);
+          fillPoly([[-16, -10], [-19, -22], [-10, -18], [-3, -27], [3, -19], [11, -26], [17, -18], [15, -10]], '#efe2cc');
+          fillPoly([[-14.5, -13], [14.5, -13], [14.5, -8], [-14.5, -8]], '#8f704e');
+          fillPoly([[-13.5, 4], [-9.5, 4], [-9.5, 20], [-13, 16]], '#6e5237');
+          fillPoly([[9.5, 4], [13.5, 4], [13, 16], [9.5, 20]], '#563e28');
+          fillPoly([[-8.5, 15.5], [8.5, 15.5], [6, 22], [-6, 22]], '#7c5d40');
         } else if (hk.id === 3) {
-          // Hiruzen: tall wild stone crown/hood + fierce eyes + carved mustache & goatee!
-          ctx.fillStyle = '#d6ba94';
-          ctx.strokeStyle = '#4a3522';
-          ctx.beginPath();
-          ctx.moveTo(-17, -9); ctx.lineTo(-19, -21); ctx.lineTo(-10, -20); ctx.lineTo(-6, -28);
-          ctx.lineTo(0, -22); ctx.lineTo(7, -28); ctx.lineTo(11, -20); ctx.lineTo(19, -21); ctx.lineTo(17, -9);
-          ctx.closePath(); ctx.fill(); ctx.stroke();
-          // Goatee beard
-          ctx.fillStyle = '#6f553b';
-          ctx.beginPath(); ctx.moveTo(-4.5, 15); ctx.lineTo(0, 26); ctx.lineTo(4.5, 15); ctx.closePath(); ctx.fill();
+          fillPoly([[-17, -10], [-19, -22], [-10, -21], [-5, -30], [0, -24], [6, -30], [11, -21], [19, -22], [17, -10]], '#d8bc93');
+          fillPoly([[-7, 10.5], [7, 10.5], [5, 13.5], [-5, 13.5]], '#6b4f35');
+          fillPoly([[-4.5, 14.5], [4.5, 14.5], [0, 26]], '#5c422a');
         } else if (hk.id === 4) {
-          // Minato: layered jagged spiky bangs hanging over forehead!
-          ctx.fillStyle = '#f3e5cc';
-          ctx.strokeStyle = '#5c432b';
-          ctx.beginPath();
-          ctx.moveTo(-17, -6); ctx.lineTo(-22, -16); ctx.lineTo(-13, -17); ctx.lineTo(-10, -27);
-          ctx.lineTo(-2, -21); ctx.lineTo(2, -28); ctx.lineTo(9, -20); ctx.lineTo(17, -26);
-          ctx.lineTo(14, -15); ctx.lineTo(21, -13); ctx.lineTo(16, -5);
-          ctx.lineTo(10, 0); ctx.lineTo(5, -9); ctx.lineTo(0, 1); ctx.lineTo(-5, -9); ctx.lineTo(-10, 0);
-          ctx.closePath(); ctx.fill(); ctx.stroke();
+          fillPoly([
+            [-17, -6], [-23, -16], [-13, -17], [-9, -28], [-2, -21], [3, -28],
+            [10, -20], [18, -26], [15, -14], [22, -12], [16, -4],
+            [10, 2], [5, -9], [0, 3], [-5, -9], [-10, 2]
+          ], '#f2e3c5');
         } else if (hk.id === 5) {
-          // Tsunade: broad flowing locks + forehead Byakugou mark
-          ctx.fillStyle = '#e6d1b1';
-          ctx.strokeStyle = '#4a3522';
-          ctx.beginPath();
-          ctx.moveTo(-18, -12); ctx.quadraticCurveTo(0, -26, 18, -12);
-          ctx.lineTo(19, 14); ctx.lineTo(13.5, 14); ctx.lineTo(13, -6);
-          ctx.lineTo(0, -10); ctx.lineTo(-13, -6); ctx.lineTo(-13.5, 14); ctx.lineTo(-19, 14);
-          ctx.closePath(); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = '#4a3522';
-          ctx.beginPath(); ctx.moveTo(0, -11); ctx.lineTo(2, -8.5); ctx.lineTo(0, -6); ctx.lineTo(-2, -8.5); ctx.closePath(); ctx.fill();
+          fillPoly([[-18, -13], [0, -22], [18, -13], [20, 14], [13, 14], [12, -7], [0, -11], [-12, -7], [-13, 14], [-20, 14]], '#e5d0ad');
+          fillPoly([[0, -11.5], [2, -8.5], [0, -5.5], [-2, -8.5]], '#4a3522');
         }
         ctx.restore();
       });
 
-      // Tiny village rooftops peeking below cliff left & right of Hokage Tower
-      ctx.fillStyle = '#f1f5f9';
-      ctx.fillRect(w * 0.30, h * 0.34, 48, 22);
-      ctx.fillStyle = '#0284c7';
-      ctx.fillRect(w * 0.295, h * 0.33, 52, 5);
+      // Tiny village buildings tucked right behind the Hokage Tower left shoulder
+      ctx.fillStyle = '#e7e5e4';
+      ctx.fillRect(w * 0.32, h * 0.335, 36, 22);
+      ctx.fillStyle = '#0369a1';
+      ctx.fillRect(w * 0.315, h * 0.328, 40, 5);
 
-      // 3. GIANT SCARLET-TERRACOTTA HOKAGE TOWER AT CENTER FOCAL POINT!
-      const hokX = w * 0.495, hokGroundY = h * 0.565;
-      const drumTopY = h * 0.255, drumBotY = h * 0.46;
+      // 3. GIANT HOKAGE RESIDENCE TOWER DEAD CENTER (Dinh Hokage mái đỏ cam & 5 chóp nhọn)
+      const hokX = w * 0.495;
+      const drumTop = h * 0.23, drumBot = h * 0.46;
+      const hokGroundY = h * 0.56;
 
-      // 5 Tall Pale-White Curved Fin Spires crowning Hokage Tower rim
-      const fins = [-0.088, -0.048, 0.0, 0.048, 0.088];
-      fins.forEach((off, fi) => {
+      [-0.088, -0.052, 0.0, 0.052, 0.088].forEach((off, fi) => {
         const fx = hokX + w * off;
-        const finH = fi === 2 ? h * 0.085 : h * 0.068;
-        ctx.fillStyle = fi === 2 ? '#ffffff' : '#e2e8f0';
-        ctx.strokeStyle = '#64748b';
-        ctx.lineWidth = 1.3;
-        ctx.beginPath();
-        ctx.moveTo(fx - 6, drumTopY + 10);
-        ctx.quadraticCurveTo(fx - 3, drumTopY - finH * 0.7, fx, drumTopY - finH);
-        ctx.quadraticCurveTo(fx + 5, drumTopY - finH * 0.5, fx + 7, drumTopY + 10);
-        ctx.closePath();
-        ctx.fill(); ctx.stroke();
+        const finH = fi === 2 ? h * 0.095 : h * 0.072;
+        const fGrad = ctx.createLinearGradient(fx - 7, 0, fx + 7, 0);
+        fGrad.addColorStop(0, '#f8fafc');
+        fGrad.addColorStop(0.6, '#cbd5e1');
+        fGrad.addColorStop(1, '#64748b');
+        fillPoly([
+          [fx - 7, drumTop + 16],
+          [fx - 3.5, drumTop - finH * 0.65],
+          [fx + (fi < 2 ? 4 : fi > 2 ? -4 : 0), drumTop - finH],
+          [fx + 7, drumTop + 16]
+        ], fGrad, '#475569', 1);
       });
 
-      // Rounded Terracotta-Scarlet Hokage Tower Body
-      const drumGrad = ctx.createLinearGradient(hokX - w * 0.14, drumTopY, hokX + w * 0.14, drumBotY);
-      drumGrad.addColorStop(0, '#fb923c');
-      drumGrad.addColorStop(0.28, '#e85d3c');
-      drumGrad.addColorStop(0.75, '#c24124');
-      drumGrad.addColorStop(1, '#7c2d12');
-      ctx.fillStyle = drumGrad;
-      ctx.strokeStyle = '#7c2d12';
-      ctx.lineWidth = 1.8;
+      const bodyGrad = ctx.createLinearGradient(hokX - w * 0.14, 0, hokX + w * 0.14, 0);
+      bodyGrad.addColorStop(0, '#fb923c');
+      bodyGrad.addColorStop(0.28, '#e86843');
+      bodyGrad.addColorStop(0.76, '#c24124');
+      bodyGrad.addColorStop(1, '#7c2d12');
+      ctx.fillStyle = bodyGrad;
       ctx.beginPath();
-      ctx.moveTo(hokX - w * 0.105, drumTopY);
-      ctx.quadraticCurveTo(hokX, drumTopY + 12, hokX + w * 0.105, drumTopY);
-      ctx.quadraticCurveTo(hokX + w * 0.145, (drumTopY + drumBotY) * 0.52, hokX + w * 0.145, drumBotY);
-      ctx.lineTo(hokX - w * 0.145, drumBotY);
-      ctx.quadraticCurveTo(hokX - w * 0.145, (drumTopY + drumBotY) * 0.52, hokX - w * 0.105, drumTopY);
+      ctx.moveTo(hokX - w * 0.102, drumTop);
+      ctx.quadraticCurveTo(hokX, drumTop + 14, hokX + w * 0.102, drumTop);
+      ctx.quadraticCurveTo(hokX + w * 0.145, (drumTop + drumBot) * 0.55, hokX + w * 0.148, drumBot);
+      ctx.lineTo(hokX - w * 0.148, drumBot);
+      ctx.quadraticCurveTo(hokX - w * 0.145, (drumTop + drumBot) * 0.55, hokX - w * 0.102, drumTop);
       ctx.closePath();
-      ctx.fill(); ctx.stroke();
+      ctx.fill();
 
-      // Golden-terracotta horizontal rim bands & tiny loop windows along drum
       ctx.strokeStyle = '#fdba74';
-      ctx.lineWidth = 3;
-      [0.24, 0.38].forEach(ry => {
-        const yBand = drumTopY + (drumBotY - drumTopY) * ry;
-        const hw = w * (0.105 + ry * 0.08);
-        ctx.beginPath();
-        ctx.moveTo(hokX - hw, yBand);
-        ctx.quadraticCurveTo(hokX, yBand + 10, hokX + hw, yBand);
-        ctx.stroke();
+      ctx.lineWidth = 3.2;
+      [0.24, 0.36].forEach(rY => {
+        const yy = drumTop + (drumBot - drumTop) * rY;
+        const hw = w * (0.104 + rY * 0.08);
+        ctx.beginPath(); ctx.moveTo(hokX - hw, yy); ctx.quadraticCurveTo(hokX, yy + 11, hokX + hw, yy); ctx.stroke();
       });
-
-      ctx.fillStyle = '#451a03';
+      ctx.fillStyle = '#3b1508';
       for (let wi = -5; wi <= 5; wi++) {
         if (wi === 0) continue;
         const wx = hokX + wi * (w * 0.021);
-        const curveY = drumTopY + (drumBotY - drumTopY) * 0.56 + (1 - Math.abs(wi) / 6) * 6;
-        ctx.fillRect(wx - 2.5, curveY, 5, 5.5);
-        ctx.fillRect(wx - 2.5, curveY + 12, 5, 5.5);
+        const arc = (1 - Math.abs(wi) / 6) * 6;
+        ctx.fillRect(wx - 2.2, drumTop + (drumBot - drumTop) * 0.52 + arc, 4.4, 5);
+        ctx.fillRect(wx - 2.2, drumTop + (drumBot - drumTop) * 0.65 + arc, 4.4, 5);
       }
 
-      // Iconic Crimson-Ringed '火' Crest Medallion in Upper Center of Hokage Tower
-      const badgeR = Math.max(12, Math.min(18, w * 0.019));
-      const badgeY = drumTopY + 14;
-      ctx.fillStyle = '#dc2626';
-      ctx.strokeStyle = '#7f1d1d';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.arc(hokX, badgeY, badgeR, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#fef3c7';
-      ctx.beginPath(); ctx.arc(hokX, badgeY, badgeR * 0.76, 0, Math.PI * 2); ctx.fill();
+      const bR = Math.max(13, Math.min(18, w * 0.019));
+      const bY = drumTop + 16;
       ctx.fillStyle = '#b91c1c';
-      ctx.font = '900 ' + Math.round(badgeR * 1.15) + 'px system-ui, sans-serif';
+      ctx.beginPath(); ctx.arc(hokX, bY, bR, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fef3c7';
+      ctx.beginPath(); ctx.arc(hokX, bY, bR * 0.76, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#b91c1c';
+      ctx.font = '900 ' + Math.round(bR * 1.15) + 'px system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('火', hokX, badgeY + 0.5);
+      ctx.fillText('火', hokX, bY + 0.5);
 
-      // Wide Sloped Orange-Tiled Veranda Roof & Palace Entrance Courtyard
-      const eaveTop = drumBotY - 2;
-      const eaveBot = drumBotY + h * 0.055;
-      const roofGrad = ctx.createLinearGradient(0, eaveTop, 0, eaveBot);
-      roofGrad.addColorStop(0, '#c2410c');
-      roofGrad.addColorStop(0.55, '#ea580c');
-      roofGrad.addColorStop(1, '#9a3412');
-      ctx.fillStyle = roofGrad;
-      ctx.strokeStyle = '#431407';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(hokX - w * 0.145, eaveTop);
-      ctx.lineTo(hokX + w * 0.145, eaveTop);
-      ctx.lineTo(hokX + w * 0.175, eaveBot);
-      ctx.lineTo(hokX - w * 0.175, eaveBot);
-      ctx.closePath();
-      ctx.fill(); ctx.stroke();
-
-      // Veranda tile ribs
+      const vTop = drumBot - 2, vBot = drumBot + h * 0.056;
+      const vGrad = ctx.createLinearGradient(0, vTop, 0, vBot);
+      vGrad.addColorStop(0, '#c2410c');
+      vGrad.addColorStop(0.5, '#ea580c');
+      vGrad.addColorStop(1, '#7c2d12');
+      fillPoly([[hokX - w * 0.145, vTop], [hokX + w * 0.145, vTop], [hokX + w * 0.175, vBot], [hokX - w * 0.175, vBot]], vGrad);
       ctx.strokeStyle = 'rgba(67, 20, 7, 0.35)';
       ctx.lineWidth = 1;
       for (let ti = -9; ti <= 9; ti++) {
-        ctx.beginPath();
-        ctx.moveTo(hokX + ti * (w * 0.015), eaveTop);
-        ctx.lineTo(hokX + ti * (w * 0.018), eaveBot);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(hokX + ti * (w * 0.015), vTop); ctx.lineTo(hokX + ti * (w * 0.018), vBot); ctx.stroke();
       }
-
-      // Ground-floor Hokage Hallway & Sliding Wooden Doors
-      ctx.fillStyle = '#fef3c7';
-      ctx.fillRect(hokX - w * 0.13, eaveBot, w * 0.26, hokGroundY - eaveBot);
+      ctx.fillStyle = '#fde68a';
+      ctx.fillRect(hokX - w * 0.13, vBot, w * 0.26, hokGroundY - vBot);
       ctx.fillStyle = '#57534e';
-      ctx.fillRect(hokX - w * 0.05, eaveBot + 4, w * 0.10, hokGroundY - eaveBot - 4);
-      ctx.fillStyle = '#92400e';
-      ctx.fillRect(hokX - w * 0.022, eaveBot + 6, w * 0.044, hokGroundY - eaveBot - 6);
+      ctx.fillRect(hokX - w * 0.048, vBot + 4, w * 0.096, hokGroundY - vBot - 4);
+      ctx.fillStyle = '#78350f';
+      ctx.fillRect(hokX - w * 0.018, vBot + 6, w * 0.036, hokGroundY - vBot - 6);
 
-      // Lush Courtyard Trees flanking the Hokage Residence Doors
-      [[-0.105, '#15803d', '#22c55e'], [0.105, '#166534', '#4ade80']].forEach(([off, c1, c2]) => {
+      [[-0.095, '#166534', '#22c55e'], [0.095, '#15803d', '#4ade80']].forEach(([off, c1, c2]) => {
         const tx = hokX + w * off, ty = hokGroundY;
-        ctx.fillStyle = '#451a03';
-        ctx.fillRect(tx - 4, ty - 24, 8, 24);
+        ctx.fillStyle = '#3f2e21';
+        ctx.fillRect(tx - 3.5, ty - 22, 7, 22);
         ctx.fillStyle = c1;
-        ctx.beginPath(); ctx.arc(tx, ty - 28, 22, 0, Math.PI * 2); ctx.arc(tx - 13, ty - 18, 15, 0, Math.PI * 2); ctx.arc(tx + 13, ty - 18, 15, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(tx, ty - 26, 20, 0, Math.PI * 2); ctx.arc(tx - 12, ty - 16, 14, 0, Math.PI * 2); ctx.arc(tx + 12, ty - 16, 14, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = c2;
-        ctx.beginPath(); ctx.arc(tx + 4, ty - 33, 12, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(tx + 3, ty - 31, 11, 0, Math.PI * 2); ctx.fill();
       });
 
-      // 4. SUNLIT KONOHA MAIN AVENUE & DRAMATIC CAST BUILDING SHADOWS (Con phố dẫn thẳng tới Dinh Hokage!)
-      const stTopL = w * 0.365, stTopR = w * 0.625;
-      const stBotL = w * 0.145, stBotR = w * 0.855;
-      const streetGrad = ctx.createLinearGradient(0, hokGroundY, 0, h);
-      streetGrad.addColorStop(0, '#fef08a');
-      streetGrad.addColorStop(0.28, '#fef9c3');
-      streetGrad.addColorStop(0.70, '#fde68a');
-      streetGrad.addColorStop(1, '#d97706');
-      ctx.fillStyle = streetGrad;
-      ctx.beginPath();
-      ctx.moveTo(stTopL, hokGroundY);
-      ctx.lineTo(stTopR, hokGroundY);
-      ctx.lineTo(w, h);
-      ctx.lineTo(0, h);
-      ctx.closePath();
-      ctx.fill();
+      // 4. SUNLIT KONOHA MAIN AVENUE & REALISTIC CAST BUILDING SHADOW
+      const stLTop = w * 0.395, stRTop = w * 0.595;
+      const stGrad = ctx.createLinearGradient(0, hokGroundY, 0, h);
+      stGrad.addColorStop(0, '#fef9c3');
+      stGrad.addColorStop(0.35, '#fffbeb');
+      stGrad.addColorStop(0.75, '#fef08a');
+      stGrad.addColorStop(1, '#d97706');
+      fillPoly([[stLTop, hokGroundY], [stRTop, hokGroundY], [w, h], [0, h]], stGrad);
 
-      // Realistic diagonal building shadow cast from the left block onto the sunlit avenue
-      const shadGrad = ctx.createLinearGradient(0, h * 0.60, w * 0.50, h * 0.92);
-      shadGrad.addColorStop(0, 'rgba(28, 25, 23, 0.64)');
-      shadGrad.addColorStop(0.65, 'rgba(41, 37, 36, 0.32)');
-      shadGrad.addColorStop(1, 'rgba(41, 37, 36, 0)');
-      ctx.fillStyle = shadGrad;
-      ctx.beginPath();
-      ctx.moveTo(0, hokGroundY);
-      ctx.lineTo(stTopL + w * 0.05, hokGroundY);
-      ctx.lineTo(w * 0.45, h);
-      ctx.lineTo(0, h);
-      ctx.closePath();
-      ctx.fill();
+      const shGrad = ctx.createLinearGradient(w * 0.15, h * 0.60, w * 0.54, h * 0.90);
+      shGrad.addColorStop(0, 'rgba(28, 25, 23, 0.72)');
+      shGrad.addColorStop(0.68, 'rgba(41, 37, 36, 0.35)');
+      shGrad.addColorStop(1, 'rgba(41, 37, 36, 0)');
+      fillPoly([[0, hokGroundY], [stLTop + w * 0.055, hokGroundY], [w * 0.44, h], [0, h]], shGrad);
 
-      // Subtle paved stone curb seams converging in perspective
-      ctx.strokeStyle = 'rgba(146, 64, 14, 0.22)';
-      ctx.lineWidth = 1.3;
-      ctx.beginPath();
-      ctx.moveTo(stTopL + w * 0.02, hokGroundY); ctx.lineTo(stBotL, h);
-      ctx.moveTo(stTopR - w * 0.02, hokGroundY); ctx.lineTo(stBotR, h);
-      ctx.stroke();
+      // 5. LEFT PERSPECTIVE BUILDINGS (Hút tâm chuẩn -> vpX, vpY)
+      const flT = [w * 0.35, h * 0.36], flB = [w * 0.35, h * 0.62];
+      const flT2 = proj(flT[0], flT[1], 0.30), flB2 = proj(flB[0], flB[1], 0.30);
+      fillPoly([flT, flT2, [flB2[0], hokGroundY], flB], '#d6cbb8');
+      const awL1 = proj(w * 0.35, h * 0.51, 0.0), awL2 = proj(w * 0.35, h * 0.51, 0.32);
+      fillPoly([awL1, awL2, [awL2[0] + 10, awL2[1] + 9], [awL1[0] + 12, awL1[1] + 11]], '#b91c1c');
 
-      // 5. LEFT PERSPECTIVE KONOHA SHOPHOUSES (Tòa xanh lá đậm -> Tòa gạch hồng -> Tiệm mái hiên đỏ)
-      // Far-left shop (cream + bright red awning leading into square)
-      ctx.fillStyle = '#e7dcc8';
-      ctx.strokeStyle = '#292524';
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.33, h * 0.40); ctx.lineTo(w * 0.40, h * 0.425);
-      ctx.lineTo(w * 0.40, hokGroundY); ctx.lineTo(w * 0.33, h * 0.62);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#dc2626';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.33, h * 0.515); ctx.lineTo(w * 0.42, h * 0.528);
-      ctx.lineTo(w * 0.40, h * 0.548); ctx.lineTo(w * 0.33, h * 0.538);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Mid-left Terracotta-Rose Multi-story Shop
-      ctx.fillStyle = '#9f5b52';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.24, h * 0.21); ctx.lineTo(w * 0.34, h * 0.33);
-      ctx.lineTo(w * 0.34, h * 0.63); ctx.lineTo(w * 0.24, h * 0.72);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-      // Shaded street-facing awning & dark wooden windows
-      ctx.fillStyle = '#1e3a8a';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.24, h * 0.47); ctx.lineTo(w * 0.355, h * 0.50);
-      ctx.lineTo(w * 0.345, h * 0.53); ctx.lineTo(w * 0.24, h * 0.51);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#292524';
+      const mlT = [w * 0.255, h * 0.21], mlB = [w * 0.255, h * 0.74];
+      const mlT2 = proj(mlT[0], mlT[1], 0.34), mlB2 = proj(mlB[0], mlB[1], 0.34);
+      fillPoly([mlT, mlT2, mlB2, mlB], '#884e48');
+      const mAw1 = proj(w * 0.255, h * 0.48, 0.02), mAw2 = proj(w * 0.255, h * 0.48, 0.33);
+      fillPoly([mAw1, mAw2, [mAw2[0] + 10, mAw2[1] + 11], [mAw1[0] + 14, mAw1[1] + 14]], '#1e3a8a');
       for (let wi = 0; wi < 3; wi++) {
-        const wx = w * (0.255 + wi * 0.026);
-        const wy = h * (0.28 + wi * 0.025);
-        ctx.fillRect(wx, wy, w * 0.015, h * 0.07);
+        const wt = 0.06 + wi * 0.095;
+        const p1 = proj(w * 0.255, h * 0.29, wt), p2 = proj(w * 0.255, h * 0.29, wt + 0.06);
+        const p3 = proj(w * 0.255, h * 0.41, wt + 0.06), p4 = proj(w * 0.255, h * 0.41, wt);
+        fillPoly([p1, p2, p3, p4], '#292524');
       }
 
-      // Foreground Left Tall EMERALD-GREEN BUILDING (Tòa nhà xanh rêu biểu tượng bên trái ảnh!)
-      // Front sunlit left-strip + dark shaded perspective wall
-      ctx.fillStyle = '#4f8f54';
-      ctx.beginPath();
-      ctx.moveTo(0, h * 0.07); ctx.lineTo(w * 0.17, h * 0.09);
-      ctx.lineTo(w * 0.17, h * 0.90); ctx.lineTo(0, h);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Green Rooftop Parapet with Red Kanji Mark & Water Tank
-      ctx.fillStyle = '#14532d';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.17, h * 0.09); ctx.lineTo(w * 0.275, h * 0.20);
-      ctx.lineTo(w * 0.275, h * 0.76); ctx.lineTo(w * 0.17, h * 0.90);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-      // Green roof bump + tank
-      ctx.fillStyle = '#4f8f54';
-      ctx.beginPath(); ctx.roundRect(w * 0.175, h * 0.035, w * 0.055, h * 0.10, 4); ctx.fill(); ctx.stroke();
+      const glX = w * 0.175;
+      const glT1 = [glX, h * 0.09], glB1 = [glX, h * 0.90];
+      const glT2 = proj(glX, h * 0.09, 0.26), glB2 = proj(glX, h * 0.90, 0.26);
+      fillPoly([[0, h * 0.06], glT1, glB1, [0, h]], '#51874f');
+      fillPoly([glT1, glT2, glB2, glB1], '#244727');
+      fillPoly([[w * 0.178, h * 0.035], [w * 0.228, h * 0.08], [w * 0.228, h * 0.14], [w * 0.178, h * 0.095]], '#4a7f48');
       ctx.fillStyle = '#94a3b8';
-      ctx.beginPath(); ctx.roundRect(w * 0.06, h * 0.005, 36, 22, 6); ctx.fill(); ctx.stroke();
-
-      // Overhanging Yellow/Red Shop Plaque on Upper Left + Dark Timber Windows
-      ctx.fillStyle = '#ca8a04';
-      ctx.strokeStyle = '#7f1d1d';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.03, h * 0.06); ctx.lineTo(w * 0.115, h * 0.13);
-      ctx.lineTo(w * 0.115, h * 0.205); ctx.lineTo(w * 0.03, h * 0.14);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Shaded street-side windows & shop awnings on Green Building
-      ctx.fillStyle = '#1e293b';
+      ctx.beginPath(); ctx.roundRect(w * 0.065, h * 0.004, 34, 22, 6); ctx.fill();
+      fillPoly([[w * 0.03, h * 0.055], [w * 0.125, h * 0.13], [w * 0.125, h * 0.205], [w * 0.03, h * 0.135]], '#ca8a04', '#7f1d1d', 1.6);
       for (let wi = 0; wi < 4; wi++) {
-        ctx.fillRect(w * (0.18 + wi * 0.022), h * (0.31 + wi * 0.022), w * 0.013, h * 0.105);
+        const wt = 0.03 + wi * 0.055;
+        const p1 = proj(glX, h * 0.30, wt), p2 = proj(glX, h * 0.30, wt + 0.035);
+        const p3 = proj(glX, h * 0.44, wt + 0.035), p4 = proj(glX, h * 0.44, wt);
+        fillPoly([p1, p2, p3, p4], '#1c1917');
       }
-      ctx.fillStyle = '#0f3923';
-      ctx.beginPath();
-      ctx.moveTo(0, h * 0.52); ctx.lineTo(w * 0.185, h * 0.56);
-      ctx.lineTo(w * 0.185, h * 0.62); ctx.lineTo(0, h * 0.59);
-      ctx.closePath(); ctx.fill();
+      fillPoly([[0, h * 0.52], [glX + 14, h * 0.555], [glX + 14, h * 0.625], [0, h * 0.595]], '#143518');
 
-      // 6. RIGHT PERSPECTIVE KONOHA SHOPHOUSES (Nhà mái xanh + bồn nước inox -> Nhà mái tím gạch lộ + mái hiên đỏ!)
-      // Mid-right White & Sunlit Shop with ROYAL BLUE ROOF & 2 STEEL WATER TANKS
-      ctx.fillStyle = '#f8fafc';
-      ctx.strokeStyle = '#334155';
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.585, h * 0.41); ctx.lineTo(w * 0.695, h * 0.30);
-      ctx.lineTo(w * 0.695, h * 0.69); ctx.lineTo(w * 0.585, hokGroundY);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Royal Blue Sloped Roof & Two Silver Steel Water Tanks on Roof!
-      ctx.fillStyle = '#1d4ed8';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.58, h * 0.415); ctx.lineTo(w * 0.665, h * 0.315);
-      ctx.lineTo(w * 0.77, h * 0.315); ctx.lineTo(w * 0.695, h * 0.38);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // 2 Cylindrical Silver Steel Water Tanks (Bồn nước inox trên mái!)
-      [[0.715, 0.255, 22, 32], [0.785, 0.235, 26, 36]].forEach(([tx, ty, tw, th]) => {
-        const tankGrad = ctx.createLinearGradient(w * tx, 0, w * tx + tw, 0);
-        tankGrad.addColorStop(0, '#64748b');
-        tankGrad.addColorStop(0.45, '#f1f5f9');
-        tankGrad.addColorStop(1, '#334155');
-        ctx.fillStyle = tankGrad;
-        ctx.strokeStyle = '#1e293b';
+      // 6. RIGHT PERSPECTIVE BUILDINGS (Nhà trắng mái xanh + 2 bồn nước inox -> Nhà kem lộ gạch mái tím!)
+      const mrX = w * 0.715;
+      const mrT1 = [mrX, h * 0.30], mrB1 = [mrX, h * 0.72];
+      const mrT2 = proj(mrX, h * 0.30, 0.38), mrB2 = proj(mrX, h * 0.72, 0.38);
+      fillPoly([mrT2, mrT1, mrB1, mrB2], '#f8fafc');
+      fillPoly([[w * 0.595, h * 0.405], [w * 0.68, h * 0.30], [w * 0.79, h * 0.30], [mrX, h * 0.365]], '#1d4ed8');
+      [[0.71, 0.23, 21, 31], [0.78, 0.21, 25, 35]].forEach(([tx, ty, tw, th]) => {
+        const tG = ctx.createLinearGradient(w * tx, 0, w * tx + tw, 0);
+        tG.addColorStop(0, '#64748b');
+        tG.addColorStop(0.42, '#f8fafc');
+        tG.addColorStop(1, '#334155');
+        ctx.fillStyle = tG;
+        ctx.beginPath(); ctx.roundRect(w * tx, h * ty, tw, th, 4); ctx.fill();
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(w * tx + 3, h * ty + th * 0.45); ctx.lineTo(w * tx + tw - 3, h * ty + th * 0.45);
+        ctx.moveTo(w * tx + 3, h * ty + th * 0.75); ctx.lineTo(w * tx + tw - 3, h * ty + th * 0.75);
+        ctx.stroke();
+      });
+      fillPoly([proj(mrX, h * 0.50, 0.08), proj(mrX, h * 0.50, 0.26), proj(mrX, h * 0.56, 0.26), proj(mrX, h * 0.56, 0.08)], '#2563eb');
+      const yAw1 = proj(mrX, h * 0.57, 0.04), yAw2 = proj(mrX, h * 0.57, 0.28);
+      fillPoly([yAw2, yAw1, [yAw1[0] - 18, yAw1[1] + 18], [yAw2[0] - 12, yAw2[1] + 14]], '#facc15');
+      [0.39, 0.445, 0.50].forEach((sy, si) => {
+        ctx.fillStyle = '#0f4c45';
+        ctx.strokeStyle = '#042f2e';
         ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.roundRect(w * tx, h * ty, tw, th, 4); ctx.fill(); ctx.stroke();
+        ctx.fillRect(w * 0.70, h * sy, 18, 18);
+        ctx.strokeRect(w * 0.70, h * sy, 18, 18);
+        ctx.fillStyle = '#ccfbf1';
+        ctx.font = 'bold 10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(['風', '葉', '堂'][si], w * 0.70 + 9, h * sy + 12);
+      });
+      [[0.618, 0.645], [0.652, 0.678]].forEach(([sx, sy]) => {
+        ctx.fillStyle = 'rgba(0,0,0,0.20)';
+        ctx.beginPath(); ctx.ellipse(w * sx + 5, h * sy + 17, 7, 2.5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#15803d';
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.roundRect(w * sx, h * sy, 11, 16, 1.5); ctx.fill(); ctx.stroke();
       });
 
-      // Green 3-Panel Vertical Shop Sign + Blue Balcony + Yellow-Striped Awning
-      ctx.fillStyle = '#115e59';
-      ctx.strokeStyle = '#042f2e';
-      ctx.beginPath(); ctx.roundRect(w * 0.70, h * 0.405, 18, 54, 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#ccfbf1';
-      ctx.font = 'bold 9px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('風', w * 0.70 + 9, h * 0.425);
-      ctx.fillText('葉', w * 0.70 + 9, h * 0.455);
+      const frX = w * 0.73;
+      const frWallGrad = ctx.createLinearGradient(frX, h * 0.20, w, h * 0.90);
+      frWallGrad.addColorStop(0, '#fed7aa');
+      frWallGrad.addColorStop(0.50, '#fdba74');
+      frWallGrad.addColorStop(1, '#d97757');
+      fillPoly([[frX, h * 0.285], [w * 0.925, h * 0.135], [w, h * 0.135], [w, h], [w * 0.855, h], [frX, h * 0.78]], frWallGrad);
 
-      // Blue Balcony Railing & Yellow Striped Awning
-      ctx.fillStyle = '#2563eb';
-      ctx.fillRect(w * 0.64, h * 0.50, w * 0.065, h * 0.05);
-      ctx.fillStyle = '#fde047';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.635, h * 0.56); ctx.lineTo(w * 0.73, h * 0.56);
-      ctx.lineTo(w * 0.755, h * 0.63); ctx.lineTo(w * 0.635, h * 0.61);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Tiny A-frame Street Menu Boards standing along right curb
-      [[0.615, 0.64], [0.648, 0.675]].forEach(([sx, sy]) => {
-        ctx.fillStyle = '#166534';
-        ctx.strokeStyle = '#fde047';
-        ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.roundRect(w * sx, h * sy, 13, 18, 2); ctx.fill(); ctx.stroke();
-      });
-
-      // Foreground Right Building: SUNLIT PEACH PLASTER + EXPOSED BRICK + PURPLE ROOF + RED AWNING!
-      const rbX = w * 0.725;
-      const wallGrad = ctx.createLinearGradient(rbX, h * 0.25, w, h * 0.90);
-      wallGrad.addColorStop(0, '#fed7aa');
-      wallGrad.addColorStop(0.55, '#fdba74');
-      wallGrad.addColorStop(1, '#d97757');
-      ctx.fillStyle = wallGrad;
-      ctx.strokeStyle = '#451a03';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(rbX, h * 0.29); ctx.lineTo(w * 0.92, h * 0.14);
-      ctx.lineTo(w, h * 0.14); ctx.lineTo(w, h);
-      ctx.lineTo(w * 0.87, h); ctx.lineTo(rbX, h * 0.76);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Purple-Magenta Foreground Sloped Roof + Steep Blue Exterior Staircase in top-right!
-      ctx.fillStyle = '#9333ea';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.72, h * 0.29); ctx.lineTo(w * 0.89, h * 0.125);
-      ctx.lineTo(w * 0.945, h * 0.145); ctx.lineTo(w * 0.755, h * 0.305);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-
-      // Blue exterior metal stairway on upper right
-      ctx.strokeStyle = '#1e3a8a';
-      ctx.lineWidth = 4;
-      ctx.beginPath(); ctx.moveTo(w * 0.80, 0); ctx.lineTo(w * 0.90, h * 0.13); ctx.stroke();
-
-      // Exposed Terracotta Brick Patches & Metal Pipe on Foreground Right Plaster Wall
-      ctx.fillStyle = '#c2410c';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.925, h * 0.31); ctx.lineTo(w * 0.97, h * 0.33);
-      ctx.lineTo(w * 0.96, h * 0.45); ctx.lineTo(w * 0.915, h * 0.42);
-      ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = '#475569';
-      ctx.lineWidth = 3.2;
-      ctx.beginPath(); ctx.moveTo(w * 0.965, h * 0.16); ctx.lineTo(w * 0.965, h * 0.86); ctx.stroke();
-
-      // Wooden Lattice Shoji Windows (Koushi) on Foreground Right House
-      [0.75, 0.80, 0.855].forEach((wx, wi) => {
-        const wy = h * (0.37 - wi * 0.032);
-        ctx.fillStyle = '#b45309';
-        ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 1.4;
-        ctx.fillRect(w * wx, wy, w * 0.038, h * 0.14);
-        ctx.strokeRect(w * wx, wy, w * 0.038, h * 0.14);
-        // Fine lattice bars
-        ctx.strokeStyle = 'rgba(254, 243, 199, 0.55)';
-        ctx.lineWidth = 0.8;
-        for (let b = 1; b <= 3; b++) {
-          ctx.beginPath(); ctx.moveTo(w * wx + (w * 0.038) * (b / 4), wy); ctx.lineTo(w * wx + (w * 0.038) * (b / 4), wy + h * 0.14); ctx.stroke();
+      [
+        { bx: 0.925, by: 0.30, cols: 3, rows: 4 },
+        { bx: 0.935, by: 0.61, cols: 3, rows: 3 }
+      ].forEach(patch => {
+        for (let r = 0; r < patch.rows; r++) {
+          for (let c = 0; c < patch.cols; c++) {
+            const xBrick = w * patch.bx + c * 11 + (r % 2) * 5;
+            const yBrick = h * patch.by + r * 6.5;
+            ctx.fillStyle = (r + c) % 2 === 0 ? '#b45309' : '#9a3412';
+            ctx.fillRect(xBrick, yBrick, 9.5, 5);
+          }
         }
       });
 
-      // Vertical Wood Shop Plaques & Bright Crimson Ground Awning
-      [0.77, 0.835].forEach((px, pi) => {
-        ctx.fillStyle = '#d97706';
-        ctx.strokeStyle = '#451a03';
-        ctx.fillRect(w * px, h * (0.55 - pi * 0.025), 14, 46);
-        ctx.strokeRect(w * px, h * (0.55 - pi * 0.025), 14, 46);
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3.6;
+      ctx.beginPath(); ctx.moveTo(w * 0.962, h * 0.15); ctx.lineTo(w * 0.962, h * 0.90); ctx.stroke();
+
+      fillPoly([[w * 0.72, h * 0.29], [w * 0.89, h * 0.125], [w * 0.95, h * 0.14], [w * 0.755, h * 0.308]], '#8b3b8c');
+      ctx.strokeStyle = '#1e3a8a';
+      ctx.lineWidth = 3.5;
+      ctx.beginPath(); ctx.moveTo(w * 0.79, 0); ctx.lineTo(w * 0.895, h * 0.13); ctx.stroke();
+      for (let st = 0; st < 7; st++) {
+        const sx = w * (0.805 + st * 0.013), sy = h * (0.015 + st * 0.017);
+        ctx.beginPath(); ctx.moveTo(sx - 6, sy); ctx.lineTo(sx + 4, sy); ctx.stroke();
+      }
+
+      [0.755, 0.805, 0.86].forEach((wx, wi) => {
+        const wy = h * (0.365 - wi * 0.032);
+        ctx.fillStyle = 'rgba(69, 26, 3, 0.35)';
+        ctx.fillRect(w * wx - 2, wy + 2, w * 0.04, h * 0.135);
+        ctx.fillStyle = '#b45309';
+        ctx.fillRect(w * wx, wy, w * 0.038, h * 0.135);
+        ctx.strokeStyle = '#fde68a';
+        ctx.lineWidth = 0.7;
+        for (let b = 1; b <= 3; b++) {
+          const lx = w * wx + (w * 0.038) * (b / 4);
+          ctx.beginPath(); ctx.moveTo(lx, wy); ctx.lineTo(lx, wy + h * 0.135); ctx.stroke();
+        }
       });
-      ctx.fillStyle = '#dc2626';
-      ctx.strokeStyle = '#7f1d1d';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(w * 0.73, h * 0.65); ctx.lineTo(w * 0.91, h * 0.725);
-      ctx.lineTo(w * 0.885, h * 0.80); ctx.lineTo(w * 0.725, h * 0.715);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
+      [0.775, 0.84].forEach((px, pi) => {
+        ctx.fillStyle = '#c27834';
+        ctx.fillRect(w * px, h * (0.54 - pi * 0.025), 13, 44);
+      });
+      fillPoly([[w * 0.73, h * 0.65], [w * 0.915, h * 0.725], [w * 0.885, h * 0.80], [w * 0.725, h * 0.715]], '#dc2626');
     }
 
     function drawNarutoCharacter(ctx, x, y, opts) {
@@ -31685,6 +31653,7 @@
 
       ctx.save();
       ctx.translate(x, y);
+      ctx.scale(1.12, 1.12); // Tỉ lệ rõ nét nổi bật trên con đường Làng Lá
       const bob = state === 'seal' ? Math.sin(now * 0.025) * 2.5 : (state === 'idle' ? Math.sin(now * 0.005) * 1.8 : 0);
       ctx.translate(0, bob);
 
@@ -31703,131 +31672,137 @@
       }
 
       // Ground Shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.36)';
-      ctx.beginPath(); ctx.ellipse(0, 32, 23, 7.5, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.34)';
+      ctx.beginPath(); ctx.ellipse(0, 32, 23, 7, 0, 0, Math.PI * 2); ctx.fill();
 
-      // Ninja Legs (Orange pants with crisp outline + white shin wraps + Kunai pouch + Shinobi sandals)
+      // Ninja Legs (Orange Shippuden pants + white thigh bandage + Kunai holster + blue sandals)
       const crouch = state === 'slam' ? 8 : 0;
       ctx.lineCap = 'round';
       ctx.strokeStyle = outline;
-      ctx.lineWidth = 11.5;
+      ctx.lineWidth = 11.2;
       ctx.beginPath();
-      ctx.moveTo(-8, 6 + crouch * 0.5); ctx.lineTo(-13.5, 28);
-      ctx.moveTo(8, 6 + crouch * 0.5); ctx.lineTo(13.5, 28);
+      ctx.moveTo(-7.5, 6 + crouch * 0.5); ctx.lineTo(-13, 28);
+      ctx.moveTo(7.5, 6 + crouch * 0.5); ctx.lineTo(13, 28);
       ctx.stroke();
 
-      ctx.strokeStyle = '#ea580c';
-      ctx.lineWidth = 8.2;
+      ctx.strokeStyle = '#f97316';
+      ctx.lineWidth = 8.0;
       ctx.stroke();
 
-      // White shin bandage wrap on right leg & dark kunai pouch on right thigh
       ctx.strokeStyle = '#f8fafc';
-      ctx.lineWidth = 8.5;
-      ctx.beginPath(); ctx.moveTo(10.8, 17 + crouch * 0.2); ctx.lineTo(12.2, 22); ctx.stroke();
-      ctx.fillStyle = '#e2e8f0';
+      ctx.lineWidth = 8.4;
+      ctx.beginPath(); ctx.moveTo(10.5, 16 + crouch * 0.2); ctx.lineTo(11.8, 21.5); ctx.stroke();
+      ctx.fillStyle = '#1e293b';
       ctx.strokeStyle = outline;
       ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.roundRect(8.5, 11 + crouch * 0.2, 6, 8, 1.5); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.roundRect(8.2, 11.5 + crouch * 0.2, 5.8, 7.5, 1.5); ctx.fill(); ctx.stroke();
 
-      // Open-toe Shinobi Sandals
-      [[-13.5, 30], [13.5, 30]].forEach(([sx, sy]) => {
+      [[-13, 30], [13, 30]].forEach(([sx, sy]) => {
         ctx.fillStyle = '#1e293b';
         ctx.strokeStyle = outline;
         ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.ellipse(sx, sy, 7, 3.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(sx, sy, 6.8, 3.6, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#fed7aa';
-        ctx.beginPath(); ctx.ellipse(sx, sy + 0.5, 3, 1.6, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(sx, sy + 0.4, 2.8, 1.5, 0, 0, Math.PI * 2); ctx.fill();
       });
 
-      // Torso (Iconic Orange & Black Shippuden Tracksuit with Collar, Zipper & Red Uzumaki Swirl!)
+      // Tapered Athletic Jacket Torso (Vai rộng eo thon chuẩn dáng Naruto Shippuden)
       const jktGrad = ctx.createLinearGradient(-15, -18 + crouch, 15, 10 + crouch);
       jktGrad.addColorStop(0, '#fb923c');
       jktGrad.addColorStop(1, '#ea580c');
       ctx.fillStyle = jktGrad;
       ctx.strokeStyle = outline;
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.roundRect(-14.5, -18 + crouch, 29, 28, 6.5); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = 1.9;
+      ctx.beginPath();
+      ctx.moveTo(-14.5, -15 + crouch);
+      ctx.lineTo(14.5, -15 + crouch);
+      ctx.lineTo(11.8, 9.5 + crouch);
+      ctx.quadraticCurveTo(0, 12 + crouch, -11.8, 9.5 + crouch);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
 
-      // Black upper shoulder jacket panel
+      // Black shoulder yoke + orange high collar + zipper + black waist trim
       ctx.fillStyle = '#18181b';
-      ctx.beginPath(); ctx.roundRect(-14.5, -18 + crouch, 29, 13, [6.5, 6.5, 0, 0]); ctx.fill();
-      // High collar flaps + mesh undershirt
+      ctx.beginPath();
+      ctx.moveTo(-14.3, -15 + crouch);
+      ctx.lineTo(14.3, -15 + crouch);
+      ctx.lineTo(13.2, -5.5 + crouch);
+      ctx.lineTo(-13.2, -5.5 + crouch);
+      ctx.closePath(); ctx.fill();
+
       ctx.fillStyle = '#f97316';
       ctx.strokeStyle = outline;
       ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.roundRect(-9, -22 + crouch, 18, 7, 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.roundRect(-8.5, -21.5 + crouch, 17, 7, 2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#334155';
-      ctx.fillRect(-4.5, -18 + crouch, 9, 12);
-      // Zipper line + brass pull
+      ctx.fillRect(-3.8, -16 + crouch, 7.6, 11);
+
       ctx.strokeStyle = '#fbbf24';
-      ctx.lineWidth = 1.8;
-      ctx.beginPath(); ctx.moveTo(0, -16 + crouch); ctx.lineTo(0, 8.5 + crouch); ctx.stroke();
-      ctx.fillStyle = '#fef08a';
-      ctx.beginPath(); ctx.arc(0, -14 + crouch, 1.8, 0, Math.PI * 2); ctx.fill();
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(0, -15 + crouch); ctx.lineTo(0, 9.5 + crouch); ctx.stroke();
+      ctx.fillStyle = '#18181b';
+      ctx.fillRect(-11.8, 6.5 + crouch, 23.6, 3.2);
 
       // Red Uzumaki Swirl Crest on shoulder/chest
       ctx.strokeStyle = '#dc2626';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.arc(-9.5, -11.5 + crouch, 3.2, 0, Math.PI * 1.7); ctx.stroke();
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(-9, -10.5 + crouch, 2.9, 0, Math.PI * 1.7); ctx.stroke();
 
-      // Arms & Hand Seals with black forearm cuffs + anime outline!
+      // Arms & Fingerless Shinobi Gloves
       const drawNarutoArm = (x1, y1, cx, cy, x2, y2, sleeveColor) => {
         ctx.strokeStyle = outline;
-        ctx.lineWidth = 9.2;
+        ctx.lineWidth = 8.8;
         ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo(cx, cy, x2, y2); ctx.stroke();
         ctx.strokeStyle = sleeveColor || '#f97316';
-        ctx.lineWidth = 6.2;
+        ctx.lineWidth = 6.0;
         ctx.stroke();
       };
 
       if (state === 'slam') {
-        drawNarutoArm(-13, -11 + crouch, -18, -3 + crouch, -21, 5 + crouch, '#ea580c');
-        drawNarutoArm(13, -11 + crouch, 22, 4 + crouch, 29, 26, '#fb923c');
-        ctx.fillStyle = '#fed7aa';
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.arc(29, 26, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        // Ground slam chakra shockwave ring!
-        ctx.strokeStyle = '#38bdf8';
-        ctx.lineWidth = 2.4;
-        ctx.beginPath(); ctx.ellipse(29, 28, 18 + Math.sin(now * 0.03) * 5, 5.5, 0, 0, Math.PI * 2); ctx.stroke();
-      } else if (state === 'seal') {
-        const sealJiggle = Math.sin(now * 0.04 + sealIdx) * 2.5;
-        drawNarutoArm(-13, -11, -12, -2, -3.5, -2 + sealJiggle, '#f97316');
-        drawNarutoArm(13, -11, 12, -2, 3.5, -2 - sealJiggle, '#f97316');
-        // Clasped hands forming ninja seal + bright chakra spark!
+        drawNarutoArm(-12.5, -10 + crouch, -17, -2 + crouch, -20, 6 + crouch, '#ea580c');
+        drawNarutoArm(12.5, -10 + crouch, 21, 5 + crouch, 28, 26, '#fb923c');
         ctx.fillStyle = '#fed7aa';
         ctx.strokeStyle = outline;
         ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.roundRect(-6.5, -6, 13, 9, 4); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(28, 26, 5.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.ellipse(28, 28, 18 + Math.sin(now * 0.03) * 5, 5.5, 0, 0, Math.PI * 2); ctx.stroke();
+      } else if (state === 'seal') {
+        const sealJiggle = Math.sin(now * 0.04 + sealIdx) * 2.5;
+        drawNarutoArm(-12.5, -10, -11, -1, -3.5, -2 + sealJiggle, '#f97316');
+        drawNarutoArm(12.5, -10, 11, -1, 3.5, -2 - sealJiggle, '#f97316');
+        ctx.fillStyle = '#fed7aa';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.roundRect(-6.2, -5.8, 12.4, 8.6, 4); ctx.fill(); ctx.stroke();
         ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
         ctx.shadowColor = '#38bdf8';
         ctx.shadowBlur = 14;
         ctx.beginPath(); ctx.arc(0, -1.5, 5 + Math.sin(now * 0.05) * 1.5, 0, Math.PI * 2); ctx.fill();
         ctx.shadowBlur = 0;
       } else if (state === 'cheer') {
-        drawNarutoArm(-13, -11, -18, -18, -23, -25, '#fb923c');
-        drawNarutoArm(13, -11, 20, -14, 27, -18, '#fb923c');
+        drawNarutoArm(-12.5, -10, -17, -18, -22, -25, '#fb923c');
+        drawNarutoArm(12.5, -10, 19, -14, 26, -18, '#fb923c');
         ctx.fillStyle = '#fed7aa';
         ctx.strokeStyle = outline;
         ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.arc(-23, -25, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(27, -18, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(-22, -25, 4.3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(26, -18, 4.3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else {
-        drawNarutoArm(-13, -11, -17, -3, -19, 6, '#f97316');
-        drawNarutoArm(13, -11, 17, -3, 19, 6, '#f97316');
+        drawNarutoArm(-12.5, -10, -16, -2, -18, 6.5, '#f97316');
+        drawNarutoArm(12.5, -10, 16, -2, 18, 6.5, '#f97316');
         ctx.fillStyle = '#fed7aa';
         ctx.strokeStyle = outline;
         ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.arc(-19, 6, 4.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(19, 6, 4.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(-18, 6.5, 4.0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(18, 6.5, 4.0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       }
 
-      // HEAD + ANIME SPIKY BLONDE HAIR + KONOHA HITAI-ATE HEADBAND + WHISKERS
+      // HEAD: Authentic Layered Spiky Blonde Hair + Curved Konoha Headband + Azure Eyes & Whiskers
       ctx.save();
-      ctx.translate(0, -33 + crouch);
+      ctx.translate(0, -32 + crouch);
 
-      // Fluttering headband cloth tails behind head
       const tailWave = Math.sin(now * 0.012) * 3.5;
       ctx.fillStyle = '#0f172a';
       ctx.beginPath();
@@ -31835,111 +31810,107 @@
       ctx.beginPath();
       ctx.moveTo(-12, -5); ctx.quadraticCurveTo(-22, -4 - tailWave * 0.5, -26, 4 - tailWave * 0.5); ctx.lineTo(-19, 4); ctx.closePath(); ctx.fill();
 
-      // Back spiky golden hair halo
       const hairGrad = ctx.createLinearGradient(0, -30, 0, 2);
       hairGrad.addColorStop(0, '#fef08a');
       hairGrad.addColorStop(0.55, '#facc15');
       hairGrad.addColorStop(1, '#eab308');
       ctx.fillStyle = hairGrad;
       ctx.strokeStyle = '#a16207';
-      ctx.lineWidth = 1.6;
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(-16, 0);
-      ctx.lineTo(-23, -10); ctx.lineTo(-14, -13);
-      ctx.lineTo(-19, -24); ctx.lineTo(-8, -19);
-      ctx.lineTo(-5, -31); ctx.lineTo(1, -21);
-      ctx.lineTo(7, -30); ctx.lineTo(10, -19);
-      ctx.lineTo(20, -24); ctx.lineTo(14, -12);
-      ctx.lineTo(23, -9); ctx.lineTo(16, 0);
+      ctx.moveTo(-15.5, 0);
+      ctx.lineTo(-24, -9); ctx.lineTo(-15, -12);
+      ctx.lineTo(-21, -23); ctx.lineTo(-9.5, -18.5);
+      ctx.lineTo(-7, -30.5); ctx.lineTo(0, -21);
+      ctx.lineTo(6.5, -31); ctx.lineTo(10.5, -18.5);
+      ctx.lineTo(21, -23.5); ctx.lineTo(15, -11.5);
+      ctx.lineTo(23.5, -8.5); ctx.lineTo(15.5, 0);
       ctx.closePath();
       ctx.fill(); ctx.stroke();
 
-      // Ears
       ctx.fillStyle = '#fed7aa';
       ctx.strokeStyle = outline;
       ctx.lineWidth = 1.3;
-      ctx.beginPath(); ctx.arc(-13.5, 2.5, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.arc(13.5, 2.5, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(-13.2, 2.5, 2.8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(13.2, 2.5, 2.8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-      // Chin-tapered Anime Face
       ctx.fillStyle = '#fed7aa';
       ctx.strokeStyle = outline;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.45;
       ctx.beginPath();
-      ctx.moveTo(-13.2, -3);
-      ctx.arc(0, 0, 13.2, Math.PI, 0, false);
-      ctx.quadraticCurveTo(13, 12, 0, 14.5);
-      ctx.quadraticCurveTo(-13, 12, -13.2, -3);
+      ctx.moveTo(-13.0, -3);
+      ctx.arc(0, 0, 13.0, Math.PI, 0, false);
+      ctx.quadraticCurveTo(12.8, 11.8, 0, 14.5);
+      ctx.quadraticCurveTo(-12.8, 11.8, -13.0, -3);
       ctx.closePath();
       ctx.fill(); ctx.stroke();
 
-      // Front spiky golden bangs hanging over headband edges
+      // Layered Golden Spiky Bangs framing headband & temples
       ctx.fillStyle = '#facc15';
       ctx.strokeStyle = '#a16207';
-      ctx.lineWidth = 1.2;
+      ctx.lineWidth = 1.15;
       ctx.beginPath();
-      ctx.moveTo(-13.5, -5); ctx.lineTo(-11, 2); ctx.lineTo(-7, -5);
-      ctx.moveTo(13.5, -5); ctx.lineTo(11, 2); ctx.lineTo(7, -5);
-      ctx.fill(); ctx.stroke();
+      ctx.moveTo(-13.5, -6); ctx.lineTo(-11.5, 3); ctx.lineTo(-7.8, -4.5);
+      ctx.lineTo(-4.8, -1.5); ctx.lineTo(-2.2, -5);
+      ctx.lineTo(1.2, -1.8); ctx.lineTo(4.5, -5);
+      ctx.lineTo(7.8, -1.5); ctx.lineTo(11.5, 3); ctx.lineTo(13.5, -6);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
 
-      // Iconic Black + Metallic Konoha Forehead Protector (Băng trán Làng Lá)
+      // Curved Konoha Headband & Glossy Leaf Plate
       ctx.fillStyle = '#0f172a';
-      ctx.beginPath(); ctx.roundRect(-14, -11.5, 28, 7.5, 2.5); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(-13.6, -11.8, 27.2, 7.2, 2.8); ctx.fill();
       const plateGrad = ctx.createLinearGradient(-9, -11, 9, -4);
       plateGrad.addColorStop(0, '#94a3b8');
-      plateGrad.addColorStop(0.5, '#f1f5f9');
+      plateGrad.addColorStop(0.5, '#f8fafc');
       plateGrad.addColorStop(1, '#64748b');
       ctx.fillStyle = plateGrad;
       ctx.strokeStyle = '#334155';
-      ctx.lineWidth = 1.1;
-      ctx.beginPath(); ctx.roundRect(-9.2, -10.6, 18.4, 5.8, 1.8); ctx.fill(); ctx.stroke();
-      // Steel rivets + engraved Konoha Leaf spiral
+      ctx.lineWidth = 1.05;
+      ctx.beginPath(); ctx.roundRect(-8.8, -10.8, 17.6, 5.4, 1.8); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#334155';
-      ctx.beginPath(); ctx.arc(-7.3, -7.7, 0.75, 0, Math.PI * 2); ctx.arc(7.3, -7.7, 0.75, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(-7.1, -8.1, 0.7, 0, Math.PI * 2); ctx.arc(7.1, -8.1, 0.7, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 1.25;
-      ctx.beginPath(); ctx.arc(0, -7.7, 2.0, 0, Math.PI * 1.65); ctx.moveTo(-2, -7.7); ctx.lineTo(-3.2, -6.5); ctx.stroke();
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(0, -8.1, 1.9, 0, Math.PI * 1.65); ctx.moveTo(-1.9, -8.1); ctx.lineTo(-3.1, -6.9); ctx.stroke();
 
-      // Determined Anime Eyebrows & Azure Blue Ninja Eyes
+      // Fierce Eyebrows & Azure Blue Anime Eyes
       ctx.strokeStyle = '#a16207';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.45;
       ctx.beginPath();
-      ctx.moveTo(-8.5, -2.5); ctx.lineTo(-3, -1);
-      ctx.moveTo(8.5, -2.5); ctx.lineTo(3, -1);
+      ctx.moveTo(-8.5, -2.5); ctx.lineTo(-3, -0.8);
+      ctx.moveTo(8.5, -2.5); ctx.lineTo(3, -0.8);
       ctx.stroke();
 
-      [-5.2, 5.2].forEach(ex => {
+      [-5.1, 5.1].forEach(ex => {
         ctx.fillStyle = '#ffffff';
         ctx.strokeStyle = outline;
         ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.ellipse(ex, 1.5, 3.0, 2.3, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(ex, 1.6, 2.9, 2.2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#0ea5e9';
-        ctx.beginPath(); ctx.arc(ex, 1.5, 1.75, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ex, 1.6, 1.7, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#0f172a';
-        ctx.beginPath(); ctx.arc(ex, 1.5, 0.85, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ex, 1.6, 0.85, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = '#ffffff';
-        ctx.beginPath(); ctx.arc(ex - 0.7, 0.9, 0.65, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(ex - 0.65, 1.0, 0.65, 0, Math.PI * 2); ctx.fill();
       });
 
-      // Nose dot + 3 Signature Cheek Whisker Marks on each side
       ctx.fillStyle = '#d97706';
-      ctx.beginPath(); ctx.arc(0, 4.2, 0.9, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(0, 4.3, 0.85, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#9a3412';
-      ctx.lineWidth = 1.15;
+      ctx.lineWidth = 1.1;
       [-1, 1].forEach(side => {
         for (let wLine = -1; wLine <= 1; wLine++) {
           ctx.beginPath();
-          ctx.moveTo(side * 6.8, 5 + wLine * 2.1);
-          ctx.lineTo(side * 11.5, 4.4 + wLine * 2.5);
+          ctx.moveTo(side * 6.8, 5.1 + wLine * 2.0);
+          ctx.lineTo(side * 11.3, 4.5 + wLine * 2.4);
           ctx.stroke();
         }
       });
 
-      // Confident anime grin
       ctx.fillStyle = '#ffffff';
       ctx.strokeStyle = '#7f1d1d';
-      ctx.lineWidth = 1.1;
-      ctx.beginPath(); ctx.arc(0, 8, 4, 0, Math.PI); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = 1.05;
+      ctx.beginPath(); ctx.arc(0, 8.1, 3.8, 0, Math.PI); ctx.closePath(); ctx.fill(); ctx.stroke();
 
       ctx.restore();
       ctx.restore();
@@ -31996,35 +31967,12 @@
       if (narutoState === 'running') t = Math.min(1, (now - narutoStartTime) / narutoDuration);
       else if (narutoState === 'finished') t = 1;
 
-      const narutoX = w * 0.28;
-      const narutoY = h * 0.72;
-      const summonX = w * 0.62;
-      const summonY = h * 0.74;
+      const narutoX = w * 0.34;
+      const narutoY = h * 0.76;
+      const summonX = w * 0.60;
+      const summonY = h * 0.77;
 
-      // 2. Orbiting Ninja Scrolls with Student Names (Idle & Hand-Seal Charging)
-      if (t < 0.66 && narutoScrolls.length > 0) {
-        const speed = narutoState === 'running' ? (0.002 + t * 0.009) : 0.0008;
-        narutoScrolls.forEach((sc) => {
-          const ang = sc.angle + now * speed;
-          const rx = Math.min(w * 0.24, 190);
-          const ry = h * 0.09;
-          const sx = summonX + Math.cos(ang) * rx;
-          const sy = (h * 0.46) + Math.sin(ang) * ry;
-          ctx.save();
-          ctx.fillStyle = '#fef3c7';
-          ctx.strokeStyle = '#b45309';
-          ctx.lineWidth = 1.6;
-          ctx.beginPath(); ctx.roundRect(sx - 34, sy - 11, 68, 22, 6); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = '#78350f';
-          ctx.font = '800 10px system-ui, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('📜 ' + sc.name.slice(0, 10), sx, sy + 0.5);
-          ctx.restore();
-        });
-      }
-
-      // 3. Determine Naruto State & Hand Seal Sequence
+      // 2. Determine Naruto State & Hand Seal Sequence (Không vẽ danh sách tên quay phía trên — tập trung vào Naruto & chiêu thức!)
       let narutoPose = 'idle';
       let currentSealIdx = -1;
       if (narutoState === 'running') {
