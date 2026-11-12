@@ -871,10 +871,10 @@
           <div class="flex items-center gap-2">
             <h2 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-              KHO 23 TRÒ CHƠI GỌI TÊN
+              KHO 24 TRÒ CHƠI GỌI TÊN
             </h2>
             <span id="home-games-counter" class="text-xs font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-              23 trò
+              24 trò
             </span>
           </div>
 
@@ -906,7 +906,7 @@
         <!-- Category Pills (Cuộn mượt mà trên mobile/tablet) -->
         <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none" id="home-category-pills">
           <button type="button" onclick="filterHomeGames('all')" id="home-filter-all" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs transition cursor-pointer">
-            Tất Cả (23)
+            Tất Cả (24)
           </button>
           <button type="button" onclick="filterHomeGames('speed')" id="home-filter-speed" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition cursor-pointer">
             🏎️ Đua Tốc Độ (7)
@@ -918,7 +918,7 @@
             🎁 May Mắn & Quay Số (7)
           </button>
           <button type="button" onclick="filterHomeGames('challenge')" id="home-filter-challenge" class="home-filter-btn shrink-0 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 transition cursor-pointer">
-            ⚽ Kỹ Năng & Thú Vị (5)
+            ⚽ Kỹ Năng & Thú Vị (6)
           </button>
         </div>
 
@@ -941,7 +941,7 @@
                 <h3 class="text-xs font-black text-slate-900 uppercase tracking-tight">Trò Chơi</h3>
               </div>
               <span id="studio-game-counter" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
-                23 trò
+                24 trò
               </span>
             </div>
 
@@ -2072,6 +2072,41 @@
           </div>
         </div>
 
+        
+        <!-- Card: Triệu Hồi Chi Thuật (Naruto Làng Lá) -->
+        <div onclick="openGameIntroModal('naruto_summon')" data-mode="naruto_summon" data-category="challenge" data-search="triệu hồi chi thuật naruto làng lá ấn chú kuchiyose nhẫn giả gọi tên học sinh 🍥 naruto 🍃 làng lá" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-orange-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              🍥
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-orange-50 text-orange-700 border-orange-200 border">
+                🔥 Anime Hot
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #24
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-orange-600 transition-colors line-clamp-1">
+              Triệu Hồi Chi Thuật
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Nhẫn giả Naruto kết ấn chú giữa Làng Lá, đập tay triệu hồi học sinh trong làn khói trắng!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🍥 Kết Ấn</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🍃 Làng Lá</span>
+            </div>
+            <span class="text-orange-600 group-hover:text-orange-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
+
         <!-- Empty Search State -->
         <div id="home-empty-search" class="hidden col-span-full py-12 px-4 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-2xl shadow-xs">
@@ -2082,7 +2117,7 @@
             <p class="text-xs text-slate-500 mt-0.5">Vui lòng thử tìm từ khóa khác như "vịt", "thuyền", "bao bố", "penalty", "lì xì"...</p>
           </div>
           <button onclick="clearHomeSearch()" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-slate-100 hover:bg-slate-200 text-slate-800 transition cursor-pointer">
-            Xem Tất Cả 23 Trò Chơi
+            Xem Tất Cả 24 Trò Chơi
           </button>
         </div>
 
@@ -2153,6 +2188,7 @@
               <option value="ufo_abduct" class="bg-slate-900 text-emerald-300 font-bold">🛸 Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)</option>
               <option value="summon_card" class="bg-slate-900 text-purple-300 font-bold">🌟 Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)</option>
               <option value="meteor_call" class="bg-slate-900 text-rose-300 font-bold">☄️ Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)</option>
+              <option value="naruto_summon" class="bg-slate-900 text-orange-300 font-bold">🍥 Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)</option>
             </select>
           </div>
 
@@ -2838,6 +2874,28 @@
             </div>
           </div>
           <canvas id="meteor-call-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 24: TRIỆU HỒI CHI THUẬT (NARUTO LÀNG LÁ) -->
+        <div id="naruto-summon-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-orange-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-orange-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-orange-400 font-extrabold text-sm">🍥</span>
+              <span id="naruto-summon-status">Naruto đang đứng tại bãi tập Làng Lá! Bấm KẾT ẤN TRIỆU HỒI để gọi tên học sinh!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleNarutoSound()" id="naruto-summon-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleNarutoFullscreen()" id="naruto-summon-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-orange-400"></i> Phóng to
+              </button>
+              <button onclick="initNarutoSummonGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Đưa Naruto về tư thế chuẩn bị">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-orange-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="naruto-summon-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -4691,6 +4749,8 @@
         else if (mode === 'ufo_abduct') initUfoAbductGame(true);
         else if (mode === 'summon_card') initSummonCardGame(true);
         else if (mode === 'meteor_call') initMeteorCallGame(true);
+        else if (mode === 'naruto_summon') initNarutoSummonGame(true);
+      else if (mode === 'naruto_summon') initNarutoSummonGame(true);
       else if (mode === 'safe_zone') initSafeZoneGame(true);
       else if (mode === 'ufo_abduct') initUfoAbductGame(true);
       else if (mode === 'summon_card') initSummonCardGame(true);
@@ -5681,7 +5741,8 @@
       safe_zone: 'from-cyan-950 via-slate-900 to-emerald-950',
       ufo_abduct: 'from-emerald-950 via-slate-950 to-indigo-950',
       summon_card: 'from-purple-950 via-indigo-950 to-slate-950',
-      meteor_call: 'from-rose-950 via-slate-950 to-indigo-950'
+      meteor_call: 'from-rose-950 via-slate-950 to-indigo-950',
+      naruto_summon: 'from-orange-950 via-amber-950 to-slate-950'
     };
 
     function renderStudioGameList() {
@@ -5902,7 +5963,7 @@
       var allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon'
       ];
       var randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       selectStudioGame(randomMode);
@@ -5972,7 +6033,7 @@
       const allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon'
       ];
       const randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       const opt = document.querySelector(`#spin-mode option[value="${randomMode}"]`);
@@ -6295,6 +6356,17 @@
     "rules": "Một thiên thạch rực lửa lao xé bầu trời ngân hà, lượn qua vài khoang pha lê rồi giáng xuống va chạm mạnh làm vỡ lớp vỏ tinh thể, tỏa sáng rực rỡ tên bạn được chọn!",
     "tips": "Hiệu ứng ánh sáng và âm thanh vũ trụ hoành tráng giúp giữ trọn sự tập trung của cả lớp.",
     "shortcut": "Bấm phím Space để phóng thiên thạch triệu hồi."
+  },
+  "naruto_summon": {
+    "name": "Triệu Hồi Chi Thuật",
+    "icon": "🍥",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "🔥 Anime Làng Lá",
+    "color": "orange",
+    "context": "Sân tập Làng Lá lúc hoàng hôn rực rỡ với tượng đài các Hokage trên vách núi, cổng Torii đỏ và hoa anh đào rơi nhẹ.",
+    "rules": "Nhân vật Naruto vận luồng Chakra xanh, kết hợp nhanh 5 ấn chú nhẫn giả (Hợi - Tuất - Dậu - Thân - Mùi) rồi đập tay xuống đất khai mở Vòng Tròn Triệu Hồi! Từ trong làn khói trắng bùng nổ, một học sinh bước ra được gọi tên!",
+    "tips": "Cực kỳ thu hút học sinh yêu thích anime, tạo màn xuất hiện ấn tượng trước khi lên bảng trả bài.",
+    "shortcut": "Bấm phím Space để Naruto bắt đầu kết ấn triệu hồi chi thuật."
   }
 };
 
@@ -6505,6 +6577,8 @@
         if (typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
       } else if (mode === 'meteor_call') {
         if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
+      } else if (mode === 'naruto_summon') {
+        if (typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
       }
     }
 
@@ -6536,7 +6610,9 @@
       const safeZoneContainer = document.getElementById('safe-zone-stage-container');
       const ufoContainer = document.getElementById('ufo-abduct-stage-container');
       const summonContainer = document.getElementById('summon-card-stage-container');
-      const meteorContainer = document.getElementById('meteor-call-stage-container');
+      const meteorContainer = document.getElementById('meteor-call-stage-container',
+        'naruto-summon-stage-container');
+      const narutoContainer = document.getElementById('naruto-summon-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -6562,6 +6638,7 @@
       if (ufoContainer) ufoContainer.classList.add('hidden');
       if (summonContainer) summonContainer.classList.add('hidden');
       if (meteorContainer) meteorContainer.classList.add('hidden');
+      if (narutoContainer) narutoContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -6718,6 +6795,12 @@
         setTimeout(() => {
           if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
         }, 40);
+      } else if (mode === 'naruto_summon') {
+        if (narutoContainer) narutoContainer.classList.remove('hidden');
+        if (typeof initNarutoSummonGame === 'function') initNarutoSummonGame(true);
+        setTimeout(() => {
+          if (typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
+        }, 40);
       } else {
         if (grid) grid.classList.remove('hidden');
         renderStage();
@@ -6753,7 +6836,8 @@
         safe_zone: { title: 'Vòng Bo May Mắn (Đảo Sinh Tồn Top 1)', icon: '🏝️' },
         ufo_abduct: { title: 'Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)', icon: '🛸' },
         summon_card: { title: 'Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)', icon: '🌟' },
-        meteor_call: { title: 'Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)', icon: '☄️' }
+        meteor_call: { title: 'Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)', icon: '☄️' },
+        naruto_summon: { title: 'Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)', icon: '🍥' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -6798,6 +6882,9 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> TRIỆU HỒI THẺ SSR';
         } else if (mode === 'meteor_call') {
           spinBtn.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH';
+        } else if (mode === 'naruto_summon') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-hand-sparkles"></i> KẾT ẤN TRIỆU HỒI';
+        
         } else {
           spinBtn.innerHTML = '<i class="fa-solid fa-play"></i> BẮT ĐẦU ĐUA';
         }
@@ -6874,6 +6961,7 @@
         else if (mode === 'ufo_abduct') initUfoAbductGame(true);
         else if (mode === 'summon_card') initSummonCardGame(true);
         else if (mode === 'meteor_call') initMeteorCallGame(true);
+        else if (mode === 'naruto_summon') initNarutoSummonGame(true);
       }
     }
 
@@ -12105,7 +12193,7 @@
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) {
         const m = modeSelect.value;
-        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call') {
+        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call' || m === 'naruto_summon') {
           if (grid) grid.classList.add('hidden');
         }
         if (m === 'wheel_pie') {
@@ -12164,6 +12252,10 @@
           const c = document.getElementById('meteor-call-stage-container');
           if (c) c.classList.remove('hidden');
           if (typeof initMeteorCallGame === 'function') initMeteorCallGame(false);
+        } else if (m === 'naruto_summon') {
+          const c = document.getElementById('naruto-summon-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initNarutoSummonGame === 'function') initNarutoSummonGame(false);
         }
       }
     }
@@ -15146,6 +15238,7 @@
       else if (mode === 'ufo_abduct' && typeof resizeUfoCanvas === 'function') resizeUfoCanvas();
       else if (mode === 'summon_card' && typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
       else if (mode === 'meteor_call' && typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
+      else if (mode === 'naruto_summon' && typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -15174,7 +15267,8 @@
         { id: 'safe-zone-fullscreen-btn', color: 'text-cyan-400' },
         { id: 'ufo-abduct-fullscreen-btn', color: 'text-emerald-400' },
         { id: 'summon-card-fullscreen-btn', color: 'text-purple-400' },
-        { id: 'meteor-call-fullscreen-btn', color: 'text-rose-400' }
+        { id: 'meteor-call-fullscreen-btn', color: 'text-rose-400' },
+        { id: 'naruto-summon-fullscreen-btn', color: 'text-orange-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -15287,6 +15381,7 @@
       if (mode === 'ufo_abduct') return ufoState === 'running';
       if (mode === 'summon_card') return summonState === 'running';
       if (mode === 'meteor_call') return meteorState === 'running';
+      if (mode === 'naruto_summon') return narutoState === 'running';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -30450,6 +30545,627 @@
       }
     }
 
+
+    // ==========================================
+    // 24. MODULE: TRIỆU HỒI CHI THUẬT (NARUTO LÀNG LÁ - KUCHIYOSE NO JUTSU)
+    // Bối cảnh Làng Lá (Tượng Hokage, cổng Torii, hoa anh đào)
+    // Naruto kết hợp 5 ấn chú -> Đập tay xuống đất -> Khói trắng bùng nổ -> Triệu hồi học sinh!
+    // ==========================================
+    let narutoAnimId = null;
+    let narutoState = 'idle';
+    let narutoStartTime = 0;
+    let narutoDuration = 6000;
+    let narutoTargetWinner = null;
+    let narutoFinishCallback = null;
+    let narutoLastSealIdx = -1;
+    let narutoSmokePlayed = false;
+    let narutoPetals = [];
+    let narutoSmokePuffs = [];
+    let narutoScrolls = [];
+    let narutoSoundEnabled = true;
+
+    const NARUTO_HAND_SEALS = [
+      { name: 'ẤN HỢI (亥)', icon: '🤞', color: '#38bdf8' },
+      { name: 'ẤN TUẤT (戌)', icon: '🙌', color: '#818cf8' },
+      { name: 'ẤN DẬU (酉)', icon: '👐', color: '#f472b6' },
+      { name: 'ẤN THÂN (申)', icon: '🙏', color: '#fbbf24' },
+      { name: 'ẤN MÙI (未)', icon: '💥', color: '#f97316' }
+    ];
+
+    function toggleNarutoSound() {
+      narutoSoundEnabled = !narutoSoundEnabled;
+      const btn = document.getElementById('naruto-summon-sound-btn');
+      if (btn) btn.innerHTML = narutoSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleNarutoFullscreen() {
+      toggleContainerFullscreen('naruto-summon-stage-container', resizeNarutoCanvas);
+    }
+
+    function resizeNarutoCanvas() {
+      const canvas = document.getElementById('naruto-summon-canvas');
+      const container = document.getElementById('naruto-summon-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width);
+      const h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    function initNarutoSummonGame(reset = true) {
+      const container = document.getElementById('naruto-summon-stage-container');
+      const canvas = document.getElementById('naruto-summon-canvas');
+      if (!container || !canvas) return;
+      resizeNarutoCanvas();
+
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      const scrollList = visible.slice(0, 12);
+      if (reset || narutoScrolls.length !== scrollList.length) {
+        narutoScrolls = scrollList.map((st, i) => ({
+          id: st.id,
+          name: shortStudentName(st.name),
+          angle: (i / Math.max(1, scrollList.length)) * Math.PI * 2,
+          color: SAFE_ZONE_COLORS[i % SAFE_ZONE_COLORS.length]
+        }));
+      }
+
+      if (narutoPetals.length === 0) {
+        for (let i = 0; i < 28; i++) {
+          narutoPetals.push({
+            nx: Math.random(),
+            ny: Math.random() * 0.8,
+            vx: 0.0005 + Math.random() * 0.0007,
+            vy: 0.0008 + Math.random() * 0.0009,
+            size: 3 + Math.random() * 3,
+            rot: Math.random() * Math.PI * 2
+          });
+        }
+      }
+
+      narutoState = 'idle';
+      narutoLastSealIdx = -1;
+      narutoSmokePlayed = false;
+      narutoSmokePuffs = [];
+      narutoTargetWinner = null;
+      const statusEl = document.getElementById('naruto-summon-status');
+      if (statusEl) statusEl.innerText = 'Naruto đang đứng tại bãi tập Làng Lá! Bấm KẾT ẤN TRIỆU HỒI để gọi tên học sinh!';
+
+      if (!narutoAnimId) narutoAnimId = requestAnimationFrame(runNarutoLoop);
+    }
+
+    function startNarutoSummonGame(winnerStudent, durationMs = 6000, callback) {
+      if (narutoState === 'running') return;
+      initNarutoSummonGame(true);
+      narutoTargetWinner = winnerStudent;
+      narutoFinishCallback = callback;
+      narutoDuration = Math.max(4000, durationMs);
+      narutoStartTime = performance.now();
+      narutoState = 'running';
+      narutoLastSealIdx = -1;
+      narutoSmokePlayed = false;
+
+      if (narutoSoundEnabled) ArcadePackAudio.tone(440, 0.2, 'triangle', 0.14, 660);
+      const statusEl = document.getElementById('naruto-summon-status');
+      if (statusEl) statusEl.innerText = '🍥 Naruto đang tụ Chakra xanh và kết hợp chuỗi ấn chú triệu hồi!';
+      if (!narutoAnimId) narutoAnimId = requestAnimationFrame(runNarutoLoop);
+    }
+
+    function runNarutoLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const container = document.getElementById('naruto-summon-stage-container');
+      if (mode !== 'naruto_summon' || !container || container.classList.contains('hidden')) {
+        narutoAnimId = null;
+        return;
+      }
+      renderNarutoCanvas(now);
+      narutoAnimId = requestAnimationFrame(runNarutoLoop);
+    }
+
+    function drawKonohaVillage(ctx, w, h, now) {
+      // 1. Konoha Golden Sunset / Twilight Sky
+      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.65);
+      sky.addColorStop(0, '#0f172a');
+      sky.addColorStop(0.45, '#7c2d12');
+      sky.addColorStop(0.82, '#ea580c');
+      sky.addColorStop(1, '#fdba74');
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, w, h * 0.65);
+
+      // Sun setting behind Hokage cliff
+      ctx.save();
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.85)';
+      ctx.shadowColor = '#fb923c';
+      ctx.shadowBlur = 35;
+      ctx.beginPath(); ctx.arc(w * 0.72, h * 0.44, 42, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+
+      // 2. Iconic Hokage Rock Mountain Cliff
+      const cliffY = h * 0.48;
+      ctx.fillStyle = '#57534e';
+      ctx.beginPath();
+      ctx.moveTo(0, cliffY);
+      ctx.lineTo(w * 0.08, h * 0.25);
+      ctx.lineTo(w * 0.25, h * 0.22);
+      ctx.lineTo(w * 0.44, h * 0.26);
+      ctx.lineTo(w * 0.58, h * 0.23);
+      ctx.lineTo(w * 0.76, h * 0.29);
+      ctx.lineTo(w, h * 0.36);
+      ctx.lineTo(w, cliffY + 20);
+      ctx.lineTo(0, cliffY + 20);
+      ctx.closePath();
+      ctx.fill();
+
+      // Carved stone faces silhouette of the Hokages on mountain
+      [0.18, 0.30, 0.42, 0.54].forEach((fx, idx) => {
+        const rx = w * fx, ry = h * 0.31 + (idx % 2) * 4;
+        ctx.fillStyle = '#44403c';
+        ctx.beginPath(); ctx.roundRect(rx - 14, ry - 14, 28, 32, 6); ctx.fill();
+        ctx.fillStyle = '#292524';
+        ctx.fillRect(rx - 8, ry - 4, 5, 3);
+        ctx.fillRect(rx + 3, ry - 4, 5, 3);
+        ctx.fillRect(rx - 4, ry + 7, 8, 2.5);
+      });
+
+      // 3. Konoha Village Rooftops & Traditional Houses
+      const roofY = h * 0.56;
+      ctx.fillStyle = '#1c1917';
+      ctx.fillRect(0, h * 0.47, w, h * 0.12);
+      const houses = [[0.03, 0.14, 46], [0.19, 0.16, 54], [0.38, 0.13, 42], [0.68, 0.16, 52], [0.85, 0.14, 48]];
+      houses.forEach(([hx, hw, hh]) => {
+        const rx = w * hx, rw = w * hw;
+        // House wall
+        ctx.fillStyle = '#292524';
+        ctx.fillRect(rx, roofY - hh, rw, hh);
+        // Curved Japanese roof
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.moveTo(rx - 10, roofY - hh + 4);
+        ctx.quadraticCurveTo(rx + rw / 2, roofY - hh - 16, rx + rw + 10, roofY - hh + 4);
+        ctx.lineTo(rx + rw, roofY - hh + 10);
+        ctx.lineTo(rx, roofY - hh + 10);
+        ctx.closePath();
+        ctx.fill();
+        // Warm lit windows
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(rx + 12, roofY - hh + 16, 10, 12);
+        ctx.fillRect(rx + rw - 22, roofY - hh + 16, 10, 12);
+      });
+
+      // Red Japanese Torii Gate on right side
+      const tx = w * 0.87, ty = h * 0.59;
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(tx - 24, ty - 58, 7, 60);
+      ctx.fillRect(tx + 17, ty - 58, 7, 60);
+      ctx.fillStyle = '#b91c1c';
+      ctx.beginPath(); ctx.roundRect(tx - 34, ty - 64, 68, 8, 3); ctx.fill();
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(tx - 28, ty - 48, 56, 5);
+
+      // Cherry Blossom Trees framing left & right
+      [[0.07, 0.58], [0.95, 0.58]].forEach(([bx, by]) => {
+        const px = w * bx, py = h * by;
+        ctx.fillStyle = '#451a03';
+        ctx.fillRect(px - 6, py - 50, 12, 54);
+        ctx.fillStyle = '#f472b6';
+        ctx.beginPath(); ctx.arc(px, py - 62, 30, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fbcfe8';
+        ctx.beginPath(); ctx.arc(px - 18, py - 52, 20, 0, Math.PI * 2); ctx.arc(px + 18, py - 52, 20, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // Konoha Leaf Banner Flag on wall
+      ctx.fillStyle = '#15803d';
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(w * 0.54 - 22, h * 0.49, 44, 34, 4); ctx.fill(); ctx.stroke();
+      ctx.font = '18px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🍃', w * 0.54, h * 0.49 + 23);
+
+      // 4. Konoha Training Ground (Bãi tập Làng Lá)
+      const gGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
+      gGrad.addColorStop(0, '#d97706');
+      gGrad.addColorStop(0.25, '#b45309');
+      gGrad.addColorStop(1, '#78350f');
+      ctx.fillStyle = gGrad;
+      ctx.fillRect(0, h * 0.58, w, h * 0.42);
+
+      // Green grass border
+      ctx.fillStyle = '#15803d';
+      ctx.fillRect(0, h * 0.57, w, 12);
+
+      // 3 Ninja Wooden Training Posts on far right
+      [0.84, 0.89, 0.94].forEach((px, idx) => {
+        const lx = w * px, ly = h * 0.65 + idx * 6;
+        ctx.fillStyle = '#78350f';
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect(lx - 6, ly - 32, 12, 38, 3); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#fef3c7';
+        ctx.fillRect(lx - 6, ly - 22, 12, 4);
+      });
+    }
+
+    function drawNarutoCharacter(ctx, x, y, opts) {
+      const o = opts || {};
+      const state = o.state || 'idle'; // 'idle', 'seal', 'slam', 'cheer'
+      const now = o.now || performance.now();
+      const sealIdx = o.sealIdx || 0;
+
+      ctx.save();
+      ctx.translate(x, y);
+      const bob = state === 'seal' ? Math.sin(now * 0.025) * 2.5 : (state === 'idle' ? Math.sin(now * 0.005) * 2 : 0);
+      ctx.translate(0, bob);
+
+      // Blue Chakra Flame Aura around Naruto when forming seals or slamming!
+      if (state === 'seal' || state === 'slam') {
+        ctx.save();
+        for (let k = 0; k < 10; k++) {
+          const ang = (k / 10) * Math.PI * 2 + now * 0.008;
+          const r = 34 + Math.sin(now * 0.02 + k) * 6;
+          ctx.fillStyle = k % 2 === 0 ? 'rgba(56, 189, 248, 0.28)' : 'rgba(14, 165, 233, 0.22)';
+          ctx.beginPath();
+          ctx.ellipse(Math.cos(ang) * 16, -24 + Math.sin(ang) * 12, 14, r * 0.6, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      // Shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.beginPath(); ctx.ellipse(0, 32, 22, 7, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Ninja Legs (Orange pants + white shin bandage + dark blue sandals)
+      const crouch = state === 'slam' ? 8 : 0;
+      ctx.strokeStyle = '#ea580c';
+      ctx.lineWidth = 8.5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-8, 6 + crouch * 0.5); ctx.lineTo(-13, 28);
+      ctx.moveTo(8, 6 + crouch * 0.5); ctx.lineTo(13, 28);
+      ctx.stroke();
+
+      // Sandals
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath(); ctx.ellipse(-13, 30, 6.5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(13, 30, 6.5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Torso (Iconic Orange + Black Shippuden Jacket)
+      ctx.fillStyle = '#f97316';
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.roundRect(-14, -18 + crouch, 28, 28, 6); ctx.fill(); ctx.stroke();
+
+      // Black upper shoulder jacket part + white collar
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath(); ctx.roundRect(-14, -18 + crouch, 28, 12, [6, 6, 0, 0]); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-5, -18 + crouch, 10, 12);
+      // Zipper
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(0, -16 + crouch); ctx.lineTo(0, 8 + crouch); ctx.stroke();
+
+      // Arms & Hand Seals!
+      ctx.strokeStyle = '#f97316';
+      ctx.lineWidth = 6.5;
+      ctx.lineCap = 'round';
+      if (state === 'slam') {
+        // Slams right palm down onto the summoning ground!
+        ctx.beginPath(); ctx.moveTo(-12, -10 + crouch); ctx.lineTo(-20, 4 + crouch); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(12, -10 + crouch); ctx.lineTo(28, 26); ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath(); ctx.arc(28, 26, 5.5, 0, Math.PI * 2); ctx.fill();
+      } else if (state === 'seal') {
+        // Arms brought together forming animated hand seals in front of chest!
+        const sealJiggle = Math.sin(now * 0.04 + sealIdx) * 2.5;
+        ctx.beginPath();
+        ctx.moveTo(-12, -10); ctx.lineTo(-3, -2 + sealJiggle);
+        ctx.moveTo(12, -10); ctx.lineTo(3, -2 - sealJiggle);
+        ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath(); ctx.arc(0, -2, 6, 0, Math.PI * 2); ctx.fill();
+      } else if (state === 'cheer') {
+        ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(-22, -24); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(12, -10); ctx.lineTo(26, -16); ctx.stroke();
+      } else {
+        ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(-18, 5); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(12, -10); ctx.lineTo(18, 5); ctx.stroke();
+      }
+
+      // Head + Blonde Spiky Hair + Konoha Headband + Whiskers
+      ctx.save();
+      ctx.translate(0, -32 + crouch);
+
+      // Spiky golden hair
+      ctx.fillStyle = '#facc15';
+      ctx.strokeStyle = '#ca8a04';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(-16, -2);
+      ctx.lineTo(-21, -13); ctx.lineTo(-12, -14);
+      ctx.lineTo(-14, -25); ctx.lineTo(-5, -18);
+      ctx.lineTo(0, -28); ctx.lineTo(6, -18);
+      ctx.lineTo(15, -24); ctx.lineTo(12, -13);
+      ctx.lineTo(21, -12); ctx.lineTo(16, -2);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      // Face
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath(); ctx.arc(0, 2, 13, 0, Math.PI * 2); ctx.fill();
+
+      // Konoha Headband (Băng trán Làng Lá)
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath(); ctx.roundRect(-13.5, -10, 27, 7, 2); ctx.fill();
+      ctx.fillStyle = '#cbd5e1';
+      ctx.beginPath(); ctx.roundRect(-8, -9.5, 16, 6, 1.5); ctx.fill();
+      // Leaf swirl emblem
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(0, -6.5, 2, 0, Math.PI * 1.6); ctx.stroke();
+
+      // Eyes (Fierce Ninja eyes!)
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath(); ctx.arc(-4.5, 1, 2, 0, Math.PI * 2); ctx.arc(4.5, 1, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath(); ctx.arc(-4.5, 1, 1, 0, Math.PI * 2); ctx.arc(4.5, 1, 1, 0, Math.PI * 2); ctx.fill();
+
+      // 3 Signature Whisker Marks on each cheek
+      ctx.strokeStyle = '#9a3412';
+      ctx.lineWidth = 1.1;
+      [-1, 1].forEach(side => {
+        for (let wLine = -1; wLine <= 1; wLine++) {
+          ctx.beginPath();
+          ctx.moveTo(side * 6.5, 4 + wLine * 2.2);
+          ctx.lineTo(side * 11, 3.5 + wLine * 2.6);
+          ctx.stroke();
+        }
+      });
+
+      // Determined grin
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath(); ctx.arc(0, 7.5, 3.5, 0, Math.PI); ctx.fill();
+
+      ctx.restore();
+      ctx.restore();
+    }
+
+    function drawSummoningSeal(ctx, x, y, radius, alpha, rot) {
+      if (alpha <= 0 || radius <= 2) return;
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(1, 0.42); // Isometric perspective flat on Konoha ground
+      ctx.rotate(rot);
+      ctx.globalAlpha = alpha;
+
+      ctx.strokeStyle = '#facc15';
+      ctx.shadowColor = '#f97316';
+      ctx.shadowBlur = 18;
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI * 2); ctx.stroke();
+
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(0, 0, radius * 0.78, 0, Math.PI * 2); ctx.stroke();
+
+      // Inner Summoning Star & Runic Spokes
+      ctx.strokeStyle = '#facc15';
+      for (let i = 0; i < 6; i++) {
+        const a = (i / 6) * Math.PI * 2;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(a) * radius * 0.78, Math.sin(a) * radius * 0.78);
+        ctx.lineTo(Math.cos(a + Math.PI * 0.66) * radius * 0.78, Math.sin(a + Math.PI * 0.66) * radius * 0.78);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function renderNarutoCanvas(now) {
+      const canvas = document.getElementById('naruto-summon-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+      if (w <= 0 || h <= 0) return;
+
+      // 1. Konoha Village Scenery
+      drawKonohaVillage(ctx, w, h, now);
+
+      let t = 0;
+      if (narutoState === 'running') t = Math.min(1, (now - narutoStartTime) / narutoDuration);
+      else if (narutoState === 'finished') t = 1;
+
+      const narutoX = w * 0.28;
+      const narutoY = h * 0.72;
+      const summonX = w * 0.62;
+      const summonY = h * 0.74;
+
+      // 2. Orbiting Ninja Scrolls with Student Names (Idle & Hand-Seal Charging)
+      if (t < 0.66 && narutoScrolls.length > 0) {
+        const speed = narutoState === 'running' ? (0.002 + t * 0.009) : 0.0008;
+        narutoScrolls.forEach((sc) => {
+          const ang = sc.angle + now * speed;
+          const rx = Math.min(w * 0.24, 190);
+          const ry = h * 0.09;
+          const sx = summonX + Math.cos(ang) * rx;
+          const sy = (h * 0.46) + Math.sin(ang) * ry;
+          ctx.save();
+          ctx.fillStyle = '#fef3c7';
+          ctx.strokeStyle = '#b45309';
+          ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.roundRect(sx - 34, sy - 11, 68, 22, 6); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#78350f';
+          ctx.font = '800 10px system-ui, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('📜 ' + sc.name.slice(0, 10), sx, sy + 0.5);
+          ctx.restore();
+        });
+      }
+
+      // 3. Determine Naruto State & Hand Seal Sequence
+      let narutoPose = 'idle';
+      let currentSealIdx = -1;
+      if (narutoState === 'running') {
+        if (t < 0.48) {
+          narutoPose = 'seal';
+          currentSealIdx = Math.min(NARUTO_HAND_SEALS.length - 1, Math.floor((t / 0.48) * NARUTO_HAND_SEALS.length));
+          if (currentSealIdx !== narutoLastSealIdx) {
+            narutoLastSealIdx = currentSealIdx;
+            if (narutoSoundEnabled) ArcadePackAudio.tone(480 + currentSealIdx * 110, 0.12, 'sine', 0.14);
+            const statusEl = document.getElementById('naruto-summon-status');
+            if (statusEl) statusEl.innerText = '🍥 Naruto đang kết ấn: ' + NARUTO_HAND_SEALS[currentSealIdx].name + '...';
+          }
+        } else if (t < 0.72) {
+          narutoPose = 'slam';
+          if (!narutoSmokePlayed) {
+            narutoSmokePlayed = true;
+            if (narutoSoundEnabled) ArcadePackAudio.tone(95, 0.45, 'sawtooth', 0.22, 40);
+            const statusEl = document.getElementById('naruto-summon-status');
+            if (statusEl) statusEl.innerText = '💥 KUCHIYOSE NO JUTSU! TRIỆU HỒI CHI THUẬT!!';
+            // Burst giant anime white smoke clouds!
+            for (let k = 0; k < 28; k++) {
+              const ang = Math.random() * Math.PI * 2;
+              const spd = 1.2 + Math.random() * 4.5;
+              narutoSmokePuffs.push({
+                x: summonX + (Math.random() - 0.5) * 40,
+                y: summonY - 12 + (Math.random() - 0.5) * 20,
+                vx: Math.cos(ang) * spd,
+                vy: Math.sin(ang) * spd * 0.5 - 1.5,
+                r: 18 + Math.random() * 26,
+                alpha: 1.0
+              });
+            }
+          }
+        } else {
+          narutoPose = 'cheer';
+        }
+      } else if (narutoState === 'finished') {
+        narutoPose = 'cheer';
+      }
+
+      // 4. Draw Summoning Magic Seal on Ground (t >= 0.48)
+      if (t >= 0.48) {
+        const sealExpand = Math.min(1, (t - 0.48) / 0.14);
+        drawSummoningSeal(ctx, summonX, summonY + 24, sealExpand * 135, 0.95, now * 0.0012);
+      }
+
+      // 5. Draw Naruto Character
+      drawNarutoCharacter(ctx, narutoX, narutoY, {
+        state: narutoPose,
+        sealIdx: currentSealIdx,
+        now: now
+      });
+
+      // Floating Hand Seal HUD above Naruto during seal sequence
+      if (narutoState === 'running' && narutoPose === 'seal' && currentSealIdx >= 0) {
+        const seal = NARUTO_HAND_SEALS[currentSealIdx];
+        ctx.save();
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+        ctx.strokeStyle = seal.color;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.roundRect(narutoX - 78, narutoY - 108, 156, 36, 14); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 13px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(seal.icon + ' ' + seal.name, narutoX, narutoY - 90);
+        ctx.restore();
+      }
+
+      // 6. Draw Summoned Student emerging from the Smoke! (t >= 0.65)
+      if (t >= 0.65 && narutoTargetWinner) {
+        const emergeP = Math.min(1, (t - 0.65) / 0.20);
+        const popScale = 0.4 + emergeP * 1.45;
+        const winName = narutoTargetWinner.name || 'Học Sinh';
+
+        ctx.save();
+        // Golden Scroll Pedestal
+        ctx.fillStyle = '#fef3c7';
+        ctx.strokeStyle = '#b45309';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.roundRect(summonX - 48, summonY + 14, 96, 14, 6); ctx.fill(); ctx.stroke();
+
+        // Summoned Student Hero
+        drawCartoonHuman(ctx, summonX, summonY - 6, {
+          shirt: '#f97316',
+          pants: '#1e3a8a',
+          backpackColor: '#f59e0b',
+          isStudent: true,
+          scale: popScale,
+          pose: 'winner',
+          now: now
+        });
+
+        // Glowing Name Banner above Summoned Student
+        drawHighContrastBadge(ctx, summonX, summonY - 64, winName, '#facc15', true);
+        ctx.restore();
+      }
+
+      // 7. Draw Anime White Smoke Puffs ("BÙM!")
+      for (let i = narutoSmokePuffs.length - 1; i >= 0; i--) {
+        const sm = narutoSmokePuffs[i];
+        sm.x += sm.vx;
+        sm.y += sm.vy;
+        sm.r += 0.4;
+        sm.alpha -= 0.015;
+        if (sm.alpha <= 0) { narutoSmokePuffs.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = sm.alpha * 0.85;
+        ctx.fillStyle = '#f8fafc';
+        ctx.beginPath(); ctx.arc(sm.x, sm.y, sm.r, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      // 8. Drifting Cherry Blossom Petals
+      narutoPetals.forEach(pt => {
+        pt.nx = (pt.nx + pt.vx) % 1.05;
+        pt.ny = (pt.ny + pt.vy) % 0.95;
+        pt.rot += 0.03;
+        ctx.save();
+        ctx.translate(pt.nx * w, pt.ny * h);
+        ctx.rotate(pt.rot);
+        ctx.fillStyle = 'rgba(244, 114, 182, 0.82)';
+        ctx.beginPath(); ctx.ellipse(0, 0, pt.size, pt.size * 0.55, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      });
+
+      // 9. Completion Check
+      if (narutoState === 'running' && t >= 1) {
+        narutoState = 'finished';
+        if (narutoSoundEnabled) ArcadePackAudio.fanfare();
+        const statusEl = document.getElementById('naruto-summon-status');
+        if (statusEl && narutoTargetWinner) {
+          statusEl.innerText = '🍃 TRIỆU HỒI THÀNH CÔNG: Học sinh ' + narutoTargetWinner.name + ' đã xuất hiện tại Làng Lá!';
+        }
+        const cb = narutoFinishCallback;
+        const winSt = narutoTargetWinner;
+        setTimeout(() => { if (typeof cb === 'function') cb(winSt); }, 850);
+      }
+
+      if (narutoState === 'finished' && narutoTargetWinner) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(124, 45, 18, 0.90)';
+        ctx.strokeStyle = '#fbbf24';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.roundRect(w / 2 - 190, 58, 380, 44, 16); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#fef08a';
+        ctx.font = '900 15px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🍥 TRIỆU HỒI CHI THUẬT: ' + narutoTargetWinner.name, w / 2, 80);
+        ctx.restore();
+      }
+    }
+
     // ==========================================
     // MODULE: ĐUA XE F1 QUANH CO (FORMULA 1 GRAND PRIX)
     // ==========================================
@@ -38492,6 +39208,21 @@
         return;
       }
 
+      // 24. Triệu Hồi Chi Thuật (Naruto Làng Lá)
+      if (mode === 'naruto_summon') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(4000, durationSec * 1000);
+        btn.innerHTML = "🍥 NARUTO ĐANG KẾT ẤN...";
+        if (typeof startNarutoSummonGame === 'function') {
+          startNarutoSummonGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
       // 19. Nhảy Bao Bố (Sack Race)
       if (mode === 'sack_race') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
@@ -38588,6 +39319,8 @@
           btnElement.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> TRIỆU HỒI THẺ MỚI';
         } else if (mode === 'meteor_call') {
           btnElement.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH MỚI';
+        } else if (mode === 'naruto_summon') {
+          btnElement.innerHTML = '<i class="fa-solid fa-hand-sparkles"></i> KẾT ẤN TRIỆU HỒI TIẾP';
         } else {
           btnElement.innerHTML = '<i class="fa-solid fa-play"></i> TIẾP TỤC ĐUA';
         }
@@ -38681,6 +39414,8 @@
           text = `Chúc mừng thẻ tướng ét ét rờ đã triệu hồi thành công bạn ${currentWinner.name}!`;
         } else if (document.getElementById('spin-mode')?.value === 'meteor_call') {
           text = `Thiên thạch vũ trụ đã rơi trúng khoang pha lê gọi tên bạn ${currentWinner.name}!`;
+        } else if (document.getElementById('spin-mode')?.value === 'naruto_summon') {
+          text = `Nhẫn giả Naruto đã kết ấn triệu hồi chi thuật gọi tên bạn ${currentWinner.name} tại Làng Lá!`;
         }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
