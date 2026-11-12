@@ -31142,328 +31142,538 @@
     }
 
     function drawKonohaVillage(ctx, w, h, now) {
-      // 1. Konoha Golden Sunset Sky + Soft Drifting Clouds
-      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.62);
-      sky.addColorStop(0, '#1e1b4b');
-      sky.addColorStop(0.32, '#9a3412');
-      sky.addColorStop(0.70, '#ea580c');
-      sky.addColorStop(1, '#fed7aa');
+      // 1. Bright Anime Sky & Sunlit Mountain Mist behind Konoha Valley
+      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.52);
+      sky.addColorStop(0, '#7dd3fc');
+      sky.addColorStop(0.55, '#e0f2fe');
+      sky.addColorStop(1, '#fef9c3');
       ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, w, h * 0.62);
+      ctx.fillRect(0, 0, w, h * 0.55);
 
-      // Sun setting softly behind Hokage cliff with warm atmospheric halo
-      ctx.save();
-      const sunX = w * 0.74, sunY = h * 0.34;
-      const sunGlow = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, 96);
-      sunGlow.addColorStop(0, 'rgba(254, 249, 195, 0.95)');
-      sunGlow.addColorStop(0.4, 'rgba(251, 146, 60, 0.45)');
-      sunGlow.addColorStop(1, 'rgba(251, 146, 60, 0)');
-      ctx.fillStyle = sunGlow;
-      ctx.beginPath(); ctx.arc(sunX, sunY, 96, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#fef9c3';
-      ctx.beginPath(); ctx.arc(sunX, sunY, 34, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
+      // Soft warm daylight haze around Hokage Cliff
+      const sunHaze = ctx.createRadialGradient(w * 0.52, h * 0.25, 20, w * 0.52, h * 0.25, w * 0.42);
+      sunHaze.addColorStop(0, 'rgba(255, 251, 235, 0.75)');
+      sunHaze.addColorStop(1, 'rgba(255, 251, 235, 0)');
+      ctx.fillStyle = sunHaze;
+      ctx.fillRect(0, 0, w, h * 0.55);
 
-      // Twilight clouds
-      ctx.fillStyle = 'rgba(254, 215, 170, 0.24)';
-      [[0.16, 0.14, 72], [0.52, 0.11, 88], [0.85, 0.17, 64]].forEach(([cx, cy, cw], ci) => {
-        const dx = ((cx * w + now * 0.006 * (ci % 2 ? 1 : 0.6)) % (w + 150)) - 75;
-        ctx.beginPath();
-        ctx.ellipse(dx, h * cy, cw, 11, 0, 0, Math.PI * 2);
-        ctx.ellipse(dx + cw * 0.35, h * cy + 4, cw * 0.55, 8, 0, 0, Math.PI * 2);
-        ctx.fill();
-      });
+      // 2. MONUMENTAL HOKAGE ROCK MOUNTAIN (Tượng Đài 5 Đời Hokage sừng sững giữa thung lũng!)
+      const mLeft = w * 0.24, mRight = w * 0.85, mBaseY = h * 0.39;
+      // Distant green pine crest behind rock rim
+      ctx.fillStyle = '#3f6212';
+      for (let fx = mLeft + 10; fx < mRight - 10; fx += 14) {
+        const ridgeY = h * 0.09 + Math.sin(fx * 0.04) * 8;
+        ctx.beginPath(); ctx.arc(fx, ridgeY, 10, Math.PI, 0); ctx.fill();
+      }
 
-      // 2. HOKAGE ROCK MOUNTAIN MONUMENT (Tượng Đài Hokage Rõ Nét)
-      const cliffY = h * 0.48;
-      const rockGrad = ctx.createLinearGradient(0, h * 0.14, 0, cliffY + 18);
-      rockGrad.addColorStop(0, '#a8a29e');
-      rockGrad.addColorStop(0.55, '#78716c');
-      rockGrad.addColorStop(1, '#44403c');
-      ctx.fillStyle = rockGrad;
-      ctx.strokeStyle = '#292524';
+      const cliffGrad = ctx.createLinearGradient(w * 0.30, h * 0.05, w * 0.75, mBaseY);
+      cliffGrad.addColorStop(0, '#efe1c8');
+      cliffGrad.addColorStop(0.45, '#cfa97e');
+      cliffGrad.addColorStop(0.85, '#9d7954');
+      cliffGrad.addColorStop(1, '#5e452f');
+      ctx.fillStyle = cliffGrad;
+      ctx.strokeStyle = '#4a3522';
       ctx.lineWidth = 1.6;
       ctx.beginPath();
-      ctx.moveTo(0, cliffY);
-      ctx.lineTo(w * 0.05, h * 0.24);
-      ctx.lineTo(w * 0.14, h * 0.19);
-      ctx.lineTo(w * 0.26, h * 0.17);
-      ctx.lineTo(w * 0.38, h * 0.18);
-      ctx.lineTo(w * 0.52, h * 0.17);
-      ctx.lineTo(w * 0.65, h * 0.21);
-      ctx.lineTo(w * 0.78, h * 0.26);
-      ctx.lineTo(w, h * 0.33);
-      ctx.lineTo(w, cliffY + 16);
-      ctx.lineTo(0, cliffY + 16);
+      ctx.moveTo(mLeft, mBaseY);
+      ctx.lineTo(w * 0.27, h * 0.14);
+      ctx.lineTo(w * 0.35, h * 0.07);
+      ctx.lineTo(w * 0.47, h * 0.05);
+      ctx.lineTo(w * 0.54, h * 0.02);
+      ctx.lineTo(w * 0.62, h * 0.06);
+      ctx.lineTo(w * 0.74, h * 0.08);
+      ctx.lineTo(w * 0.82, h * 0.16);
+      ctx.lineTo(mRight, mBaseY);
       ctx.closePath();
       ctx.fill();
       ctx.stroke();
 
-      // Craggy cliff shading ridges
-      ctx.fillStyle = 'rgba(41, 37, 36, 0.38)';
-      ctx.beginPath();
-      ctx.moveTo(w * 0.05, h * 0.24); ctx.lineTo(w * 0.11, h * 0.34); ctx.lineTo(w * 0.04, h * 0.44); ctx.closePath(); ctx.fill();
-      ctx.beginPath();
-      ctx.moveTo(w * 0.65, h * 0.21); ctx.lineTo(w * 0.72, h * 0.35); ctx.lineTo(w * 0.62, h * 0.45); ctx.closePath(); ctx.fill();
+      // Deep vertical sandstone canyon ridges & shadowed fissures
+      ctx.fillStyle = 'rgba(72, 50, 32, 0.36)';
+      [0.31, 0.36, 0.43, 0.50, 0.57, 0.64, 0.71, 0.77].forEach((cx, ci) => {
+        const topY = h * (0.10 + (ci % 3) * 0.025);
+        ctx.beginPath();
+        ctx.moveTo(w * cx, topY);
+        ctx.lineTo(w * (cx + 0.022), topY + 8);
+        ctx.lineTo(w * (cx + 0.015), mBaseY);
+        ctx.lineTo(w * (cx - 0.012), mBaseY);
+        ctx.closePath();
+        ctx.fill();
+      });
 
-      // Forest treeline atop the Hokage cliff
-      ctx.fillStyle = '#14532d';
-      for (let tx = w * 0.04; tx < w * 0.74; tx += 22) {
-        const ty = h * 0.17 + Math.sin(tx * 0.05) * 6;
-        ctx.beginPath(); ctx.arc(tx, ty + 3, 12, Math.PI, 0); ctx.fill();
-      }
-
-      // 4 Distinct Carved Stone Hokage Faces (Đệ Nhất -> Đệ Tứ)
-      const hokages = [
-        { fx: 0.19, fy: 0.285, type: 1 }, // Hashirama (long straight hair + headband)
-        { fx: 0.30, fy: 0.275, type: 2 }, // Tobirama (spiky + cheek marks + chin guard)
-        { fx: 0.41, fy: 0.285, type: 3 }, // Hiruzen (ninja hood + beard)
-        { fx: 0.52, fy: 0.280, type: 4 }  // Minato (sweeping spiky bangs!)
+      // 5 SCULPTED HOKAGE FACES IN ARC FORMATION (Giống hệt góc nhìn ảnh mẫu!)
+      const scFace = Math.max(0.75, Math.min(1.18, w / 920));
+      const hokageArc = [
+        { fx: 0.395, fy: 0.140, id: 1, s: 1.00 }, // Đệ Nhất Hashirama
+        { fx: 0.468, fy: 0.195, id: 2, s: 0.96 }, // Đệ Nhị Tobirama
+        { fx: 0.532, fy: 0.100, id: 3, s: 1.06 }, // Đệ Tam Hiruzen (cao nhất ở giữa!)
+        { fx: 0.598, fy: 0.210, id: 4, s: 0.96 }, // Đệ Tứ Minato
+        { fx: 0.672, fy: 0.135, id: 5, s: 1.00 }  // Đệ Ngũ Tsunade
       ];
-      hokages.forEach(hk => {
-        const rx = w * hk.fx, ry = h * hk.fy;
+      hokageArc.forEach(hk => {
         ctx.save();
-        ctx.translate(rx, ry);
+        ctx.translate(w * hk.fx, h * hk.fy);
+        ctx.scale(scFace * hk.s, scFace * hk.s);
 
-        // Chiseled granite face block + jawline
-        ctx.fillStyle = '#a8a29e';
-        ctx.strokeStyle = '#44403c';
+        // Chiseled recessed cliff niche behind head
+        ctx.fillStyle = 'rgba(66, 46, 29, 0.38)';
+        ctx.beginPath(); ctx.ellipse(2, 3, 21, 27, 0, 0, Math.PI * 2); ctx.fill();
+
+        // Sculpted stone face plane (warm sunlit left, deep shadow right)
+        const fGrad = ctx.createLinearGradient(-15, -18, 15, 20);
+        fGrad.addColorStop(0, '#f3e5cc');
+        fGrad.addColorStop(0.55, '#d6ba94');
+        fGrad.addColorStop(1, '#7c5f42');
+        ctx.fillStyle = fGrad;
+        ctx.strokeStyle = '#4a3522';
         ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.moveTo(-13, -15);
-        ctx.lineTo(13, -15);
-        ctx.lineTo(12, 7);
-        ctx.lineTo(6, 17);
-        ctx.lineTo(-6, 17);
-        ctx.lineTo(-12, 7);
+        ctx.moveTo(-14.5, -16);
+        ctx.lineTo(14.5, -16);
+        ctx.lineTo(13, 8);
+        ctx.lineTo(6.5, 22);
+        ctx.lineTo(-6.5, 22);
+        ctx.lineTo(-13, 8);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
 
-        // Carved brow & eye socket shadows
-        ctx.fillStyle = '#57534e';
-        ctx.fillRect(-10, -4, 7, 3.2);
-        ctx.fillRect(3, -4, 7, 3.2);
-        // Sculpted nose bridge & shadow
-        ctx.fillStyle = '#78716c';
-        ctx.beginPath(); ctx.moveTo(0, -4); ctx.lineTo(2.6, 5); ctx.lineTo(-1.5, 5); ctx.closePath(); ctx.fill();
-        // Mouth crease
-        ctx.strokeStyle = '#44403c';
-        ctx.lineWidth = 1.3;
-        ctx.beginPath(); ctx.moveTo(-4, 10); ctx.lineTo(4, 10); ctx.stroke();
+        // Deep carved brow shadow & eyes
+        ctx.fillStyle = '#4e3926';
+        ctx.beginPath();
+        ctx.moveTo(-11, -5); ctx.lineTo(-2.5, -3.5); ctx.lineTo(-3, -1); ctx.lineTo(-10.5, -1.5); ctx.closePath();
+        ctx.moveTo(11, -5); ctx.lineTo(2.5, -3.5); ctx.lineTo(3, -1); ctx.lineTo(10.5, -1.5); ctx.closePath();
+        ctx.fill();
 
-        // Recognizable hair / headgear silhouettes
-        ctx.fillStyle = '#57534e';
-        if (hk.type === 1) {
-          // Hashirama long framing hair + forehead protector
-          ctx.fillRect(-15, -16, 4.5, 24);
-          ctx.fillRect(10.5, -16, 4.5, 24);
-          ctx.fillRect(-13, -18, 26, 7);
-          ctx.fillStyle = '#78716c';
-          ctx.fillRect(-11, -11, 22, 4.5);
-        } else if (hk.type === 2) {
-          // Tobirama spiky crown + chin guard + red/stone cheek lines
+        // Chiseled nose bridge + cast shadow under nose & lips
+        ctx.fillStyle = '#8b6d4c';
+        ctx.beginPath(); ctx.moveTo(-1, -4); ctx.lineTo(2.5, -4); ctx.lineTo(3.5, 7); ctx.lineTo(-1.8, 7.5); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#5c432b';
+        ctx.fillRect(-5, 12.5, 10, 2);
+        ctx.fillRect(-3.5, 16, 7, 1.5);
+
+        // Iconic Carved Hair & Headbands matching each Hokage in the portrait!
+        if (hk.id === 1) {
+          // Hashirama: wide bandana headband + straight side locks framing face
+          ctx.fillStyle = '#a68967';
+          ctx.strokeStyle = '#4a3522';
+          ctx.beginPath(); ctx.roundRect(-16, -22, 32, 12, 3); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#6f553b';
+          ctx.fillRect(-17.5, -12, 4.5, 28);
+          ctx.fillRect(13, -12, 4.5, 28);
+          ctx.fillStyle = '#d6ba94';
+          ctx.fillRect(-9, -15, 18, 4.5);
+        } else if (hk.id === 2) {
+          // Tobirama: spiky swept stone hair + headband + jaw armor + cheek lines
+          ctx.fillStyle = '#efe5d2';
+          ctx.strokeStyle = '#4a3522';
           ctx.beginPath();
-          ctx.moveTo(-14, -12); ctx.lineTo(-10, -24); ctx.lineTo(-3, -17); ctx.lineTo(3, -25); ctx.lineTo(10, -17); ctx.lineTo(14, -12);
-          ctx.closePath(); ctx.fill();
-          ctx.fillRect(-9, 12, 18, 6);
-        } else if (hk.type === 3) {
-          // Hiruzen ninja cowl & goatee
-          ctx.beginPath(); ctx.roundRect(-14, -16, 28, 10, 4); ctx.fill();
-          ctx.beginPath(); ctx.moveTo(-4, 13); ctx.lineTo(0, 21); ctx.lineTo(4, 13); ctx.closePath(); ctx.fill();
-        } else if (hk.type === 4) {
-          // Minato iconic spiky sweeping bangs!
-          ctx.fillStyle = '#d6d3d1';
-          ctx.beginPath();
-          ctx.moveTo(-15, -10); ctx.lineTo(-18, -21); ctx.lineTo(-8, -19); ctx.lineTo(-2, -26);
-          ctx.lineTo(4, -19); ctx.lineTo(16, -22); ctx.lineTo(14, -10);
-          ctx.lineTo(8, -4); ctx.lineTo(3, -10); ctx.lineTo(-1, -3); ctx.lineTo(-5, -10);
+          ctx.moveTo(-16, -10); ctx.lineTo(-18, -22); ctx.lineTo(-9, -19); ctx.lineTo(-3, -27);
+          ctx.lineTo(3, -20); ctx.lineTo(10, -26); ctx.lineTo(16, -18); ctx.lineTo(15, -10);
           ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#7c5f42';
+          ctx.fillRect(-13.5, -12, 27, 5.5);
+          ctx.fillRect(-13, 5, 4, 15); ctx.fillRect(9, 5, 4, 15);
+          ctx.fillRect(-8, 16, 16, 6);
+        } else if (hk.id === 3) {
+          // Hiruzen: tall wild stone crown/hood + fierce eyes + carved mustache & goatee!
+          ctx.fillStyle = '#d6ba94';
+          ctx.strokeStyle = '#4a3522';
+          ctx.beginPath();
+          ctx.moveTo(-17, -9); ctx.lineTo(-19, -21); ctx.lineTo(-10, -20); ctx.lineTo(-6, -28);
+          ctx.lineTo(0, -22); ctx.lineTo(7, -28); ctx.lineTo(11, -20); ctx.lineTo(19, -21); ctx.lineTo(17, -9);
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+          // Goatee beard
+          ctx.fillStyle = '#6f553b';
+          ctx.beginPath(); ctx.moveTo(-4.5, 15); ctx.lineTo(0, 26); ctx.lineTo(4.5, 15); ctx.closePath(); ctx.fill();
+        } else if (hk.id === 4) {
+          // Minato: layered jagged spiky bangs hanging over forehead!
+          ctx.fillStyle = '#f3e5cc';
+          ctx.strokeStyle = '#5c432b';
+          ctx.beginPath();
+          ctx.moveTo(-17, -6); ctx.lineTo(-22, -16); ctx.lineTo(-13, -17); ctx.lineTo(-10, -27);
+          ctx.lineTo(-2, -21); ctx.lineTo(2, -28); ctx.lineTo(9, -20); ctx.lineTo(17, -26);
+          ctx.lineTo(14, -15); ctx.lineTo(21, -13); ctx.lineTo(16, -5);
+          ctx.lineTo(10, 0); ctx.lineTo(5, -9); ctx.lineTo(0, 1); ctx.lineTo(-5, -9); ctx.lineTo(-10, 0);
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+        } else if (hk.id === 5) {
+          // Tsunade: broad flowing locks + forehead Byakugou mark
+          ctx.fillStyle = '#e6d1b1';
+          ctx.strokeStyle = '#4a3522';
+          ctx.beginPath();
+          ctx.moveTo(-18, -12); ctx.quadraticCurveTo(0, -26, 18, -12);
+          ctx.lineTo(19, 14); ctx.lineTo(13.5, 14); ctx.lineTo(13, -6);
+          ctx.lineTo(0, -10); ctx.lineTo(-13, -6); ctx.lineTo(-13.5, 14); ctx.lineTo(-19, 14);
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = '#4a3522';
+          ctx.beginPath(); ctx.moveTo(0, -11); ctx.lineTo(2, -8.5); ctx.lineTo(0, -6); ctx.lineTo(-2, -8.5); ctx.closePath(); ctx.fill();
         }
         ctx.restore();
       });
 
-      // 3. ICONIC KONOHA VILLAGE ROOFTOPS, HOKAGE RESIDENCE & VILLAGE WALL
-      const wallY = h * 0.565;
-      // Lush cedar/leaf forest belt separating cliff & village
-      ctx.fillStyle = '#14532d';
-      for (let fx = 0; fx <= w + 20; fx += 26) {
-        ctx.beginPath(); ctx.arc(fx, h * 0.485, 19, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.fillStyle = '#166534';
-      for (let fx = 12; fx <= w + 20; fx += 34) {
-        ctx.beginPath(); ctx.arc(fx, h * 0.495, 15, 0, Math.PI * 2); ctx.fill();
-      }
+      // Tiny village rooftops peeking below cliff left & right of Hokage Tower
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillRect(w * 0.30, h * 0.34, 48, 22);
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(w * 0.295, h * 0.33, 52, 5);
 
-      // Hokage Residence Dome Building (Trung tâm Làng Lá!)
-      const hokX = w * 0.50, hokY = h * 0.54;
-      ctx.fillStyle = '#fef3c7';
-      ctx.strokeStyle = '#78350f';
-      ctx.lineWidth = 1.6;
-      ctx.fillRect(hokX - 42, hokY - 34, 84, 38);
-      ctx.strokeRect(hokX - 42, hokY - 34, 84, 38);
-      // Crimson dome roof
-      ctx.fillStyle = '#dc2626';
-      ctx.beginPath(); ctx.arc(hokX, hokY - 32, 46, Math.PI, 0); ctx.fill(); ctx.stroke();
-      // White vertical ribs on Hokage dome
-      ctx.strokeStyle = '#fecaca';
-      ctx.lineWidth = 1.2;
-      [-20, 0, 20].forEach(dx => {
-        ctx.beginPath(); ctx.moveTo(hokX + dx * 0.4, hokY - 74); ctx.quadraticCurveTo(hokX + dx, hokY - 56, hokX + dx * 1.4, hokY - 32); ctx.stroke();
-      });
-      // Golden Kanji '火' (Hỏa / Lửa) Crest Medallion!
-      ctx.fillStyle = '#fef08a';
-      ctx.strokeStyle = '#991b1b';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.arc(hokX, hokY - 50, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#b91c1c';
-      ctx.font = '900 13px system-ui, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('火', hokX, hokY - 49.5);
+      // 3. GIANT SCARLET-TERRACOTTA HOKAGE TOWER AT CENTER FOCAL POINT!
+      const hokX = w * 0.495, hokGroundY = h * 0.565;
+      const drumTopY = h * 0.255, drumBotY = h * 0.46;
 
-      // Traditional Japanese Leaf Village Townhouses (Timber + White Plaster + Tiled Kawara Roofs)
-      const houses = [
-        [0.03, 0.13, 46], [0.17, 0.14, 52], [0.32, 0.12, 40],
-        [0.60, 0.13, 44], [0.74, 0.13, 50]
-      ];
-      houses.forEach(([hx, hw, hh]) => {
-        const rx = w * hx, rw = w * hw;
-        // Plaster wall
-        ctx.fillStyle = '#e7e5e4';
-        ctx.strokeStyle = '#44403c';
-        ctx.lineWidth = 1.4;
-        ctx.fillRect(rx, wallY - hh, rw, hh);
-        ctx.strokeRect(rx, wallY - hh, rw, hh);
-        // Dark wood timber columns & beam
-        ctx.fillStyle = '#451a03';
-        ctx.fillRect(rx, wallY - hh, 4.5, hh);
-        ctx.fillRect(rx + rw - 4.5, wallY - hh, 4.5, hh);
-        ctx.fillRect(rx, wallY - hh + 18, rw, 3.5);
-        // Shoji warm lit windows
-        ctx.fillStyle = '#fef08a';
-        ctx.strokeStyle = '#78350f';
-        ctx.lineWidth = 1;
-        ctx.fillRect(rx + 10, wallY - hh + 25, 13, 14); ctx.strokeRect(rx + 10, wallY - hh + 25, 13, 14);
-        ctx.fillRect(rx + rw - 23, wallY - hh + 25, 13, 14); ctx.strokeRect(rx + rw - 23, wallY - hh + 25, 13, 14);
-        // Upturned Japanese slate roof with golden ridge
-        ctx.fillStyle = '#1e293b';
-        ctx.beginPath();
-        ctx.moveTo(rx - 10, wallY - hh + 4);
-        ctx.quadraticCurveTo(rx + rw * 0.5, wallY - hh - 19, rx + rw + 10, wallY - hh + 4);
-        ctx.lineTo(rx + rw + 4, wallY - hh + 10);
-        ctx.lineTo(rx - 4, wallY - hh + 10);
-        ctx.closePath();
-        ctx.fill();
+      // 5 Tall Pale-White Curved Fin Spires crowning Hokage Tower rim
+      const fins = [-0.088, -0.048, 0.0, 0.048, 0.088];
+      fins.forEach((off, fi) => {
+        const fx = hokX + w * off;
+        const finH = fi === 2 ? h * 0.085 : h * 0.068;
+        ctx.fillStyle = fi === 2 ? '#ffffff' : '#e2e8f0';
         ctx.strokeStyle = '#64748b';
-        ctx.stroke();
-      });
-
-      // Konoha Main Green Village Gate Pillars + Leaf Crest Banner on right
-      const gx = w * 0.88, gy = h * 0.59;
-      ctx.fillStyle = '#166534';
-      ctx.strokeStyle = '#052e16';
-      ctx.lineWidth = 1.6;
-      ctx.fillRect(gx - 30, gy - 66, 13, 68); ctx.strokeRect(gx - 30, gy - 66, 13, 68);
-      ctx.fillRect(gx + 17, gy - 66, 13, 68); ctx.strokeRect(gx + 17, gy - 66, 13, 68);
-      // Curved green beam & Konoha Leaf Signboard
-      ctx.fillStyle = '#15803d';
-      ctx.beginPath(); ctx.roundRect(gx - 38, gy - 76, 76, 14, 4); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#fef3c7';
-      ctx.beginPath(); ctx.roundRect(gx - 18, gy - 73, 36, 18, 4); ctx.fill(); ctx.stroke();
-      ctx.font = '13px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('🍃', gx, gy - 63);
-
-      // Swaying Warm Paper Lanterns (Đèn lồng giấy)
-      [0.24, 0.45, 0.67].forEach((lx, li) => {
-        const px = w * lx, py = h * 0.555;
-        ctx.strokeStyle = '#292524';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.moveTo(px, py - 8); ctx.lineTo(px, py); ctx.stroke();
-        ctx.fillStyle = '#ef4444';
-        ctx.shadowColor = '#fb923c';
-        ctx.shadowBlur = 12;
-        ctx.beginPath(); ctx.ellipse(px, py + 6, 5.5, 7.5, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = '#fef08a';
-        ctx.fillRect(px - 2, py + 3, 4, 6);
-      });
-
-      // 4. Detailed Gnarled Cherry Blossom Trees Framing Left & Right
-      [[0.065, 0.59, 1], [0.955, 0.59, -1]].forEach(([bx, by, dir]) => {
-        const px = w * bx, py = h * by;
-        // Twisted trunk & roots
-        ctx.fillStyle = '#451a03';
-        ctx.strokeStyle = '#291002';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.3;
         ctx.beginPath();
-        ctx.moveTo(px - 9, py + 2);
-        ctx.quadraticCurveTo(px - 4, py - 28, px - 6, py - 56);
-        ctx.lineTo(px + 6, py - 56);
-        ctx.quadraticCurveTo(px + 5, py - 26, px + 10, py + 2);
+        ctx.moveTo(fx - 6, drumTopY + 10);
+        ctx.quadraticCurveTo(fx - 3, drumTopY - finH * 0.7, fx, drumTopY - finH);
+        ctx.quadraticCurveTo(fx + 5, drumTopY - finH * 0.5, fx + 7, drumTopY + 10);
         ctx.closePath();
         ctx.fill(); ctx.stroke();
-        // Extending branches
-        ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 4.5;
-        ctx.beginPath();
-        ctx.moveTo(px, py - 42); ctx.lineTo(px + dir * 24, py - 62);
-        ctx.moveTo(px, py - 48); ctx.lineTo(px - dir * 18, py - 66);
-        ctx.stroke();
-        // Rich 3-tone sakura blossom canopy
-        ctx.fillStyle = '#db2777';
-        ctx.beginPath(); ctx.arc(px, py - 66, 32, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#f472b6';
-        ctx.beginPath(); ctx.arc(px - 20, py - 56, 22, 0, Math.PI * 2); ctx.arc(px + 20, py - 56, 22, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#fbcfe8';
-        ctx.beginPath(); ctx.arc(px - 6, py - 74, 18, 0, Math.PI * 2); ctx.arc(px + 12, py - 64, 15, 0, Math.PI * 2); ctx.fill();
       });
 
-      // 5. Konoha Training Ground (Bãi tập Làng Lá có hàng rào gỗ & bia tập Kunai)
-      const gGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
-      gGrad.addColorStop(0, '#eab308');
-      gGrad.addColorStop(0.28, '#ca8a04');
-      gGrad.addColorStop(0.68, '#a16207');
-      gGrad.addColorStop(1, '#713f12');
-      ctx.fillStyle = gGrad;
-      ctx.fillRect(0, h * 0.58, w, h * 0.42);
+      // Rounded Terracotta-Scarlet Hokage Tower Body
+      const drumGrad = ctx.createLinearGradient(hokX - w * 0.14, drumTopY, hokX + w * 0.14, drumBotY);
+      drumGrad.addColorStop(0, '#fb923c');
+      drumGrad.addColorStop(0.28, '#e85d3c');
+      drumGrad.addColorStop(0.75, '#c24124');
+      drumGrad.addColorStop(1, '#7c2d12');
+      ctx.fillStyle = drumGrad;
+      ctx.strokeStyle = '#7c2d12';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(hokX - w * 0.105, drumTopY);
+      ctx.quadraticCurveTo(hokX, drumTopY + 12, hokX + w * 0.105, drumTopY);
+      ctx.quadraticCurveTo(hokX + w * 0.145, (drumTopY + drumBotY) * 0.52, hokX + w * 0.145, drumBotY);
+      ctx.lineTo(hokX - w * 0.145, drumBotY);
+      ctx.quadraticCurveTo(hokX - w * 0.145, (drumTopY + drumBotY) * 0.52, hokX - w * 0.105, drumTopY);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
 
-      // Green grass verge & wooden ninja fence along background edge
-      ctx.fillStyle = '#15803d';
-      ctx.fillRect(0, h * 0.57, w, 12);
-      ctx.strokeStyle = '#78350f';
-      ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.moveTo(0, h * 0.568); ctx.lineTo(w, h * 0.568); ctx.stroke();
-      for (let fx = 18; fx < w; fx += 44) {
-        ctx.fillStyle = '#92400e';
-        ctx.fillRect(fx - 2.5, h * 0.555, 5, 16);
+      // Golden-terracotta horizontal rim bands & tiny loop windows along drum
+      ctx.strokeStyle = '#fdba74';
+      ctx.lineWidth = 3;
+      [0.24, 0.38].forEach(ry => {
+        const yBand = drumTopY + (drumBotY - drumTopY) * ry;
+        const hw = w * (0.105 + ry * 0.08);
+        ctx.beginPath();
+        ctx.moveTo(hokX - hw, yBand);
+        ctx.quadraticCurveTo(hokX, yBand + 10, hokX + hw, yBand);
+        ctx.stroke();
+      });
+
+      ctx.fillStyle = '#451a03';
+      for (let wi = -5; wi <= 5; wi++) {
+        if (wi === 0) continue;
+        const wx = hokX + wi * (w * 0.021);
+        const curveY = drumTopY + (drumBotY - drumTopY) * 0.56 + (1 - Math.abs(wi) / 6) * 6;
+        ctx.fillRect(wx - 2.5, curveY, 5, 5.5);
+        ctx.fillRect(wx - 2.5, curveY + 12, 5, 5.5);
       }
 
-      // Subtle stone dust shading on training ground
-      ctx.fillStyle = 'rgba(254, 240, 138, 0.14)';
-      ctx.beginPath(); ctx.ellipse(w * 0.62, h * 0.78, 175, 42, 0, 0, Math.PI * 2); ctx.fill();
+      // Iconic Crimson-Ringed '火' Crest Medallion in Upper Center of Hokage Tower
+      const badgeR = Math.max(12, Math.min(18, w * 0.019));
+      const badgeY = drumTopY + 14;
+      ctx.fillStyle = '#dc2626';
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(hokX, badgeY, badgeR, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fef3c7';
+      ctx.beginPath(); ctx.arc(hokX, badgeY, badgeR * 0.76, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#b91c1c';
+      ctx.font = '900 ' + Math.round(badgeR * 1.15) + 'px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('火', hokX, badgeY + 0.5);
 
-      // 3 Ninja Wooden Training Posts (Cọc gỗ tập phi tiêu Kunai)
-      [0.84, 0.89, 0.94].forEach((px, idx) => {
-        const lx = w * px, ly = h * 0.66 + idx * 7;
-        ctx.fillStyle = 'rgba(0,0,0,0.28)';
-        ctx.beginPath(); ctx.ellipse(lx, ly + 8, 11, 3.5, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#92400e';
-        ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 1.6;
-        ctx.beginPath(); ctx.roundRect(lx - 7, ly - 36, 14, 42, 3); ctx.fill(); ctx.stroke();
-        // Top wood ring grain
-        ctx.fillStyle = '#fde68a';
-        ctx.beginPath(); ctx.ellipse(lx, ly - 35, 6.5, 2.5, 0, 0, Math.PI * 2); ctx.fill();
-        // Rope & white target band
-        ctx.fillStyle = '#fef3c7';
-        ctx.fillRect(lx - 7, ly - 23, 14, 5);
-        ctx.fillStyle = '#dc2626';
-        ctx.beginPath(); ctx.arc(lx, ly - 11, 4, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath(); ctx.arc(lx, ly - 11, 1.8, 0, Math.PI * 2); ctx.fill();
+      // Wide Sloped Orange-Tiled Veranda Roof & Palace Entrance Courtyard
+      const eaveTop = drumBotY - 2;
+      const eaveBot = drumBotY + h * 0.055;
+      const roofGrad = ctx.createLinearGradient(0, eaveTop, 0, eaveBot);
+      roofGrad.addColorStop(0, '#c2410c');
+      roofGrad.addColorStop(0.55, '#ea580c');
+      roofGrad.addColorStop(1, '#9a3412');
+      ctx.fillStyle = roofGrad;
+      ctx.strokeStyle = '#431407';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(hokX - w * 0.145, eaveTop);
+      ctx.lineTo(hokX + w * 0.145, eaveTop);
+      ctx.lineTo(hokX + w * 0.175, eaveBot);
+      ctx.lineTo(hokX - w * 0.175, eaveBot);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      // Veranda tile ribs
+      ctx.strokeStyle = 'rgba(67, 20, 7, 0.35)';
+      ctx.lineWidth = 1;
+      for (let ti = -9; ti <= 9; ti++) {
+        ctx.beginPath();
+        ctx.moveTo(hokX + ti * (w * 0.015), eaveTop);
+        ctx.lineTo(hokX + ti * (w * 0.018), eaveBot);
+        ctx.stroke();
+      }
+
+      // Ground-floor Hokage Hallway & Sliding Wooden Doors
+      ctx.fillStyle = '#fef3c7';
+      ctx.fillRect(hokX - w * 0.13, eaveBot, w * 0.26, hokGroundY - eaveBot);
+      ctx.fillStyle = '#57534e';
+      ctx.fillRect(hokX - w * 0.05, eaveBot + 4, w * 0.10, hokGroundY - eaveBot - 4);
+      ctx.fillStyle = '#92400e';
+      ctx.fillRect(hokX - w * 0.022, eaveBot + 6, w * 0.044, hokGroundY - eaveBot - 6);
+
+      // Lush Courtyard Trees flanking the Hokage Residence Doors
+      [[-0.105, '#15803d', '#22c55e'], [0.105, '#166534', '#4ade80']].forEach(([off, c1, c2]) => {
+        const tx = hokX + w * off, ty = hokGroundY;
+        ctx.fillStyle = '#451a03';
+        ctx.fillRect(tx - 4, ty - 24, 8, 24);
+        ctx.fillStyle = c1;
+        ctx.beginPath(); ctx.arc(tx, ty - 28, 22, 0, Math.PI * 2); ctx.arc(tx - 13, ty - 18, 15, 0, Math.PI * 2); ctx.arc(tx + 13, ty - 18, 15, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = c2;
+        ctx.beginPath(); ctx.arc(tx + 4, ty - 33, 12, 0, Math.PI * 2); ctx.fill();
       });
+
+      // 4. SUNLIT KONOHA MAIN AVENUE & DRAMATIC CAST BUILDING SHADOWS (Con phố dẫn thẳng tới Dinh Hokage!)
+      const stTopL = w * 0.365, stTopR = w * 0.625;
+      const stBotL = w * 0.145, stBotR = w * 0.855;
+      const streetGrad = ctx.createLinearGradient(0, hokGroundY, 0, h);
+      streetGrad.addColorStop(0, '#fef08a');
+      streetGrad.addColorStop(0.28, '#fef9c3');
+      streetGrad.addColorStop(0.70, '#fde68a');
+      streetGrad.addColorStop(1, '#d97706');
+      ctx.fillStyle = streetGrad;
+      ctx.beginPath();
+      ctx.moveTo(stTopL, hokGroundY);
+      ctx.lineTo(stTopR, hokGroundY);
+      ctx.lineTo(w, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fill();
+
+      // Realistic diagonal building shadow cast from the left block onto the sunlit avenue
+      const shadGrad = ctx.createLinearGradient(0, h * 0.60, w * 0.50, h * 0.92);
+      shadGrad.addColorStop(0, 'rgba(28, 25, 23, 0.64)');
+      shadGrad.addColorStop(0.65, 'rgba(41, 37, 36, 0.32)');
+      shadGrad.addColorStop(1, 'rgba(41, 37, 36, 0)');
+      ctx.fillStyle = shadGrad;
+      ctx.beginPath();
+      ctx.moveTo(0, hokGroundY);
+      ctx.lineTo(stTopL + w * 0.05, hokGroundY);
+      ctx.lineTo(w * 0.45, h);
+      ctx.lineTo(0, h);
+      ctx.closePath();
+      ctx.fill();
+
+      // Subtle paved stone curb seams converging in perspective
+      ctx.strokeStyle = 'rgba(146, 64, 14, 0.22)';
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(stTopL + w * 0.02, hokGroundY); ctx.lineTo(stBotL, h);
+      ctx.moveTo(stTopR - w * 0.02, hokGroundY); ctx.lineTo(stBotR, h);
+      ctx.stroke();
+
+      // 5. LEFT PERSPECTIVE KONOHA SHOPHOUSES (Tòa xanh lá đậm -> Tòa gạch hồng -> Tiệm mái hiên đỏ)
+      // Far-left shop (cream + bright red awning leading into square)
+      ctx.fillStyle = '#e7dcc8';
+      ctx.strokeStyle = '#292524';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.33, h * 0.40); ctx.lineTo(w * 0.40, h * 0.425);
+      ctx.lineTo(w * 0.40, hokGroundY); ctx.lineTo(w * 0.33, h * 0.62);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.33, h * 0.515); ctx.lineTo(w * 0.42, h * 0.528);
+      ctx.lineTo(w * 0.40, h * 0.548); ctx.lineTo(w * 0.33, h * 0.538);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Mid-left Terracotta-Rose Multi-story Shop
+      ctx.fillStyle = '#9f5b52';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.24, h * 0.21); ctx.lineTo(w * 0.34, h * 0.33);
+      ctx.lineTo(w * 0.34, h * 0.63); ctx.lineTo(w * 0.24, h * 0.72);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Shaded street-facing awning & dark wooden windows
+      ctx.fillStyle = '#1e3a8a';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.24, h * 0.47); ctx.lineTo(w * 0.355, h * 0.50);
+      ctx.lineTo(w * 0.345, h * 0.53); ctx.lineTo(w * 0.24, h * 0.51);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#292524';
+      for (let wi = 0; wi < 3; wi++) {
+        const wx = w * (0.255 + wi * 0.026);
+        const wy = h * (0.28 + wi * 0.025);
+        ctx.fillRect(wx, wy, w * 0.015, h * 0.07);
+      }
+
+      // Foreground Left Tall EMERALD-GREEN BUILDING (Tòa nhà xanh rêu biểu tượng bên trái ảnh!)
+      // Front sunlit left-strip + dark shaded perspective wall
+      ctx.fillStyle = '#4f8f54';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.07); ctx.lineTo(w * 0.17, h * 0.09);
+      ctx.lineTo(w * 0.17, h * 0.90); ctx.lineTo(0, h);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Green Rooftop Parapet with Red Kanji Mark & Water Tank
+      ctx.fillStyle = '#14532d';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.17, h * 0.09); ctx.lineTo(w * 0.275, h * 0.20);
+      ctx.lineTo(w * 0.275, h * 0.76); ctx.lineTo(w * 0.17, h * 0.90);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Green roof bump + tank
+      ctx.fillStyle = '#4f8f54';
+      ctx.beginPath(); ctx.roundRect(w * 0.175, h * 0.035, w * 0.055, h * 0.10, 4); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#94a3b8';
+      ctx.beginPath(); ctx.roundRect(w * 0.06, h * 0.005, 36, 22, 6); ctx.fill(); ctx.stroke();
+
+      // Overhanging Yellow/Red Shop Plaque on Upper Left + Dark Timber Windows
+      ctx.fillStyle = '#ca8a04';
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.03, h * 0.06); ctx.lineTo(w * 0.115, h * 0.13);
+      ctx.lineTo(w * 0.115, h * 0.205); ctx.lineTo(w * 0.03, h * 0.14);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Shaded street-side windows & shop awnings on Green Building
+      ctx.fillStyle = '#1e293b';
+      for (let wi = 0; wi < 4; wi++) {
+        ctx.fillRect(w * (0.18 + wi * 0.022), h * (0.31 + wi * 0.022), w * 0.013, h * 0.105);
+      }
+      ctx.fillStyle = '#0f3923';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.52); ctx.lineTo(w * 0.185, h * 0.56);
+      ctx.lineTo(w * 0.185, h * 0.62); ctx.lineTo(0, h * 0.59);
+      ctx.closePath(); ctx.fill();
+
+      // 6. RIGHT PERSPECTIVE KONOHA SHOPHOUSES (Nhà mái xanh + bồn nước inox -> Nhà mái tím gạch lộ + mái hiên đỏ!)
+      // Mid-right White & Sunlit Shop with ROYAL BLUE ROOF & 2 STEEL WATER TANKS
+      ctx.fillStyle = '#f8fafc';
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.585, h * 0.41); ctx.lineTo(w * 0.695, h * 0.30);
+      ctx.lineTo(w * 0.695, h * 0.69); ctx.lineTo(w * 0.585, hokGroundY);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Royal Blue Sloped Roof & Two Silver Steel Water Tanks on Roof!
+      ctx.fillStyle = '#1d4ed8';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.58, h * 0.415); ctx.lineTo(w * 0.665, h * 0.315);
+      ctx.lineTo(w * 0.77, h * 0.315); ctx.lineTo(w * 0.695, h * 0.38);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // 2 Cylindrical Silver Steel Water Tanks (Bồn nước inox trên mái!)
+      [[0.715, 0.255, 22, 32], [0.785, 0.235, 26, 36]].forEach(([tx, ty, tw, th]) => {
+        const tankGrad = ctx.createLinearGradient(w * tx, 0, w * tx + tw, 0);
+        tankGrad.addColorStop(0, '#64748b');
+        tankGrad.addColorStop(0.45, '#f1f5f9');
+        tankGrad.addColorStop(1, '#334155');
+        ctx.fillStyle = tankGrad;
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.roundRect(w * tx, h * ty, tw, th, 4); ctx.fill(); ctx.stroke();
+      });
+
+      // Green 3-Panel Vertical Shop Sign + Blue Balcony + Yellow-Striped Awning
+      ctx.fillStyle = '#115e59';
+      ctx.strokeStyle = '#042f2e';
+      ctx.beginPath(); ctx.roundRect(w * 0.70, h * 0.405, 18, 54, 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#ccfbf1';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('風', w * 0.70 + 9, h * 0.425);
+      ctx.fillText('葉', w * 0.70 + 9, h * 0.455);
+
+      // Blue Balcony Railing & Yellow Striped Awning
+      ctx.fillStyle = '#2563eb';
+      ctx.fillRect(w * 0.64, h * 0.50, w * 0.065, h * 0.05);
+      ctx.fillStyle = '#fde047';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.635, h * 0.56); ctx.lineTo(w * 0.73, h * 0.56);
+      ctx.lineTo(w * 0.755, h * 0.63); ctx.lineTo(w * 0.635, h * 0.61);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Tiny A-frame Street Menu Boards standing along right curb
+      [[0.615, 0.64], [0.648, 0.675]].forEach(([sx, sy]) => {
+        ctx.fillStyle = '#166534';
+        ctx.strokeStyle = '#fde047';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.roundRect(w * sx, h * sy, 13, 18, 2); ctx.fill(); ctx.stroke();
+      });
+
+      // Foreground Right Building: SUNLIT PEACH PLASTER + EXPOSED BRICK + PURPLE ROOF + RED AWNING!
+      const rbX = w * 0.725;
+      const wallGrad = ctx.createLinearGradient(rbX, h * 0.25, w, h * 0.90);
+      wallGrad.addColorStop(0, '#fed7aa');
+      wallGrad.addColorStop(0.55, '#fdba74');
+      wallGrad.addColorStop(1, '#d97757');
+      ctx.fillStyle = wallGrad;
+      ctx.strokeStyle = '#451a03';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(rbX, h * 0.29); ctx.lineTo(w * 0.92, h * 0.14);
+      ctx.lineTo(w, h * 0.14); ctx.lineTo(w, h);
+      ctx.lineTo(w * 0.87, h); ctx.lineTo(rbX, h * 0.76);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Purple-Magenta Foreground Sloped Roof + Steep Blue Exterior Staircase in top-right!
+      ctx.fillStyle = '#9333ea';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.72, h * 0.29); ctx.lineTo(w * 0.89, h * 0.125);
+      ctx.lineTo(w * 0.945, h * 0.145); ctx.lineTo(w * 0.755, h * 0.305);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+
+      // Blue exterior metal stairway on upper right
+      ctx.strokeStyle = '#1e3a8a';
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(w * 0.80, 0); ctx.lineTo(w * 0.90, h * 0.13); ctx.stroke();
+
+      // Exposed Terracotta Brick Patches & Metal Pipe on Foreground Right Plaster Wall
+      ctx.fillStyle = '#c2410c';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.925, h * 0.31); ctx.lineTo(w * 0.97, h * 0.33);
+      ctx.lineTo(w * 0.96, h * 0.45); ctx.lineTo(w * 0.915, h * 0.42);
+      ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3.2;
+      ctx.beginPath(); ctx.moveTo(w * 0.965, h * 0.16); ctx.lineTo(w * 0.965, h * 0.86); ctx.stroke();
+
+      // Wooden Lattice Shoji Windows (Koushi) on Foreground Right House
+      [0.75, 0.80, 0.855].forEach((wx, wi) => {
+        const wy = h * (0.37 - wi * 0.032);
+        ctx.fillStyle = '#b45309';
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 1.4;
+        ctx.fillRect(w * wx, wy, w * 0.038, h * 0.14);
+        ctx.strokeRect(w * wx, wy, w * 0.038, h * 0.14);
+        // Fine lattice bars
+        ctx.strokeStyle = 'rgba(254, 243, 199, 0.55)';
+        ctx.lineWidth = 0.8;
+        for (let b = 1; b <= 3; b++) {
+          ctx.beginPath(); ctx.moveTo(w * wx + (w * 0.038) * (b / 4), wy); ctx.lineTo(w * wx + (w * 0.038) * (b / 4), wy + h * 0.14); ctx.stroke();
+        }
+      });
+
+      // Vertical Wood Shop Plaques & Bright Crimson Ground Awning
+      [0.77, 0.835].forEach((px, pi) => {
+        ctx.fillStyle = '#d97706';
+        ctx.strokeStyle = '#451a03';
+        ctx.fillRect(w * px, h * (0.55 - pi * 0.025), 14, 46);
+        ctx.strokeRect(w * px, h * (0.55 - pi * 0.025), 14, 46);
+      });
+      ctx.fillStyle = '#dc2626';
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.73, h * 0.65); ctx.lineTo(w * 0.91, h * 0.725);
+      ctx.lineTo(w * 0.885, h * 0.80); ctx.lineTo(w * 0.725, h * 0.715);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
     }
 
     function drawNarutoCharacter(ctx, x, y, opts) {
