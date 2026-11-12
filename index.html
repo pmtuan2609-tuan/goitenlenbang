@@ -28381,14 +28381,25 @@
       const o = opts || {};
       const shirt = o.shirt || '#3b82f6';
       const pants = o.pants || '#1e293b';
-      const hair = o.hair || '#292524';
-      const skin = o.skin || '#fed7aa';
       const scale = o.scale || 1;
       const pose = o.pose || 'idle';
       const facing = o.facing || 1; // 1: right, -1: left
       const phase = o.phase || 0;
       const now = o.now || performance.now();
       const tilt = o.tilt || 0;
+
+      // Deterministic visual seed so every student keeps a distinct, consistent hairstyle & outfit style
+      const seedRaw = o.seed !== undefined ? o.seed : Math.abs(Math.round(phase * 13));
+      const seed = Math.abs(seedRaw | 0);
+      const HAIR_PALETTE = ['#18181b', '#292524', '#451a03', '#5c2d16', '#1e293b', '#3f2e21'];
+      const SKIN_PALETTE = ['#fed7aa', '#ffedd5', '#fde2c4', '#f8cfa0'];
+      const CLIP_PALETTE = ['#f43f5e', '#f59e0b', '#ec4899', '#38bdf8', '#a855f7'];
+      const hair = o.hair || HAIR_PALETTE[seed % HAIR_PALETTE.length];
+      const skin = o.skin || SKIN_PALETTE[seed % SKIN_PALETTE.length];
+      const hairStyle = seed % 5; // 0: spiky boy, 1: neat parted, 2: cute bob, 3: high ponytail, 4: twin tails
+      const isGirl = o.isStudent && hairStyle >= 2;
+      const clipColor = CLIP_PALETTE[seed % CLIP_PALETTE.length];
+      const outline = '#0f172a';
 
       ctx.save();
       ctx.translate(x, y);
@@ -28401,25 +28412,69 @@
                    : pose === 'abducted' ? Math.sin(now * 0.03 + phase) * 6
                    : 0;
 
+      // Back hair tails drawn behind body (ponytail / twin tails)
+      if (!o.isAstronaut && !o.helmetColor) {
+        ctx.fillStyle = hair;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.0;
+        if (hairStyle === 3) {
+          // Ponytail swaying behind head
+          const sway = Math.sin(now * 0.008 + phase) * 2;
+          ctx.beginPath();
+          ctx.moveTo(-facing * 3, -17);
+          ctx.quadraticCurveTo(-facing * 11, -18 + sway, -facing * 10.5, -7 + sway * 0.5);
+          ctx.quadraticCurveTo(-facing * 6, -9, -facing * 3, -13);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = clipColor;
+          ctx.beginPath(); ctx.arc(-facing * 4.5, -16, 1.9, 0, Math.PI * 2); ctx.fill();
+        } else if (hairStyle === 4) {
+          // Twin pigtails
+          const sway = Math.sin(now * 0.009 + phase) * 1.5;
+          [-1, 1].forEach(side => {
+            ctx.fillStyle = hair;
+            ctx.beginPath();
+            ctx.moveTo(side * 5, -16);
+            ctx.quadraticCurveTo(side * 11, -14 + sway * side, side * 9.5, -5 + sway * side);
+            ctx.quadraticCurveTo(side * 6, -6, side * 5, -12);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.fillStyle = clipColor;
+            ctx.beginPath(); ctx.arc(side * 6.2, -14.5, 1.7, 0, Math.PI * 2); ctx.fill();
+          });
+        }
+      }
+
       // School backpack behind body (if student uniform mode)
       if (o.isStudent) {
         const bpColor = o.backpackColor || shirt;
         const bpX = (pose === 'walk' || pose === 'run' || pose === 'cling') ? (-facing * 6.5) : 0;
+        // Top handle loop
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(bpX, -9.2, 2.3, Math.PI, 0); ctx.stroke();
+        // Main bag body
         ctx.fillStyle = bpColor;
-        ctx.strokeStyle = 'rgba(15,23,42,0.8)';
-        ctx.lineWidth = 1.1;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.15;
         ctx.beginPath();
-        ctx.roundRect(bpX - 5.5, -8.5, 11, 12.5, 3.5);
+        ctx.roundRect(bpX - 6, -8.5, 12, 13, 3.8);
         ctx.fill();
         ctx.stroke();
-        // Backpack flap/pocket accent
-        ctx.fillStyle = 'rgba(255,255,255,0.35)';
-        ctx.fillRect(bpX - 3.5, -3, 7, 4);
+        // Front pocket & bright trim
+        ctx.fillStyle = 'rgba(255,255,255,0.28)';
+        ctx.beginPath(); ctx.roundRect(bpX - 4, -2.5, 8, 5, 1.8); ctx.fill();
+        ctx.fillStyle = 'rgba(15,23,42,0.22)';
+        ctx.fillRect(bpX - 4.5, -3.5, 9, 1.3);
       }
 
       // Hero cape behind body (if Summon SSR hero)
       if (o.isHero) {
         ctx.fillStyle = '#dc2626';
+        ctx.strokeStyle = '#7f1d1d';
+        ctx.lineWidth = 1.1;
         ctx.beginPath();
         ctx.moveTo(-8, -8);
         ctx.quadraticCurveTo(-16, 4 + Math.sin(now * 0.008) * 3, -12, 14);
@@ -28427,223 +28482,416 @@
         ctx.quadraticCurveTo(16, 4 - Math.sin(now * 0.008) * 3, 8, -8);
         ctx.closePath();
         ctx.fill();
+        ctx.stroke();
       }
 
       // Astronaut backpack
       if (o.isAstronaut) {
         ctx.fillStyle = '#94a3b8';
-        ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1.3;
         ctx.beginPath();
-        ctx.roundRect(-8, -9, 16, 13, 3);
+        ctx.roundRect(-8.5, -9, 17, 13.5, 3.5);
         ctx.fill();
         ctx.stroke();
       }
 
-      // 1. LEGS & SHOES
+      // 1. LEGS & SNEAKERS
       ctx.lineCap = 'round';
-      ctx.lineWidth = 3.6;
+      const legStroke = isGirl ? skin : pants;
       if (pose === 'cling') {
-        // Legs dangling/kicking behind in suction wind
         const kickDir = -facing;
-        ctx.strokeStyle = pants;
+        // Dark ink outline pass for crisp cartoon legs
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 5.0;
         ctx.beginPath();
-        ctx.moveTo(-2, 4);
-        ctx.quadraticCurveTo(kickDir * 6, 9, kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3);
-        ctx.moveTo(2, 4);
-        ctx.quadraticCurveTo(kickDir * 5, 10, kickDir * 9 - stride * 0.5, 15);
+        ctx.moveTo(-2, 4); ctx.quadraticCurveTo(kickDir * 6, 9, kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3);
+        ctx.moveTo(2, 4); ctx.quadraticCurveTo(kickDir * 5, 10, kickDir * 9 - stride * 0.5, 15);
         ctx.stroke();
 
-        // White shoes
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3, 2.1, 0, Math.PI * 2);
-        ctx.arc(kickDir * 9 - stride * 0.5, 15, 2.1, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.strokeStyle = legStroke;
+        ctx.lineWidth = 3.1;
+        ctx.stroke();
+
+        // Crisp sneakers
+        [[kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3], [kickDir * 9 - stride * 0.5, 15]].forEach(([sx, sy]) => {
+          ctx.fillStyle = '#ffffff';
+          ctx.strokeStyle = outline;
+          ctx.lineWidth = 1.0;
+          ctx.beginPath(); ctx.ellipse(sx, sy, 2.7, 1.9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = shirt;
+          ctx.beginPath(); ctx.arc(sx, sy - 0.3, 1.1, 0, Math.PI * 2); ctx.fill();
+        });
       } else if (pose === 'read') {
-        // Ngồi vắt chân đọc sách
-        ctx.strokeStyle = pants;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 5.0;
         ctx.beginPath();
-        ctx.moveTo(-2, 4); ctx.lineTo(-8, 10); ctx.lineTo(-4, 13);
-        ctx.moveTo(2, 4); ctx.lineTo(8, 10); ctx.lineTo(4, 13);
+        ctx.moveTo(-2.5, 4); ctx.lineTo(-7.8, 10); ctx.lineTo(-3.6, 13.5);
+        ctx.moveTo(2.5, 4); ctx.lineTo(7.8, 10); ctx.lineTo(3.6, 13.5);
         ctx.stroke();
+        ctx.strokeStyle = legStroke;
+        ctx.lineWidth = 3.1;
+        ctx.stroke();
+        // Neat shoes
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.ellipse(-3.6, 14, 2.5, 1.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(3.6, 14, 2.5, 1.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else if (pose === 'bike') {
-        // Chân đạp bàn đạp xe đạp
         const pedalAng = now * 0.012 + phase;
-        ctx.strokeStyle = pants;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 4.9;
         ctx.beginPath();
-        ctx.moveTo(-2, 4); ctx.lineTo(-2 + Math.cos(pedalAng) * 4, 10 + Math.sin(pedalAng) * 3.5);
-        ctx.moveTo(2, 4); ctx.lineTo(2 - Math.cos(pedalAng) * 4, 10 - Math.sin(pedalAng) * 3.5);
+        ctx.moveTo(-2, 4); ctx.lineTo(-2 + Math.cos(pedalAng) * 4, 10.5 + Math.sin(pedalAng) * 3.5);
+        ctx.moveTo(2, 4); ctx.lineTo(2 - Math.cos(pedalAng) * 4, 10.5 - Math.sin(pedalAng) * 3.5);
         ctx.stroke();
+        ctx.strokeStyle = legStroke;
+        ctx.lineWidth = 3.0;
+        ctx.stroke();
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.arc(-2 + Math.cos(pedalAng) * 4, 11 + Math.sin(pedalAng) * 3.5, 2.0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(2 - Math.cos(pedalAng) * 4, 11 - Math.sin(pedalAng) * 3.5, 2.0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else {
-        ctx.strokeStyle = pants;
+        const lx1 = -3.6 - stride * 0.65;
+        const lx2 = 3.6 + stride * 0.65;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 5.0;
         ctx.beginPath();
-        ctx.moveTo(-3, 4);
-        ctx.lineTo(-4 - stride * 0.6, 14);
-        ctx.moveTo(3, 4);
-        ctx.lineTo(4 + stride * 0.6, 14);
+        ctx.moveTo(-2.8, 4); ctx.lineTo(lx1, 14);
+        ctx.moveTo(2.8, 4); ctx.lineTo(lx2, 14);
+        ctx.stroke();
+        ctx.strokeStyle = legStroke;
+        ctx.lineWidth = 3.1;
         ctx.stroke();
 
-        ctx.fillStyle = o.isAstronaut ? '#e2e8f0' : '#ffffff';
-        ctx.beginPath();
-        ctx.ellipse(-4 - stride * 0.6, 14.8, 2.8, 1.7, 0, 0, Math.PI * 2);
-        ctx.ellipse(4 + stride * 0.6, 14.8, 2.8, 1.7, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // White socks for skirt uniform
+        if (isGirl) {
+          ctx.strokeStyle = '#f8fafc';
+          ctx.lineWidth = 2.9;
+          ctx.beginPath();
+          ctx.moveTo(lx1 * 0.85, 11.2); ctx.lineTo(lx1, 14);
+          ctx.moveTo(lx2 * 0.85, 11.2); ctx.lineTo(lx2, 14);
+          ctx.stroke();
+        }
+
+        // Styled sneakers with accent & sole
+        [lx1, lx2].forEach((sx, idx) => {
+          const dir = idx === 0 ? -0.4 : 0.4;
+          ctx.fillStyle = o.isAstronaut ? '#e2e8f0' : '#ffffff';
+          ctx.strokeStyle = outline;
+          ctx.lineWidth = 1.05;
+          ctx.beginPath();
+          ctx.ellipse(sx + dir, 14.8, 3.1, 1.9, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = o.isAstronaut ? '#64748b' : shirt;
+          ctx.fillRect(sx - 1.3 + dir, 13.9, 2.6, 0.9);
+        });
       }
 
-      // 2. TORSO / SHIRT
-      ctx.fillStyle = o.isAstronaut ? '#f8fafc' : (o.isStudent ? '#ffffff' : shirt);
-      ctx.strokeStyle = 'rgba(15,23,42,0.75)';
-      ctx.lineWidth = 1.2;
+      // Pleated school skirt for girl student variant
+      if (isGirl) {
+        ctx.fillStyle = pants;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(-6, 2.5);
+        ctx.lineTo(6, 2.5);
+        ctx.lineTo(8.2, 8.8);
+        ctx.quadraticCurveTo(0, 9.8, -8.2, 8.8);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        // Pleat lines
+        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+        ctx.lineWidth = 0.9;
+        [-3, 0, 3].forEach(px => {
+          ctx.beginPath(); ctx.moveTo(px, 3.2); ctx.lineTo(px * 1.25, 8.4); ctx.stroke();
+        });
+      }
+
+      // 2. TORSO / UNIFORM SHIRT
+      // Neck
+      ctx.fillStyle = skin;
+      ctx.fillRect(-2, -10.5, 4, 3.2);
+
+      const torsoGrad = ctx.createLinearGradient(-7, -8, 7, 5);
+      if (o.isAstronaut) {
+        torsoGrad.addColorStop(0, '#ffffff');
+        torsoGrad.addColorStop(1, '#cbd5e1');
+      } else if (o.isStudent) {
+        torsoGrad.addColorStop(0, '#ffffff');
+        torsoGrad.addColorStop(1, '#e2e8f0');
+      } else {
+        torsoGrad.addColorStop(0, shirt);
+        torsoGrad.addColorStop(1, shirt);
+      }
+      ctx.fillStyle = torsoGrad;
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.25;
       ctx.beginPath();
-      ctx.roundRect(-6.5, -8, 13, 13.5, 4);
+      ctx.roundRect(-6.8, -8, 13.6, 13.2, 4.2);
       ctx.fill();
       ctx.stroke();
 
-      // Shirt collar / red school scarf / astronaut chest stripe
+      // Backpack shoulder straps + Uniform collar & Red scarf (Khăn quàng đỏ)
       if (o.isStudent) {
-        // Red school scarf (khăn quàng đỏ)
-        ctx.fillStyle = '#ef4444';
+        // Backpack shoulder straps
+        ctx.strokeStyle = o.backpackColor || shirt;
+        ctx.lineWidth = 1.6;
         ctx.beginPath();
-        ctx.moveTo(-4.8, -7.8);
-        ctx.lineTo(4.8, -7.8);
-        ctx.lineTo(0, -1.2);
+        ctx.moveTo(-4.6, -7.5); ctx.lineTo(-4.2, 2.5);
+        ctx.moveTo(4.6, -7.5); ctx.lineTo(4.2, 2.5);
+        ctx.stroke();
+
+        // Crisp shirt collar flaps
+        ctx.fillStyle = '#f8fafc';
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(-4.5, -8); ctx.lineTo(-0.5, -5.2); ctx.lineTo(-3.2, -4.4); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(4.5, -8); ctx.lineTo(0.5, -5.2); ctx.lineTo(3.2, -4.4); ctx.closePath(); ctx.fill(); ctx.stroke();
+
+        // Red school scarf (khăn quàng đỏ) with knot & tail
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#991b1b';
+        ctx.lineWidth = 0.85;
+        ctx.beginPath();
+        ctx.moveTo(-4.5, -7.8);
+        ctx.lineTo(4.5, -7.8);
+        ctx.lineTo(0, -1.6);
         ctx.closePath();
         ctx.fill();
-        ctx.fillRect(-1.1, -2.5, 2.2, 5.2);
+        ctx.stroke();
+        // Scarf tails
+        ctx.beginPath();
+        ctx.moveTo(-1.3, -2.5); ctx.lineTo(-2.1, 3.2); ctx.lineTo(0, 2.3); ctx.lineTo(2.1, 3.2); ctx.lineTo(1.3, -2.5);
+        ctx.closePath();
+        ctx.fill();
       } else {
         ctx.fillStyle = o.isAstronaut ? shirt : 'rgba(255,255,255,0.35)';
         ctx.fillRect(-3.5, -5.5, 7, 3);
       }
 
-      // 3. ARMS (Articulated by pose)
-      ctx.strokeStyle = o.isAstronaut ? '#e2e8f0' : (o.isStudent ? '#ffffff' : skin);
-      ctx.lineWidth = 3.1;
+      // 3. ARMS (Articulated with ink outline + sleeves + skin hands)
+      const armSleeve = o.isAstronaut ? '#e2e8f0' : (o.isStudent ? '#ffffff' : skin);
       ctx.lineCap = 'round';
+      const strokeOutlinedArm = (x1, y1, cx, cy, x2, y2, curved) => {
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 4.6;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        if (curved) ctx.quadraticCurveTo(cx, cy, x2, y2);
+        else ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.strokeStyle = armSleeve;
+        ctx.lineWidth = 2.8;
+        ctx.stroke();
+      };
+
       if (pose === 'cling') {
-        // Both arms reach straight forward to hug/grab the prop!
         const reachX = facing * 13;
-        ctx.beginPath();
-        ctx.moveTo(facing * 2, -5.5);
-        ctx.quadraticCurveTo(facing * 8, -7, reachX, -4.5);
-        ctx.moveTo(facing * 2, -2);
-        ctx.quadraticCurveTo(facing * 8, -1, reachX, -2.5);
-        ctx.stroke();
-        // Little gripping hands
+        strokeOutlinedArm(facing * 2, -5.5, facing * 8, -7, reachX, -4.5, true);
+        strokeOutlinedArm(facing * 2, -2, facing * 8, -1, reachX, -2.5, true);
         ctx.fillStyle = skin;
-        ctx.beginPath();
-        ctx.arc(reachX, -4.5, 2.2, 0, Math.PI * 2);
-        ctx.arc(reachX, -2.5, 2.2, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.arc(reachX, -4.5, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(reachX, -2.5, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else if (pose === 'abducted') {
-        // Flailing upward in panic!
         const wave = Math.sin(now * 0.03 + phase) * 4;
-        ctx.beginPath();
-        ctx.moveTo(-6, -5);
-        ctx.lineTo(-12, -13 + wave);
-        ctx.moveTo(6, -5);
-        ctx.lineTo(12, -13 - wave);
-        ctx.stroke();
+        strokeOutlinedArm(-6, -5, 0, 0, -11.5, -12.5 + wave, false);
+        strokeOutlinedArm(6, -5, 0, 0, 11.5, -12.5 - wave, false);
+        ctx.fillStyle = skin;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 0.85;
+        ctx.beginPath(); ctx.arc(-11.5, -12.5 + wave, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(11.5, -12.5 - wave, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else if (pose === 'winner') {
-        // Arms raised high in victory!
-        ctx.beginPath();
-        ctx.moveTo(-6, -5);
-        ctx.lineTo(-11, -14);
-        ctx.moveTo(6, -5);
-        ctx.lineTo(11, -14);
-        ctx.stroke();
+        strokeOutlinedArm(-6, -5, 0, 0, -10.5, -13.5, false);
+        strokeOutlinedArm(6, -5, 0, 0, 10.5, -13.5, false);
+        ctx.fillStyle = skin;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 0.85;
+        ctx.beginPath(); ctx.arc(-10.5, -13.5, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(10.5, -13.5, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else if (pose === 'read') {
-        // Hai tay ôm quyển sách mở đọc chăm chú
-        ctx.beginPath();
-        ctx.moveTo(-6, -4); ctx.lineTo(-4, 2);
-        ctx.moveTo(6, -4); ctx.lineTo(4, 2);
-        ctx.stroke();
-        // Quyển sách mở
+        strokeOutlinedArm(-6, -4, 0, 0, -4, 2, false);
+        strokeOutlinedArm(6, -4, 0, 0, 4, 2, false);
+        // Open illustrated book
         ctx.fillStyle = '#fef9c3';
-        ctx.strokeStyle = '#92400e';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath(); ctx.roundRect(-7.5, -1, 7.5, 7, 1); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.roundRect(0, -1, 7.5, 7, 1); ctx.fill(); ctx.stroke();
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.roundRect(-8, -1.5, 8, 7.5, 1.2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(0, -1.5, 8, 7.5, 1.2); ctx.fill(); ctx.stroke();
+        // Tiny book text lines
+        ctx.strokeStyle = 'rgba(100,116,139,0.55)';
+        ctx.lineWidth = 0.7;
+        [-5.8, -4.3, -2.8].forEach(ly => {
+          ctx.beginPath(); ctx.moveTo(-6.2, ly + 6); ctx.lineTo(-1.8, ly + 6); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(1.8, ly + 6); ctx.lineTo(6.2, ly + 6); ctx.stroke();
+        });
       } else if (pose === 'bike') {
-        // Hai tay vươn tới cầm ghi đông xe đạp
-        ctx.beginPath();
-        ctx.moveTo(facing * 2, -5); ctx.lineTo(facing * 10, -2);
-        ctx.stroke();
+        strokeOutlinedArm(facing * 2, -5, 0, 0, facing * 10, -2, false);
+        ctx.fillStyle = skin;
+        ctx.beginPath(); ctx.arc(facing * 10, -2, 1.8, 0, Math.PI * 2); ctx.fill();
       } else if (pose === 'run' || pose === 'walk') {
-        ctx.beginPath();
-        ctx.moveTo(-6, -5);
-        ctx.lineTo(-9 + stride * 0.7, 2);
-        ctx.moveTo(6, -5);
-        ctx.lineTo(9 - stride * 0.7, 2);
-        ctx.stroke();
+        strokeOutlinedArm(-6, -5, 0, 0, -9 + stride * 0.7, 2, false);
+        strokeOutlinedArm(6, -5, 0, 0, 9 - stride * 0.7, 2, false);
+        ctx.fillStyle = skin;
+        ctx.beginPath(); ctx.arc(-9 + stride * 0.7, 2, 1.8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(9 - stride * 0.7, 2, 1.8, 0, Math.PI * 2); ctx.fill();
       } else {
         const waveIdle = Math.sin(now * 0.005 + phase) * 2;
-        ctx.beginPath();
-        ctx.moveTo(-6, -5);
-        ctx.lineTo(-9, 3);
-        ctx.moveTo(6, -5);
-        ctx.lineTo(10, -2 + waveIdle);
-        ctx.stroke();
+        strokeOutlinedArm(-6, -5, 0, 0, -8.8, 3, false);
+        strokeOutlinedArm(6, -5, 0, 0, 9.6, -2 + waveIdle, false);
+        ctx.fillStyle = skin;
+        ctx.beginPath(); ctx.arc(-8.8, 3, 1.8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(9.6, -2 + waveIdle, 1.8, 0, Math.PI * 2); ctx.fill();
       }
 
-      // 4. HEAD & HAIR & FACE
+      // 4. HEAD & HAIR & ANIME-INSPIRED EXPRESSIVE FACE
       ctx.save();
-      ctx.translate(0, -14.5);
+      ctx.translate(0, -14.8);
 
-      // Hair back
-      ctx.fillStyle = hair;
-      ctx.beginPath();
-      ctx.arc(0, -1, 7.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Face circle
+      // Cute ears on both sides
       ctx.fillStyle = skin;
-      ctx.beginPath();
-      ctx.arc(0, 0.5, 6.2, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 0.9;
+      ctx.beginPath(); ctx.arc(-6.4, 1, 1.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(6.4, 1, 1.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-      // Hair bangs
+      // Hair back volume
       ctx.fillStyle = hair;
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.05;
       ctx.beginPath();
-      ctx.arc(0, -2.2, 6.3, Math.PI, 0);
+      if (hairStyle === 2) {
+        // Bob cut rounded outer silhouette down past cheeks
+        ctx.arc(0, -1, 7.6, Math.PI * 0.85, Math.PI * 0.15, false);
+        ctx.lineTo(7.4, 4.5);
+        ctx.quadraticCurveTo(0, 6.2, -7.4, 4.5);
+        ctx.closePath();
+      } else {
+        ctx.arc(0, -1.2, 7.4, 0, Math.PI * 2);
+      }
       ctx.fill();
+      ctx.stroke();
 
-      // Eyes & Mouth
-      const eyeShift = (pose === 'cling' || pose === 'run' || pose === 'walk') ? facing * 1.4 : 0;
+      // Face shape (soft chin taper)
+      ctx.fillStyle = skin;
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.05;
+      ctx.beginPath();
+      ctx.arc(0, 0.5, 6.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Styled Hair Bangs & Crown
+      ctx.fillStyle = hair;
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 0.95;
+      ctx.beginPath();
+      if (hairStyle === 0) {
+        // Cool spiky bangs
+        ctx.moveTo(-6.6, -1);
+        ctx.arc(0, -1.8, 6.8, Math.PI, 0);
+        ctx.lineTo(6.6, -0.5);
+        ctx.lineTo(3.8, -3.5); ctx.lineTo(2.4, -0.8);
+        ctx.lineTo(0, -4.0); ctx.lineTo(-1.8, -0.8);
+        ctx.lineTo(-4.2, -3.6);
+        ctx.closePath();
+      } else if (hairStyle === 1) {
+        // Neat side-swept parted bangs
+        ctx.arc(0, -2.0, 6.7, Math.PI, 0);
+        ctx.quadraticCurveTo(3.5, 0.5, -1.5, -2.2);
+        ctx.quadraticCurveTo(-4, -0.5, -6.5, -1.6);
+        ctx.closePath();
+      } else {
+        // Soft curved bangs + side locks framing cheeks
+        ctx.arc(0, -2.0, 6.8, Math.PI, 0);
+        ctx.lineTo(6.7, 2.5); ctx.lineTo(4.8, -0.5);
+        ctx.quadraticCurveTo(0, -2.5, -4.8, -0.5);
+        ctx.lineTo(-6.7, 2.5);
+        ctx.closePath();
+      }
+      ctx.fill();
+      ctx.stroke();
+
+      // Cute hair clip on bob cut
+      if (hairStyle === 2) {
+        ctx.fillStyle = clipColor;
+        ctx.beginPath(); ctx.roundRect(2.6, -4.4, 3.2, 1.5, 0.7); ctx.fill();
+      }
+
+      // Expressive Eyes, Eyebrows & Mouth
+      const eyeShift = (pose === 'cling' || pose === 'run' || pose === 'walk') ? facing * 1.3 : 0;
       if (pose === 'cling' || pose === 'abducted') {
-        // Wide shocked eyes + O-mouth!
-        ctx.fillStyle = '#ffffff';
+        // Shocked eyebrows
+        ctx.strokeStyle = hair;
+        ctx.lineWidth = 1.0;
         ctx.beginPath();
-        ctx.arc(-2.1 + eyeShift, 0.2, 1.7, 0, Math.PI * 2);
-        ctx.arc(2.1 + eyeShift, 0.2, 1.7, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.moveTo(-3.6 + eyeShift, -2.6); ctx.lineTo(-1.2 + eyeShift, -3.4);
+        ctx.moveTo(3.6 + eyeShift, -2.6); ctx.lineTo(1.2 + eyeShift, -3.4);
+        ctx.stroke();
+        // Wide shocked eyes
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 0.7;
+        ctx.beginPath();
+        ctx.arc(-2.2 + eyeShift, 0.2, 1.85, 0, Math.PI * 2);
+        ctx.arc(2.2 + eyeShift, 0.2, 1.85, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#0f172a';
         ctx.beginPath();
-        ctx.arc(-2.1 + eyeShift, 0.2, 0.85, 0, Math.PI * 2);
-        ctx.arc(2.1 + eyeShift, 0.2, 0.85, 0, Math.PI * 2);
+        ctx.arc(-2.2 + eyeShift, 0.2, 0.9, 0, Math.PI * 2);
+        ctx.arc(2.2 + eyeShift, 0.2, 0.9, 0, Math.PI * 2);
+        ctx.fill();
+        // Specular sparkle
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(-2.6 + eyeShift, -0.3, 0.45, 0, Math.PI * 2);
+        ctx.arc(1.8 + eyeShift, -0.3, 0.45, 0, Math.PI * 2);
         ctx.fill();
         // Open O mouth
         ctx.fillStyle = '#dc2626';
+        ctx.strokeStyle = '#7f1d1d';
+        ctx.lineWidth = 0.7;
         ctx.beginPath();
-        ctx.ellipse(eyeShift * 0.6, 3.6, 1.5, 1.9, 0, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.ellipse(eyeShift * 0.6, 3.8, 1.5, 1.9, 0, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
       } else {
-        ctx.fillStyle = '#0f172a';
+        // Soft eyebrows
+        ctx.strokeStyle = hair;
+        ctx.lineWidth = 0.9;
         ctx.beginPath();
-        ctx.arc(-2 + eyeShift, 0.3, 1.1, 0, Math.PI * 2);
-        ctx.arc(2 + eyeShift, 0.3, 1.1, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.moveTo(-3.5 + eyeShift, -1.9); ctx.lineTo(-1.1 + eyeShift, -2.2);
+        ctx.moveTo(1.1 + eyeShift, -2.2); ctx.lineTo(3.5 + eyeShift, -1.9);
+        ctx.stroke();
+        // Cute anime eyes with white sclera highlight + colored iris + specular dot
+        [-2.1 + eyeShift, 2.1 + eyeShift].forEach(ex => {
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.ellipse(ex, 0.4, 1.45, 1.65, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#1e293b';
+          ctx.beginPath(); ctx.ellipse(ex, 0.5, 1.05, 1.25, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath(); ctx.arc(ex - 0.35, 0, 0.45, 0, Math.PI * 2); ctx.fill();
+        });
         // Rosy cheeks
-        ctx.fillStyle = 'rgba(244,63,94,0.35)';
+        ctx.fillStyle = 'rgba(244,63,94,0.36)';
         ctx.beginPath();
-        ctx.arc(-3.8, 2.1, 1.2, 0, Math.PI * 2);
-        ctx.arc(3.8, 2.1, 1.2, 0, Math.PI * 2);
+        ctx.ellipse(-3.9, 2.3, 1.35, 0.85, 0, 0, Math.PI * 2);
+        ctx.ellipse(3.9, 2.3, 1.35, 0.85, 0, 0, Math.PI * 2);
         ctx.fill();
-        // Smile
+        // Warm smile
         ctx.strokeStyle = '#991b1b';
         ctx.lineWidth = 1.1;
         ctx.beginPath();
-        ctx.arc(0, 2.3, 2, 0.1 * Math.PI, 0.9 * Math.PI);
+        ctx.arc(eyeShift * 0.35, 2.3, 1.9, 0.12 * Math.PI, 0.88 * Math.PI);
         ctx.stroke();
       }
 
@@ -28661,14 +28909,17 @@
       // Optional Explorer Helmet or Winner Crown
       if (o.helmetColor) {
         ctx.fillStyle = o.helmetColor;
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(0, -2.5, 6.8, Math.PI, 0);
         ctx.fill();
+        ctx.stroke();
       }
       if (o.isHero || pose === 'winner') {
         ctx.font = '11px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('👑', 0, -9);
+        ctx.fillText('👑', 0, -9.5);
       }
 
       ctx.restore();
@@ -29153,137 +29404,214 @@
       ctx.translate(px, py);
 
       if (prop.type === 'manhole') {
-        // Nắp cống tròn bằng gang ngay trên mặt đường nhựa
-        ctx.fillStyle = '#1e293b';
-        ctx.strokeStyle = '#64748b';
-        ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.ellipse(0, 4, 22, 9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-        ctx.fillStyle = '#334155';
+        // Nắp cống gang có gân nổi & ánh phản chiếu
+        const mhGrad = ctx.createRadialGradient(-4, 2, 2, 0, 4, 23);
+        mhGrad.addColorStop(0, '#475569');
+        mhGrad.addColorStop(1, '#1e293b');
+        ctx.fillStyle = mhGrad;
         ctx.strokeStyle = '#94a3b8';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.ellipse(0, 4, 16, 6.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.ellipse(0, 4, 23, 9.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.ellipse(0, 4, 16.5, 6.8, 0, 0, Math.PI * 2); ctx.stroke();
 
         ctx.strokeStyle = '#0f172a';
-        ctx.lineWidth = 2;
-        [-9, -3, 3, 9].forEach(ox => {
-          ctx.beginPath(); ctx.moveTo(ox, 1.5); ctx.lineTo(ox, 6.5); ctx.stroke();
+        ctx.lineWidth = 1.9;
+        [-10, -4, 4, 10].forEach(ox => {
+          ctx.beginPath(); ctx.moveTo(ox, 1.2); ctx.lineTo(ox, 6.8); ctx.stroke();
         });
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.35)';
+        ctx.beginPath(); ctx.ellipse(-7, 0.5, 6, 1.4, -0.2, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
         return;
       }
 
-      // Ground shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.30)';
-      ctx.beginPath(); ctx.ellipse(0, 12, 20, 5.5, 0, 0, Math.PI * 2); ctx.fill();
+      // Soft ambient ground shadow
+      ctx.fillStyle = 'rgba(2, 6, 23, 0.36)';
+      ctx.beginPath(); ctx.ellipse(0, 12, 22, 6, 0, 0, Math.PI * 2); ctx.fill();
 
       if (prop.type === 'tree') {
-        ctx.fillStyle = '#475569';
-        ctx.beginPath(); ctx.ellipse(0, 10, 13, 4.5, 0, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#78350f';
-        ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.roundRect(-5.5, -38, 11, 48, 3); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = '#15803d';
-        ctx.beginPath(); ctx.arc(0, -48, 24, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#16a34a';
-        ctx.beginPath(); ctx.arc(-15, -39, 15, 0, Math.PI * 2); ctx.arc(15, -39, 15, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#22c55e';
-        ctx.beginPath(); ctx.arc(-4, -54, 13, 0, Math.PI * 2); ctx.fill();
-      } else if (prop.type === 'lamppost') {
+        // Bồn gốc cây gạch lát + thân cây vân gỗ + tán lá nhiều tầng + đốm hoa sáng
         ctx.fillStyle = '#334155';
-        ctx.fillRect(-3, -56, 6, 68);
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.ellipse(0, 10, 14, 5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+        const trunkGrad = ctx.createLinearGradient(-7, -38, 7, 10);
+        trunkGrad.addColorStop(0, '#92400e');
+        trunkGrad.addColorStop(0.55, '#78350f');
+        trunkGrad.addColorStop(1, '#451a03');
+        ctx.fillStyle = trunkGrad;
+        ctx.strokeStyle = '#291002';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(-7, 10);
+        ctx.quadraticCurveTo(-5, -14, -5.5, -38);
+        ctx.lineTo(5.5, -38);
+        ctx.quadraticCurveTo(5, -14, 7.5, 10);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+
+        // Main branches
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(0, -28); ctx.lineTo(-11, -40);
+        ctx.moveTo(0, -31); ctx.lineTo(11, -42);
+        ctx.stroke();
+
+        // Multi-layered lush green canopy with moonlight top highlight
+        ctx.fillStyle = '#14532d';
+        ctx.beginPath(); ctx.arc(0, -45, 25, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath(); ctx.arc(-14, -40, 16, 0, Math.PI * 2); ctx.arc(14, -40, 16, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#16a34a';
+        ctx.beginPath(); ctx.arc(0, -52, 20, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#4ade80';
+        ctx.beginPath(); ctx.arc(-6, -57, 11, 0, Math.PI * 2); ctx.arc(8, -50, 9, 0, Math.PI * 2); ctx.fill();
+      } else if (prop.type === 'lamppost') {
+        // Đèn đường cổ điển với tay vươn cong + quầng sáng ấm lên vỉa hè
         ctx.fillStyle = '#1e293b';
-        ctx.beginPath(); ctx.roundRect(-8, 8, 16, 5, 2); ctx.fill();
         ctx.strokeStyle = '#475569';
-        ctx.lineWidth = 3;
-        ctx.beginPath(); ctx.moveTo(0, -54); ctx.quadraticCurveTo(9, -62, 15, -54); ctx.stroke();
-        const lampGlow = ctx.createRadialGradient(15, -52, 2, 15, 0, 58);
-        lampGlow.addColorStop(0, 'rgba(254, 240, 138, 0.34)');
+        ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.roundRect(-8, 5, 16, 7, 2.5); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#334155';
+        ctx.fillRect(-3.2, -58, 6.4, 65);
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(-1.5, -58, 2, 65);
+
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 3.2;
+        ctx.beginPath(); ctx.moveTo(0, -56); ctx.quadraticCurveTo(9, -65, 16, -56); ctx.stroke();
+
+        // Warm light cone onto pavement
+        const lampGlow = ctx.createRadialGradient(16, -53, 2, 16, 8, 68);
+        lampGlow.addColorStop(0, 'rgba(254, 240, 138, 0.42)');
+        lampGlow.addColorStop(0.55, 'rgba(253, 224, 71, 0.14)');
         lampGlow.addColorStop(1, 'rgba(254, 240, 138, 0)');
         ctx.fillStyle = lampGlow;
-        ctx.beginPath(); ctx.moveTo(15, -52); ctx.lineTo(-20, 22); ctx.lineTo(50, 22); ctx.closePath(); ctx.fill();
+        ctx.beginPath(); ctx.moveTo(16, -53); ctx.lineTo(-28, 28); ctx.lineTo(60, 28); ctx.closePath(); ctx.fill();
+
+        // Lantern cap & glowing bulb
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath(); ctx.arc(16, -55, 7, Math.PI, 0); ctx.fill();
         ctx.fillStyle = '#fef08a';
         ctx.shadowColor = '#facc15';
-        ctx.shadowBlur = 16;
-        ctx.beginPath(); ctx.arc(15, -52, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 18;
+        ctx.beginPath(); ctx.arc(16, -51, 5.5, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
       } else if (prop.type === 'rock') {
-        ctx.fillStyle = '#64748b';
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 2;
+        // Tảng đá nhiều mặt khối + rêu xanh phủ góc
+        const rockGrad = ctx.createLinearGradient(-22, -18, 22, 12);
+        rockGrad.addColorStop(0, '#94a3b8');
+        rockGrad.addColorStop(0.55, '#64748b');
+        rockGrad.addColorStop(1, '#334155');
+        ctx.fillStyle = rockGrad;
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(-22, 11);
-        ctx.quadraticCurveTo(-24, -12, -5, -17);
-        ctx.quadraticCurveTo(15, -19, 22, 11);
+        ctx.moveTo(-23, 11);
+        ctx.lineTo(-19, -8);
+        ctx.lineTo(-5, -18);
+        ctx.lineTo(13, -13);
+        ctx.lineTo(23, 11);
         ctx.closePath();
         ctx.fill();
         ctx.stroke();
-        ctx.fillStyle = '#94a3b8';
-        ctx.beginPath(); ctx.ellipse(-5, -7, 8, 4, -0.3, 0, Math.PI * 2); ctx.fill();
+
+        // Facet highlight & cracks
+        ctx.fillStyle = 'rgba(226, 232, 240, 0.35)';
+        ctx.beginPath(); ctx.moveTo(-17, -6); ctx.lineTo(-5, -16); ctx.lineTo(5, -6); ctx.lineTo(-7, 2); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath(); ctx.arc(-14, 6, 4.5, Math.PI, 0); ctx.arc(-9, 8, 3.5, Math.PI, 0); ctx.fill();
       } else if (prop.type === 'bench') {
-        ctx.fillStyle = '#64748b';
-        ctx.fillRect(-18, 4, 4.5, 8);
-        ctx.fillRect(13.5, 4, 4.5, 8);
-        ctx.fillStyle = '#e2e8f0';
-        ctx.strokeStyle = '#475569';
+        // Ghế đá công viên / băng gỗ có tay vịn sắt nghệ thuật
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(-19, 3, 4.5, 9);
+        ctx.fillRect(14.5, 3, 4.5, 9);
+
+        const slateGrad = ctx.createLinearGradient(0, -11, 0, 5);
+        slateGrad.addColorStop(0, '#f8fafc');
+        slateGrad.addColorStop(1, '#cbd5e1');
+        ctx.fillStyle = slateGrad;
+        ctx.strokeStyle = '#334155';
         ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.roundRect(-22, -9, 44, 8, 2); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = '#cbd5e1';
-        ctx.beginPath(); ctx.roundRect(-23, -1, 46, 6, 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(-23, -11, 46, 9, 2.5); ctx.fill(); ctx.stroke();
+        // Horizontal bench slat accent
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(-21, -6.5); ctx.lineTo(21, -6.5); ctx.stroke();
+
+        ctx.fillStyle = '#e2e8f0';
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.roundRect(-24, -1.5, 48, 6.5, 2.5); ctx.fill(); ctx.stroke();
+        // Side armrests
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.moveTo(-22, -4); ctx.lineTo(-22, 4); ctx.moveTo(22, -4); ctx.lineTo(22, 4); ctx.stroke();
       } else if (prop.type === 'hydrant') {
-        // Trụ cứu hỏa đỏ nổi bật bên đường
         ctx.fillStyle = '#dc2626';
-        ctx.strokeStyle = '#7f1d1d';
+        ctx.strokeStyle = '#450a0a';
         ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.roundRect(-6.5, -15, 13, 25, 3); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#ef4444';
         ctx.beginPath(); ctx.arc(0, -15, 6.5, Math.PI, 0); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(-4, -12, 2.2, 16);
         ctx.fillStyle = '#cbd5e1';
-        ctx.fillRect(-10, -10, 4, 5);
-        ctx.fillRect(6, -10, 4, 5);
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1;
+        ctx.fillRect(-10.5, -10.5, 4.5, 5.5); ctx.strokeRect(-10.5, -10.5, 4.5, 5.5);
+        ctx.fillRect(6, -10.5, 4.5, 5.5); ctx.strokeRect(6, -10.5, 4.5, 5.5);
       } else if (prop.type === 'trashbin') {
-        // Thùng rác xanh ven đường
         ctx.fillStyle = '#059669';
         ctx.strokeStyle = '#064e3b';
         ctx.lineWidth = 1.4;
         ctx.beginPath(); ctx.roundRect(-8, -16, 16, 26, 2.5); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#10b981';
         ctx.beginPath(); ctx.roundRect(-9.5, -19, 19, 5, 2); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#a7f3d0';
+        ctx.font = 'bold 7px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('♻️', 0, -2);
       } else if (prop.type === 'cone') {
-        // Rào chắn / cọc tiêu giao thông cam-trắng
         ctx.fillStyle = '#f97316';
-        ctx.strokeStyle = '#9a3412';
+        ctx.strokeStyle = '#7c2d12';
         ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.moveTo(-3, -18); ctx.lineTo(3, -18);
+        ctx.moveTo(-3, -19); ctx.lineTo(3, -19);
         ctx.lineTo(10, 9); ctx.lineTo(-10, 9);
         ctx.closePath(); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(-5.5, -8, 11, 4.5);
+        ctx.fillRect(-6, -9, 12, 4.5);
         ctx.fillStyle = '#ea580c';
-        ctx.fillRect(-12, 8, 24, 4);
+        ctx.strokeStyle = '#7c2d12';
+        ctx.beginPath(); ctx.roundRect(-12, 8, 24, 4.5, 1.5); ctx.fill(); ctx.stroke();
       } else if (prop.type === 'mailbox') {
-        // Hộp thư / tủ điện phố
         ctx.fillStyle = '#475569';
         ctx.fillRect(-3, -6, 6, 18);
         ctx.fillStyle = '#2563eb';
         ctx.strokeStyle = '#1e3a8a';
         ctx.lineWidth = 1.4;
-        ctx.beginPath(); ctx.roundRect(-9, -22, 18, 17, 3); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(-5, -17, 10, 2.5);
+        ctx.beginPath(); ctx.roundRect(-9.5, -22, 19, 17, 3.5); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#eff6ff';
+        ctx.fillRect(-5.5, -17, 11, 2.6);
+        ctx.fillStyle = '#facc15';
+        ctx.beginPath(); ctx.arc(5, -11, 1.8, 0, Math.PI * 2); ctx.fill();
       } else if (prop.type === 'busstop') {
-        // Trụ biển báo trạm xe buýt
         ctx.fillStyle = '#64748b';
-        ctx.fillRect(-2.5, -42, 5, 54);
+        ctx.fillRect(-2.5, -44, 5, 56);
         ctx.fillStyle = '#0284c7';
         ctx.strokeStyle = '#bae6fd';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.roundRect(-12, -52, 24, 16, 3); ctx.fill(); ctx.stroke();
+        ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.roundRect(-13, -55, 26, 18, 3.5); ctx.fill(); ctx.stroke();
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 9px sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('BUS', 0, -41);
+        ctx.fillText('BUS', 0, -43);
       }
       ctx.restore();
     }
@@ -29381,15 +29709,15 @@
 
       const wheelRot = isRiding ? (now * 0.012) : 0;
       // Ground shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.28)';
-      ctx.beginPath(); ctx.ellipse(0, 14, 17, 4, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(0,0,0,0.30)';
+      ctx.beginPath(); ctx.ellipse(0, 14.5, 18, 4, 0, 0, Math.PI * 2); ctx.fill();
 
-      // Rear & Front spoked wheels
-      [-10, 10].forEach(wx => {
+      // Rear & Front spoked wheels with chrome hubs & fenders
+      [-10.5, 10.5].forEach(wx => {
         ctx.strokeStyle = '#0f172a';
-        ctx.lineWidth = 2.4;
-        ctx.beginPath(); ctx.arc(wx, 8, 6.2, 0, Math.PI * 2); ctx.stroke();
-        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.arc(wx, 8, 6.4, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = '#e2e8f0';
         ctx.lineWidth = 1;
         for (let sp = 0; sp < 4; sp++) {
           const a = wheelRot + sp * (Math.PI / 4);
@@ -29398,29 +29726,47 @@
           ctx.lineTo(wx + Math.cos(a) * 5.2, 8 + Math.sin(a) * 5.2);
           ctx.stroke();
         }
+        // Mudguard fender
+        ctx.strokeStyle = frameColor;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(wx, 8, 7.6, Math.PI * 1.1, Math.PI * 1.85); ctx.stroke();
       });
 
-      // Bicycle diamond frame
+      // Bicycle diamond frame + chainring
       ctx.strokeStyle = frameColor;
-      ctx.lineWidth = 2.2;
+      ctx.lineWidth = 2.3;
       ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.moveTo(-10, 8); ctx.lineTo(-2, 0); ctx.lineTo(8, 0); ctx.lineTo(10, 8);
-      ctx.moveTo(-2, 0); ctx.lineTo(0, 8); ctx.lineTo(8, 0);
-      ctx.moveTo(-10, 8); ctx.lineTo(0, 8);
+      ctx.moveTo(-10.5, 8); ctx.lineTo(-2.5, 0); ctx.lineTo(8, 0); ctx.lineTo(10.5, 8);
+      ctx.moveTo(-2.5, 0); ctx.lineTo(0, 8); ctx.lineTo(8, 0);
+      ctx.moveTo(-10.5, 8); ctx.lineTo(0, 8);
       ctx.stroke();
 
-      // Handlebar & Seat
-      ctx.strokeStyle = '#e2e8f0';
+      ctx.fillStyle = '#94a3b8';
+      ctx.beginPath(); ctx.arc(0, 8, 2.2, 0, Math.PI * 2); ctx.fill();
+
+      // Handlebar, front wire basket & saddle
+      ctx.strokeStyle = '#f1f5f9';
       ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(7, -6); ctx.lineTo(11, -7); ctx.stroke();
+      // Wire front basket
+      ctx.fillStyle = 'rgba(203, 213, 225, 0.72)';
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(7.5, -5.5, 5.5, 4.5, 1); ctx.fill(); ctx.stroke();
+      // Saddle
       ctx.fillStyle = '#1e293b';
-      ctx.beginPath(); ctx.roundRect(-5, -3.5, 6, 2.5, 1); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(-5.5, -3.5, 6.2, 2.6, 1.2); ctx.fill();
 
-      // Tiny front headlight
+      // Front headlight + light beam when riding
       if (isRiding) {
+        const beam = ctx.createLinearGradient(11, -4, 34, 4);
+        beam.addColorStop(0, 'rgba(254, 240, 138, 0.45)');
+        beam.addColorStop(1, 'rgba(254, 240, 138, 0)');
+        ctx.fillStyle = beam;
+        ctx.beginPath(); ctx.moveTo(11, -4); ctx.lineTo(34, -9); ctx.lineTo(34, 6); ctx.closePath(); ctx.fill();
         ctx.fillStyle = '#fef08a';
-        ctx.beginPath(); ctx.arc(10.5, -4, 2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(11, -4, 2.2, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
     }
@@ -29468,47 +29814,131 @@
       const h = canvas.height / dpr;
       if (w <= 0 || h <= 0) return;
 
-      // 1. Starry Night Sky + City Horizon
+      // 1. Starry Night Sky + Nebula Glow + Moon + School Campus & Shophouse Skyline
       const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.62);
       skyGrad.addColorStop(0, '#020617');
-      skyGrad.addColorStop(0.6, '#1e1b4b');
+      skyGrad.addColorStop(0.5, '#17153b');
+      skyGrad.addColorStop(0.85, '#1e1b4b');
       skyGrad.addColorStop(1, '#312e81');
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, w, h * 0.62);
 
-      for (let i = 0; i < 48; i++) {
-        const sx = ((i * 197) % 100) / 100 * w;
-        const sy = ((i * 313) % 52) / 100 * h;
-        const alpha = 0.35 + 0.65 * Math.abs(Math.sin(now * 0.002 + i));
-        ctx.fillStyle = 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
-        ctx.beginPath(); ctx.arc(sx, sy, (i % 3 === 0) ? 2 : 1.2, 0, Math.PI * 2); ctx.fill();
+      // Subtle glowing Milky Way / aurora band
+      const nebula = ctx.createRadialGradient(w * 0.35, h * 0.20, 20, w * 0.35, h * 0.22, w * 0.48);
+      nebula.addColorStop(0, 'rgba(56, 189, 248, 0.14)');
+      nebula.addColorStop(0.5, 'rgba(168, 85, 247, 0.08)');
+      nebula.addColorStop(1, 'rgba(15, 23, 42, 0)');
+      ctx.fillStyle = nebula;
+      ctx.fillRect(0, 0, w, h * 0.55);
+
+      for (let i = 0; i < 64; i++) {
+        const sx = ((i * 197 + 41) % 100) / 100 * w;
+        const sy = ((i * 313 + 17) % 52) / 100 * h;
+        const alpha = 0.3 + 0.7 * Math.abs(Math.sin(now * 0.002 + i * 0.9));
+        ctx.fillStyle = i % 7 === 0 ? 'rgba(186,230,253,' + alpha.toFixed(2) + ')' : 'rgba(255,255,255,' + alpha.toFixed(2) + ')';
+        ctx.beginPath(); ctx.arc(sx, sy, (i % 4 === 0) ? 2.1 : 1.15, 0, Math.PI * 2); ctx.fill();
       }
 
-      // Moon
+      // Glowing Moon with subtle craters
       ctx.save();
+      const mx = w * 0.86, my = h * 0.15;
       ctx.fillStyle = '#fef08a';
       ctx.shadowColor = '#fde047';
-      ctx.shadowBlur = 24;
-      ctx.beginPath(); ctx.arc(w * 0.86, h * 0.16, 25, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 30;
+      ctx.beginPath(); ctx.arc(mx, my, 27, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(202, 138, 4, 0.24)';
+      ctx.beginPath(); ctx.arc(mx - 8, my - 5, 5, 0, Math.PI * 2); ctx.arc(mx + 9, my + 7, 6.5, 0, Math.PI * 2); ctx.arc(mx - 2, my + 11, 3.5, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
 
-      // Distant city/school building silhouettes with lit windows
+      // Distant soft night clouds drifting slowly
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.10)';
+      [[0.18, 0.20, 66], [0.56, 0.14, 82], [0.76, 0.26, 58]].forEach(([cx, cy, cw], ci) => {
+        const drift = ((cx * w + now * 0.008 * (ci % 2 === 0 ? 1 : 0.7)) % (w + 160)) - 80;
+        ctx.beginPath();
+        ctx.ellipse(drift, h * cy, cw, 12, 0, 0, Math.PI * 2);
+        ctx.ellipse(drift - cw * 0.4, h * cy + 4, cw * 0.6, 9, 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Street Facade: Townhouses, Bakery Awnings & Center School Campus Gate
       const horizonY = h * 0.56;
-      const buildings = [
-        [0.02, 0.09, 56], [0.12, 0.08, 72], [0.21, 0.11, 44], [0.34, 0.09, 64],
-        [0.45, 0.12, 52], [0.59, 0.08, 76], [0.69, 0.10, 48], [0.81, 0.09, 68], [0.91, 0.08, 54]
+      const townHouses = [
+        { x: 0.01, w: 0.11, h: 64, wall: '#1e293b', roof: '#991b1b', awning: '#ef4444' },
+        { x: 0.13, w: 0.11, h: 76, wall: '#334155', roof: '#0f172a', awning: '#f59e0b' },
+        { x: 0.25, w: 0.11, h: 56, wall: '#1e293b', roof: '#0284c7', awning: null },
+        { x: 0.64, w: 0.11, h: 72, wall: '#1e293b', roof: '#0f172a', awning: '#10b981' },
+        { x: 0.76, w: 0.11, h: 58, wall: '#334155', roof: '#b45309', awning: '#f97316' },
+        { x: 0.88, w: 0.11, h: 68, wall: '#1e293b', roof: '#0f172a', awning: null }
       ];
-      buildings.forEach(([bx, bw, bh], idx) => {
-        const rx = w * bx, rw = w * bw, ry = horizonY - bh;
-        ctx.fillStyle = '#0f172a';
-        ctx.fillRect(rx, ry, rw, bh);
-        ctx.fillStyle = 'rgba(253, 224, 71, 0.45)';
-        for (let wy = ry + 8; wy < horizonY - 10; wy += 12) {
-          for (let wx = rx + 8; wx < rx + rw - 10; wx += 14) {
-            if (((wx + wy + idx) % 3) !== 0) ctx.fillRect(wx, wy, 5, 6);
+      townHouses.forEach((b, idx) => {
+        const rx = w * b.x, rw = w * b.w, ry = horizonY - b.h;
+        ctx.fillStyle = b.wall;
+        ctx.strokeStyle = '#020617';
+        ctx.lineWidth = 1.2;
+        ctx.fillRect(rx, ry, rw, b.h);
+        ctx.strokeRect(rx, ry, rw, b.h);
+        // Sloped tiled roof
+        ctx.fillStyle = b.roof;
+        ctx.beginPath();
+        ctx.moveTo(rx - 4, ry + 2);
+        ctx.lineTo(rx + rw * 0.5, ry - 14);
+        ctx.lineTo(rx + rw + 4, ry + 2);
+        ctx.closePath();
+        ctx.fill();
+        // Warm lit windows with frames
+        for (let wy = ry + 10; wy < horizonY - 22; wy += 16) {
+          for (let wx = rx + 9; wx < rx + rw - 13; wx += 18) {
+            ctx.fillStyle = ((wx + wy + idx) % 4 === 0) ? '#334155' : 'rgba(253, 224, 71, 0.72)';
+            ctx.fillRect(wx, wy, 9, 10);
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 0.8;
+            ctx.strokeRect(wx, wy, 9, 10);
           }
         }
+        // Colorful shop awning on ground floor
+        if (b.awning) {
+          ctx.fillStyle = b.awning;
+          ctx.beginPath(); ctx.roundRect(rx + 4, horizonY - 18, rw - 8, 7, 2); ctx.fill();
+        }
       });
+
+      // School Building & Gate Arch in Center Background
+      const schX = w * 0.37, schW = w * 0.26, schY = horizonY - 82;
+      ctx.fillStyle = '#334155';
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.4;
+      ctx.fillRect(schX, schY, schW, 82);
+      ctx.strokeRect(schX, schY, schW, 82);
+      // School sloped terracotta roof + clock tower gable
+      ctx.fillStyle = '#991b1b';
+      ctx.beginPath();
+      ctx.moveTo(schX - 8, schY + 2);
+      ctx.lineTo(schX + schW * 0.5, schY - 18);
+      ctx.lineTo(schX + schW + 8, schY + 2);
+      ctx.closePath();
+      ctx.fill();
+      // Clock face
+      ctx.fillStyle = '#fef3c7';
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(schX + schW * 0.5, schY + 12, 8.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = '#0f172a';
+      ctx.beginPath(); ctx.moveTo(schX + schW * 0.5, schY + 12); ctx.lineTo(schX + schW * 0.5, schY + 6.5); ctx.moveTo(schX + schW * 0.5, schY + 12); ctx.lineTo(schX + schW * 0.5 + 4, schY + 14); ctx.stroke();
+      // Classroom lit windows
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.78)';
+      for (let cwx = schX + 14; cwx < schX + schW - 22; cwx += 24) {
+        ctx.fillRect(cwx, schY + 28, 14, 15);
+      }
+      // School Gate Arch Signboard
+      ctx.fillStyle = '#b91c1c';
+      ctx.strokeStyle = '#fde047';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.roundRect(schX + schW * 0.5 - 46, horizonY - 26, 92, 16, 4); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.font = '800 8.5px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🏫 CỔNG TRƯỜNG HỌC', schX + schW * 0.5, horizonY - 15);
 
       // 2. Roadside Grass Strip + Paved Sidewalk + Asphalt Road
       // Grass strip behind sidewalk
@@ -29758,7 +30188,7 @@
       ctx.restore();
 
       // 6. Update & Draw Articulated Human Students (Idle: Bike / Read / Play / Walk -> Running -> Clinging -> Abducted!)
-      ufoStudents.forEach(s => {
+      ufoStudents.forEach((s, sIdx) => {
         let pose = 'idle';
         let facing = s.facing;
         let tilt = 0;
@@ -29872,7 +30302,8 @@
           pants: '#1e3a8a',
           backpackColor: s.color,
           isStudent: true,
-          scale: 0.90,
+          seed: sIdx,
+          scale: 0.92,
           pose: pose,
           facing: facing,
           tilt: tilt,
@@ -29906,72 +30337,114 @@
         ctx.restore();
       });
 
-      // 7. Draw GIANT UFO MOTHERSHIP (Phóng to phi thuyền khổng lồ!)
+      // 7. Draw GIANT UFO MOTHERSHIP (Phóng to phi thuyền khổng lồ chi tiết cao!)
       ctx.save();
       ctx.translate(ux, uy);
       ctx.rotate(Math.sin(now * 0.0035) * 0.04);
 
-      // Glowing tractor emitter ring underneath hull
-      ctx.fillStyle = isAbducting ? 'rgba(52, 211, 153, 0.7)' : 'rgba(56, 189, 248, 0.55)';
-      ctx.shadowColor = isAbducting ? '#34d399' : '#38bdf8';
-      ctx.shadowBlur = 24;
-      ctx.beginPath(); ctx.ellipse(0, 24, 52, 11, 0, 0, Math.PI * 2); ctx.fill();
+      // Glowing multi-ring tractor emitter underneath hull
+      const emitterColor = isAbducting ? '#34d399' : '#38bdf8';
+      ctx.fillStyle = isAbducting ? 'rgba(52, 211, 153, 0.72)' : 'rgba(56, 189, 248, 0.62)';
+      ctx.shadowColor = emitterColor;
+      ctx.shadowBlur = 26;
+      ctx.beginPath(); ctx.ellipse(0, 24, 58, 12, 0, 0, Math.PI * 2); ctx.fill();
       ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.ellipse(0, 24, 38, 7.5, 0, 0, Math.PI * 2); ctx.stroke();
 
-      // Translucent Glass Cockpit Dome
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.36)';
+      // Underside hull shadow bowl
+      const underGrad = ctx.createLinearGradient(0, 8, 0, 26);
+      underGrad.addColorStop(0, '#334155');
+      underGrad.addColorStop(1, '#0f172a');
+      ctx.fillStyle = underGrad;
+      ctx.beginPath(); ctx.ellipse(0, 14, 90, 16, 0, 0, Math.PI * 2); ctx.fill();
+
+      // Glass Cockpit Dome with Cyan Tint & Specular Arc Reflections
+      const domeGrad = ctx.createRadialGradient(-14, -36, 4, 0, -14, 52);
+      domeGrad.addColorStop(0, 'rgba(186, 230, 253, 0.70)');
+      domeGrad.addColorStop(0.55, 'rgba(56, 189, 248, 0.42)');
+      domeGrad.addColorStop(1, 'rgba(14, 116, 144, 0.65)');
+      ctx.fillStyle = domeGrad;
       ctx.strokeStyle = '#bae6fd';
-      ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(0, -14, 46, Math.PI, 0); ctx.fill(); ctx.stroke();
+      ctx.lineWidth = 2.8;
+      ctx.beginPath(); ctx.arc(0, -14, 48, Math.PI, 0); ctx.fill(); ctx.stroke();
 
-      // Big Alien Commander waving inside Dome
-      ctx.fillStyle = '#4ade80';
-      ctx.beginPath(); ctx.arc(0, -25, 14, 0, Math.PI * 2); ctx.fill();
-      // Alien antennae
-      ctx.strokeStyle = '#4ade80';
-      ctx.lineWidth = 2.5;
+      // Cute Alien Commander + Spaceship Dashboard inside Cockpit
+      ctx.fillStyle = '#22c55e';
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.ellipse(0, -24, 15, 13.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // Alien shoulders & uniform
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath(); ctx.ellipse(0, -11, 14, 6, 0, Math.PI, 0); ctx.fill();
+      // Alien glowing antennae
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 2.6;
       ctx.beginPath();
-      ctx.moveTo(-6, -37); ctx.lineTo(-11, -45);
-      ctx.moveTo(6, -37); ctx.lineTo(11, -45);
+      ctx.moveTo(-7, -36); ctx.quadraticCurveTo(-11, -43, -13, -46);
+      ctx.moveTo(7, -36); ctx.quadraticCurveTo(11, -43, 13, -46);
       ctx.stroke();
       ctx.fillStyle = '#fef08a';
-      ctx.beginPath(); ctx.arc(-11, -46, 2.5, 0, Math.PI * 2); ctx.arc(11, -46, 2.5, 0, Math.PI * 2); ctx.fill();
-      // Alien eyes & grin
-      ctx.fillStyle = '#0f172a';
-      ctx.beginPath(); ctx.ellipse(-5, -26, 3.5, 5, -0.15, 0, Math.PI * 2); ctx.ellipse(5, -26, 3.5, 5, 0.15, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(-13, -46, 2.8, 0, Math.PI * 2); ctx.arc(13, -46, 2.8, 0, Math.PI * 2); ctx.fill();
+      // Large glossy alien eyes & cute smile
+      ctx.fillStyle = '#020617';
+      ctx.beginPath(); ctx.ellipse(-5.5, -25, 3.8, 5.2, -0.18, 0, Math.PI * 2); ctx.ellipse(5.5, -25, 3.8, 5.2, 0.18, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = '#ffffff';
-      ctx.beginPath(); ctx.arc(-6, -28, 1.2, 0, Math.PI * 2); ctx.arc(4, -28, 1.2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(-6.5, -27.2, 1.5, 0, Math.PI * 2); ctx.arc(4.5, -27.2, 1.5, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#064e3b';
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(0, -19, 4, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
 
-      // Upper Metallic Hull Band
-      const upperGrad = ctx.createLinearGradient(-85, -14, 85, 8);
-      upperGrad.addColorStop(0, '#64748b');
-      upperGrad.addColorStop(0.5, '#e2e8f0');
-      upperGrad.addColorStop(1, '#475569');
+      // Dome glass curved glint highlight
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.arc(0, -14, 41, Math.PI * 1.15, Math.PI * 1.42); ctx.stroke();
+
+      // Upper Brushed Titanium Hull Deck
+      const upperGrad = ctx.createLinearGradient(-88, -14, 88, 10);
+      upperGrad.addColorStop(0, '#475569');
+      upperGrad.addColorStop(0.35, '#cbd5e1');
+      upperGrad.addColorStop(0.55, '#f8fafc');
+      upperGrad.addColorStop(1, '#334155');
       ctx.fillStyle = upperGrad;
-      ctx.beginPath(); ctx.ellipse(0, -6, 86, 18, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.ellipse(0, -6, 90, 19, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-      // Giant Main Rim Disc
-      const rimGrad = ctx.createLinearGradient(-116, 0, 116, 0);
-      rimGrad.addColorStop(0, '#334155');
-      rimGrad.addColorStop(0.25, '#94a3b8');
-      rimGrad.addColorStop(0.5, '#f1f5f9');
-      rimGrad.addColorStop(0.75, '#94a3b8');
-      rimGrad.addColorStop(1, '#1e293b');
+      // Giant Main Rim Disc with Etched Armor Panel Lines
+      const rimGrad = ctx.createLinearGradient(-122, -4, 122, 16);
+      rimGrad.addColorStop(0, '#1e293b');
+      rimGrad.addColorStop(0.22, '#94a3b8');
+      rimGrad.addColorStop(0.5, '#f8fafc');
+      rimGrad.addColorStop(0.78, '#94a3b8');
+      rimGrad.addColorStop(1, '#0f172a');
       ctx.fillStyle = rimGrad;
-      ctx.beginPath(); ctx.ellipse(0, 6, 118, 28, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0, 6, 122, 29, 0, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#cbd5e1';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 2.4;
       ctx.stroke();
 
-      // 13 Bright Rotating Neon Rim Lights
+      // Armor panel radial seams on hull
+      ctx.strokeStyle = 'rgba(30, 41, 59, 0.45)';
+      ctx.lineWidth = 1.3;
+      [-76, -42, 0, 42, 76].forEach(px => {
+        ctx.beginPath(); ctx.moveTo(px * 0.68, -10); ctx.lineTo(px * 1.18, 20); ctx.stroke();
+      });
+
+      // 13 Bright Rotating Neon Plasma Lights around Rim
       const lightColors = ['#34d399', '#facc15', '#38bdf8', '#f472b6', '#a855f7'];
       for (let l = -96; l <= 96; l += 16) {
         const idx = Math.floor((now * 0.012 + Math.abs(l)) % lightColors.length);
         const arcY = 8 + Math.cos((l / 118) * Math.PI * 0.5) * 10;
         ctx.fillStyle = lightColors[idx];
         ctx.shadowColor = lightColors[idx];
-        ctx.shadowBlur = 10;
-        ctx.beginPath(); ctx.arc(l, arcY, 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 11;
+        ctx.beginPath(); ctx.arc(l, arcY, 4.6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowBlur = 0;
+        ctx.beginPath(); ctx.arc(l - 1, arcY - 1, 1.4, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
 
@@ -30669,126 +31142,327 @@
     }
 
     function drawKonohaVillage(ctx, w, h, now) {
-      // 1. Konoha Golden Sunset / Twilight Sky
-      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.65);
-      sky.addColorStop(0, '#0f172a');
-      sky.addColorStop(0.45, '#7c2d12');
-      sky.addColorStop(0.82, '#ea580c');
-      sky.addColorStop(1, '#fdba74');
+      // 1. Konoha Golden Sunset Sky + Soft Drifting Clouds
+      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.62);
+      sky.addColorStop(0, '#1e1b4b');
+      sky.addColorStop(0.32, '#9a3412');
+      sky.addColorStop(0.70, '#ea580c');
+      sky.addColorStop(1, '#fed7aa');
       ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, w, h * 0.65);
+      ctx.fillRect(0, 0, w, h * 0.62);
 
-      // Sun setting behind Hokage cliff
+      // Sun setting softly behind Hokage cliff with warm atmospheric halo
       ctx.save();
-      ctx.fillStyle = 'rgba(254, 240, 138, 0.85)';
-      ctx.shadowColor = '#fb923c';
-      ctx.shadowBlur = 35;
-      ctx.beginPath(); ctx.arc(w * 0.72, h * 0.44, 42, 0, Math.PI * 2); ctx.fill();
+      const sunX = w * 0.74, sunY = h * 0.34;
+      const sunGlow = ctx.createRadialGradient(sunX, sunY, 10, sunX, sunY, 96);
+      sunGlow.addColorStop(0, 'rgba(254, 249, 195, 0.95)');
+      sunGlow.addColorStop(0.4, 'rgba(251, 146, 60, 0.45)');
+      sunGlow.addColorStop(1, 'rgba(251, 146, 60, 0)');
+      ctx.fillStyle = sunGlow;
+      ctx.beginPath(); ctx.arc(sunX, sunY, 96, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fef9c3';
+      ctx.beginPath(); ctx.arc(sunX, sunY, 34, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
 
-      // 2. Iconic Hokage Rock Mountain Cliff
+      // Twilight clouds
+      ctx.fillStyle = 'rgba(254, 215, 170, 0.24)';
+      [[0.16, 0.14, 72], [0.52, 0.11, 88], [0.85, 0.17, 64]].forEach(([cx, cy, cw], ci) => {
+        const dx = ((cx * w + now * 0.006 * (ci % 2 ? 1 : 0.6)) % (w + 150)) - 75;
+        ctx.beginPath();
+        ctx.ellipse(dx, h * cy, cw, 11, 0, 0, Math.PI * 2);
+        ctx.ellipse(dx + cw * 0.35, h * cy + 4, cw * 0.55, 8, 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 2. HOKAGE ROCK MOUNTAIN MONUMENT (Tượng Đài Hokage Rõ Nét)
       const cliffY = h * 0.48;
-      ctx.fillStyle = '#57534e';
+      const rockGrad = ctx.createLinearGradient(0, h * 0.14, 0, cliffY + 18);
+      rockGrad.addColorStop(0, '#a8a29e');
+      rockGrad.addColorStop(0.55, '#78716c');
+      rockGrad.addColorStop(1, '#44403c');
+      ctx.fillStyle = rockGrad;
+      ctx.strokeStyle = '#292524';
+      ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.moveTo(0, cliffY);
-      ctx.lineTo(w * 0.08, h * 0.25);
-      ctx.lineTo(w * 0.25, h * 0.22);
-      ctx.lineTo(w * 0.44, h * 0.26);
-      ctx.lineTo(w * 0.58, h * 0.23);
-      ctx.lineTo(w * 0.76, h * 0.29);
-      ctx.lineTo(w, h * 0.36);
-      ctx.lineTo(w, cliffY + 20);
-      ctx.lineTo(0, cliffY + 20);
+      ctx.lineTo(w * 0.05, h * 0.24);
+      ctx.lineTo(w * 0.14, h * 0.19);
+      ctx.lineTo(w * 0.26, h * 0.17);
+      ctx.lineTo(w * 0.38, h * 0.18);
+      ctx.lineTo(w * 0.52, h * 0.17);
+      ctx.lineTo(w * 0.65, h * 0.21);
+      ctx.lineTo(w * 0.78, h * 0.26);
+      ctx.lineTo(w, h * 0.33);
+      ctx.lineTo(w, cliffY + 16);
+      ctx.lineTo(0, cliffY + 16);
       ctx.closePath();
       ctx.fill();
+      ctx.stroke();
 
-      // Carved stone faces silhouette of the Hokages on mountain
-      [0.18, 0.30, 0.42, 0.54].forEach((fx, idx) => {
-        const rx = w * fx, ry = h * 0.31 + (idx % 2) * 4;
-        ctx.fillStyle = '#44403c';
-        ctx.beginPath(); ctx.roundRect(rx - 14, ry - 14, 28, 32, 6); ctx.fill();
-        ctx.fillStyle = '#292524';
-        ctx.fillRect(rx - 8, ry - 4, 5, 3);
-        ctx.fillRect(rx + 3, ry - 4, 5, 3);
-        ctx.fillRect(rx - 4, ry + 7, 8, 2.5);
-      });
+      // Craggy cliff shading ridges
+      ctx.fillStyle = 'rgba(41, 37, 36, 0.38)';
+      ctx.beginPath();
+      ctx.moveTo(w * 0.05, h * 0.24); ctx.lineTo(w * 0.11, h * 0.34); ctx.lineTo(w * 0.04, h * 0.44); ctx.closePath(); ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(w * 0.65, h * 0.21); ctx.lineTo(w * 0.72, h * 0.35); ctx.lineTo(w * 0.62, h * 0.45); ctx.closePath(); ctx.fill();
 
-      // 3. Konoha Village Rooftops & Traditional Houses
-      const roofY = h * 0.56;
-      ctx.fillStyle = '#1c1917';
-      ctx.fillRect(0, h * 0.47, w, h * 0.12);
-      const houses = [[0.03, 0.14, 46], [0.19, 0.16, 54], [0.38, 0.13, 42], [0.68, 0.16, 52], [0.85, 0.14, 48]];
-      houses.forEach(([hx, hw, hh]) => {
-        const rx = w * hx, rw = w * hw;
-        // House wall
-        ctx.fillStyle = '#292524';
-        ctx.fillRect(rx, roofY - hh, rw, hh);
-        // Curved Japanese roof
-        ctx.fillStyle = '#0f172a';
+      // Forest treeline atop the Hokage cliff
+      ctx.fillStyle = '#14532d';
+      for (let tx = w * 0.04; tx < w * 0.74; tx += 22) {
+        const ty = h * 0.17 + Math.sin(tx * 0.05) * 6;
+        ctx.beginPath(); ctx.arc(tx, ty + 3, 12, Math.PI, 0); ctx.fill();
+      }
+
+      // 4 Distinct Carved Stone Hokage Faces (Đệ Nhất -> Đệ Tứ)
+      const hokages = [
+        { fx: 0.19, fy: 0.285, type: 1 }, // Hashirama (long straight hair + headband)
+        { fx: 0.30, fy: 0.275, type: 2 }, // Tobirama (spiky + cheek marks + chin guard)
+        { fx: 0.41, fy: 0.285, type: 3 }, // Hiruzen (ninja hood + beard)
+        { fx: 0.52, fy: 0.280, type: 4 }  // Minato (sweeping spiky bangs!)
+      ];
+      hokages.forEach(hk => {
+        const rx = w * hk.fx, ry = h * hk.fy;
+        ctx.save();
+        ctx.translate(rx, ry);
+
+        // Chiseled granite face block + jawline
+        ctx.fillStyle = '#a8a29e';
+        ctx.strokeStyle = '#44403c';
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
-        ctx.moveTo(rx - 10, roofY - hh + 4);
-        ctx.quadraticCurveTo(rx + rw / 2, roofY - hh - 16, rx + rw + 10, roofY - hh + 4);
-        ctx.lineTo(rx + rw, roofY - hh + 10);
-        ctx.lineTo(rx, roofY - hh + 10);
+        ctx.moveTo(-13, -15);
+        ctx.lineTo(13, -15);
+        ctx.lineTo(12, 7);
+        ctx.lineTo(6, 17);
+        ctx.lineTo(-6, 17);
+        ctx.lineTo(-12, 7);
         ctx.closePath();
         ctx.fill();
-        // Warm lit windows
-        ctx.fillStyle = '#fef08a';
-        ctx.fillRect(rx + 12, roofY - hh + 16, 10, 12);
-        ctx.fillRect(rx + rw - 22, roofY - hh + 16, 10, 12);
+        ctx.stroke();
+
+        // Carved brow & eye socket shadows
+        ctx.fillStyle = '#57534e';
+        ctx.fillRect(-10, -4, 7, 3.2);
+        ctx.fillRect(3, -4, 7, 3.2);
+        // Sculpted nose bridge & shadow
+        ctx.fillStyle = '#78716c';
+        ctx.beginPath(); ctx.moveTo(0, -4); ctx.lineTo(2.6, 5); ctx.lineTo(-1.5, 5); ctx.closePath(); ctx.fill();
+        // Mouth crease
+        ctx.strokeStyle = '#44403c';
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(-4, 10); ctx.lineTo(4, 10); ctx.stroke();
+
+        // Recognizable hair / headgear silhouettes
+        ctx.fillStyle = '#57534e';
+        if (hk.type === 1) {
+          // Hashirama long framing hair + forehead protector
+          ctx.fillRect(-15, -16, 4.5, 24);
+          ctx.fillRect(10.5, -16, 4.5, 24);
+          ctx.fillRect(-13, -18, 26, 7);
+          ctx.fillStyle = '#78716c';
+          ctx.fillRect(-11, -11, 22, 4.5);
+        } else if (hk.type === 2) {
+          // Tobirama spiky crown + chin guard + red/stone cheek lines
+          ctx.beginPath();
+          ctx.moveTo(-14, -12); ctx.lineTo(-10, -24); ctx.lineTo(-3, -17); ctx.lineTo(3, -25); ctx.lineTo(10, -17); ctx.lineTo(14, -12);
+          ctx.closePath(); ctx.fill();
+          ctx.fillRect(-9, 12, 18, 6);
+        } else if (hk.type === 3) {
+          // Hiruzen ninja cowl & goatee
+          ctx.beginPath(); ctx.roundRect(-14, -16, 28, 10, 4); ctx.fill();
+          ctx.beginPath(); ctx.moveTo(-4, 13); ctx.lineTo(0, 21); ctx.lineTo(4, 13); ctx.closePath(); ctx.fill();
+        } else if (hk.type === 4) {
+          // Minato iconic spiky sweeping bangs!
+          ctx.fillStyle = '#d6d3d1';
+          ctx.beginPath();
+          ctx.moveTo(-15, -10); ctx.lineTo(-18, -21); ctx.lineTo(-8, -19); ctx.lineTo(-2, -26);
+          ctx.lineTo(4, -19); ctx.lineTo(16, -22); ctx.lineTo(14, -10);
+          ctx.lineTo(8, -4); ctx.lineTo(3, -10); ctx.lineTo(-1, -3); ctx.lineTo(-5, -10);
+          ctx.closePath(); ctx.fill(); ctx.stroke();
+        }
+        ctx.restore();
       });
 
-      // Red Japanese Torii Gate on right side
-      const tx = w * 0.87, ty = h * 0.59;
+      // 3. ICONIC KONOHA VILLAGE ROOFTOPS, HOKAGE RESIDENCE & VILLAGE WALL
+      const wallY = h * 0.565;
+      // Lush cedar/leaf forest belt separating cliff & village
+      ctx.fillStyle = '#14532d';
+      for (let fx = 0; fx <= w + 20; fx += 26) {
+        ctx.beginPath(); ctx.arc(fx, h * 0.485, 19, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.fillStyle = '#166534';
+      for (let fx = 12; fx <= w + 20; fx += 34) {
+        ctx.beginPath(); ctx.arc(fx, h * 0.495, 15, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Hokage Residence Dome Building (Trung tâm Làng Lá!)
+      const hokX = w * 0.50, hokY = h * 0.54;
+      ctx.fillStyle = '#fef3c7';
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 1.6;
+      ctx.fillRect(hokX - 42, hokY - 34, 84, 38);
+      ctx.strokeRect(hokX - 42, hokY - 34, 84, 38);
+      // Crimson dome roof
       ctx.fillStyle = '#dc2626';
-      ctx.fillRect(tx - 24, ty - 58, 7, 60);
-      ctx.fillRect(tx + 17, ty - 58, 7, 60);
+      ctx.beginPath(); ctx.arc(hokX, hokY - 32, 46, Math.PI, 0); ctx.fill(); ctx.stroke();
+      // White vertical ribs on Hokage dome
+      ctx.strokeStyle = '#fecaca';
+      ctx.lineWidth = 1.2;
+      [-20, 0, 20].forEach(dx => {
+        ctx.beginPath(); ctx.moveTo(hokX + dx * 0.4, hokY - 74); ctx.quadraticCurveTo(hokX + dx, hokY - 56, hokX + dx * 1.4, hokY - 32); ctx.stroke();
+      });
+      // Golden Kanji '火' (Hỏa / Lửa) Crest Medallion!
+      ctx.fillStyle = '#fef08a';
+      ctx.strokeStyle = '#991b1b';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(hokX, hokY - 50, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#b91c1c';
-      ctx.beginPath(); ctx.roundRect(tx - 34, ty - 64, 68, 8, 3); ctx.fill();
-      ctx.fillStyle = '#dc2626';
-      ctx.fillRect(tx - 28, ty - 48, 56, 5);
+      ctx.font = '900 13px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('火', hokX, hokY - 49.5);
 
-      // Cherry Blossom Trees framing left & right
-      [[0.07, 0.58], [0.95, 0.58]].forEach(([bx, by]) => {
-        const px = w * bx, py = h * by;
+      // Traditional Japanese Leaf Village Townhouses (Timber + White Plaster + Tiled Kawara Roofs)
+      const houses = [
+        [0.03, 0.13, 46], [0.17, 0.14, 52], [0.32, 0.12, 40],
+        [0.60, 0.13, 44], [0.74, 0.13, 50]
+      ];
+      houses.forEach(([hx, hw, hh]) => {
+        const rx = w * hx, rw = w * hw;
+        // Plaster wall
+        ctx.fillStyle = '#e7e5e4';
+        ctx.strokeStyle = '#44403c';
+        ctx.lineWidth = 1.4;
+        ctx.fillRect(rx, wallY - hh, rw, hh);
+        ctx.strokeRect(rx, wallY - hh, rw, hh);
+        // Dark wood timber columns & beam
         ctx.fillStyle = '#451a03';
-        ctx.fillRect(px - 6, py - 50, 12, 54);
-        ctx.fillStyle = '#f472b6';
-        ctx.beginPath(); ctx.arc(px, py - 62, 30, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = '#fbcfe8';
-        ctx.beginPath(); ctx.arc(px - 18, py - 52, 20, 0, Math.PI * 2); ctx.arc(px + 18, py - 52, 20, 0, Math.PI * 2); ctx.fill();
+        ctx.fillRect(rx, wallY - hh, 4.5, hh);
+        ctx.fillRect(rx + rw - 4.5, wallY - hh, 4.5, hh);
+        ctx.fillRect(rx, wallY - hh + 18, rw, 3.5);
+        // Shoji warm lit windows
+        ctx.fillStyle = '#fef08a';
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 1;
+        ctx.fillRect(rx + 10, wallY - hh + 25, 13, 14); ctx.strokeRect(rx + 10, wallY - hh + 25, 13, 14);
+        ctx.fillRect(rx + rw - 23, wallY - hh + 25, 13, 14); ctx.strokeRect(rx + rw - 23, wallY - hh + 25, 13, 14);
+        // Upturned Japanese slate roof with golden ridge
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.moveTo(rx - 10, wallY - hh + 4);
+        ctx.quadraticCurveTo(rx + rw * 0.5, wallY - hh - 19, rx + rw + 10, wallY - hh + 4);
+        ctx.lineTo(rx + rw + 4, wallY - hh + 10);
+        ctx.lineTo(rx - 4, wallY - hh + 10);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#64748b';
+        ctx.stroke();
       });
 
-      // Konoha Leaf Banner Flag on wall
+      // Konoha Main Green Village Gate Pillars + Leaf Crest Banner on right
+      const gx = w * 0.88, gy = h * 0.59;
+      ctx.fillStyle = '#166534';
+      ctx.strokeStyle = '#052e16';
+      ctx.lineWidth = 1.6;
+      ctx.fillRect(gx - 30, gy - 66, 13, 68); ctx.strokeRect(gx - 30, gy - 66, 13, 68);
+      ctx.fillRect(gx + 17, gy - 66, 13, 68); ctx.strokeRect(gx + 17, gy - 66, 13, 68);
+      // Curved green beam & Konoha Leaf Signboard
       ctx.fillStyle = '#15803d';
-      ctx.strokeStyle = '#fef08a';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.roundRect(w * 0.54 - 22, h * 0.49, 44, 34, 4); ctx.fill(); ctx.stroke();
-      ctx.font = '18px sans-serif';
+      ctx.beginPath(); ctx.roundRect(gx - 38, gy - 76, 76, 14, 4); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fef3c7';
+      ctx.beginPath(); ctx.roundRect(gx - 18, gy - 73, 36, 18, 4); ctx.fill(); ctx.stroke();
+      ctx.font = '13px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('🍃', w * 0.54, h * 0.49 + 23);
+      ctx.fillText('🍃', gx, gy - 63);
 
-      // 4. Konoha Training Ground (Bãi tập Làng Lá)
+      // Swaying Warm Paper Lanterns (Đèn lồng giấy)
+      [0.24, 0.45, 0.67].forEach((lx, li) => {
+        const px = w * lx, py = h * 0.555;
+        ctx.strokeStyle = '#292524';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(px, py - 8); ctx.lineTo(px, py); ctx.stroke();
+        ctx.fillStyle = '#ef4444';
+        ctx.shadowColor = '#fb923c';
+        ctx.shadowBlur = 12;
+        ctx.beginPath(); ctx.ellipse(px, py + 6, 5.5, 7.5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#fef08a';
+        ctx.fillRect(px - 2, py + 3, 4, 6);
+      });
+
+      // 4. Detailed Gnarled Cherry Blossom Trees Framing Left & Right
+      [[0.065, 0.59, 1], [0.955, 0.59, -1]].forEach(([bx, by, dir]) => {
+        const px = w * bx, py = h * by;
+        // Twisted trunk & roots
+        ctx.fillStyle = '#451a03';
+        ctx.strokeStyle = '#291002';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(px - 9, py + 2);
+        ctx.quadraticCurveTo(px - 4, py - 28, px - 6, py - 56);
+        ctx.lineTo(px + 6, py - 56);
+        ctx.quadraticCurveTo(px + 5, py - 26, px + 10, py + 2);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        // Extending branches
+        ctx.strokeStyle = '#451a03';
+        ctx.lineWidth = 4.5;
+        ctx.beginPath();
+        ctx.moveTo(px, py - 42); ctx.lineTo(px + dir * 24, py - 62);
+        ctx.moveTo(px, py - 48); ctx.lineTo(px - dir * 18, py - 66);
+        ctx.stroke();
+        // Rich 3-tone sakura blossom canopy
+        ctx.fillStyle = '#db2777';
+        ctx.beginPath(); ctx.arc(px, py - 66, 32, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#f472b6';
+        ctx.beginPath(); ctx.arc(px - 20, py - 56, 22, 0, Math.PI * 2); ctx.arc(px + 20, py - 56, 22, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#fbcfe8';
+        ctx.beginPath(); ctx.arc(px - 6, py - 74, 18, 0, Math.PI * 2); ctx.arc(px + 12, py - 64, 15, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // 5. Konoha Training Ground (Bãi tập Làng Lá có hàng rào gỗ & bia tập Kunai)
       const gGrad = ctx.createLinearGradient(0, h * 0.58, 0, h);
-      gGrad.addColorStop(0, '#d97706');
-      gGrad.addColorStop(0.25, '#b45309');
-      gGrad.addColorStop(1, '#78350f');
+      gGrad.addColorStop(0, '#eab308');
+      gGrad.addColorStop(0.28, '#ca8a04');
+      gGrad.addColorStop(0.68, '#a16207');
+      gGrad.addColorStop(1, '#713f12');
       ctx.fillStyle = gGrad;
       ctx.fillRect(0, h * 0.58, w, h * 0.42);
 
-      // Green grass border
+      // Green grass verge & wooden ninja fence along background edge
       ctx.fillStyle = '#15803d';
       ctx.fillRect(0, h * 0.57, w, 12);
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(0, h * 0.568); ctx.lineTo(w, h * 0.568); ctx.stroke();
+      for (let fx = 18; fx < w; fx += 44) {
+        ctx.fillStyle = '#92400e';
+        ctx.fillRect(fx - 2.5, h * 0.555, 5, 16);
+      }
 
-      // 3 Ninja Wooden Training Posts on far right
+      // Subtle stone dust shading on training ground
+      ctx.fillStyle = 'rgba(254, 240, 138, 0.14)';
+      ctx.beginPath(); ctx.ellipse(w * 0.62, h * 0.78, 175, 42, 0, 0, Math.PI * 2); ctx.fill();
+
+      // 3 Ninja Wooden Training Posts (Cọc gỗ tập phi tiêu Kunai)
       [0.84, 0.89, 0.94].forEach((px, idx) => {
-        const lx = w * px, ly = h * 0.65 + idx * 6;
-        ctx.fillStyle = '#78350f';
+        const lx = w * px, ly = h * 0.66 + idx * 7;
+        ctx.fillStyle = 'rgba(0,0,0,0.28)';
+        ctx.beginPath(); ctx.ellipse(lx, ly + 8, 11, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#92400e';
         ctx.strokeStyle = '#451a03';
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.roundRect(lx - 6, ly - 32, 12, 38, 3); ctx.fill(); ctx.stroke();
+        ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.roundRect(lx - 7, ly - 36, 14, 42, 3); ctx.fill(); ctx.stroke();
+        // Top wood ring grain
+        ctx.fillStyle = '#fde68a';
+        ctx.beginPath(); ctx.ellipse(lx, ly - 35, 6.5, 2.5, 0, 0, Math.PI * 2); ctx.fill();
+        // Rope & white target band
         ctx.fillStyle = '#fef3c7';
-        ctx.fillRect(lx - 6, ly - 22, 12, 4);
+        ctx.fillRect(lx - 7, ly - 23, 14, 5);
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath(); ctx.arc(lx, ly - 11, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(lx, ly - 11, 1.8, 0, Math.PI * 2); ctx.fill();
       });
     }
 
@@ -30797,141 +31471,265 @@
       const state = o.state || 'idle'; // 'idle', 'seal', 'slam', 'cheer'
       const now = o.now || performance.now();
       const sealIdx = o.sealIdx || 0;
+      const outline = '#0f172a';
 
       ctx.save();
       ctx.translate(x, y);
-      const bob = state === 'seal' ? Math.sin(now * 0.025) * 2.5 : (state === 'idle' ? Math.sin(now * 0.005) * 2 : 0);
+      const bob = state === 'seal' ? Math.sin(now * 0.025) * 2.5 : (state === 'idle' ? Math.sin(now * 0.005) * 1.8 : 0);
       ctx.translate(0, bob);
 
       // Blue Chakra Flame Aura around Naruto when forming seals or slamming!
       if (state === 'seal' || state === 'slam') {
         ctx.save();
-        for (let k = 0; k < 10; k++) {
-          const ang = (k / 10) * Math.PI * 2 + now * 0.008;
-          const r = 34 + Math.sin(now * 0.02 + k) * 6;
-          ctx.fillStyle = k % 2 === 0 ? 'rgba(56, 189, 248, 0.28)' : 'rgba(14, 165, 233, 0.22)';
+        for (let k = 0; k < 12; k++) {
+          const ang = (k / 12) * Math.PI * 2 + now * 0.009;
+          const r = 36 + Math.sin(now * 0.02 + k) * 6;
+          ctx.fillStyle = k % 2 === 0 ? 'rgba(56, 189, 248, 0.30)' : 'rgba(14, 165, 233, 0.22)';
           ctx.beginPath();
-          ctx.ellipse(Math.cos(ang) * 16, -24 + Math.sin(ang) * 12, 14, r * 0.6, 0, 0, Math.PI * 2);
+          ctx.ellipse(Math.cos(ang) * 18, -24 + Math.sin(ang) * 14, 14, r * 0.58, 0, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
       }
 
-      // Shadow
-      ctx.fillStyle = 'rgba(0,0,0,0.35)';
-      ctx.beginPath(); ctx.ellipse(0, 32, 22, 7, 0, 0, Math.PI * 2); ctx.fill();
+      // Ground Shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.36)';
+      ctx.beginPath(); ctx.ellipse(0, 32, 23, 7.5, 0, 0, Math.PI * 2); ctx.fill();
 
-      // Ninja Legs (Orange pants + white shin bandage + dark blue sandals)
+      // Ninja Legs (Orange pants with crisp outline + white shin wraps + Kunai pouch + Shinobi sandals)
       const crouch = state === 'slam' ? 8 : 0;
-      ctx.strokeStyle = '#ea580c';
-      ctx.lineWidth = 8.5;
       ctx.lineCap = 'round';
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 11.5;
       ctx.beginPath();
-      ctx.moveTo(-8, 6 + crouch * 0.5); ctx.lineTo(-13, 28);
-      ctx.moveTo(8, 6 + crouch * 0.5); ctx.lineTo(13, 28);
+      ctx.moveTo(-8, 6 + crouch * 0.5); ctx.lineTo(-13.5, 28);
+      ctx.moveTo(8, 6 + crouch * 0.5); ctx.lineTo(13.5, 28);
       ctx.stroke();
 
-      // Sandals
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath(); ctx.ellipse(-13, 30, 6.5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.beginPath(); ctx.ellipse(13, 30, 6.5, 3.5, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#ea580c';
+      ctx.lineWidth = 8.2;
+      ctx.stroke();
 
-      // Torso (Iconic Orange + Black Shippuden Jacket)
-      ctx.fillStyle = '#f97316';
-      ctx.strokeStyle = '#0f172a';
+      // White shin bandage wrap on right leg & dark kunai pouch on right thigh
+      ctx.strokeStyle = '#f8fafc';
+      ctx.lineWidth = 8.5;
+      ctx.beginPath(); ctx.moveTo(10.8, 17 + crouch * 0.2); ctx.lineTo(12.2, 22); ctx.stroke();
+      ctx.fillStyle = '#e2e8f0';
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.roundRect(8.5, 11 + crouch * 0.2, 6, 8, 1.5); ctx.fill(); ctx.stroke();
+
+      // Open-toe Shinobi Sandals
+      [[-13.5, 30], [13.5, 30]].forEach(([sx, sy]) => {
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.ellipse(sx, sy, 7, 3.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath(); ctx.ellipse(sx, sy + 0.5, 3, 1.6, 0, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // Torso (Iconic Orange & Black Shippuden Tracksuit with Collar, Zipper & Red Uzumaki Swirl!)
+      const jktGrad = ctx.createLinearGradient(-15, -18 + crouch, 15, 10 + crouch);
+      jktGrad.addColorStop(0, '#fb923c');
+      jktGrad.addColorStop(1, '#ea580c');
+      ctx.fillStyle = jktGrad;
+      ctx.strokeStyle = outline;
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.roundRect(-14, -18 + crouch, 28, 28, 6); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.roundRect(-14.5, -18 + crouch, 29, 28, 6.5); ctx.fill(); ctx.stroke();
 
-      // Black upper shoulder jacket part + white collar
-      ctx.fillStyle = '#0f172a';
-      ctx.beginPath(); ctx.roundRect(-14, -18 + crouch, 28, 12, [6, 6, 0, 0]); ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(-5, -18 + crouch, 10, 12);
-      // Zipper
+      // Black upper shoulder jacket panel
+      ctx.fillStyle = '#18181b';
+      ctx.beginPath(); ctx.roundRect(-14.5, -18 + crouch, 29, 13, [6.5, 6.5, 0, 0]); ctx.fill();
+      // High collar flaps + mesh undershirt
+      ctx.fillStyle = '#f97316';
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.roundRect(-9, -22 + crouch, 18, 7, 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#334155';
+      ctx.fillRect(-4.5, -18 + crouch, 9, 12);
+      // Zipper line + brass pull
       ctx.strokeStyle = '#fbbf24';
-      ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.moveTo(0, -16 + crouch); ctx.lineTo(0, 8 + crouch); ctx.stroke();
+      ctx.lineWidth = 1.8;
+      ctx.beginPath(); ctx.moveTo(0, -16 + crouch); ctx.lineTo(0, 8.5 + crouch); ctx.stroke();
+      ctx.fillStyle = '#fef08a';
+      ctx.beginPath(); ctx.arc(0, -14 + crouch, 1.8, 0, Math.PI * 2); ctx.fill();
 
-      // Arms & Hand Seals!
-      ctx.strokeStyle = '#f97316';
-      ctx.lineWidth = 6.5;
-      ctx.lineCap = 'round';
-      if (state === 'slam') {
-        // Slams right palm down onto the summoning ground!
-        ctx.beginPath(); ctx.moveTo(-12, -10 + crouch); ctx.lineTo(-20, 4 + crouch); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(12, -10 + crouch); ctx.lineTo(28, 26); ctx.stroke();
-        ctx.fillStyle = '#fed7aa';
-        ctx.beginPath(); ctx.arc(28, 26, 5.5, 0, Math.PI * 2); ctx.fill();
-      } else if (state === 'seal') {
-        // Arms brought together forming animated hand seals in front of chest!
-        const sealJiggle = Math.sin(now * 0.04 + sealIdx) * 2.5;
-        ctx.beginPath();
-        ctx.moveTo(-12, -10); ctx.lineTo(-3, -2 + sealJiggle);
-        ctx.moveTo(12, -10); ctx.lineTo(3, -2 - sealJiggle);
+      // Red Uzumaki Swirl Crest on shoulder/chest
+      ctx.strokeStyle = '#dc2626';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(-9.5, -11.5 + crouch, 3.2, 0, Math.PI * 1.7); ctx.stroke();
+
+      // Arms & Hand Seals with black forearm cuffs + anime outline!
+      const drawNarutoArm = (x1, y1, cx, cy, x2, y2, sleeveColor) => {
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 9.2;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo(cx, cy, x2, y2); ctx.stroke();
+        ctx.strokeStyle = sleeveColor || '#f97316';
+        ctx.lineWidth = 6.2;
         ctx.stroke();
+      };
+
+      if (state === 'slam') {
+        drawNarutoArm(-13, -11 + crouch, -18, -3 + crouch, -21, 5 + crouch, '#ea580c');
+        drawNarutoArm(13, -11 + crouch, 22, 4 + crouch, 29, 26, '#fb923c');
         ctx.fillStyle = '#fed7aa';
-        ctx.beginPath(); ctx.arc(0, -2, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.arc(29, 26, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        // Ground slam chakra shockwave ring!
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.ellipse(29, 28, 18 + Math.sin(now * 0.03) * 5, 5.5, 0, 0, Math.PI * 2); ctx.stroke();
+      } else if (state === 'seal') {
+        const sealJiggle = Math.sin(now * 0.04 + sealIdx) * 2.5;
+        drawNarutoArm(-13, -11, -12, -2, -3.5, -2 + sealJiggle, '#f97316');
+        drawNarutoArm(13, -11, 12, -2, 3.5, -2 - sealJiggle, '#f97316');
+        // Clasped hands forming ninja seal + bright chakra spark!
+        ctx.fillStyle = '#fed7aa';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.roundRect(-6.5, -6, 13, 9, 4); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.85)';
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 14;
+        ctx.beginPath(); ctx.arc(0, -1.5, 5 + Math.sin(now * 0.05) * 1.5, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
       } else if (state === 'cheer') {
-        ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(-22, -24); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(12, -10); ctx.lineTo(26, -16); ctx.stroke();
+        drawNarutoArm(-13, -11, -18, -18, -23, -25, '#fb923c');
+        drawNarutoArm(13, -11, 20, -14, 27, -18, '#fb923c');
+        ctx.fillStyle = '#fed7aa';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.arc(-23, -25, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(27, -18, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       } else {
-        ctx.beginPath(); ctx.moveTo(-12, -10); ctx.lineTo(-18, 5); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(12, -10); ctx.lineTo(18, 5); ctx.stroke();
+        drawNarutoArm(-13, -11, -17, -3, -19, 6, '#f97316');
+        drawNarutoArm(13, -11, 17, -3, 19, 6, '#f97316');
+        ctx.fillStyle = '#fed7aa';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.arc(-19, 6, 4.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(19, 6, 4.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       }
 
-      // Head + Blonde Spiky Hair + Konoha Headband + Whiskers
+      // HEAD + ANIME SPIKY BLONDE HAIR + KONOHA HITAI-ATE HEADBAND + WHISKERS
       ctx.save();
-      ctx.translate(0, -32 + crouch);
+      ctx.translate(0, -33 + crouch);
 
-      // Spiky golden hair
-      ctx.fillStyle = '#facc15';
-      ctx.strokeStyle = '#ca8a04';
-      ctx.lineWidth = 1.4;
+      // Fluttering headband cloth tails behind head
+      const tailWave = Math.sin(now * 0.012) * 3.5;
+      ctx.fillStyle = '#0f172a';
       ctx.beginPath();
-      ctx.moveTo(-16, -2);
-      ctx.lineTo(-21, -13); ctx.lineTo(-12, -14);
-      ctx.lineTo(-14, -25); ctx.lineTo(-5, -18);
-      ctx.lineTo(0, -28); ctx.lineTo(6, -18);
-      ctx.lineTo(15, -24); ctx.lineTo(12, -13);
-      ctx.lineTo(21, -12); ctx.lineTo(16, -2);
+      ctx.moveTo(-12, -8); ctx.quadraticCurveTo(-24, -12 + tailWave, -29, -4 + tailWave); ctx.lineTo(-22, -1 + tailWave); ctx.closePath(); ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(-12, -5); ctx.quadraticCurveTo(-22, -4 - tailWave * 0.5, -26, 4 - tailWave * 0.5); ctx.lineTo(-19, 4); ctx.closePath(); ctx.fill();
+
+      // Back spiky golden hair halo
+      const hairGrad = ctx.createLinearGradient(0, -30, 0, 2);
+      hairGrad.addColorStop(0, '#fef08a');
+      hairGrad.addColorStop(0.55, '#facc15');
+      hairGrad.addColorStop(1, '#eab308');
+      ctx.fillStyle = hairGrad;
+      ctx.strokeStyle = '#a16207';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(-16, 0);
+      ctx.lineTo(-23, -10); ctx.lineTo(-14, -13);
+      ctx.lineTo(-19, -24); ctx.lineTo(-8, -19);
+      ctx.lineTo(-5, -31); ctx.lineTo(1, -21);
+      ctx.lineTo(7, -30); ctx.lineTo(10, -19);
+      ctx.lineTo(20, -24); ctx.lineTo(14, -12);
+      ctx.lineTo(23, -9); ctx.lineTo(16, 0);
       ctx.closePath();
       ctx.fill(); ctx.stroke();
 
-      // Face
+      // Ears
       ctx.fillStyle = '#fed7aa';
-      ctx.beginPath(); ctx.arc(0, 2, 13, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.arc(-13.5, 2.5, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(13.5, 2.5, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
 
-      // Konoha Headband (Băng trán Làng Lá)
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath(); ctx.roundRect(-13.5, -10, 27, 7, 2); ctx.fill();
-      ctx.fillStyle = '#cbd5e1';
-      ctx.beginPath(); ctx.roundRect(-8, -9.5, 16, 6, 1.5); ctx.fill();
-      // Leaf swirl emblem
-      ctx.strokeStyle = '#334155';
+      // Chin-tapered Anime Face
+      ctx.fillStyle = '#fed7aa';
+      ctx.strokeStyle = outline;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-13.2, -3);
+      ctx.arc(0, 0, 13.2, Math.PI, 0, false);
+      ctx.quadraticCurveTo(13, 12, 0, 14.5);
+      ctx.quadraticCurveTo(-13, 12, -13.2, -3);
+      ctx.closePath();
+      ctx.fill(); ctx.stroke();
+
+      // Front spiky golden bangs hanging over headband edges
+      ctx.fillStyle = '#facc15';
+      ctx.strokeStyle = '#a16207';
       ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.arc(0, -6.5, 2, 0, Math.PI * 1.6); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(-13.5, -5); ctx.lineTo(-11, 2); ctx.lineTo(-7, -5);
+      ctx.moveTo(13.5, -5); ctx.lineTo(11, 2); ctx.lineTo(7, -5);
+      ctx.fill(); ctx.stroke();
 
-      // Eyes (Fierce Ninja eyes!)
+      // Iconic Black + Metallic Konoha Forehead Protector (Băng trán Làng Lá)
       ctx.fillStyle = '#0f172a';
-      ctx.beginPath(); ctx.arc(-4.5, 1, 2, 0, Math.PI * 2); ctx.arc(4.5, 1, 2, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath(); ctx.arc(-4.5, 1, 1, 0, Math.PI * 2); ctx.arc(4.5, 1, 1, 0, Math.PI * 2); ctx.fill();
-
-      // 3 Signature Whisker Marks on each cheek
-      ctx.strokeStyle = '#9a3412';
+      ctx.beginPath(); ctx.roundRect(-14, -11.5, 28, 7.5, 2.5); ctx.fill();
+      const plateGrad = ctx.createLinearGradient(-9, -11, 9, -4);
+      plateGrad.addColorStop(0, '#94a3b8');
+      plateGrad.addColorStop(0.5, '#f1f5f9');
+      plateGrad.addColorStop(1, '#64748b');
+      ctx.fillStyle = plateGrad;
+      ctx.strokeStyle = '#334155';
       ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.roundRect(-9.2, -10.6, 18.4, 5.8, 1.8); ctx.fill(); ctx.stroke();
+      // Steel rivets + engraved Konoha Leaf spiral
+      ctx.fillStyle = '#334155';
+      ctx.beginPath(); ctx.arc(-7.3, -7.7, 0.75, 0, Math.PI * 2); ctx.arc(7.3, -7.7, 0.75, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1.25;
+      ctx.beginPath(); ctx.arc(0, -7.7, 2.0, 0, Math.PI * 1.65); ctx.moveTo(-2, -7.7); ctx.lineTo(-3.2, -6.5); ctx.stroke();
+
+      // Determined Anime Eyebrows & Azure Blue Ninja Eyes
+      ctx.strokeStyle = '#a16207';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-8.5, -2.5); ctx.lineTo(-3, -1);
+      ctx.moveTo(8.5, -2.5); ctx.lineTo(3, -1);
+      ctx.stroke();
+
+      [-5.2, 5.2].forEach(ex => {
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = outline;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.ellipse(ex, 1.5, 3.0, 2.3, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#0ea5e9';
+        ctx.beginPath(); ctx.arc(ex, 1.5, 1.75, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath(); ctx.arc(ex, 1.5, 0.85, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(ex - 0.7, 0.9, 0.65, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // Nose dot + 3 Signature Cheek Whisker Marks on each side
+      ctx.fillStyle = '#d97706';
+      ctx.beginPath(); ctx.arc(0, 4.2, 0.9, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#9a3412';
+      ctx.lineWidth = 1.15;
       [-1, 1].forEach(side => {
         for (let wLine = -1; wLine <= 1; wLine++) {
           ctx.beginPath();
-          ctx.moveTo(side * 6.5, 4 + wLine * 2.2);
-          ctx.lineTo(side * 11, 3.5 + wLine * 2.6);
+          ctx.moveTo(side * 6.8, 5 + wLine * 2.1);
+          ctx.lineTo(side * 11.5, 4.4 + wLine * 2.5);
           ctx.stroke();
         }
       });
 
-      // Determined grin
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath(); ctx.arc(0, 7.5, 3.5, 0, Math.PI); ctx.fill();
+      // Confident anime grin
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.arc(0, 8, 4, 0, Math.PI); ctx.closePath(); ctx.fill(); ctx.stroke();
 
       ctx.restore();
       ctx.restore();
@@ -30941,27 +31739,32 @@
       if (alpha <= 0 || radius <= 2) return;
       ctx.save();
       ctx.translate(x, y);
-      ctx.scale(1, 0.42); // Isometric perspective flat on Konoha ground
+      ctx.scale(1, 0.42); // Isometric perspective flat on Konoha training ground
       ctx.rotate(rot);
       ctx.globalAlpha = alpha;
 
-      ctx.strokeStyle = '#facc15';
+      // Crimson Kuchiyose aura + black brush outer ring + glowing gold seal spokes
+      ctx.strokeStyle = '#dc2626';
       ctx.shadowColor = '#f97316';
-      ctx.shadowBlur = 18;
-      ctx.lineWidth = 4;
+      ctx.shadowBlur = 22;
+      ctx.lineWidth = 6;
       ctx.beginPath(); ctx.arc(0, 0, radius, 0, Math.PI * 2); ctx.stroke();
 
-      ctx.strokeStyle = '#fef08a';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(0, 0, radius * 0.78, 0, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = '#facc15';
+      ctx.lineWidth = 2.6;
+      ctx.beginPath(); ctx.arc(0, 0, radius * 0.88, 0, Math.PI * 2); ctx.stroke();
 
-      // Inner Summoning Star & Runic Spokes
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 1.8;
+      ctx.beginPath(); ctx.arc(0, 0, radius * 0.68, 0, Math.PI * 2); ctx.stroke();
+
+      // Inner Brush Calligraphy Arcs & Arcane 6-Point Star
       ctx.strokeStyle = '#facc15';
       for (let i = 0; i < 6; i++) {
         const a = (i / 6) * Math.PI * 2;
         ctx.beginPath();
-        ctx.moveTo(Math.cos(a) * radius * 0.78, Math.sin(a) * radius * 0.78);
-        ctx.lineTo(Math.cos(a + Math.PI * 0.66) * radius * 0.78, Math.sin(a + Math.PI * 0.66) * radius * 0.78);
+        ctx.moveTo(Math.cos(a) * radius * 0.88, Math.sin(a) * radius * 0.88);
+        ctx.lineTo(Math.cos(a + Math.PI * 0.66) * radius * 0.88, Math.sin(a + Math.PI * 0.66) * radius * 0.88);
         ctx.stroke();
       }
       ctx.restore();
@@ -31095,11 +31898,13 @@
         ctx.beginPath(); ctx.roundRect(summonX - 48, summonY + 14, 96, 14, 6); ctx.fill(); ctx.stroke();
 
         // Summoned Student Hero
+        const nameSeed = winName.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
         drawCartoonHuman(ctx, summonX, summonY - 6, {
           shirt: '#f97316',
           pants: '#1e3a8a',
           backpackColor: '#f59e0b',
           isStudent: true,
+          seed: nameSeed,
           scale: popScale,
           pose: 'winner',
           now: now
@@ -31110,7 +31915,7 @@
         ctx.restore();
       }
 
-      // 7. Draw Anime White Smoke Puffs ("BÙM!")
+      // 7. Draw Anime White Smoke Puffs with Crisp Comic Outline ("BÙM!")
       for (let i = narutoSmokePuffs.length - 1; i >= 0; i--) {
         const sm = narutoSmokePuffs[i];
         sm.x += sm.vx;
@@ -31119,9 +31924,11 @@
         sm.alpha -= 0.015;
         if (sm.alpha <= 0) { narutoSmokePuffs.splice(i, 1); continue; }
         ctx.save();
-        ctx.globalAlpha = sm.alpha * 0.85;
+        ctx.globalAlpha = sm.alpha * 0.90;
         ctx.fillStyle = '#f8fafc';
-        ctx.beginPath(); ctx.arc(sm.x, sm.y, sm.r, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.75)';
+        ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.arc(sm.x, sm.y, sm.r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
         ctx.restore();
       }
 
