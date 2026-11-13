@@ -17804,14 +17804,14 @@
     };
 
     const ATHLETICS_COLOR_PALETTES = [
-      { jersey: '#dc2626', shorts: '#991b1b', trim: '#ffffff', skin: '#fcd34d' }, // Đỏ cờ
-      { jersey: '#2563eb', shorts: '#1e3a8a', trim: '#93c5fd', skin: '#fde68a' }, // Xanh lam
-      { jersey: '#16a34a', shorts: '#14532d', trim: '#86efac', skin: '#fed7aa' }, // Xanh lá
-      { jersey: '#f59e0b', shorts: '#78350f', trim: '#fef08a', skin: '#fcd34d' }, // Vàng cam
-      { jersey: '#9333ea', shorts: '#581c87', trim: '#d8b4fe', skin: '#fde68a' }, // Tím đậm
-      { jersey: '#0891b2', shorts: '#164e63', trim: '#a5f3fc', skin: '#fed7aa' }, // Xanh ngọc
-      { jersey: '#e11d48', shorts: '#881337', trim: '#fecdd3', skin: '#fcd34d' }, // Hồng đỏ
-      { jersey: '#475569', shorts: '#0f172a', trim: '#e2e8f0', skin: '#fde68a' }  // Xám than
+      { jersey: '#dc2626', shorts: '#991b1b', trim: '#ffffff', skin: '#e8b48f' }, // Đỏ cờ
+      { jersey: '#2563eb', shorts: '#1e3a8a', trim: '#93c5fd', skin: '#f1c7a3' }, // Xanh lam
+      { jersey: '#16a34a', shorts: '#14532d', trim: '#86efac', skin: '#d9a07a' }, // Xanh lá
+      { jersey: '#f59e0b', shorts: '#78350f', trim: '#fef08a', skin: '#f3cfae' }, // Vàng cam
+      { jersey: '#9333ea', shorts: '#581c87', trim: '#d8b4fe', skin: '#c98d68' }, // Tím đậm
+      { jersey: '#0891b2', shorts: '#164e63', trim: '#a5f3fc', skin: '#eab995' }, // Xanh ngọc
+      { jersey: '#e11d48', shorts: '#881337', trim: '#fecdd3', skin: '#deae88' }, // Hồng đỏ
+      { jersey: '#475569', shorts: '#0f172a', trim: '#e2e8f0', skin: '#f0c29c' }  // Xám than
     ];
 
     let athleticsRunners = [];
@@ -18482,30 +18482,37 @@
       ctx.translate(r.x, r.y);
 
       const isRunning = (athleticsRaceState === 'running' || athleticsWinnerDecelerating);
-      // Độ nhấp nhô cơ thể khi chạy: 2 bước chạy / 1 chu kỳ sải chân
-      const bobY = isRunning ? Math.abs(Math.sin(r.stridePhase)) * 4.8 : 0;
-      // Góc nghiêng khí động học: dốc về phía trước khi bứt tốc, đứng thẳng hơn khi giảm tốc
-      const leanAngle = isRunning ? 0.32 : 0.08;
+      // Nhấp nhô thân: thấp nhất lúc tiếp đất, cao nhất ở pha bay
+      const bobY = isRunning ? Math.abs(Math.sin(r.stridePhase)) * 4.2 : 0;
+      // Nghiêng thân về trước khi chạy nước rút, đứng thẳng khi chờ
+      const leanAngle = isRunning ? 0.26 : 0.05;
+      const skin = r.skin || '#e7b68e';
+      const skinFar = rhShade(skin, -0.18);
+      const skinLine = 'rgba(60, 30, 15, 0.35)';
+      const hairC = r.hairColor || '#17120e';
+      const jersey = r.jersey || '#dc2626';
+      const shorts = r.shorts || '#7f1d1d';
+      const trim = r.trim || '#ffffff';
 
-      // 0. ĐỔ BÓNG TRÊN MẶT ĐƯỜNG TARTAN (Chân thực theo độ cao nhấp nhô)
+      // 0. BÓNG ĐỔ (co lại khi bay lên)
       const shadowScale = Math.max(0.65, 1 - (bobY / 12));
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.36)';
       ctx.beginPath();
-      ctx.ellipse(0, 18, 17 * shadowScale, 5.5 * shadowScale, 0, 0, Math.PI * 2);
+      ctx.ellipse(2, 18, 16 * shadowScale, 4.8 * shadowScale, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Vệt khí động học xé gió khi bứt tốc cao
+      // Vệt gió khi bứt tốc
       if (isRunning && r.vx > 250) {
         ctx.save();
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-        ctx.lineWidth = 1.4;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.30)';
+        ctx.lineWidth = 1.2;
         ctx.lineCap = 'round';
         for (let w = 0; w < 3; w++) {
-          const lineY = -22 + w * 12 - bobY;
-          const len = 20 + w * 10 + Math.sin(now * 0.05 + w) * 6;
+          const lineY = -20 + w * 11 - bobY;
+          const len = 18 + w * 9 + Math.sin(now * 0.05 + w) * 5;
           ctx.beginPath();
-          ctx.moveTo(-16 - w * 6, lineY);
-          ctx.lineTo(-16 - w * 6 - len, lineY);
+          ctx.moveTo(-14 - w * 6, lineY);
+          ctx.lineTo(-14 - w * 6 - len, lineY);
           ctx.stroke();
         }
         ctx.restore();
@@ -18516,318 +18523,263 @@
       const hipX = 0;
       const hipY = 2 - bobY;
 
-      // HÀM VẼ ĐOẠN CHI CƠ BẮP CÓ ĐỘ DÀY THON GỌN (TAPERED MUSCLE LIMB)
-      function drawMuscularLimb(x1, y1, x2, y2, r1, r2, fillColor, strokeColor = 'rgba(0,0,0,0.18)', strokeW = 1.2) {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const len = Math.hypot(dx, dy);
-        if (len < 0.001) return;
-        const nx = -dy / len;
-        const ny = dx / len;
-
-        ctx.save();
-        ctx.fillStyle = fillColor;
-        ctx.strokeStyle = strokeColor;
-        ctx.lineWidth = strokeW;
-        ctx.lineJoin = 'round';
-        ctx.beginPath();
-        ctx.moveTo(x1 + nx * r1, y1 + ny * r1);
-        ctx.lineTo(x2 + nx * r2, y2 + ny * r2);
-        ctx.arc(x2, y2, r2, Math.atan2(ny, nx), Math.atan2(-ny, -nx), false);
-        ctx.lineTo(x1 - nx * r1, y1 - ny * r1);
-        ctx.arc(x1, y1, r1, Math.atan2(-ny, -nx), Math.atan2(ny, nx), false);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // ĐỘNG HỌC KHỚP CHÂN CHẠY NƯỚC RÚT OLYMPIC (TRIPLE EXTENSION & HIGH KNEE DRIVE)
+      // ĐỘNG HỌC CHÂN: vung gối cao phía trước, gót gập sát mông khi thu chân về sau
       function getLegJoints(phase) {
         const sinP = Math.sin(phase);
         const cosP = Math.cos(phase);
-        
-        // Góc đùi: khi tiến lên phía trước vung gối cao (high knee), khi đạp sau duỗi căng hông (hip extension)
-        const thighAngle = sinP * 0.86 + leanAngle * 0.40;
-        
-        // Góc gập đầu gối sinh học:
-        // Khi vung ra sau (recovery): gót gập sát mông (heel to buttock) để giảm mô-men quán tính
-        // Khi đạp đất (push-off): đầu gối duỗi thẳng hết cỡ (triple extension)
-        const isBackPhase = (sinP < 0);
-        let kneeBend = 1.18 - cosP * 0.65;
-        if (isBackPhase) {
-          kneeBend += Math.abs(sinP) * 0.75; // Gập sâu khi thu chân về sau
+        if (!isRunning) {
+          // Đứng chờ: hai chân hơi so le, đầu gối chùng nhẹ
+          const off = phase === p ? 2.6 : -2.2;
+          const k = rhIK(hipX, hipY, hipX + off, 17.2, 12.6, 12.2, 1);
+          const shinAngle = Math.atan2(k.fx - k.kx, k.fy - k.ky);
+          return { kneeX: k.kx, kneeY: k.ky, footX: k.fx, footY: k.fy, shinAngle };
         }
+        const thighAngle = sinP * 0.86 + leanAngle * 0.40;
+        let kneeBend = 1.18 - cosP * 0.65;
+        if (sinP < 0) kneeBend += Math.abs(sinP) * 0.75;
         const clampedBend = Math.max(0.20, Math.min(2.15, kneeBend));
-
-        const thighLen = 13.5;
+        const thighLen = 12.6;
         const kneeX = hipX + Math.sin(thighAngle) * thighLen;
         const kneeY = hipY + Math.cos(thighAngle) * thighLen;
-
-        const shinLen = 13.0;
+        const shinLen = 12.2;
         const shinAngle = thighAngle - clampedBend;
         const footX = kneeX + Math.sin(shinAngle) * shinLen;
         const footY = kneeY + Math.cos(shinAngle) * shinLen;
-
-        return { kneeX, kneeY, footX, footY, thighAngle, shinAngle };
+        return { kneeX, kneeY, footX, footY, shinAngle };
       }
-
       const legFar = getLegJoints(p + Math.PI);
       const legNear = getLegJoints(p);
 
-      // ĐỘNG HỌC ĐÁNH TAY NƯỚC RÚT (ARM DRIVE - KHUỶU TAY GẬP ~90 ĐỘ CỐ ĐỊNH)
-      const shoulderX = 2;
-      const shoulderY = -14 - bobY;
+      // VAI tính theo góc nghiêng thân để tay luôn nối đúng vào thân
+      const torsoLen = 17;
+      const shoulderX = hipX + Math.sin(leanAngle) * torsoLen;
+      const shoulderY = hipY - Math.cos(leanAngle) * torsoLen + 1.2;
 
+      // ĐỘNG HỌC TAY: khuỷu gập ~90°, tay trước lên ngang cằm, tay sau qua hông
       function getArmJoints(phase, isFar) {
         if (armsUp > 0) {
-          const spread = isFar ? -0.35 : 0.35;
-          const upAngle = -Math.PI * 0.85 + spread;
-          const elX = shoulderX + Math.sin(upAngle) * 11;
-          const elY = shoulderY - Math.cos(upAngle) * 11;
-          const handX = elX + Math.sin(upAngle + 0.12) * 10.5;
-          const handY = elY - Math.cos(upAngle + 0.12) * 10.5;
+          const spread = isFar ? -0.32 : 0.32;
+          const upAngle = -Math.PI * 0.86 + spread;
+          const elX = shoulderX + Math.sin(upAngle) * 10;
+          const elY = shoulderY - Math.cos(upAngle) * 10;
+          const handX = elX + Math.sin(upAngle + 0.12) * 9.5;
+          const handY = elY - Math.cos(upAngle + 0.12) * 9.5;
           return { elX, elY, handX, handY };
         }
-
-        // Đánh tay đối xứng biên độ lớn: tay trước lên ngang cằm, tay sau quá hông
+        if (!isRunning) {
+          const sw = isFar ? -0.18 : 0.22;
+          const elX = shoulderX + Math.sin(sw) * 10, elY = shoulderY + Math.cos(sw) * 10;
+          const fa = sw + 0.35;
+          return { elX, elY, handX: elX + Math.sin(fa) * 9.2, handY: elY + Math.cos(fa) * 9.2 };
+        }
         const swingAngle = Math.sin(phase) * 0.95;
-        const elX = shoulderX + Math.sin(swingAngle) * 11.5;
-        const elY = shoulderY + Math.cos(swingAngle) * 11.5;
-        // Khuỷu tay gập góc 85-90 độ
+        const elX = shoulderX + Math.sin(swingAngle) * 10.2;
+        const elY = shoulderY + Math.cos(swingAngle) * 10.2;
         const forearmAngle = swingAngle - 1.45;
-        const handX = elX + Math.sin(forearmAngle) * 11.0;
-        const handY = elY + Math.cos(forearmAngle) * 11.0;
+        const handX = elX + Math.sin(forearmAngle) * 9.6;
+        const handY = elY + Math.cos(forearmAngle) * 9.6;
         return { elX, elY, handX, handY };
       }
-
       const armFar = getArmJoints(p, true);
       const armNear = getArmJoints(p + Math.PI, false);
 
-      // HÀM VẼ GIÀY ĐINH NƯỚC RÚT CHUYÊN NGHIỆP (TRACK SPIKES)
-      function drawTrackSpike(footX, footY, angle, isFar) {
+      // GIÀY ĐINH: mũi giày vuông góc ống chân, đế đen, sọc màu đội
+      function drawTrackSpike(footX, footY, shinAngle, isFar) {
         ctx.save();
         ctx.translate(footX, footY);
-        ctx.rotate(angle);
-
-        // Đế carbon đen
+        ctx.rotate(-shinAngle * 0.85);
         ctx.fillStyle = '#0f172a';
         ctx.beginPath();
-        ctx.ellipse(2, 2.5, 7.5, 2.2, 0.15, 0, Math.PI * 2);
+        ctx.moveTo(-3.2, 1.6); ctx.lineTo(7.2, 1.6); ctx.quadraticCurveTo(8.6, 1.4, 8.2, 0.2); ctx.lineTo(-3.4, 0.4); ctx.closePath();
         ctx.fill();
-
-        // Thân giày sáng màu thể thao
-        ctx.fillStyle = isFar ? '#e2e8f0' : '#ffffff';
+        ctx.fillStyle = isFar ? '#d4dae2' : '#ffffff';
+        ctx.strokeStyle = 'rgba(15,23,42,0.5)';
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.roundRect(-4, -2.5, 11, 5, [2, 4, 3, 2]);
-        ctx.fill();
-
-        // Sọc nhấn thể thao theo màu áo đấu của học sinh
-        ctx.fillStyle = r.jersey || '#ef4444';
-        ctx.beginPath();
-        ctx.moveTo(1, -2);
-        ctx.lineTo(5, -2);
-        ctx.lineTo(3, 1.5);
-        ctx.lineTo(-1, 1.5);
+        ctx.moveTo(-3.2, 0.6);
+        ctx.lineTo(-3.0, -2.6);
+        ctx.quadraticCurveTo(0, -3.4, 2.4, -2.0);
+        ctx.quadraticCurveTo(6.8, -0.8, 8.0, 0.4);
+        ctx.lineTo(-3.2, 0.6);
         ctx.closePath();
-        ctx.fill();
-
-        // Đinh giày kim loại nhỏ ở mũi giày
+        ctx.fill(); ctx.stroke();
+        ctx.fillStyle = jersey;
+        ctx.beginPath(); ctx.moveTo(-0.5, -2.4); ctx.lineTo(3.6, -1.2); ctx.lineTo(2.6, 0.2); ctx.lineTo(-1.2, -0.6); ctx.closePath(); ctx.fill();
         ctx.fillStyle = '#94a3b8';
-        ctx.fillRect(5.5, 3.2, 1.2, 1.4);
-        ctx.fillRect(3.5, 3.2, 1.2, 1.4);
-
+        ctx.fillRect(5.2, 1.6, 0.9, 1.1);
+        ctx.fillRect(3.3, 1.6, 0.9, 1.1);
         ctx.restore();
       }
 
-      // ==========================================
-      // 1. VẼ TAY XA & CƠ BẮP TAY XA
-      // ==========================================
-      // Bắp tay xa (Upper Arm)
-      drawMuscularLimb(shoulderX, shoulderY, armFar.elX, armFar.elY, 3.4, 2.7, r.skin);
-      // Cẳng tay xa (Forearm)
-      drawMuscularLimb(armFar.elX, armFar.elY, armFar.handX, armFar.handY, 2.7, 2.1, r.skin);
-      // Nắm đấm tay xa (Clenched fist)
-      ctx.fillStyle = r.skin;
-      ctx.beginPath();
-      ctx.arc(armFar.handX, armFar.handY, 2.8, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,0.25)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      // Chi có cơ: bắp đùi/bắp chân phồng giữa đoạn
+      function muscleLimb(x1, y1, x2, y2, r1, r2, belly, color) {
+        rhLimb(ctx, x1, y1, x2, y2, r1, r2, color, skinLine, 0.6);
+        const mx = x1 + (x2 - x1) * 0.38, my = y1 + (y2 - y1) * 0.38;
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.arc(mx, my, Math.max(r1, r2) + belly, 0, Math.PI * 2); ctx.fill();
+        // Highlight cơ
+        const len = Math.hypot(x2 - x1, y2 - y1) || 1;
+        const nx = -(y2 - y1) / len, ny = (x2 - x1) / len;
+        ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+        ctx.lineWidth = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(x1 - nx * r1 * 0.45, y1 - ny * r1 * 0.45);
+        ctx.lineTo(x1 + (x2 - x1) * 0.7 - nx * r2 * 0.45, y1 + (y2 - y1) * 0.7 - ny * r2 * 0.45);
+        ctx.stroke();
+      }
+      function drawArm(A, color, far) {
+        muscleLimb(shoulderX, shoulderY, A.elX, A.elY, far ? 2.6 : 2.9, far ? 2.0 : 2.2, 0.35, color);
+        muscleLimb(A.elX, A.elY, A.handX, A.handY, far ? 2.0 : 2.2, far ? 1.4 : 1.55, 0.2, color);
+        ctx.fillStyle = color;
+        ctx.strokeStyle = skinLine;
+        ctx.lineWidth = 0.6;
+        ctx.beginPath(); ctx.ellipse(A.handX, A.handY, 2.2, 2.0, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
+      function drawLeg(L, color, far) {
+        const shortC = far ? rhShade(shorts, -0.2) : shorts;
+        muscleLimb(hipX, hipY, L.kneeX, L.kneeY, far ? 3.9 : 4.3, far ? 2.6 : 2.9, 0.7, color);
+        muscleLimb(L.kneeX, L.kneeY, L.footX, L.footY, far ? 2.6 : 2.9, far ? 1.4 : 1.55, 0.6, color);
+        // Ống quần đùi phủ phần trên đùi
+        const sx = hipX + (L.kneeX - hipX) * 0.42, sy = hipY + (L.kneeY - hipY) * 0.42;
+        rhLimb(ctx, hipX, hipY, sx, sy, far ? 4.6 : 5.0, far ? 4.3 : 4.6, shortC, 'rgba(0,0,0,0.25)', 0.6);
+        ctx.strokeStyle = trim;
+        ctx.lineWidth = 0.9;
+        const len = Math.hypot(sx - hipX, sy - hipY) || 1;
+        const nx = -(sy - hipY) / len, ny = (sx - hipX) / len;
+        ctx.beginPath();
+        ctx.moveTo(sx + nx * 4.4, sy + ny * 4.4); ctx.lineTo(sx - nx * 4.4, sy - ny * 4.4);
+        ctx.stroke();
+        drawTrackSpike(L.footX, L.footY, L.shinAngle, far);
+      }
 
-      // ==========================================
-      // 2. VẼ CHÂN XA & CƠ ĐÙI/BẮP CHÂN XA
-      // ==========================================
-      // Cơ đùi xa (Thigh)
-      drawMuscularLimb(hipX, hipY, legFar.kneeX, legFar.kneeY, 5.0, 3.6, r.skin);
-      // Bắp chuối chân xa (Calf & Shin)
-      drawMuscularLimb(legFar.kneeX, legFar.kneeY, legFar.footX, legFar.footY, 3.6, 2.4, r.skin);
-      // Giày đinh xa
-      drawTrackSpike(legFar.footX, legFar.footY, legFar.shinAngle, true);
+      // 1. Tay xa, chân xa (tối hơn tạo chiều sâu)
+      drawArm(armFar, skinFar, true);
+      drawLeg(legFar, skinFar, true);
 
-      // ==========================================
-      // 3. THÂN NGƯỜI & ĐỒ THI ĐẤU CHUYÊN NGHIỆP (SINGLET & SPLIT SHORTS)
-      // ==========================================
+      // 2. THÂN NGƯỜI (xoay quanh hông theo góc nghiêng)
       ctx.save();
-      ctx.translate(0, -bobY);
+      ctx.translate(hipX, hipY);
       ctx.rotate(leanAngle);
-
-      // Cơ bắp ngực và lưng hình chữ V nở nang
-      const chestW = 16.5;
-      const waistW = 12.0;
-
-      // Áo thi đấu Singlet
-      ctx.fillStyle = r.jersey;
+      // Hông + quần đùi
+      ctx.fillStyle = shorts;
+      ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+      ctx.lineWidth = 0.6;
+      ctx.beginPath(); ctx.roundRect(-5.2, -4.5, 10.6, 8.2, 3.2); ctx.fill(); ctx.stroke();
+      // Áo ba lỗ ôm thân (ngực nở, eo thon)
+      const jg = ctx.createLinearGradient(-6, -18, 7, 0);
+      jg.addColorStop(0, rhShade(jersey, -0.25));
+      jg.addColorStop(0.45, jersey);
+      jg.addColorStop(1, rhShade(jersey, 0.12));
+      ctx.fillStyle = jg;
       ctx.beginPath();
-      ctx.moveTo(-chestW * 0.48, -19);
-      ctx.lineTo(chestW * 0.52, -19);
-      ctx.lineTo(waistW * 0.52, 0);
-      ctx.lineTo(-waistW * 0.48, 0);
+      ctx.moveTo(-4.8, -2.5);
+      ctx.quadraticCurveTo(-6.4, -9, -5.4, -15.2);
+      ctx.quadraticCurveTo(-4.0, -17.6, -1.6, -17.4);
+      ctx.lineTo(1.8, -15.6);
+      ctx.lineTo(4.2, -17.0);
+      ctx.quadraticCurveTo(7.0, -15.6, 6.9, -11.5);
+      ctx.quadraticCurveTo(6.4, -6.0, 5.2, -2.5);
       ctx.closePath();
       ctx.fill();
-
-      // Viền áo thể thao (Trim)
-      ctx.strokeStyle = r.trim || '#ffffff';
-      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = 'rgba(0,0,0,0.28)';
       ctx.stroke();
-
-      // Sọc khí động học chạy dọc sườn áo
-      ctx.strokeStyle = r.trim || '#ffffff';
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      ctx.moveTo(-chestW * 0.42, -18);
-      ctx.lineTo(-waistW * 0.42, -1);
-      ctx.stroke();
-
-      // Quần đùi chạy cự ly ngắn (Split shorts)
-      ctx.fillStyle = r.shorts;
-      ctx.beginPath();
-      ctx.moveTo(-waistW * 0.48, 0);
-      ctx.lineTo(waistW * 0.52, 0);
-      ctx.lineTo(waistW * 0.55, 9.5);
-      ctx.lineTo(-waistW * 0.52, 9.5);
-      ctx.closePath();
-      ctx.fill();
-      // Đường xẻ tà bên hông quần (Athletic side split)
-      ctx.strokeStyle = r.trim || '#ffffff';
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(-waistW * 0.48, 2);
-      ctx.lineTo(-waistW * 0.48, 9.5);
-      ctx.stroke();
-
-      // Số đeo ngực BIB chuẩn Olympic
+      // Viền cổ & nách áo
+      ctx.strokeStyle = trim;
+      ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.moveTo(-1.6, -17.3); ctx.quadraticCurveTo(0.5, -15.0, 4.1, -16.9); ctx.stroke();
+      ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.moveTo(-5.0, -2.8); ctx.quadraticCurveTo(-6.1, -9, -5.2, -14.8); ctx.stroke();
+      // Số BIB cài kim
+      ctx.save();
+      ctx.translate(1.4, -9.5);
+      ctx.rotate(-0.05);
       ctx.fillStyle = '#ffffff';
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.roundRect(-5.5, -14.5, 11.5, 8.5, 1.8);
-      ctx.fill();
-      ctx.stroke();
-
-      // Chữ số BIB sắc nét
+      ctx.strokeStyle = 'rgba(15,23,42,0.6)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.roundRect(-4.6, -3.4, 9.2, 6.8, 1.2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#0f172a';
-      ctx.font = '900 7px Inter, sans-serif';
+      ctx.font = '900 6px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(r.bibNumber.toString(), 0.2, -10.2);
-
-      // Cổ cơ bắp vươn về phía trước
-      ctx.fillStyle = r.skin;
-      ctx.beginPath();
-      ctx.moveTo(-3, -19);
-      ctx.lineTo(3.5, -19);
-      ctx.lineTo(4.2, -24);
-      ctx.lineTo(-2.2, -24);
-      ctx.closePath();
-      ctx.fill();
-
-      // Đầu & Gương mặt quyết tâm hướng về đích
-      ctx.fillStyle = r.skin;
-      ctx.beginPath();
-      ctx.arc(2.5, -28.5, 8.0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Sống mũi & Quai hàm thể thao
-      ctx.beginPath();
-      ctx.moveTo(9, -29);
-      ctx.lineTo(11, -27.5);
-      ctx.lineTo(9, -25.5);
-      ctx.lineTo(7.5, -23);
-      ctx.lineTo(3, -23);
-      ctx.closePath();
-      ctx.fill();
-
-      // Tai
-      ctx.beginPath();
-      ctx.arc(-1.5, -28, 2.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Mắt tập trung cao độ nhìn về đích
-      ctx.fillStyle = '#0f172a';
-      ctx.beginPath();
-      ctx.ellipse(6.5, -29.2, 1.6, 1.2, 0.2, 0, Math.PI * 2);
-      ctx.fill();
-      // Ánh mắt sắc sảo
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(7.0, -29.6, 0.8, 0.8);
-
-      // Lông mày dốc quyết tâm
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 1.4;
-      ctx.lineCap = 'round';
-      ctx.beginPath();
-      ctx.moveTo(5.0, -31.5);
-      ctx.lineTo(8.5, -30.8);
-      ctx.stroke();
-
-      // Tóc thể thao vuốt ngược khí động học
-      ctx.fillStyle = '#1e293b';
-      ctx.beginPath();
-      ctx.arc(1.2, -30, 8.2, Math.PI * 0.75, Math.PI * 2.05);
-      ctx.lineTo(3.5, -34);
-      ctx.lineTo(0.5, -33.5);
-      ctx.lineTo(-4.5, -31);
-      ctx.closePath();
-      ctx.fill();
-
-      // Băng đô thể thao (Headband)
-      ctx.strokeStyle = r.jersey;
-      ctx.lineWidth = 2.6;
-      ctx.beginPath();
-      ctx.arc(2.5, -28.5, 8.2, -Math.PI * 0.68, Math.PI * 0.18);
-      ctx.stroke();
-
+      ctx.fillText(String(r.bibNumber), 0, 0.4);
+      ctx.fillStyle = '#94a3b8';
+      [[-3.8, -2.6], [3.8, -2.6], [-3.8, 2.6], [3.8, 2.6]].forEach(([px, py]) => ctx.fillRect(px - 0.3, py - 0.3, 0.6, 0.6));
       ctx.restore();
 
-      // ==========================================
-      // 4. VẼ CHÂN GẦN & CƠ ĐÙI/BẮP CHÂN GẦN (NỔI BẬT)
-      // ==========================================
-      // Cơ đùi trước gần (Quadriceps & Hamstrings)
-      drawMuscularLimb(hipX, hipY, legNear.kneeX, legNear.kneeY, 5.6, 4.0, r.skin);
-      // Khớp gối & Bắp chuối chân gần (Calf)
-      drawMuscularLimb(legNear.kneeX, legNear.kneeY, legNear.footX, legNear.footY, 4.0, 2.6, r.skin);
-      // Giày đinh gần
-      drawTrackSpike(legNear.footX, legNear.footY, legNear.shinAngle, false);
-
-      // ==========================================
-      // 5. VẼ TAY GẦN & BẮP TAY GẦN (PHÍA TRƯỚC)
-      // ==========================================
-      // Bắp tay trước (Biceps & Deltoids)
-      drawMuscularLimb(shoulderX, shoulderY, armNear.elX, armNear.elY, 3.8, 3.0, r.skin);
-      // Cẳng tay trước (Forearm)
-      drawMuscularLimb(armNear.elX, armNear.elY, armNear.handX, armNear.handY, 3.0, 2.3, r.skin);
-      // Nắm đấm tay trước (Clenched fist)
-      ctx.fillStyle = r.skin;
+      // CỔ + ĐẦU (ngẩng về phía đích: xoay ngược một phần độ nghiêng)
+      ctx.translate(1.0, -17.2);
+      ctx.rotate(-leanAngle * 0.55);
+      ctx.fillStyle = rhShade(skin, -0.08);
       ctx.beginPath();
-      ctx.arc(armNear.handX, armNear.handY, 3.0, 0, Math.PI * 2);
+      ctx.moveTo(-1.8, 0.8); ctx.lineTo(2.2, 0.8); ctx.lineTo(2.4, -3.4); ctx.lineTo(-1.2, -3.6); ctx.closePath();
       ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,0.30)';
-      ctx.lineWidth = 1.1;
+      // Hộp sọ
+      const hX = 0.8, hY = -8.6;
+      const hg = ctx.createRadialGradient(hX + 1.5, hY - 1.5, 0.5, hX, hY, 6.5);
+      hg.addColorStop(0, rhShade(skin, 0.08));
+      hg.addColorStop(1, rhShade(skin, -0.12));
+      ctx.fillStyle = hg;
+      ctx.strokeStyle = skinLine;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.ellipse(hX, hY, 4.9, 5.6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Mặt nghiêng: trán - mũi - môi - cằm
+      ctx.beginPath();
+      ctx.moveTo(hX + 3.6, hY - 3.6);
+      ctx.quadraticCurveTo(hX + 5.0, hY - 2.2, hX + 4.9, hY - 0.8);
+      ctx.lineTo(hX + 6.3, hY + 0.9);
+      ctx.lineTo(hX + 5.0, hY + 1.4);
+      ctx.quadraticCurveTo(hX + 5.4, hY + 2.2, hX + 4.9, hY + 2.8);
+      ctx.quadraticCurveTo(hX + 5.1, hY + 3.6, hX + 4.4, hY + 4.6);
+      ctx.quadraticCurveTo(hX + 2.6, hY + 5.8, hX + 0.2, hY + 4.6);
+      ctx.lineTo(hX - 1.0, hY + 1.0);
+      ctx.closePath();
+      ctx.fill();
       ctx.stroke();
+      // Tai
+      ctx.fillStyle = rhShade(skin, -0.06);
+      ctx.beginPath(); ctx.ellipse(hX - 1.2, hY + 0.3, 1.2, 1.7, 0.1, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // Mắt nghiêng nhìn về đích
+      ctx.fillStyle = '#fbfaf8';
+      ctx.beginPath(); ctx.ellipse(hX + 3.6, hY - 0.9, 0.9, 0.55, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#2a1a10';
+      ctx.beginPath(); ctx.arc(hX + 3.95, hY - 0.9, 0.48, 0, Math.PI * 2); ctx.fill();
+      // Lông mày nhíu quyết tâm
+      ctx.strokeStyle = hairC;
+      ctx.lineWidth = 0.8;
+      ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(hX + 2.6, hY - 2.1); ctx.lineTo(hX + 4.7, hY - 1.7); ctx.stroke();
+      // Miệng hé thở
+      ctx.fillStyle = '#7f1d1d';
+      ctx.beginPath(); ctx.ellipse(hX + 4.7, hY + 2.3, 0.55, isRunning ? 0.55 : 0.2, 0, 0, Math.PI * 2); ctx.fill();
+      // Tóc ngắn thể thao
+      ctx.fillStyle = hairC;
+      ctx.beginPath();
+      ctx.moveTo(hX + 4.2, hY - 3.2);
+      ctx.quadraticCurveTo(hX + 3.4, hY - 6.3, hX - 0.2, hY - 6.0);
+      ctx.quadraticCurveTo(hX - 4.6, hY - 5.4, hX - 5.0, hY - 0.8);
+      ctx.quadraticCurveTo(hX - 4.8, hY + 2.4, hX - 3.4, hY + 3.4);
+      ctx.lineTo(hX - 2.4, hY + 0.8);
+      ctx.lineTo(hX - 0.2, hY + 0.4);
+      ctx.lineTo(hX + 0.4, hY - 2.6);
+      ctx.quadraticCurveTo(hX + 2.4, hY - 3.4, hX + 4.2, hY - 3.2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.lineWidth = 0.7;
+      ctx.beginPath(); ctx.arc(hX - 0.4, hY - 1.4, 4.0, Math.PI * 1.15, Math.PI * 1.6); ctx.stroke();
+      // Băng đô
+      ctx.strokeStyle = jersey;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(hX - 4.8, hY - 2.6); ctx.quadraticCurveTo(hX, hY - 4.6, hX + 4.3, hY - 3.0); ctx.stroke();
+      ctx.restore();
 
-      // 6. NHÃN TÊN HỌC SINH NỔI BẬT (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+      // 3. Chân gần, tay gần
+      drawLeg(legNear, skin, false);
+      drawArm(armNear, skin, false);
+
+      // 4. NHÃN TÊN (chỉ người về nhất mới vàng lên)
       const isWinnerFinished = (r.isWinner && (athleticsRaceState === 'finished' || r.finishTime));
       ctx.fillStyle = isWinnerFinished ? 'rgba(234, 88, 12, 0.95)' : 'rgba(15, 23, 42, 0.88)';
       ctx.strokeStyle = isWinnerFinished ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
@@ -18837,13 +18789,11 @@
       ctx.roundRect(-nameW * 0.5, -50 - bobY, nameW, 16, 6);
       ctx.fill();
       ctx.stroke();
-
       ctx.fillStyle = isWinnerFinished ? '#fef08a' : '#ffffff';
       ctx.font = isWinnerFinished ? '900 11px Inter, sans-serif' : 'bold 10px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(r.displayName, 0, -42 - bobY);
-
       if (isWinnerFinished) {
         ctx.font = '14px Arial';
         ctx.fillText('👑', 0, -60 - bobY);
@@ -18852,7 +18802,6 @@
       ctx.restore();
     }
 
-    // Cập nhật Leaderboard trực tiếp điền kinh
     function updateAthleticsLeaderboard(sorted) {
       const topListEl = document.getElementById('athletics-top-list');
       if (!topListEl) return;
@@ -18964,14 +18913,14 @@
     };
 
     const SWIM_COLOR_PALETTES = [
-      { cap: '#06b6d4', suit: '#0e7490', goggles: '#ffffff', skin: '#fcd34d' }, // Cyan
-      { cap: '#f59e0b', suit: '#b45309', goggles: '#ffffff', skin: '#fde68a' }, // Vàng
-      { cap: '#ef4444', suit: '#991b1b', goggles: '#ffffff', skin: '#fed7aa' }, // Đỏ
-      { cap: '#10b981', suit: '#065f46', goggles: '#ffffff', skin: '#fcd34d' }, // Xanh ngọc
-      { cap: '#3b82f6', suit: '#1e40af', goggles: '#ffffff', skin: '#fde68a' }, // Xanh dương
-      { cap: '#8b5cf6', suit: '#5b21b6', goggles: '#ffffff', skin: '#fed7aa' }, // Tím
-      { cap: '#ec4899', suit: '#9d174d', goggles: '#ffffff', skin: '#fcd34d' }, // Hồng
-      { cap: '#1e293b', suit: '#0f172a', goggles: '#38bdf8', skin: '#fde68a' }  // Đen tuyền
+      { cap: '#06b6d4', suit: '#0e7490', goggles: '#ffffff', skin: '#e8b48f' }, // Cyan
+      { cap: '#f59e0b', suit: '#b45309', goggles: '#ffffff', skin: '#f1c7a3' }, // Vàng
+      { cap: '#ef4444', suit: '#991b1b', goggles: '#ffffff', skin: '#d9a07a' }, // Đỏ
+      { cap: '#10b981', suit: '#065f46', goggles: '#ffffff', skin: '#f3cfae' }, // Xanh ngọc
+      { cap: '#3b82f6', suit: '#1e40af', goggles: '#ffffff', skin: '#c98d68' }, // Xanh dương
+      { cap: '#8b5cf6', suit: '#5b21b6', goggles: '#ffffff', skin: '#eab995' }, // Tím
+      { cap: '#ec4899', suit: '#9d174d', goggles: '#ffffff', skin: '#deae88' }, // Hồng
+      { cap: '#1e293b', suit: '#0f172a', goggles: '#38bdf8', skin: '#f0c29c' }  // Đen tuyền
     ];
 
     let swimmers = [];
@@ -19240,420 +19189,348 @@
 
       const p = s.strokePhase;
       const isTouchingWall = s.hasFinished;
+      const skin = s.skin || '#e7b68e';
+      const WATER = '#0e7490';
+      const skinWet = rhShade(skin, -0.06);
+      const skinUnder = rhMix(skin, WATER, 0.45); // phần chìm dưới nước: ám xanh do khúc xạ
+      const skinLine = 'rgba(40, 20, 10, 0.32)';
+      const cap = s.cap || '#06b6d4';
+      const suit = s.suit || '#0e7490';
+
+      // Thân trên nhìn từ trên xuống: vai rộng, eo thon (trục +x là hướng bơi)
+      function drawBack(roll, alphaUnder) {
+        // Mông + quần bơi jammer
+        ctx.fillStyle = suit;
+        ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(-6, -5.6);
+        ctx.quadraticCurveTo(-13, -6.6, -17.5, -5.2);
+        ctx.quadraticCurveTo(-19.5, 0, -17.5, 5.2);
+        ctx.quadraticCurveTo(-13, 6.6, -6, 5.6);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+        ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.moveTo(-6.5, -5.2); ctx.lineTo(-17, -4.8); ctx.moveTo(-6.5, 5.2); ctx.lineTo(-17, 4.8); ctx.stroke();
+
+        // Lưng: vai rộng, cơ xô chữ V
+        const bg = ctx.createLinearGradient(0, -9, 0, 9);
+        const hi = rhShade(skinWet, 0.10), lo = rhMix(skinWet, WATER, alphaUnder);
+        // Vai nhô lên khỏi nước thì sáng, vai chìm thì ám xanh
+        bg.addColorStop(0, roll > 0 ? hi : lo);
+        bg.addColorStop(0.5, skinWet);
+        bg.addColorStop(1, roll > 0 ? lo : hi);
+        ctx.fillStyle = bg;
+        ctx.strokeStyle = skinLine;
+        ctx.lineWidth = 0.6;
+        const sw = 8.6 - Math.abs(roll) * 2.2; // xoay người -> vai hẹp lại khi nhìn từ trên
+        ctx.beginPath();
+        ctx.moveTo(-6.5, -4.9);
+        ctx.quadraticCurveTo(-1, -5.4, 3.2, -sw);
+        ctx.quadraticCurveTo(7.6, -sw - 0.4, 8.6, -sw + 2.6);
+        ctx.quadraticCurveTo(9.8, 0, 8.6, sw - 2.6);
+        ctx.quadraticCurveTo(7.6, sw + 0.4, 3.2, sw);
+        ctx.quadraticCurveTo(-1, 5.4, -6.5, 4.9);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        // Rãnh sống lưng & bả vai
+        ctx.strokeStyle = 'rgba(80, 40, 20, 0.22)';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.moveTo(-6, roll * 1.5); ctx.quadraticCurveTo(1, roll * 2.2, 7.6, roll * 1.2); ctx.stroke();
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.moveTo(1.5, -2.2 + roll); ctx.quadraticCurveTo(4.5, -sw + 2.4, 7.2, -sw + 2.0);
+        ctx.moveTo(1.5, 2.2 + roll); ctx.quadraticCurveTo(4.5, sw - 2.4, 7.2, sw - 2.0);
+        ctx.stroke();
+        // Vệt nước lấp lánh trên lưng ướt
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.beginPath();
+        ctx.ellipse(3.5, -sw * 0.45, 2.2, 0.6, 0.2, 0, Math.PI * 2);
+        ctx.ellipse(-2.5, sw * 0.25, 1.6, 0.45, -0.1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Đầu đội mũ bơi nhìn từ trên: mũ silicon bóng, dây kính, mặt hiện ra khi quay sang thở
+      function drawHead(hx, hy, turn, celebrate) {
+        // turn: -1..1 (quay mặt sang trái/phải để thở), 0 = úp mặt
+        // Gáy/cổ
+        ctx.fillStyle = skinWet;
+        ctx.beginPath(); ctx.ellipse(hx - 4.2, hy, 2.6, 2.6, 0, 0, Math.PI * 2); ctx.fill();
+        // Mặt lộ một bên khi quay đầu
+        if (Math.abs(turn) > 0.05) {
+          const side = Math.sign(turn);
+          ctx.fillStyle = skin;
+          ctx.strokeStyle = skinLine;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.ellipse(hx + 1.2, hy + side * 3.3 * Math.abs(turn), 4.2, 2.6 * Math.abs(turn) + 0.6, 0, 0, Math.PI * 2);
+          ctx.fill(); ctx.stroke();
+        }
+        // Mũ bơi
+        const cg = ctx.createRadialGradient(hx - 0.5, hy - 2.2, 0.6, hx, hy, 7.2);
+        cg.addColorStop(0, rhShade(cap, 0.35));
+        cg.addColorStop(0.55, cap);
+        cg.addColorStop(1, rhShade(cap, -0.3));
+        ctx.fillStyle = cg;
+        ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+        ctx.lineWidth = 0.6;
+        ctx.beginPath();
+        ctx.ellipse(hx - 0.3, hy - turn * 1.2, 6.3, 5.0, 0, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+        // Đường gờ giữa mũ & logo
+        ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+        ctx.lineWidth = 0.6;
+        ctx.beginPath(); ctx.moveTo(hx - 5.8, hy - turn * 1.2); ctx.lineTo(hx + 5.6, hy - turn * 1.2); ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.beginPath(); ctx.ellipse(hx - 1.6, hy - turn * 1.2 - 2.4, 1.2, 0.55, 0, 0, Math.PI * 2); ctx.fill();
+        // Dây kính bơi vòng qua mũ
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.ellipse(hx + (celebrate ? 1.0 : 2.6), hy - turn * 1.2, 1.0, 4.9, 0, 0, Math.PI * 2); ctx.stroke();
+        if (celebrate) {
+          // Kính đẩy lên trán
+          ctx.fillStyle = s.goggles || '#38bdf8';
+          ctx.beginPath();
+          ctx.ellipse(hx + 1.0, hy - 1.6, 1.1, 1.3, 0, 0, Math.PI * 2);
+          ctx.ellipse(hx + 1.0, hy + 1.6, 1.1, 1.3, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (Math.abs(turn) > 0.35) {
+          // Thấu kính lộ ra khi thở + miệng mở hớp khí
+          const side = Math.sign(turn);
+          const gy = hy + side * 4.0 * Math.abs(turn);
+          const gg = ctx.createLinearGradient(hx + 2, gy - 1, hx + 4.5, gy + 1);
+          gg.addColorStop(0, '#0ea5e9'); gg.addColorStop(0.5, '#a5f3fc'); gg.addColorStop(1, '#7c3aed');
+          ctx.fillStyle = gg;
+          ctx.beginPath(); ctx.ellipse(hx + 3.2, gy, 1.4, 0.95, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#5b1414';
+          ctx.beginPath(); ctx.ellipse(hx + 4.4, gy + side * 1.2, 0.9, 0.7, 0, 0, Math.PI * 2); ctx.fill();
+        }
+      }
 
       // ========================================================
-      // 1. TRẠNG THÁI 1: KÌNH NGƯ ĐÃ CHẠM BỜ B (DỪNG TẠI THÀNH HỒ, TAY BÁM TẤM CẢM ỨNG)
+      // 1. ĐÃ CHẠM BỜ B: nổi đứng, tay bám thành hồ, đầu nhô lên
       // ========================================================
       if (isTouchingWall) {
-        // Gợn sóng êm dịu quanh người đang thả lỏng
-        const idleWave = Math.sin(now * 0.005 + s.lane) * 2;
-
-        // Vệt sóng nước nhẹ quanh thành hồ
+        const idleWave = Math.sin(now * 0.005 + s.lane) * 1.6;
+        // Vòng sóng loang
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, 26, 11, 0, 0, Math.PI * 2);
-        ctx.stroke();
+        ctx.lineWidth = 1.1;
+        ctx.beginPath(); ctx.ellipse(0, 0, 24 + idleWave, 11, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.beginPath(); ctx.ellipse(0, 0, 31 + idleWave, 14, 0, 0, Math.PI * 2); ctx.stroke();
 
-        // Thân kình ngư chữ V nổi ngang trên mặt nước
-        // Quần bơi Jammer
-        ctx.fillStyle = s.suit;
-        ctx.beginPath();
-        ctx.roundRect(-18, -6 + idleWave * 0.3, 16, 12, [4, 1, 1, 4]);
-        ctx.fill();
+        // Chân chìm dưới nước (mờ, ám xanh), đạp nước nhẹ
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        [-1, 1].forEach(sd => {
+          const k = Math.sin(now * 0.006 + sd) * 1.5;
+          rhLimb(ctx, -14, sd * 2.8, -24, sd * (3.6 + k), 3.0, 2.2, skinUnder, null);
+          rhLimb(ctx, -24, sd * (3.6 + k), -31, sd * (4.0 - k), 2.2, 1.4, skinUnder, null);
+        });
+        ctx.restore();
+        drawBack(0, 0.35);
 
-        // Lưng xô nổi trên mặt nước
-        ctx.fillStyle = s.skin;
-        ctx.beginPath();
-        ctx.ellipse(0, idleWave * 0.3, 18, 8.5, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // Tay bám thành hồ (tấm chạm điện tử)
+        rhLimb(ctx, 7, 4.5, 14.5, 5.5, 2.4, 1.9, skinWet, skinLine, 0.5);
+        rhLimb(ctx, 14.5, 5.5, 20.5, 2.5, 1.9, 1.5, skinWet, skinLine, 0.5);
+        ctx.fillStyle = skin;
+        ctx.beginPath(); ctx.ellipse(21, 2.2, 1.9, 1.5, -0.4, 0, Math.PI * 2); ctx.fill();
 
-        // Rãnh cơ sống lưng
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-        ctx.beginPath();
-        ctx.ellipse(-2, idleWave * 0.3, 11, 4.5, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Đôi chân nổi thư giãn sau lưng
-        ctx.strokeStyle = s.skin;
-        ctx.lineWidth = 3.8;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(-18, -2.5);
-        ctx.lineTo(-30, -3.5 + idleWave);
-        ctx.moveTo(-18, 2.5);
-        ctx.lineTo(-30, 3.5 - idleWave);
-        ctx.stroke();
-
-        // Bàn chân thả lỏng duỗi nhẹ
-        ctx.fillStyle = s.skin;
-        ctx.beginPath();
-        ctx.ellipse(-30, -3.5 + idleWave, 3.5, 2, 0.2, 0, Math.PI * 2);
-        ctx.ellipse(-30, 3.5 - idleWave, 3.5, 2, -0.2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Tay vươn bám chặt vào mép thành hồ Bờ B (Touchpad)
-        ctx.strokeStyle = s.skin;
-        ctx.lineWidth = 4.2;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(8, 4);
-        ctx.lineTo(20, 2); // Chạm chuẩn vào mép thành hồ (x = swimFinishX)
-        ctx.stroke();
-
-        // Bàn tay bám thành hồ
-        ctx.fillStyle = s.skin;
-        ctx.beginPath();
-        ctx.arc(20, 2, 3.0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Tay còn lại: Nếu là người thắng -> Giơ tay đấm lên không trung ăn mừng (Fist pump)!
         if (s.isWinner) {
-          ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 4.2;
-          ctx.beginPath();
-          ctx.moveTo(6, -4);
-          ctx.lineTo(14, -16);
-          ctx.lineTo(18, -26);
-          ctx.stroke();
-
-          // Nắm đấm ăn mừng
-          ctx.fillStyle = s.skin;
-          ctx.beginPath();
-          ctx.arc(18, -26, 3.8, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Giọt nước bắn tung tóe quanh tay ăn mừng
+          // Giơ nắm đấm ăn mừng (tay nhô khỏi mặt nước, phối cảnh rút ngắn)
+          rhLimb(ctx, 7, -4.5, 11, -14, 2.6, 2.1, rhShade(skin, 0.04), skinLine, 0.5);
+          rhLimb(ctx, 11, -14, 15, -23, 2.1, 1.7, rhShade(skin, 0.06), skinLine, 0.5);
+          ctx.fillStyle = skin;
+          ctx.strokeStyle = skinLine;
+          ctx.beginPath(); ctx.arc(15.5, -24.5, 2.8, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
           ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-          for (let sp = 0; sp < 5; sp++) {
-            const dropX = 18 + Math.sin(now * 0.01 + sp) * 8;
-            const dropY = -26 + Math.cos(now * 0.01 + sp) * 8;
-            ctx.fillRect(dropX, dropY, 2.2, 2.2);
+          for (let sp = 0; sp < 6; sp++) {
+            const a = now * 0.008 + sp * 1.05;
+            ctx.beginPath(); ctx.arc(15.5 + Math.cos(a) * 7, -24.5 + Math.sin(a) * 6, 1.0, 0, Math.PI * 2); ctx.fill();
           }
         } else {
-          // Kình ngư khác: tay gác lên dây phao bên cạnh
-          ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 3.6;
-          ctx.beginPath();
-          ctx.moveTo(6, -4);
-          ctx.lineTo(10, -12);
-          ctx.stroke();
-          ctx.fillStyle = s.skin;
-          ctx.beginPath();
-          ctx.arc(10, -12, 2.6, 0, Math.PI * 2);
-          ctx.fill();
+          // Tay gác lên dây phao ngăn làn
+          rhLimb(ctx, 7, -4.5, 9, -10, 2.4, 2.0, skinWet, skinLine, 0.5);
+          rhLimb(ctx, 9, -10, 4, -13, 2.0, 1.6, skinWet, skinLine, 0.5);
+          ctx.fillStyle = skin;
+          ctx.beginPath(); ctx.ellipse(3.5, -13.2, 1.8, 1.4, 0, 0, Math.PI * 2); ctx.fill();
         }
 
-        // Đầu nhô hẳn lên khỏi mặt nước, mắt nhìn lên bảng điện tử
-        const headX = 12;
-        const headY = -3 + idleWave * 0.2;
+        // Đầu nhô lên nhìn bảng điện tử: thấy mặt, kính đẩy lên trán
+        const hx = 12, hy = -0.5 + idleWave * 0.2;
+        ctx.fillStyle = skin;
+        ctx.strokeStyle = skinLine;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath(); ctx.ellipse(hx + 2.2, hy, 4.4, 4.6, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        drawHead(hx - 3.4, hy, 0, true);
+        // Mắt + miệng nhìn ra phía trước
+        ctx.fillStyle = '#2a1a10';
+        ctx.beginPath(); ctx.arc(hx + 4.7, hy - 1.6, 0.6, 0, Math.PI * 2); ctx.arc(hx + 4.7, hy + 1.6, 0.6, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#7f1d1d';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.arc(hx + 5.2, hy, 1.2, -0.9, 0.9); ctx.stroke();
+        // Gợn nước quanh cổ
+        ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+        ctx.lineWidth = 0.9;
+        ctx.beginPath(); ctx.ellipse(hx + 1, hy, 7.6, 6.4, 0, 0, Math.PI * 2); ctx.stroke();
 
-        ctx.fillStyle = s.skin;
-        ctx.beginPath();
-        ctx.ellipse(headX, headY, 8.0, 7.0, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Mũ bơi silicon
-        ctx.fillStyle = s.cap;
-        ctx.beginPath();
-        ctx.ellipse(headX - 1.5, headY - 1, 7.0, 6.5, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Kính bơi kéo lên trán khi đã về đích
-        ctx.fillStyle = s.goggles;
-        ctx.fillRect(headX - 1, headY - 5.5, 5.5, 2.8);
-
-        // Mắt mở to nhìn bảng điểm
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.arc(headX + 4.5, headY - 0.5, 1.5, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Nụ cười thở phào sau cuộc đua
-        ctx.strokeStyle = '#0f172a';
-        ctx.lineWidth = 1.3;
-        ctx.beginPath();
-        ctx.arc(headX + 4.5, headY + 3, 2.2, 0.2, Math.PI - 0.2);
-        ctx.stroke();
-
-        // Nhãn tên học sinh (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
         const isWinnerFinished = (s.isWinner && (swimRaceState === 'finished' || s.finishTime || s.hasFinished));
         ctx.fillStyle = isWinnerFinished ? 'rgba(8, 145, 178, 0.95)' : 'rgba(15, 23, 42, 0.9)';
         ctx.strokeStyle = isWinnerFinished ? '#f59e0b' : 'rgba(255, 255, 255, 0.6)';
         ctx.lineWidth = isWinnerFinished ? 2.5 : 1;
         const nameW = Math.max(50, s.displayName.length * 7 + 14);
-        ctx.beginPath();
-        ctx.roundRect(-nameW * 0.5, -34, nameW, 16, 6);
-        ctx.fill();
-        ctx.stroke();
-
+        ctx.beginPath(); ctx.roundRect(-nameW * 0.5, -34, nameW, 16, 6); ctx.fill(); ctx.stroke();
         ctx.fillStyle = isWinnerFinished ? '#fde047' : '#ffffff';
         ctx.font = isWinnerFinished ? '900 11px Inter, sans-serif' : 'bold 10px Inter, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(s.displayName, 0, -26);
-
-        if (isWinnerFinished) {
-          ctx.font = '14px Arial';
-          ctx.fillText('👑', 0, -44);
-        }
-
+        if (isWinnerFinished) { ctx.font = '14px Arial'; ctx.fillText('👑', 0, -44); }
         ctx.restore();
         return;
       }
 
       // ========================================================
-      // 2. TRẠNG THÁI 2: ĐANG BƠI NƯỚC RÚT TRƯỜN SẤP (FREESTYLE) TỪ A SANG B
+      // 2. ĐANG BƠI TRƯỜN SẤP (FREESTYLE)
       // ========================================================
-      // Đôi chân đạp nước nhịp nhàng hình roi da mềm mại (6-beat flutter kick)
       const kickRate = 2.8;
-      const kickOffset1 = Math.sin(p * kickRate) * 6.5;
-      const kickOffset2 = -Math.sin(p * kickRate) * 6.5;
+      const kick = Math.sin(p * kickRate);
 
-      // 2.1. ĐUÔI BỌT NƯỚC TRẮNG XÓA (WHITEWATER BUBBLE WAKE)
+      // 2.1 Đuôi bọt nước sau chân đạp
       ctx.save();
-      for (let i = 0; i < 11; i++) {
-        const bubbleX = -18 - i * 6.8 + (Math.sin(now * 0.025 + i * 2) * 2.8);
-        const spread = 2.8 + i * 1.3;
-        const bubbleY = (i % 2 === 0 ? kickOffset1 : kickOffset2) * 0.55 + (Math.sin(now * 0.03 + i) * spread);
-        const bubbleR = 2.2 + (i * 0.45) + (Math.random() * 1.6);
-        const alpha = Math.max(0, 0.80 - i * 0.07);
-
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
-        ctx.beginPath();
-        ctx.arc(bubbleX, bubbleY, bubbleR, 0, Math.PI * 2);
-        ctx.fill();
+      for (let i = 0; i < 12; i++) {
+        const bx = -30 - i * 5.6 + Math.sin(now * 0.025 + i * 2) * 2.4;
+        const spread = 2.4 + i * 1.1;
+        const by = Math.sin(now * 0.03 + i * 1.7) * spread;
+        const br = 1.6 + i * 0.35 + ((i * 37) % 7) * 0.12;
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.max(0, 0.75 - i * 0.06)})`;
+        ctx.beginPath(); ctx.arc(bx, by, br, 0, Math.PI * 2); ctx.fill();
+      }
+      // Bọt toé ở bàn chân đạp
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      for (let i = 0; i < 4; i++) {
+        const a = now * 0.02 + i * 1.6;
+        ctx.beginPath(); ctx.arc(-34 + Math.cos(a) * 3, Math.sin(a) * 5, 1.4, 0, Math.PI * 2); ctx.fill();
       }
       ctx.restore();
 
-      // 2.2. TRỤC LĂN CƠ THỂ THEO NHỊP QUẠT TAY (BODY ROLL 14-16 ĐỘ)
-      const bodyRoll = Math.sin(p) * 0.26;
+      // 2.2 Xoay thân theo nhịp tay
+      const bodyRoll = Math.sin(p) * 0.9; // -0.9..0.9 (tỉ lệ dùng cho chiều rộng vai và đổ sáng)
 
-      ctx.save();
-      ctx.rotate(bodyRoll * 0.40);
-
-      // HÀM VẼ CHÂN QUẪY NƯỚC UỐN LƯỢN DẠNG ROI DA MỀM (WHIP-LIKE FLUTTER KICK)
-      function drawWhipLeg(sideSign, kickOffset) {
-        const hipX = -14;
-        const hipY = sideSign * 2.8;
-
-        // Đùi cong nhẹ theo khớp hông
-        const kneeX = -25;
-        const kneeY = hipY + kickOffset * 0.45;
-
-        // Cẳng chân và bàn chân duỗi căng mũi chân (pointed toes)
-        const footX = -36;
-        const footY = hipY + kickOffset;
-
+      // 2.3 Chân đạp nước (chìm dưới nước: mờ + ám xanh, gối co nhẹ kiểu roi)
+      function drawLeg(sideSign, kk) {
+        const hipX = -15, hipY = sideSign * 2.7;
+        const kneeX = -25.5, kneeY = hipY + sideSign * 0.3 + kk * 1.6;
+        const ankX = -34.5, ankY = hipY + sideSign * 0.5 + kk * 3.6;
         ctx.save();
-        // Cơ đùi (Thigh)
-        ctx.strokeStyle = s.skin;
-        ctx.lineWidth = 4.6;
-        ctx.lineCap = 'round';
+        ctx.globalAlpha = 0.62 + 0.18 * (kk * sideSign > 0 ? 1 : 0);
+        rhLimb(ctx, hipX, hipY, kneeX, kneeY, 3.1, 2.3, skinUnder, null);
+        rhLimb(ctx, kneeX, kneeY, ankX, ankY, 2.3, 1.3, skinUnder, null);
+        // Bàn chân duỗi mũi
+        ctx.fillStyle = skinUnder;
         ctx.beginPath();
-        ctx.moveTo(hipX, hipY);
-        ctx.quadraticCurveTo((hipX + kneeX) * 0.5, (hipY + kneeY) * 0.5 + kickOffset * 0.1, kneeX, kneeY);
-        ctx.stroke();
-
-        // Bắp chuối & Cẳng chân (Calf)
-        ctx.lineWidth = 3.6;
-        ctx.beginPath();
-        ctx.moveTo(kneeX, kneeY);
-        ctx.quadraticCurveTo((kneeX + footX) * 0.5, (kneeY + footY) * 0.5 + kickOffset * 0.15, footX, footY);
-        ctx.stroke();
-
-        // Bàn chân thon nhọn duỗi thẳng mũi chân chém nước
-        ctx.fillStyle = s.skin;
-        ctx.beginPath();
-        ctx.ellipse(footX, footY, 4.2, 2.2, kickOffset * 0.05, 0, Math.PI * 2);
+        ctx.moveTo(ankX + 0.5, ankY - 1.4);
+        ctx.quadraticCurveTo(ankX - 4.6, ankY - 1.8 + kk, ankX - 5.2, ankY + kk * 0.6);
+        ctx.quadraticCurveTo(ankX - 4.4, ankY + 1.9 + kk, ankX + 0.5, ankY + 1.4);
+        ctx.closePath();
         ctx.fill();
         ctx.restore();
       }
+      drawLeg(-1, kick);
+      drawLeg(1, -kick);
 
-      // Vẽ đôi chân quẫy nước so le
-      drawWhipLeg(-1, kickOffset1);
-      drawWhipLeg(1, kickOffset2);
-
-      // 2.3. THÂN KÌNH NGƯ HÌNH CHỮ V LỰC LƯỠNG (V-TAPER OLYMPIC TORSO)
-      // Quần bơi Jammer chuyên nghiệp (dài ôm tới gối)
-      ctx.fillStyle = s.suit;
-      ctx.beginPath();
-      ctx.roundRect(-16, -6.8, 16, 13.6, [4, 1, 1, 4]);
-      ctx.fill();
-
-      // Sọc khí động học phản quang hai bên hông quần bơi
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.lineWidth = 1.4;
-      ctx.beginPath();
-      ctx.moveTo(-15, -6.0);
-      ctx.lineTo(-2, -6.2);
-      ctx.moveTo(-15, 6.0);
-      ctx.lineTo(-2, 6.2);
-      ctx.stroke();
-
-      // Thân mình cơ bắp nở nang (Shoulders & Torso)
-      ctx.fillStyle = s.skin;
-      ctx.beginPath();
-      ctx.ellipse(1, 0, 18, 8.5, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Cơ lưng xô và rãnh sống lưng 3D
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.10)';
-      ctx.beginPath();
-      ctx.ellipse(-1, 0, 12, 5.0, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // 2.4. KỸ THUẬT SẢI TAY FREESTYLE OLYMPIC (HIGH-ELBOW RECOVERY + POWERFUL S-PULL)
-      const arm1Phase = p;
-      const arm2Phase = p + Math.PI;
-
-      function drawFreestyleArm(phase, sideSign) {
-        const sinArm = Math.sin(phase);
-        const cosArm = Math.cos(phase);
-
-        if (sinArm >= 0) {
-          // GIAI ĐOẠN 1: VUNG TRÊN KHÔNG KHUỶU TAY CAO (High-Elbow Aerial Recovery)
-          // Khuỷu tay nhô cao vươn cong hình cánh cung
-          const elX = 4 + cosArm * 9.5;
-          const elY = sideSign * (11 + sinArm * 6.8);
-          // Cẳng tay và bàn tay thả lỏng lướt sát mặt nước vươn dài ra trước
-          const handX = 16 + (1 - sinArm) * 11.5;
-          const handY = sideSign * (3.5 + sinArm * 2.2);
-
-          // Bắp tay trên không (Upper arm)
-          ctx.save();
-          ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 4.4;
-          ctx.lineCap = 'round';
+      // 2.4 Tay quạt dưới nước vẽ trước thân, tay vung trên không vẽ sau thân
+      const arms = [{ ph: p, side: -1 }, { ph: p + Math.PI, side: 1 }];
+      function armPose(phase, side) {
+        const sA = Math.sin(phase), cA = Math.cos(phase);
+        const shX = 6.5, shY = side * (7.0 - Math.abs(bodyRoll) * 1.6);
+        if (sA >= 0) {
+          // Vung tay trên không, khuỷu cao
+          const elX = 4 + cA * 9.5;
+          const elY = side * (10.5 + sA * 6.2);
+          const handX = 15 + (1 - sA) * 12;
+          const handY = side * (4.2 + sA * 2.0);
+          return { air: true, shX, shY, elX, elY, handX, handY, sA };
+        }
+        const pull = -sA; // 0..1
+        const handX = 27 - pull * 34;
+        const handY = side * (5.0 - Math.sin(pull * Math.PI) * 3.2);
+        const elX = (shX + handX) / 2 + 1.2, elY = side * (8.2 + Math.sin(pull * Math.PI) * 1.4);
+        return { air: false, shX, shY, elX, elY, handX, handY, pull };
+      }
+      function drawArmPose(A) {
+        if (A.air) {
+          const c = rhShade(skin, 0.05);
+          rhLimb(ctx, A.shX, A.shY, A.elX, A.elY, 2.6, 2.0, c, skinLine, 0.5);
+          rhLimb(ctx, A.elX, A.elY, A.handX, A.handY, 2.0, 1.4, c, skinLine, 0.5);
+          ctx.fillStyle = c;
+          ctx.strokeStyle = skinLine;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.ellipse(A.handX + 1.2, A.handY, 2.4, 1.4, Math.atan2(A.handY - A.elY, A.handX - A.elX), 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+          // Giọt nước rơi từ khuỷu & đầu ngón tay
+          ctx.fillStyle = 'rgba(255,255,255,0.85)';
           ctx.beginPath();
-          ctx.moveTo(6, sideSign * 4.2);
-          ctx.lineTo(elX, elY);
-          ctx.stroke();
-
-          // Cẳng tay (Forearm)
-          ctx.lineWidth = 3.6;
-          ctx.beginPath();
-          ctx.moveTo(elX, elY);
-          ctx.lineTo(handX, handY);
-          ctx.stroke();
-
-          // Bàn tay chụm ngón hình mũi giáo xé nước
-          ctx.fillStyle = s.skin;
-          ctx.beginPath();
-          ctx.ellipse(handX, handY, 3.2, 2.0, Math.atan2(handY - elY, handX - elX), 0, Math.PI * 2);
+          ctx.arc(A.elX - 1, A.elY + Math.sign(A.elY) * 2.2, 0.9, 0, Math.PI * 2);
+          ctx.arc(A.handX + 3.6, A.handY + Math.sign(A.handY) * 1.4, 0.8, 0, Math.PI * 2);
           ctx.fill();
-
-          // Giọt nước lóng lánh văng khỏi khuỷu tay và ngón tay
-          if (sinArm < 0.35) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
-            ctx.beginPath();
-            ctx.arc(handX + 3.5, handY, 2.8, 0, Math.PI * 2);
-            ctx.arc(elX + 1.5, elY, 2.2, 0, Math.PI * 2);
-            ctx.fill();
+          if (A.sA < 0.3) {
+            ctx.fillStyle = 'rgba(255,255,255,0.75)';
+            ctx.beginPath(); ctx.arc(A.handX + 4, A.handY, 2.4, 0, Math.PI * 2); ctx.fill();
           }
-          ctx.restore();
         } else {
-          // GIAI ĐOẠN 2: QUẠT NƯỚC DƯỚI LÒNG HỒ (Underwater S-Pull & Push-off)
-          const pullDist = -sinArm;
-          // Quạt cong hình chữ S ôm nước
-          const handX = 20 - pullDist * 28;
-          const handY = sideSign * (5.5 - Math.sin(pullDist * Math.PI) * 3.5);
-
           ctx.save();
-          // Cánh tay chìm dưới nước có màu khúc xạ qua làn nước xanh
-          ctx.strokeStyle = 'rgba(15, 23, 42, 0.45)';
-          ctx.lineWidth = 4.0;
-          ctx.lineCap = 'round';
-          ctx.beginPath();
-          ctx.moveTo(6, sideSign * 4.2);
-          ctx.lineTo(handX, handY);
-          ctx.stroke();
-
-          ctx.strokeStyle = s.skin;
-          ctx.lineWidth = 3.6;
-          ctx.beginPath();
-          ctx.moveTo(6, sideSign * 4.2);
-          ctx.lineTo(handX, handY);
-          ctx.stroke();
-
-          // Lòng bàn tay đẩy nước tạo lực phản lực
-          ctx.fillStyle = s.skin;
-          ctx.beginPath();
-          ctx.arc(handX, handY, 2.8, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Vệt bọt xoáy nước dưới bàn tay
-          if (pullDist > 0.4 && pullDist < 0.85) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.globalAlpha = 0.6;
+          rhLimb(ctx, A.shX, A.shY, A.elX, A.elY, 2.5, 2.0, skinUnder, null);
+          rhLimb(ctx, A.elX, A.elY, A.handX, A.handY, 2.0, 1.5, skinUnder, null);
+          ctx.fillStyle = skinUnder;
+          ctx.beginPath(); ctx.ellipse(A.handX, A.handY, 2.2, 1.6, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+          // Xoáy bọt khí sau bàn tay đẩy nước
+          if (A.pull > 0.35 && A.pull < 0.9) {
+            ctx.fillStyle = 'rgba(255,255,255,0.55)';
             ctx.beginPath();
-            ctx.arc(handX - 4, handY + sideSign * 2, 2.4, 0, Math.PI * 2);
+            ctx.arc(A.handX - 3.5, A.handY, 1.6, 0, Math.PI * 2);
+            ctx.arc(A.handX - 6, A.handY + Math.sign(A.handY) * 1.2, 1.1, 0, Math.PI * 2);
             ctx.fill();
           }
-          ctx.restore();
         }
       }
+      const poses = arms.map(a => armPose(a.ph, a.side));
+      poses.filter(a => !a.air).forEach(drawArmPose);
 
-      drawFreestyleArm(arm1Phase, -1);
-      drawFreestyleArm(arm2Phase, 1);
+      drawBack(bodyRoll, 0.4);
 
-      // 2.5. ĐẦU, MŨ BƠI VÀ NHỊP THỞ CHUYÊN NGHIỆP (BILATERAL BREATHING ROLL)
+      // Đầu: thở hai bên mỗi 3 nhịp tay, quay mặt về phía tay đang vung
       const breatheCycle = Math.floor(p / (Math.PI * 2));
       const phaseInCycle = (p % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-      const isBreathing = (breatheCycle % 3 === 0) && (phaseInCycle > 0.5 && phaseInCycle < 2.5);
+      const isBreathing = (breatheCycle % 3 === 0) && (phaseInCycle > 0.5 && phaseInCycle < 2.6);
+      const turn = isBreathing ? Math.sin((phaseInCycle - 0.5) / 2.1 * Math.PI) * (breatheCycle % 2 === 0 ? -1 : 1) : 0;
+      const headX = 13.5, headY = bodyRoll * 0.8;
 
-      const headTilt = isBreathing ? Math.sin(phaseInCycle) * 4.8 : 0;
-      const headX = 13;
-      const headY = headTilt;
-
-      // Hộp sọ & Khuôn mặt
-      ctx.fillStyle = s.skin;
+      // Sóng mũi rẽ nước trước đầu (cong, mờ dần)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
       ctx.beginPath();
-      ctx.ellipse(headX, headY, 8.2, 6.5, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Mũ bơi silicon ôm khít đầu
-      ctx.fillStyle = s.cap;
-      ctx.beginPath();
-      ctx.ellipse(headX - 1.8, headY, 7.2, 6.8, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Kính bơi tráng gương (Mirrored goggles) óng ánh
-      ctx.fillStyle = s.goggles;
-      if (isBreathing) {
-        // Mắt hé ra thở trong hõm sóng
-        ctx.beginPath();
-        ctx.ellipse(headX + 2.8, headY - 2.8, 3.8, 2.4, -0.3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(headX + 3.2, headY - 3.2, 1.2, 1.2); // Ánh sáng phản quang
-        // Miệng mở hé hít thở
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.arc(headX + 5.5, headY + 1.8, 1.6, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        // Úp mặt xuống nước
-        ctx.fillRect(headX + 2.2, headY - 4.5, 4.0, 2.8);
-        ctx.fillRect(headX + 2.2, headY + 1.8, 4.0, 2.8);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.fillRect(headX + 3.2, headY - 4.0, 1.4, 1.4);
-        ctx.fillRect(headX + 3.2, headY + 2.3, 1.4, 1.4);
-      }
-
-      // Sóng rẽ nước mũi trước (Bow wave) sáng lóa hình chữ V
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-      ctx.lineWidth = 1.8;
-      ctx.beginPath();
-      ctx.moveTo(headX + 9, headY);
-      ctx.lineTo(headX - 8, headY - 12);
-      ctx.moveTo(headX + 9, headY);
-      ctx.lineTo(headX - 8, headY + 12);
+      ctx.moveTo(headX + 8, headY - 1);
+      ctx.quadraticCurveTo(headX + 1, headY - 9, headX - 9, headY - 12.5);
+      ctx.moveTo(headX + 8, headY + 1);
+      ctx.quadraticCurveTo(headX + 1, headY + 9, headX - 9, headY + 12.5);
       ctx.stroke();
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.beginPath(); ctx.ellipse(headX + 6.5, headY, 2.4, 5.2, 0, 0, Math.PI * 2); ctx.fill();
+      // Hõm nước quanh miệng khi thở
+      if (isBreathing) {
+        ctx.fillStyle = 'rgba(8, 47, 73, 0.25)';
+        ctx.beginPath(); ctx.ellipse(headX + 2, headY + Math.sign(turn || 1) * 6, 5, 3, 0, 0, Math.PI * 2); ctx.fill();
+      }
+      drawHead(headX, headY, turn, false);
 
-      ctx.restore();
+      poses.filter(a => a.air).forEach(drawArmPose);
 
       // ========================================================
-      // 3. NHÃN TÊN KÌNH NGƯ NỔI TRÊN MẶT NƯỚC (CHỈ VỀ NHẤT MỚI VÀNG LÊN!)
+      // 3. NHÃN TÊN
       // ========================================================
       const isWinnerFinished = (s.isWinner && (swimRaceState === 'finished' || s.hasFinished));
       ctx.fillStyle = isWinnerFinished ? 'rgba(8, 145, 178, 0.95)' : 'rgba(15, 23, 42, 0.88)';
@@ -19664,22 +19541,18 @@
       ctx.roundRect(-nameW * 0.5, -32, nameW, 16, 6);
       ctx.fill();
       ctx.stroke();
-
       ctx.fillStyle = isWinnerFinished ? '#fde047' : '#ffffff';
       ctx.font = isWinnerFinished ? '900 11px Inter, sans-serif' : 'bold 10px Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(s.displayName, 0, -24);
-
       if (isWinnerFinished) {
         ctx.font = '14px Arial';
         ctx.fillText('👑', 0, -42);
       }
-
       ctx.restore();
     }
 
-    // --- HÀM VẼ TOÀN BỘ BỂ BƠI OLYMPIC TỪ BỜ A ĐẾN BỜ B ---
     function renderSwimRaceCanvas(now) {
       const canvas = document.getElementById('swimming-race-canvas');
       if (!canvas) {
@@ -28440,564 +28313,739 @@
       return null;
     }
 
+    // ==========================================
+    // HELPER VẼ NGƯỜI TẢ THỰC (dùng chung cho học sinh, VĐV chạy, kình ngư)
+    // ==========================================
+    function rhShade(hex, amt) {
+      // amt < 0: tối đi, amt > 0: sáng lên (0..1)
+      let c = String(hex || '#888888').replace('#', '');
+      if (c.length === 3) c = c.split('').map(ch => ch + ch).join('');
+      const n = parseInt(c.slice(0, 6), 16);
+      if (isNaN(n)) return hex;
+      let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+      const t = amt < 0 ? 0 : 255, p = Math.abs(amt);
+      r = Math.round((t - r) * p + r); g = Math.round((t - g) * p + g); b = Math.round((t - b) * p + b);
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+    function rhMix(hexA, hexB, k) {
+      const pa = parseInt(String(hexA).replace('#', '').slice(0, 6), 16);
+      const pb = parseInt(String(hexB).replace('#', '').slice(0, 6), 16);
+      if (isNaN(pa) || isNaN(pb)) return hexA;
+      const ch = (v, s) => (v >> s) & 255;
+      const m = s => Math.round(ch(pa, s) + (ch(pb, s) - ch(pa, s)) * k);
+      return '#' + ((1 << 24) + (m(16) << 16) + (m(8) << 8) + m(0)).toString(16).slice(1);
+    }
+    // Đoạn chi thon dần (bắp tay/đùi -> cổ tay/cổ chân), bo tròn 2 đầu khớp
+    function rhLimb(ctx, x1, y1, x2, y2, r1, r2, fill, stroke, sw) {
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy);
+      ctx.beginPath();
+      if (len < 0.01) {
+        ctx.arc(x1, y1, Math.max(r1, r2), 0, Math.PI * 2);
+      } else {
+        const nx = -dy / len, ny = dx / len, a = Math.atan2(ny, nx);
+        ctx.moveTo(x1 + nx * r1, y1 + ny * r1);
+        ctx.lineTo(x2 + nx * r2, y2 + ny * r2);
+        ctx.arc(x2, y2, r2, a, a - Math.PI, true);
+        ctx.lineTo(x1 - nx * r1, y1 - ny * r1);
+        ctx.arc(x1, y1, r1, a + Math.PI, a, true);
+        ctx.closePath();
+      }
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = sw || 0.5; ctx.stroke(); }
+    }
+    // IK 2 khớp: trả vị trí đầu gối/khuỷu tay. bendSign = +1 -> khớp lệch về phía +x khi chi hướng xuống
+    function rhIK(hx, hy, fx, fy, L1, L2, bendSign) {
+      let dx = fx - hx, dy = fy - hy;
+      let d = Math.hypot(dx, dy);
+      const maxD = L1 + L2 - 0.02;
+      if (d > maxD) { const k = maxD / d; dx *= k; dy *= k; fx = hx + dx; fy = hy + dy; d = maxD; }
+      if (d < 0.01) d = 0.01;
+      const a = Math.atan2(dy, dx);
+      const cosB = (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d);
+      const b = Math.acos(Math.max(-1, Math.min(1, cosB)));
+      const ang = a - bendSign * b;
+      return { kx: hx + Math.cos(ang) * L1, ky: hy + Math.sin(ang) * L1, fx: fx, fy: fy };
+    }
+
+    // ==========================================
+    // NHÂN VẬT HỌC SINH TẢ THỰC (tỉ lệ ~5 đầu, khớp gối/khuỷu, đồng phục áo trắng - khăn quàng đỏ)
+    // Giữ nguyên API cũ: pose 'idle' | 'walk' | 'run' | 'bike' | 'read' | 'winner' | 'cling' | 'abducted'
+    // Gốc toạ độ: hông ~ y=0, bàn chân chạm đất y≈14.6, đỉnh đầu y≈-23.5
+    // ==========================================
     function drawCartoonHuman(ctx, x, y, opts) {
       const o = opts || {};
-      const shirt = o.shirt || '#3b82f6';
-      const pants = o.pants || '#1e293b';
       const scale = o.scale || 1;
       const pose = o.pose || 'idle';
-      const facing = o.facing || 1; // 1: right, -1: left
+      const facing = (o.facing || 1) >= 0 ? 1 : -1;
       const phase = o.phase || 0;
       const now = o.now || performance.now();
       const tilt = o.tilt || 0;
 
-      // Deterministic visual seed so every student keeps a distinct, consistent hairstyle & outfit style
       const seedRaw = o.seed !== undefined ? o.seed : Math.abs(Math.round(phase * 13));
       const seed = Math.abs(seedRaw | 0);
-      const HAIR_PALETTE = ['#18181b', '#292524', '#451a03', '#5c2d16', '#1e293b', '#3f2e21'];
-      const SKIN_PALETTE = ['#fed7aa', '#ffedd5', '#fde2c4', '#f8cfa0'];
-      const CLIP_PALETTE = ['#f43f5e', '#f59e0b', '#ec4899', '#38bdf8', '#a855f7'];
+      const HAIR_PALETTE = ['#16110d', '#1f1712', '#2a1c13', '#3b2718', '#141318', '#2e2119'];
+      const SKIN_PALETTE = ['#f1c9a5', '#e7b68e', '#f4d2b2', '#dca47c', '#edc19b', '#e2ad86'];
+      const CLIP_PALETTE = ['#e11d48', '#f59e0b', '#db2777', '#0ea5e9', '#7c3aed'];
       const hair = o.hair || HAIR_PALETTE[seed % HAIR_PALETTE.length];
       const skin = o.skin || SKIN_PALETTE[seed % SKIN_PALETTE.length];
-      const predictedGender = o.gender || inferStudentGender(o.name);
+      const predictedGender = o.gender || (typeof inferStudentGender === 'function' ? inferStudentGender(o.name) : null);
       const isGirl = predictedGender ? (predictedGender === 'female') : (o.isStudent && (seed % 5) >= 2);
-      const hairStyle = isGirl ? (2 + (seed % 3)) : (seed % 2); // Boy: 0 spiky / 1 parted; Girl: 2 bob / 3 ponytail / 4 twin tails
+      const hairStyle = isGirl ? (2 + (seed % 3)) : (seed % 2); // Nam: 0 tóc ngắn / 1 rẽ ngôi; Nữ: 2 tóc dài / 3 đuôi ngựa / 4 tóc ngang vai
       const clipColor = CLIP_PALETTE[seed % CLIP_PALETTE.length];
-      const outline = '#0f172a';
+      const isAstro = !!o.isAstronaut;
+      const accent = o.shirt || '#3b82f6';
+      const shirtC = isAstro ? '#f1f5f9' : (o.isStudent ? '#f8fafc' : accent);
+      const pantsC = isAstro ? '#dfe5ec' : (o.pants || '#1e293b');
+      const bagC = o.backpackColor || accent;
+      const line = 'rgba(15, 23, 42, 0.55)';
+      const skinSh = rhShade(skin, -0.16);
+      const skinDk = rhShade(skin, -0.30);
+      const ph = phase + seed * 1.37;
+
+      const profile = (pose === 'walk' || pose === 'run' || pose === 'bike' || pose === 'cling');
+      const HIP_Y = -0.5, GROUND = 14.6, L1 = 7.7, L2 = 7.5, LA = 5.6, LF = 5.3;
 
       ctx.save();
       ctx.translate(x, y);
       ctx.scale(scale, scale);
       if (tilt) ctx.rotate(tilt);
 
-      const stride = pose === 'run' ? Math.sin(now * 0.018 + phase) * 5.5
-                   : pose === 'walk' ? Math.sin(now * 0.008 + phase) * 3.8
-                   : pose === 'cling' ? Math.sin(now * 0.025 + phase) * 4.5
-                   : pose === 'abducted' ? Math.sin(now * 0.03 + phase) * 6
-                   : 0;
+      // ---------- 1. TÍNH TƯ THẾ (hông, chân, độ nghiêng thân) ----------
+      let hipX = 0, hipY = HIP_Y, lean = 0;
+      let legNear, legFar, gait = 0;
+      const legFrontal = (hxo, fx, fy) => ({ hx: hipX + hxo, hy: hipY + 0.6, kx: (hipX + hxo + fx) / 2 + (fx - hipX) * 0.02, ky: (hipY + fy) / 2, fx: fx, fy: fy });
 
-      // Back hair tails drawn behind body (ponytail / twin tails)
-      if (!o.isAstronaut && !o.helmetColor) {
-        ctx.fillStyle = hair;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1.0;
-        if (hairStyle === 3) {
-          // Ponytail swaying behind head
-          const sway = Math.sin(now * 0.008 + phase) * 2;
-          ctx.beginPath();
-          ctx.moveTo(-facing * 3, -17);
-          ctx.quadraticCurveTo(-facing * 11, -18 + sway, -facing * 10.5, -7 + sway * 0.5);
-          ctx.quadraticCurveTo(-facing * 6, -9, -facing * 3, -13);
-          ctx.closePath();
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = clipColor;
-          ctx.beginPath(); ctx.arc(-facing * 4.5, -16, 1.9, 0, Math.PI * 2); ctx.fill();
-        } else if (hairStyle === 4) {
-          // Twin pigtails
-          const sway = Math.sin(now * 0.009 + phase) * 1.5;
-          [-1, 1].forEach(side => {
-            ctx.fillStyle = hair;
-            ctx.beginPath();
-            ctx.moveTo(side * 5, -16);
-            ctx.quadraticCurveTo(side * 11, -14 + sway * side, side * 9.5, -5 + sway * side);
-            ctx.quadraticCurveTo(side * 6, -6, side * 5, -12);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
-            ctx.fillStyle = clipColor;
-            ctx.beginPath(); ctx.arc(side * 6.2, -14.5, 1.7, 0, Math.PI * 2); ctx.fill();
-          });
-        }
-      }
-
-      // School backpack behind body (if student uniform mode)
-      if (o.isStudent) {
-        const bpColor = o.backpackColor || shirt;
-        const bpX = (pose === 'walk' || pose === 'run' || pose === 'cling') ? (-facing * 6.5) : 0;
-        // Top handle loop
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.arc(bpX, -9.2, 2.3, Math.PI, 0); ctx.stroke();
-        // Main bag body
-        ctx.fillStyle = bpColor;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1.15;
-        ctx.beginPath();
-        ctx.roundRect(bpX - 6, -8.5, 12, 13, 3.8);
-        ctx.fill();
-        ctx.stroke();
-        // Front pocket & bright trim
-        ctx.fillStyle = 'rgba(255,255,255,0.28)';
-        ctx.beginPath(); ctx.roundRect(bpX - 4, -2.5, 8, 5, 1.8); ctx.fill();
-        ctx.fillStyle = 'rgba(15,23,42,0.22)';
-        ctx.fillRect(bpX - 4.5, -3.5, 9, 1.3);
-      }
-
-      // Hero cape behind body (if Summon SSR hero)
-      if (o.isHero) {
-        ctx.fillStyle = '#dc2626';
-        ctx.strokeStyle = '#7f1d1d';
-        ctx.lineWidth = 1.1;
-        ctx.beginPath();
-        ctx.moveTo(-8, -8);
-        ctx.quadraticCurveTo(-16, 4 + Math.sin(now * 0.008) * 3, -12, 14);
-        ctx.lineTo(12, 14);
-        ctx.quadraticCurveTo(16, 4 - Math.sin(now * 0.008) * 3, 8, -8);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-      }
-
-      // Astronaut backpack
-      if (o.isAstronaut) {
-        ctx.fillStyle = '#94a3b8';
-        ctx.strokeStyle = '#334155';
-        ctx.lineWidth = 1.3;
-        ctx.beginPath();
-        ctx.roundRect(-8.5, -9, 17, 13.5, 3.5);
-        ctx.fill();
-        ctx.stroke();
-      }
-
-      // 1. LEGS & SNEAKERS
-      ctx.lineCap = 'round';
-      const legStroke = isGirl ? skin : pants;
-      if (pose === 'cling') {
-        const kickDir = -facing;
-        // Dark ink outline pass for crisp cartoon legs
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 5.0;
-        ctx.beginPath();
-        ctx.moveTo(-2, 4); ctx.quadraticCurveTo(kickDir * 6, 9, kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3);
-        ctx.moveTo(2, 4); ctx.quadraticCurveTo(kickDir * 5, 10, kickDir * 9 - stride * 0.5, 15);
-        ctx.stroke();
-
-        ctx.strokeStyle = legStroke;
-        ctx.lineWidth = 3.1;
-        ctx.stroke();
-
-        // Crisp sneakers
-        [[kickDir * 10 + stride * 0.5, 13 + Math.abs(stride) * 0.3], [kickDir * 9 - stride * 0.5, 15]].forEach(([sx, sy]) => {
-          ctx.fillStyle = '#ffffff';
-          ctx.strokeStyle = outline;
-          ctx.lineWidth = 1.0;
-          ctx.beginPath(); ctx.ellipse(sx, sy, 2.7, 1.9, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = shirt;
-          ctx.beginPath(); ctx.arc(sx, sy - 0.3, 1.1, 0, Math.PI * 2); ctx.fill();
-        });
-      } else if (pose === 'read') {
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 5.0;
-        ctx.beginPath();
-        ctx.moveTo(-2.5, 4); ctx.lineTo(-7.8, 10); ctx.lineTo(-3.6, 13.5);
-        ctx.moveTo(2.5, 4); ctx.lineTo(7.8, 10); ctx.lineTo(3.6, 13.5);
-        ctx.stroke();
-        ctx.strokeStyle = legStroke;
-        ctx.lineWidth = 3.1;
-        ctx.stroke();
-        // Neat shoes
-        ctx.fillStyle = '#ffffff';
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.ellipse(-3.6, 14, 2.5, 1.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.ellipse(3.6, 14, 2.5, 1.5, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      if (pose === 'walk' || pose === 'run') {
+        const isRun = pose === 'run';
+        gait = now * (isRun ? 0.017 : 0.0085) + ph;
+        const S = isRun ? 6.0 : 3.6;
+        const lift = isRun ? 5.2 : 2.0;
+        lean = isRun ? 0.24 : 0.04;
+        hipY = isRun ? HIP_Y + 0.9 - 1.5 * Math.abs(Math.cos(gait)) : HIP_Y - 0.25 + 0.5 * Math.abs(Math.sin(gait));
+        const footAt = (pp) => {
+          const fx = hipX + facing * S * Math.sin(pp) - (isRun ? facing * 1.6 * Math.max(0, -Math.sin(pp)) * Math.max(0, Math.cos(pp)) : 0);
+          const fy = Math.min(GROUND, GROUND - lift * Math.max(0, Math.cos(pp)));
+          return [fx, fy];
+        };
+        const [nfx, nfy] = footAt(gait);
+        const [ffx, ffy] = footAt(gait + Math.PI);
+        const nk = rhIK(hipX + facing * 0.3, hipY + 0.6, nfx, nfy, L1, L2, facing);
+        const fk = rhIK(hipX - facing * 0.3, hipY + 0.6, ffx, ffy, L1, L2, facing);
+        legNear = { hx: hipX + facing * 0.3, hy: hipY + 0.6, ...nk };
+        legFar = { hx: hipX - facing * 0.3, hy: hipY + 0.6, ...fk };
       } else if (pose === 'bike') {
-        const pedalAng = now * 0.012 + phase;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 4.9;
-        ctx.beginPath();
-        ctx.moveTo(-2, 4); ctx.lineTo(-2 + Math.cos(pedalAng) * 4, 10.5 + Math.sin(pedalAng) * 3.5);
-        ctx.moveTo(2, 4); ctx.lineTo(2 - Math.cos(pedalAng) * 4, 10.5 - Math.sin(pedalAng) * 3.5);
-        ctx.stroke();
-        ctx.strokeStyle = legStroke;
-        ctx.lineWidth = 3.0;
-        ctx.stroke();
-        ctx.fillStyle = '#ffffff';
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 0.9;
-        ctx.beginPath(); ctx.arc(-2 + Math.cos(pedalAng) * 4, 11 + Math.sin(pedalAng) * 3.5, 2.0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(2 - Math.cos(pedalAng) * 4, 11 - Math.sin(pedalAng) * 3.5, 2.0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        hipX = -2.6 * facing; hipY = 6.8; lean = 0.42;
+        const pa = now * 0.012 + ph;
+        const cx = 0, cy = 19, pr = 3.2;
+        const nfx = cx + Math.cos(pa) * pr * facing, nfy = cy + Math.sin(pa) * pr;
+        const ffx = cx - Math.cos(pa) * pr * facing, ffy = cy - Math.sin(pa) * pr;
+        legNear = { hx: hipX, hy: hipY + 0.6, ...rhIK(hipX, hipY + 0.6, nfx, nfy, L1, L2, facing) };
+        legFar = { hx: hipX, hy: hipY + 0.6, ...rhIK(hipX, hipY + 0.6, ffx, ffy, L1, L2, facing) };
+      } else if (pose === 'cling') {
+        lean = 0.28;
+        const k = Math.sin(now * 0.025 + ph);
+        const nfx = -facing * (8.5 + k * 2.2), nfy = 11.5 + k * 1.2;
+        const ffx = -facing * (7.5 - k * 2.2), ffy = 13.0 - k * 1.0;
+        legNear = { hx: hipX, hy: hipY + 0.6, ...rhIK(hipX, hipY + 0.6, nfx, nfy, L1, L2, facing) };
+        legFar = { hx: hipX, hy: hipY + 0.6, ...rhIK(hipX, hipY + 0.6, ffx, ffy, L1, L2, facing) };
+      } else if (pose === 'abducted') {
+        const w1 = Math.sin(now * 0.03 + ph), w2 = Math.cos(now * 0.027 + ph);
+        legNear = legFrontal(1.7, 3.2 + w1 * 3.0, 12.6 + w2 * 1.6);
+        legFar = legFrontal(-1.7, -3.2 - w2 * 3.0, 12.6 - w1 * 1.6);
+      } else if (pose === 'winner') {
+        legNear = legFrontal(1.8, 3.6, GROUND);
+        legFar = legFrontal(-1.8, -3.6, GROUND);
       } else {
-        const lx1 = -3.6 - stride * 0.65;
-        const lx2 = 3.6 + stride * 0.65;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 5.0;
-        ctx.beginPath();
-        ctx.moveTo(-2.8, 4); ctx.lineTo(lx1, 14);
-        ctx.moveTo(2.8, 4); ctx.lineTo(lx2, 14);
-        ctx.stroke();
-        ctx.strokeStyle = legStroke;
-        ctx.lineWidth = 3.1;
-        ctx.stroke();
-
-        // White socks for skirt uniform
-        if (isGirl) {
-          ctx.strokeStyle = '#f8fafc';
-          ctx.lineWidth = 2.9;
-          ctx.beginPath();
-          ctx.moveTo(lx1 * 0.85, 11.2); ctx.lineTo(lx1, 14);
-          ctx.moveTo(lx2 * 0.85, 11.2); ctx.lineTo(lx2, 14);
-          ctx.stroke();
-        }
-
-        // Styled sneakers with accent & sole
-        [lx1, lx2].forEach((sx, idx) => {
-          const dir = idx === 0 ? -0.4 : 0.4;
-          ctx.fillStyle = o.isAstronaut ? '#e2e8f0' : '#ffffff';
-          ctx.strokeStyle = outline;
-          ctx.lineWidth = 1.05;
-          ctx.beginPath();
-          ctx.ellipse(sx + dir, 14.8, 3.1, 1.9, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-          ctx.fillStyle = o.isAstronaut ? '#64748b' : shirt;
-          ctx.fillRect(sx - 1.3 + dir, 13.9, 2.6, 0.9);
-        });
+        // idle / read: đứng tự nhiên, dồn trọng tâm nhẹ sang hai bên
+        const sway = pose === 'read' ? 0 : Math.sin(now * 0.0016 + ph) * 0.35;
+        hipX = sway;
+        legNear = legFrontal(1.75, 2.2, GROUND);
+        legFar = legFrontal(-1.75, -2.2, GROUND);
       }
 
-      // Pleated school skirt for girl student variant
-      if (isGirl) {
-        ctx.fillStyle = pants;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1.1;
-        ctx.beginPath();
-        ctx.moveTo(-6, 2.5);
-        ctx.lineTo(6, 2.5);
-        ctx.lineTo(8.2, 8.8);
-        ctx.quadraticCurveTo(0, 9.8, -8.2, 8.8);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        // Pleat lines
-        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
-        ctx.lineWidth = 0.9;
-        [-3, 0, 3].forEach(px => {
-          ctx.beginPath(); ctx.moveTo(px, 3.2); ctx.lineTo(px * 1.25, 8.4); ctx.stroke();
-        });
-      }
-
-      // 2. TORSO / UNIFORM SHIRT
-      // Neck
-      ctx.fillStyle = skin;
-      ctx.fillRect(-2, -10.5, 4, 3.2);
-
-      const torsoGrad = ctx.createLinearGradient(-7, -8, 7, 5);
-      if (o.isAstronaut) {
-        torsoGrad.addColorStop(0, '#ffffff');
-        torsoGrad.addColorStop(1, '#cbd5e1');
-      } else if (o.isStudent) {
-        torsoGrad.addColorStop(0, '#ffffff');
-        torsoGrad.addColorStop(1, '#e2e8f0');
-      } else {
-        torsoGrad.addColorStop(0, shirt);
-        torsoGrad.addColorStop(1, shirt);
-      }
-      ctx.fillStyle = torsoGrad;
-      ctx.strokeStyle = outline;
-      ctx.lineWidth = 1.25;
-      ctx.beginPath();
-      ctx.roundRect(-6.8, -8, 13.6, 13.2, 4.2);
-      ctx.fill();
-      ctx.stroke();
-
-      // Backpack shoulder straps + Uniform collar & Red scarf (Khăn quàng đỏ)
-      if (o.isStudent) {
-        // Backpack shoulder straps
-        ctx.strokeStyle = o.backpackColor || shirt;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        ctx.moveTo(-4.6, -7.5); ctx.lineTo(-4.2, 2.5);
-        ctx.moveTo(4.6, -7.5); ctx.lineTo(4.2, 2.5);
-        ctx.stroke();
-
-        // Crisp shirt collar flaps
-        ctx.fillStyle = '#f8fafc';
-        ctx.strokeStyle = '#94a3b8';
-        ctx.lineWidth = 0.8;
-        ctx.beginPath();
-        ctx.moveTo(-4.5, -8); ctx.lineTo(-0.5, -5.2); ctx.lineTo(-3.2, -4.4); ctx.closePath(); ctx.fill(); ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(4.5, -8); ctx.lineTo(0.5, -5.2); ctx.lineTo(3.2, -4.4); ctx.closePath(); ctx.fill(); ctx.stroke();
-
-        // Red school scarf (khăn quàng đỏ) with knot & tail
-        ctx.fillStyle = '#ef4444';
-        ctx.strokeStyle = '#991b1b';
-        ctx.lineWidth = 0.85;
-        ctx.beginPath();
-        ctx.moveTo(-4.5, -7.8);
-        ctx.lineTo(4.5, -7.8);
-        ctx.lineTo(0, -1.6);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
-        // Scarf tails
-        ctx.beginPath();
-        ctx.moveTo(-1.3, -2.5); ctx.lineTo(-2.1, 3.2); ctx.lineTo(0, 2.3); ctx.lineTo(2.1, 3.2); ctx.lineTo(1.3, -2.5);
-        ctx.closePath();
-        ctx.fill();
-      } else {
-        ctx.fillStyle = o.isAstronaut ? shirt : 'rgba(255,255,255,0.35)';
-        ctx.fillRect(-3.5, -5.5, 7, 3);
-      }
-
-      // 3. ARMS (Articulated with ink outline + sleeves + skin hands)
-      const armSleeve = o.isAstronaut ? '#e2e8f0' : (o.isStudent ? '#ffffff' : skin);
-      ctx.lineCap = 'round';
-      const strokeOutlinedArm = (x1, y1, cx, cy, x2, y2, curved) => {
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 4.6;
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        if (curved) ctx.quadraticCurveTo(cx, cy, x2, y2);
-        else ctx.lineTo(x2, y2);
-        ctx.stroke();
-        ctx.strokeStyle = armSleeve;
-        ctx.lineWidth = 2.8;
-        ctx.stroke();
+      // Chuyển toạ độ thế giới -> toạ độ thân trên (đã xoay quanh hông)
+      const rot = lean * facing;
+      const cosR = Math.cos(rot), sinR = Math.sin(rot);
+      const toLocal = (wx, wy) => {
+        const dx = wx - hipX, dy = wy - hipY;
+        return [dx * cosR + dy * sinR, -dx * sinR + dy * cosR + HIP_Y];
+      };
+      const withUpper = (fn) => {
+        ctx.save();
+        ctx.translate(hipX, hipY);
+        ctx.rotate(rot);
+        ctx.translate(0, -HIP_Y);
+        fn();
+        ctx.restore();
       };
 
-      if (pose === 'cling') {
-        const reachX = facing * 13;
-        strokeOutlinedArm(facing * 2, -5.5, facing * 8, -7, reachX, -4.5, true);
-        strokeOutlinedArm(facing * 2, -2, facing * 8, -1, reachX, -2.5, true);
-        ctx.fillStyle = skin;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 0.9;
-        ctx.beginPath(); ctx.arc(reachX, -4.5, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(reachX, -2.5, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      } else if (pose === 'abducted') {
-        const wave = Math.sin(now * 0.03 + phase) * 4;
-        strokeOutlinedArm(-6, -5, 0, 0, -11.5, -12.5 + wave, false);
-        strokeOutlinedArm(6, -5, 0, 0, 11.5, -12.5 - wave, false);
-        ctx.fillStyle = skin;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 0.85;
-        ctx.beginPath(); ctx.arc(-11.5, -12.5 + wave, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(11.5, -12.5 - wave, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      } else if (pose === 'winner') {
-        strokeOutlinedArm(-6, -5, 0, 0, -10.5, -13.5, false);
-        strokeOutlinedArm(6, -5, 0, 0, 10.5, -13.5, false);
-        ctx.fillStyle = skin;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 0.85;
-        ctx.beginPath(); ctx.arc(-10.5, -13.5, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.arc(10.5, -13.5, 1.9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      } else if (pose === 'read') {
-        strokeOutlinedArm(-6, -4, 0, 0, -4, 2, false);
-        strokeOutlinedArm(6, -4, 0, 0, 4, 2, false);
-        // Open illustrated book
-        ctx.fillStyle = '#fef9c3';
-        ctx.strokeStyle = '#78350f';
-        ctx.lineWidth = 1.1;
-        ctx.beginPath(); ctx.roundRect(-8, -1.5, 8, 7.5, 1.2); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.roundRect(0, -1.5, 8, 7.5, 1.2); ctx.fill(); ctx.stroke();
-        // Tiny book text lines
-        ctx.strokeStyle = 'rgba(100,116,139,0.55)';
-        ctx.lineWidth = 0.7;
-        [-5.8, -4.3, -2.8].forEach(ly => {
-          ctx.beginPath(); ctx.moveTo(-6.2, ly + 6); ctx.lineTo(-1.8, ly + 6); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(1.8, ly + 6); ctx.lineTo(6.2, ly + 6); ctx.stroke();
-        });
+      // ---------- 2. TAY (toạ độ thân trên) ----------
+      const shL = profile ? [-facing * 0.2, -12.3] : [-4.3, -12.0];
+      const shR = profile ? [facing * 0.5, -12.1] : [4.3, -12.0];
+      let armNear, armFar; // {sx,sy,ex,ey,hx,hy}
+      const armIK = (sh, hx, hy, bend) => {
+        const r = rhIK(sh[0], sh[1], hx, hy, LA, LF, bend);
+        return { sx: sh[0], sy: sh[1], ex: r.kx, ey: r.ky, hx: r.fx, hy: r.fy };
+      };
+      const armAng = (sh, upA, bendA) => {
+        const ex = sh[0] + facing * Math.sin(upA) * LA, ey = sh[1] + Math.cos(upA) * LA;
+        const fa = upA + bendA;
+        return { sx: sh[0], sy: sh[1], ex: ex, ey: ey, hx: ex + facing * Math.sin(fa) * LF, hy: ey + Math.cos(fa) * LF };
+      };
+      if (pose === 'walk') {
+        armNear = armAng(shR, Math.sin(gait + Math.PI) * 0.48, 0.30 + 0.25 * Math.max(0, Math.sin(gait + Math.PI)));
+        armFar = armAng(shL, Math.sin(gait) * 0.48, 0.30 + 0.25 * Math.max(0, Math.sin(gait)));
+      } else if (pose === 'run') {
+        armNear = armAng(shR, Math.sin(gait + Math.PI) * 0.95 - 0.1, 1.45);
+        armFar = armAng(shL, Math.sin(gait) * 0.95 - 0.1, 1.45);
       } else if (pose === 'bike') {
-        strokeOutlinedArm(facing * 2, -5, 0, 0, facing * 10, -2, false);
-        ctx.fillStyle = skin;
-        ctx.beginPath(); ctx.arc(facing * 10, -2, 1.8, 0, Math.PI * 2); ctx.fill();
-      } else if (pose === 'run' || pose === 'walk') {
-        strokeOutlinedArm(-6, -5, 0, 0, -9 + stride * 0.7, 2, false);
-        strokeOutlinedArm(6, -5, 0, 0, 9 - stride * 0.7, 2, false);
-        ctx.fillStyle = skin;
-        ctx.beginPath(); ctx.arc(-9 + stride * 0.7, 2, 1.8, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(9 - stride * 0.7, 2, 1.8, 0, Math.PI * 2); ctx.fill();
+        const [hx, hy] = toLocal(11.5 * facing, 4.5);
+        armNear = armIK(shR, hx, hy, -facing);
+        armFar = armIK(shL, hx - facing * 0.6, hy + 0.4, -facing);
+      } else if (pose === 'cling') {
+        const [h1x, h1y] = toLocal(facing * 12.5, -6.5);
+        const [h2x, h2y] = toLocal(facing * 12.5, -4.5);
+        armNear = armIK(shR, h1x, h1y, -facing);
+        armFar = armIK(shL, h2x, h2y, -facing);
+      } else if (pose === 'winner') {
+        armNear = armIK(shR, 7.6, -21.8, 1);
+        armFar = armIK(shL, -7.6, -21.8, -1);
+      } else if (pose === 'abducted') {
+        const wv = Math.sin(now * 0.03 + ph) * 3.5;
+        armNear = armIK(shR, 7.2, -19.5 + wv, 1);
+        armFar = armIK(shL, -7.2, -19.5 - wv, -1);
+      } else if (pose === 'read') {
+        armNear = armIK(shR, 2.7, -5.6, 1);
+        armFar = armIK(shL, -2.7, -5.6, -1);
       } else {
-        const waveIdle = Math.sin(now * 0.005 + phase) * 2;
-        strokeOutlinedArm(-6, -5, 0, 0, -8.8, 3, false);
-        strokeOutlinedArm(6, -5, 0, 0, 9.6, -2 + waveIdle, false);
-        ctx.fillStyle = skin;
-        ctx.beginPath(); ctx.arc(-8.8, 3, 1.8, 0, Math.PI * 2); ctx.fill();
-        ctx.beginPath(); ctx.arc(9.6, -2 + waveIdle, 1.8, 0, Math.PI * 2); ctx.fill();
+        const sw = Math.sin(now * 0.0016 + ph) * 0.35;
+        armNear = armIK(shR, 5.0 + sw * 0.3, -1.6, 1);
+        armFar = armIK(shL, -5.0 + sw * 0.3, -1.6, -1);
       }
 
-      // 4. HEAD & HAIR & ANIME-INSPIRED EXPRESSIVE FACE
-      ctx.save();
-      ctx.translate(0, -14.8);
-
-      // Cute ears on both sides
-      ctx.fillStyle = skin;
-      ctx.strokeStyle = outline;
-      ctx.lineWidth = 0.9;
-      ctx.beginPath(); ctx.arc(-6.4, 1, 1.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.arc(6.4, 1, 1.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-      // Hair back volume
-      ctx.fillStyle = hair;
-      ctx.strokeStyle = outline;
-      ctx.lineWidth = 1.05;
-      ctx.beginPath();
-      if (hairStyle === 2) {
-        // Bob cut rounded outer silhouette down past cheeks
-        ctx.arc(0, -1, 7.6, Math.PI * 0.85, Math.PI * 0.15, false);
-        ctx.lineTo(7.4, 4.5);
-        ctx.quadraticCurveTo(0, 6.2, -7.4, 4.5);
-        ctx.closePath();
-      } else {
-        ctx.arc(0, -1.2, 7.4, 0, Math.PI * 2);
-      }
-      ctx.fill();
-      ctx.stroke();
-
-      // Face shape (softer tapered anime chin)
-      ctx.fillStyle = skin;
-      ctx.strokeStyle = outline;
-      ctx.lineWidth = 1.05;
-      ctx.beginPath();
-      ctx.moveTo(-6.2, -1.5);
-      ctx.arc(0, -0.5, 6.2, Math.PI, 0, false);
-      ctx.quadraticCurveTo(6.3, 4.8, 0, 6.8);
-      ctx.quadraticCurveTo(-6.3, 4.8, -6.2, -1.5);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-
-      // Styled Hair Bangs & Crown
-      ctx.fillStyle = hair;
-      ctx.strokeStyle = outline;
-      ctx.lineWidth = 0.95;
-      ctx.beginPath();
-      if (hairStyle === 0) {
-        // Cool spiky bangs
-        ctx.moveTo(-6.6, -1);
-        ctx.arc(0, -1.8, 6.8, Math.PI, 0);
-        ctx.lineTo(6.6, -0.5);
-        ctx.lineTo(3.8, -3.5); ctx.lineTo(2.4, -0.8);
-        ctx.lineTo(0, -4.0); ctx.lineTo(-1.8, -0.8);
-        ctx.lineTo(-4.2, -3.6);
-        ctx.closePath();
-      } else if (hairStyle === 1) {
-        // Neat side-swept parted bangs
-        ctx.arc(0, -2.0, 6.7, Math.PI, 0);
-        ctx.quadraticCurveTo(3.5, 0.5, -1.5, -2.2);
-        ctx.quadraticCurveTo(-4, -0.5, -6.5, -1.6);
-        ctx.closePath();
-      } else {
-        // Soft curved bangs + side locks framing cheeks
-        ctx.arc(0, -2.0, 6.8, Math.PI, 0);
-        ctx.lineTo(6.7, 2.5); ctx.lineTo(4.8, -0.5);
-        ctx.quadraticCurveTo(0, -2.5, -4.8, -0.5);
-        ctx.lineTo(-6.7, 2.5);
-        ctx.closePath();
-      }
-      ctx.fill();
-      ctx.stroke();
-
-      // Cute hair clip on bob cut
-      if (hairStyle === 2) {
-        ctx.fillStyle = clipColor;
-        ctx.beginPath(); ctx.roundRect(2.6, -4.4, 3.2, 1.5, 0.7); ctx.fill();
-      }
-
-      // Expressive Eyes, Eyebrows & Mouth
-      const eyeShift = (pose === 'cling' || pose === 'run' || pose === 'walk') ? facing * 1.3 : 0;
-      if (pose === 'cling' || pose === 'abducted') {
-        // Shocked eyebrows
-        ctx.strokeStyle = hair;
-        ctx.lineWidth = 1.0;
+      // ---------- HÀM VẼ BỘ PHẬN ----------
+      const drawShoe = (fx, fy, shade, isProfile, side) => {
+        const dark = !o.isStudent || isGirl || isAstro ? null : true;
+        if (isAstro) {
+          ctx.fillStyle = shade ? '#64748b' : '#94a3b8';
+          ctx.beginPath();
+          if (isProfile) ctx.ellipse(fx + facing * 1.1, fy + 0.2, 2.6, 1.3, 0, 0, Math.PI * 2);
+          else ctx.ellipse(fx + side * 0.3, fy + 0.2, 1.8, 1.1, 0, 0, Math.PI * 2);
+          ctx.fill();
+          return;
+        }
+        // Giày: nữ giày búp bê đen, nam giày thể thao trắng đế xám
+        const upper = isGirl ? (shade ? '#0b0f17' : '#111827') : (shade ? '#d7dde5' : '#f8fafc');
+        ctx.fillStyle = upper;
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.45;
         ctx.beginPath();
-        ctx.moveTo(-3.6 + eyeShift, -2.6); ctx.lineTo(-1.2 + eyeShift, -3.4);
-        ctx.moveTo(3.6 + eyeShift, -2.6); ctx.lineTo(1.2 + eyeShift, -3.4);
-        ctx.stroke();
-        // Wide shocked eyes
-        ctx.fillStyle = '#ffffff';
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 0.7;
-        ctx.beginPath();
-        ctx.arc(-2.2 + eyeShift, 0.2, 1.85, 0, Math.PI * 2);
-        ctx.arc(2.2 + eyeShift, 0.2, 1.85, 0, Math.PI * 2);
+        if (isProfile) {
+          ctx.moveTo(fx - facing * 1.2, fy - 1.0);
+          ctx.quadraticCurveTo(fx + facing * 1.0, fy - 1.4, fx + facing * 2.6, fy - 0.1);
+          ctx.quadraticCurveTo(fx + facing * 3.1, fy + 0.7, fx + facing * 2.2, fy + 0.8);
+          ctx.lineTo(fx - facing * 1.3, fy + 0.8);
+          ctx.closePath();
+        } else {
+          ctx.ellipse(fx + side * 0.35, fy + 0.15, 1.75, 1.05, 0, 0, Math.PI * 2);
+        }
         ctx.fill(); ctx.stroke();
-        ctx.fillStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.arc(-2.2 + eyeShift, 0.2, 0.9, 0, Math.PI * 2);
-        ctx.arc(2.2 + eyeShift, 0.2, 0.9, 0, Math.PI * 2);
-        ctx.fill();
-        // Specular sparkle
-        ctx.fillStyle = '#ffffff';
-        ctx.beginPath();
-        ctx.arc(-2.6 + eyeShift, -0.3, 0.45, 0, Math.PI * 2);
-        ctx.arc(1.8 + eyeShift, -0.3, 0.45, 0, Math.PI * 2);
-        ctx.fill();
-        // Open O mouth
-        ctx.fillStyle = '#dc2626';
+        if (!isGirl) {
+          ctx.fillStyle = shade ? '#64748b' : '#94a3b8';
+          if (isProfile) ctx.fillRect(Math.min(fx - facing * 1.3, fx + facing * 2.6), fy + 0.4, 3.9, 0.45);
+          else ctx.fillRect(fx + side * 0.35 - 1.6, fy + 0.75, 3.2, 0.4);
+          ctx.fillStyle = accent;
+          if (isProfile) ctx.fillRect(fx + facing * 0.2 - 0.5, fy - 0.5, 1.0, 0.7);
+        }
+        void dark;
+      };
+
+      const drawLeg = (L, shade, side) => {
+        const thighC = isGirl && !isAstro ? (shade ? skinSh : skin) : (shade ? rhShade(pantsC, -0.22) : pantsC);
+        const shinC = thighC;
+        const rT = isGirl ? 1.85 : 2.15, rK = isGirl ? 1.45 : 1.8, rA = isGirl ? 1.05 : 1.5;
+        rhLimb(ctx, L.hx, L.hy, L.kx, L.ky, rT, rK, thighC, line, 0.45);
+        rhLimb(ctx, L.kx, L.ky, L.fx, L.fy - 0.6, rK, rA, shinC, line, 0.45);
+        if (isGirl && !isAstro) {
+          // Tất trắng ngang bắp chân
+          const sx = L.kx + (L.fx - L.kx) * 0.62, sy = L.ky + (L.fy - L.ky) * 0.62;
+          rhLimb(ctx, sx, sy, L.fx, L.fy - 0.6, 1.25, 1.12, shade ? '#dfe4ea' : '#f8fafc', null);
+        } else if (!isAstro) {
+          // Nếp gấp quần ở đầu gối
+          ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.moveTo(L.kx - 0.8, L.ky - 0.6); ctx.lineTo(L.kx + 0.6, L.ky + 0.4); ctx.stroke();
+        }
+        drawShoe(L.fx, L.fy, shade, profile, side);
+      };
+
+      const drawArm = (A, shade) => {
+        const sk = shade ? skinSh : skin;
+        rhLimb(ctx, A.sx, A.sy, A.ex, A.ey, 1.35, 1.1, sk, line, 0.4);
+        rhLimb(ctx, A.ex, A.ey, A.hx, A.hy, 1.1, 0.82, sk, line, 0.4);
+        // Bàn tay
+        ctx.fillStyle = sk;
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.4;
+        ctx.beginPath(); ctx.ellipse(A.hx, A.hy, 1.05, 1.15, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        const slv = shade ? rhShade(shirtC, -0.12) : shirtC;
+        if (isAstro || !o.isStudent) {
+          // Tay áo dài
+          rhLimb(ctx, A.sx, A.sy, A.ex, A.ey, 1.7, 1.4, slv, line, 0.4);
+          rhLimb(ctx, A.ex, A.ey, A.hx + (A.ex - A.hx) * 0.18, A.hy + (A.ey - A.hy) * 0.18, 1.4, 1.15, slv, line, 0.4);
+        } else {
+          // Tay áo ngắn đồng phục
+          const mx = A.sx + (A.ex - A.sx) * 0.62, my = A.sy + (A.ey - A.sy) * 0.62;
+          rhLimb(ctx, A.sx, A.sy, mx, my, 1.8, 1.6, slv, line, 0.4);
+        }
+      };
+
+      const torsoW = profile ? 3.3 : 4.6, waistW = profile ? 2.9 : 3.6;
+      const TOP = -12.9, WAIST = -1.4;
+
+      const drawCape = () => {
+        if (!o.isHero) return;
+        const wv = Math.sin(now * 0.008) * 1.6;
+        ctx.fillStyle = '#b91c1c';
         ctx.strokeStyle = '#7f1d1d';
-        ctx.lineWidth = 0.7;
+        ctx.lineWidth = 0.6;
         ctx.beginPath();
-        ctx.ellipse(eyeShift * 0.6, 3.8, 1.5, 1.9, 0, 0, Math.PI * 2);
+        ctx.moveTo(-4.2, -12.6);
+        ctx.quadraticCurveTo(-7.5, 0 + wv, -7.0, 11);
+        ctx.quadraticCurveTo(0, 12.5 - wv, 7.0, 11);
+        ctx.quadraticCurveTo(7.5, 0 - wv, 4.2, -12.6);
+        ctx.closePath();
         ctx.fill(); ctx.stroke();
-      } else {
-        // Soft eyebrows
-        ctx.strokeStyle = hair;
-        ctx.lineWidth = 0.9;
+      };
+
+      const drawTorso = () => {
+        const ox = profile ? facing * 0.25 : 0;
+        // Thân áo
+        const tg = ctx.createLinearGradient(-torsoW + ox, TOP, torsoW + ox, WAIST);
+        tg.addColorStop(0, rhShade(shirtC, 0.08));
+        tg.addColorStop(0.55, shirtC);
+        tg.addColorStop(1, rhShade(shirtC, -0.16));
+        ctx.fillStyle = tg;
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.5;
         ctx.beginPath();
-        ctx.moveTo(-3.5 + eyeShift, -1.9); ctx.lineTo(-1.1 + eyeShift, -2.2);
-        ctx.moveTo(1.1 + eyeShift, -2.2); ctx.lineTo(3.5 + eyeShift, -1.9);
+        ctx.moveTo(-torsoW + 0.9 + ox, TOP);
+        ctx.quadraticCurveTo(-torsoW + ox, TOP + 0.1, -torsoW - 0.1 + ox, TOP + 1.8);
+        ctx.lineTo(-waistW + ox, WAIST);
+        ctx.lineTo(waistW + ox, WAIST);
+        ctx.lineTo(torsoW + 0.1 + ox, TOP + 1.8);
+        ctx.quadraticCurveTo(torsoW + ox, TOP + 0.1, torsoW - 0.9 + ox, TOP);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        // Nếp áo
+        ctx.strokeStyle = 'rgba(100,116,139,0.28)';
+        ctx.lineWidth = 0.45;
+        ctx.beginPath();
+        ctx.moveTo(-waistW + 1.0 + ox, WAIST - 0.3); ctx.quadraticCurveTo(-1.0 + ox, -5, -0.6 + ox, -8.5);
+        ctx.moveTo(waistW - 0.9 + ox, WAIST - 0.3); ctx.quadraticCurveTo(1.6 + ox, -4.5, 2.0 + ox, -7.5);
         ctx.stroke();
-        // Cute anime eyes with upper lash curve + colored iris + specular dot
-        [-2.1 + eyeShift, 2.1 + eyeShift].forEach((ex, eIdx) => {
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath(); ctx.ellipse(ex, 0.4, 1.5, 1.7, 0, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#1e293b';
-          ctx.beginPath(); ctx.ellipse(ex, 0.55, 1.05, 1.3, 0, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = '#ffffff';
-          ctx.beginPath(); ctx.arc(ex - 0.35, 0, 0.45, 0, Math.PI * 2); ctx.fill();
-          if (isGirl) {
-            ctx.strokeStyle = outline;
-            ctx.lineWidth = 0.85;
-            ctx.beginPath();
-            ctx.arc(ex, 0.3, 1.55, Math.PI * 1.15, Math.PI * 1.85);
-            ctx.stroke();
+        if (o.isStudent && !isAstro && !profile) {
+          // Nẹp áo, cúc áo & túi ngực
+          ctx.strokeStyle = 'rgba(148,163,184,0.55)';
+          ctx.lineWidth = 0.4;
+          ctx.beginPath(); ctx.moveTo(0.35, -10.5); ctx.lineTo(0.35, WAIST); ctx.stroke();
+          ctx.fillStyle = '#cbd5e1';
+          [-6.0, -3.6].forEach(by => { ctx.beginPath(); ctx.arc(0.35, by, 0.32, 0, Math.PI * 2); ctx.fill(); });
+          ctx.strokeStyle = 'rgba(148,163,184,0.7)';
+          ctx.strokeRect(-3.4, -9.6, 1.9, 2.0);
+          ctx.fillStyle = '#1d4ed8';
+          ctx.fillRect(-3.0, -9.2, 1.1, 0.5);
+        }
+        // Phần hông: nam quần âu xanh + thắt lưng; nữ váy xếp ly
+        if (!isGirl || isAstro) {
+          ctx.fillStyle = pantsC;
+          ctx.strokeStyle = line;
+          ctx.beginPath();
+          ctx.moveTo(-waistW + ox, WAIST);
+          ctx.lineTo(waistW + ox, WAIST);
+          ctx.lineTo(waistW + 0.3 + ox, 1.6);
+          ctx.lineTo(-waistW - 0.3 + ox, 1.6);
+          ctx.closePath();
+          ctx.fill(); ctx.stroke();
+          if (!isAstro) {
+            ctx.fillStyle = '#0b0f17';
+            ctx.fillRect(-waistW + ox, WAIST - 0.15, waistW * 2, 0.8);
+            ctx.fillStyle = '#cbd5e1';
+            ctx.fillRect(ox + (profile ? facing * 1.4 : 0) - 0.5, WAIST - 0.15, 1.0, 0.8);
           }
+        }
+      };
+
+      const drawSkirt = () => {
+        if (!isGirl || isAstro) return;
+        const ox = profile ? facing * 0.25 : 0;
+        const flare = profile ? Math.sin(gait * 2) * 0.5 : 0;
+        const sg = ctx.createLinearGradient(-5, WAIST, 5, 7);
+        sg.addColorStop(0, rhShade(pantsC, 0.12));
+        sg.addColorStop(1, rhShade(pantsC, -0.12));
+        ctx.fillStyle = sg;
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(-waistW + ox, WAIST);
+        ctx.lineTo(waistW + ox, WAIST);
+        ctx.lineTo(waistW + 2.1 + ox + flare, 6.8);
+        ctx.quadraticCurveTo(ox, 7.6, -waistW - 2.1 + ox + flare, 6.8);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+        ctx.lineWidth = 0.45;
+        [-2.4, -0.8, 0.8, 2.4].forEach(px => {
+          ctx.beginPath(); ctx.moveTo(px * 0.8 + ox, WAIST + 0.4); ctx.lineTo(px * 1.35 + ox + flare * 0.5, 6.9); ctx.stroke();
         });
-        // Rosy cheeks
-        ctx.fillStyle = 'rgba(244,63,94,0.36)';
-        ctx.beginPath();
-        ctx.ellipse(-3.9, 2.3, 1.35, 0.85, 0, 0, Math.PI * 2);
-        ctx.ellipse(3.9, 2.3, 1.35, 0.85, 0, 0, Math.PI * 2);
-        ctx.fill();
-        // Warm smile
+      };
+
+      const drawCollarScarf = () => {
+        if (!o.isStudent || isAstro) {
+          if (isAstro) {
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(-3.4, -10.4, 1.8, 1.1);
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(1.2, -9.6, 2.4, 3.2);
+          }
+          return;
+        }
+        const cx = profile ? facing * 1.3 : 0;
+        // Cổ áo sơ mi
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = 'rgba(100,116,139,0.6)';
+        ctx.lineWidth = 0.4;
+        ctx.beginPath(); ctx.moveTo(cx - 2.5, TOP + 0.1); ctx.lineTo(cx - 0.2, TOP + 2.2); ctx.lineTo(cx - 2.2, TOP + 2.6); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx + 2.5, TOP + 0.1); ctx.lineTo(cx + 0.2, TOP + 2.2); ctx.lineTo(cx + 2.2, TOP + 2.6); ctx.closePath(); ctx.fill(); ctx.stroke();
+        // Khăn quàng đỏ: vòng cổ + nút thắt + 2 đuôi khăn
+        const sway = profile ? Math.sin(gait) * 0.6 * facing : 0;
+        ctx.fillStyle = '#dc2626';
         ctx.strokeStyle = '#991b1b';
-        ctx.lineWidth = 1.1;
+        ctx.lineWidth = 0.35;
         ctx.beginPath();
-        ctx.arc(eyeShift * 0.35, 2.3, 1.9, 0.12 * Math.PI, 0.88 * Math.PI);
-        ctx.stroke();
-      }
+        ctx.moveTo(cx - 2.3, TOP + 0.2);
+        ctx.quadraticCurveTo(cx, TOP + 1.3, cx + 2.3, TOP + 0.2);
+        ctx.lineTo(cx + 0.9, TOP + 2.0);
+        ctx.lineTo(cx - 0.9, TOP + 2.0);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(cx, TOP + 2.1, 0.85, 0.7, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx - 0.5, TOP + 2.5); ctx.lineTo(cx - 1.8 + sway, TOP + 7.2); ctx.lineTo(cx - 0.6 + sway, TOP + 7.0); ctx.closePath();
+        ctx.moveTo(cx + 0.5, TOP + 2.5); ctx.lineTo(cx + 1.5 + sway, TOP + 6.6); ctx.lineTo(cx + 0.4 + sway, TOP + 6.9); ctx.closePath();
+        ctx.fill(); ctx.stroke();
+      };
 
-      // Optional Astronaut Helmet Visor
-      if (o.isAstronaut) {
-        ctx.strokeStyle = '#e2e8f0';
-        ctx.lineWidth = 1.8;
-        ctx.fillStyle = 'rgba(56, 189, 248, 0.22)';
+      const drawBackpack = (front) => {
+        if (!o.isStudent) return;
+        const bd = rhShade(bagC, -0.25);
+        if (profile) {
+          if (front) {
+            // Quai đeo trước ngực
+            ctx.strokeStyle = bd;
+            ctx.lineWidth = 0.9;
+            ctx.beginPath();
+            ctx.moveTo(-facing * 1.2, TOP + 0.4);
+            ctx.quadraticCurveTo(facing * 1.8, TOP + 3.5, facing * 0.9, -4.0);
+            ctx.stroke();
+            return;
+          }
+          const bx = -facing * (torsoW + 1.7);
+          const g = ctx.createLinearGradient(bx - 2, 0, bx + 2, 0);
+          g.addColorStop(0, rhShade(bagC, facing > 0 ? -0.15 : 0.1));
+          g.addColorStop(1, rhShade(bagC, facing > 0 ? 0.1 : -0.15));
+          ctx.fillStyle = g;
+          ctx.strokeStyle = line;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.roundRect(bx - 2.1, -12.3, 4.2, 9.4, 1.6); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = bd;
+          ctx.beginPath(); ctx.roundRect(bx - facing * 0.4 - 1.5, -7.4, 3.0, 3.6, 0.9); ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.35)';
+          ctx.fillRect(bx - 1.5, -9.0, 3.0, 0.45);
+        } else {
+          if (front) {
+            ctx.strokeStyle = bd;
+            ctx.lineWidth = 0.95;
+            ctx.beginPath();
+            ctx.moveTo(-2.9, TOP + 0.2); ctx.quadraticCurveTo(-3.6, -8, -3.3, -3.6);
+            ctx.moveTo(2.9, TOP + 0.2); ctx.quadraticCurveTo(3.6, -8, 3.3, -3.6);
+            ctx.stroke();
+            return;
+          }
+          ctx.fillStyle = bagC;
+          ctx.strokeStyle = line;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.roundRect(-5.1, -13.6, 10.2, 11.2, 2.6); ctx.fill(); ctx.stroke();
+          ctx.strokeStyle = bd;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath(); ctx.arc(0, -13.6, 1.4, Math.PI, 0); ctx.stroke();
+        }
+      };
+
+      const drawBackHair = () => {
+        const look = pose === 'read' ? 0.55 : 0;
+        const hx = profile ? facing * 0.55 : 0;
+        const hy = -18.7 + look;
+        // Tóc phía sau (tóc dài / ngang vai / đuôi ngựa)
+        ctx.fillStyle = hair;
+        ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+        ctx.lineWidth = 0.45;
+        const bk = profile ? -facing * 1.0 : 0;
+        if (hairStyle === 2 || hairStyle === 4) {
+          const len = hairStyle === 2 ? 9.6 : 3.8;
+          const hw = hairStyle === 2 ? 4.0 : 4.15;
+          const swing = profile ? -facing * Math.abs(Math.sin(gait)) * 0.6 : 0;
+          ctx.beginPath();
+          ctx.moveTo(hx + bk - hw, hy - 0.8);
+          ctx.quadraticCurveTo(hx + bk - hw - 0.4, hy + len * 0.6, hx + bk - hw + 0.5 + swing, hy + len);
+          ctx.quadraticCurveTo(hx + bk, hy + len + 0.9, hx + bk + hw - 0.5 + swing, hy + len);
+          ctx.quadraticCurveTo(hx + bk + hw + 0.4, hy + len * 0.6, hx + bk + hw, hy - 0.8);
+          ctx.closePath();
+          ctx.fill(); ctx.stroke();
+        } else if (hairStyle === 3) {
+          const sw = Math.sin(now * 0.008 + ph) * 0.9;
+          const tx = profile ? hx - facing * 3.3 : hx + 2.4;
+          const dir = profile ? -facing : 1;
+          ctx.beginPath();
+          ctx.moveTo(tx, hy - 2.6);
+          ctx.quadraticCurveTo(tx + dir * 2.4, hy + 0.5 + sw, tx + dir * 1.4 + sw * 0.6, hy + 7.0);
+          ctx.quadraticCurveTo(tx + dir * 0.2, hy + 3.4, tx - dir * 0.5, hy - 0.8);
+          ctx.closePath();
+          ctx.fill(); ctx.stroke();
+          ctx.fillStyle = clipColor;
+          ctx.beginPath(); ctx.ellipse(tx + dir * 0.25, hy - 2.0, 0.75, 0.6, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = hair;
+        }
+      };
+
+      const drawHead = () => {
+        const look = pose === 'read' ? 0.55 : 0;
+        const hx = profile ? facing * 0.55 : 0;
+        const hy = -18.7 + look;
+        const fs = profile ? facing * 0.85 : 0;
+        const k = profile ? 0.8 : 1;
+        // Cổ
+        ctx.fillStyle = skinSh;
+        ctx.fillRect(hx - 1.05 - fs * 0.2, -15.6 + look * 0.5, 2.1, 3.1);
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.fillRect(hx - 1.05 - fs * 0.2, -15.0 + look * 0.5, 2.1, 0.9);
+
+        if (profile) drawBackHair();
+        const bk = profile ? -facing * 1.0 : 0;
+        ctx.fillStyle = hair;
+        // Khối tóc sau gáy
         ctx.beginPath();
-        ctx.arc(0, -0.2, 8.2, 0, Math.PI * 2);
+        ctx.ellipse(hx + bk * 0.6, hy - 0.9, 3.75, 3.95, 0, 0, Math.PI * 2);
         ctx.fill();
-        ctx.stroke();
-      }
 
-      // Optional Explorer Helmet or Winner Crown
-      if (o.helmetColor) {
-        ctx.fillStyle = o.helmetColor;
-        ctx.strokeStyle = outline;
-        ctx.lineWidth = 1;
+        // Tai
+        ctx.fillStyle = skin;
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.4;
+        if (profile) {
+          ctx.beginPath(); ctx.ellipse(hx - facing * 1.4, hy + 0.2, 0.75, 1.1, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        } else {
+          [-1, 1].forEach(sd => { ctx.beginPath(); ctx.ellipse(hx + sd * 3.35, hy + 0.2, 0.7, 1.05, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); });
+        }
+
+        // Khuôn mặt (oval thon cằm) + đổ bóng mềm
+        const fg = ctx.createRadialGradient(hx + fs * 0.4 - 1.0, hy - 1.2, 0.5, hx, hy + 0.6, 5.0);
+        fg.addColorStop(0, rhShade(skin, 0.07));
+        fg.addColorStop(0.7, skin);
+        fg.addColorStop(1, skinSh);
+        ctx.fillStyle = fg;
+        ctx.strokeStyle = line;
+        ctx.lineWidth = 0.45;
+        const fx0 = hx + fs * 0.35;
         ctx.beginPath();
-        ctx.arc(0, -2.5, 6.8, Math.PI, 0);
-        ctx.fill();
+        ctx.moveTo(fx0 - 3.3, hy - 0.6);
+        ctx.bezierCurveTo(fx0 - 3.35, hy - 4.6, fx0 + 3.35, hy - 4.6, fx0 + 3.3, hy - 0.6);
+        ctx.bezierCurveTo(fx0 + 3.15, hy + 2.3, fx0 + 1.5 + fs * 0.3, hy + 4.0, fx0 + fs * 0.35, hy + 4.15);
+        ctx.bezierCurveTo(fx0 - 1.5 + fs * 0.3, hy + 4.0, fx0 - 3.15, hy + 2.3, fx0 - 3.3, hy - 0.6);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+
+        // Mắt, lông mày, mũi, miệng
+        const ey = hy - 0.15 + look * 0.35;
+        const exs = [fx0 + fs * 0.5 - 1.3 * k, fx0 + fs * 0.5 + 1.3 * k];
+        const shocked = (pose === 'cling' || pose === 'abducted');
+        ctx.strokeStyle = rhShade(hair, 0.05);
+        ctx.lineWidth = 0.55;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        exs.forEach((ex, i) => {
+          const s = i === 0 ? -1 : 1;
+          const lift = shocked ? -0.45 : 0;
+          ctx.moveTo(ex - 0.85, hy - 1.55 + lift + (s < 0 ? 0.1 : 0)); ctx.quadraticCurveTo(ex, hy - 1.95 + lift, ex + 0.85, hy - 1.55 + lift + (s > 0 ? 0.1 : 0));
+        });
         ctx.stroke();
-      }
-      if (o.isHero || pose === 'winner') {
-        ctx.font = '11px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('👑', 0, -9.5);
+        exs.forEach(ex => {
+          if (pose === 'read') {
+            ctx.strokeStyle = '#2b2118';
+            ctx.lineWidth = 0.45;
+            ctx.beginPath(); ctx.moveTo(ex - 0.7, ey + 0.1); ctx.quadraticCurveTo(ex, ey + 0.45, ex + 0.7, ey + 0.1); ctx.stroke();
+            return;
+          }
+          const rw = shocked ? 0.85 : 0.78, rh = shocked ? 0.7 : 0.48;
+          ctx.fillStyle = '#fbfaf8';
+          ctx.beginPath(); ctx.ellipse(ex, ey, rw, rh, 0, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#3a2618';
+          ctx.beginPath(); ctx.arc(ex + fs * 0.18, ey + 0.02, shocked ? 0.42 : 0.44, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#0b0b0d';
+          ctx.beginPath(); ctx.arc(ex + fs * 0.18, ey + 0.02, 0.22, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = 'rgba(255,255,255,0.9)';
+          ctx.beginPath(); ctx.arc(ex + fs * 0.18 - 0.15, ey - 0.15, 0.11, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = '#1f1712';
+          ctx.lineWidth = isGirl ? 0.5 : 0.38;
+          ctx.beginPath(); ctx.ellipse(ex, ey, rw, rh, 0, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+        });
+        // Mũi
+        ctx.strokeStyle = rhShade(skin, -0.32);
+        ctx.lineWidth = 0.4;
+        const nx = fx0 + fs * 0.9;
+        ctx.beginPath();
+        ctx.moveTo(nx + 0.1, hy + 0.1); ctx.quadraticCurveTo(nx + 0.55 * (profile ? facing : 1), hy + 1.2, nx, hy + 1.45);
+        ctx.stroke();
+        // Má hồng nhẹ
+        ctx.fillStyle = 'rgba(225, 110, 110, 0.16)';
+        ctx.beginPath();
+        ctx.ellipse(exs[0] - 0.4, hy + 1.5, 0.9, 0.55, 0, 0, Math.PI * 2);
+        ctx.ellipse(exs[1] + 0.4, hy + 1.5, 0.9, 0.55, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // Miệng
+        const mx = fx0 + fs * 0.7, my = hy + 2.55;
+        if (shocked) {
+          ctx.fillStyle = '#7f1d1d';
+          ctx.beginPath(); ctx.ellipse(mx, my + 0.1, 0.6, 0.8, 0, 0, Math.PI * 2); ctx.fill();
+        } else if (pose === 'winner' || o.isHero) {
+          ctx.fillStyle = '#7f1d1d';
+          ctx.beginPath(); ctx.moveTo(mx - 1.1, my - 0.2); ctx.quadraticCurveTo(mx, my + 1.5, mx + 1.1, my - 0.2); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(mx - 0.8, my - 0.15, 1.6, 0.35);
+        } else {
+          ctx.strokeStyle = '#a14a44';
+          ctx.lineWidth = 0.45;
+          ctx.beginPath(); ctx.moveTo(mx - 0.75, my); ctx.quadraticCurveTo(mx, my + 0.45, mx + 0.75, my); ctx.stroke();
+        }
+
+        // Tóc phía trước (mái)
+        ctx.fillStyle = hair;
+        ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+        ctx.lineWidth = 0.45;
+        const fo = profile ? -facing * 0.35 : 0;
+        ctx.beginPath();
+        if (hairStyle === 0) {
+          ctx.moveTo(hx + fo - 3.55, hy - 0.2);
+          ctx.bezierCurveTo(hx + fo - 3.9, hy - 5.1, hx + fo + 3.9, hy - 5.1, hx + fo + 3.55, hy - 0.2);
+          ctx.lineTo(hx + fo + 3.0, hy - 1.9);
+          ctx.lineTo(hx + fo + 2.0, hy - 1.6); ctx.lineTo(hx + fo + 1.2, hy - 2.3);
+          ctx.lineTo(hx + fo + 0.2, hy - 1.75); ctx.lineTo(hx + fo - 0.8, hy - 2.35);
+          ctx.lineTo(hx + fo - 1.9, hy - 1.7); ctx.lineTo(hx + fo - 3.0, hy - 2.1);
+          ctx.closePath();
+        } else if (hairStyle === 1) {
+          ctx.moveTo(hx + fo - 3.55, hy - 0.4);
+          ctx.bezierCurveTo(hx + fo - 3.9, hy - 5.1, hx + fo + 3.9, hy - 5.1, hx + fo + 3.55, hy - 0.4);
+          ctx.quadraticCurveTo(hx + fo + 2.6, hy - 1.4, hx + fo + 1.0, hy - 1.8);
+          ctx.quadraticCurveTo(hx + fo - 1.6, hy - 2.4, hx + fo - 3.0, hy - 1.4);
+          ctx.closePath();
+        } else {
+          ctx.moveTo(hx + fo - 3.7, hy + 2.6);
+          ctx.lineTo(hx + fo - 3.75, hy - 0.8);
+          ctx.bezierCurveTo(hx + fo - 3.9, hy - 5.2, hx + fo + 3.9, hy - 5.2, hx + fo + 3.75, hy - 0.8);
+          ctx.lineTo(hx + fo + 3.7, hy + 2.6);
+          ctx.lineTo(hx + fo + 3.0, hy + 0.2);
+          ctx.quadraticCurveTo(hx + fo + 2.2, hy - 1.6, hx + fo + 0.6, hy - 1.75);
+          ctx.quadraticCurveTo(hx + fo - 1.8, hy - 1.9, hx + fo - 3.0, hy + 0.2);
+          ctx.closePath();
+        }
+        ctx.fill(); ctx.stroke();
+        // Ánh sáng bóng tóc
+        ctx.strokeStyle = 'rgba(255,255,255,0.20)';
+        ctx.lineWidth = 0.55;
+        ctx.beginPath(); ctx.arc(hx + fo - 0.6, hy - 1.3, 3.0, Math.PI * 1.18, Math.PI * 1.55); ctx.stroke();
+        if (hairStyle === 4) {
+          ctx.fillStyle = clipColor;
+          ctx.beginPath(); ctx.roundRect(hx + fo + 1.4, hy - 2.6, 1.6, 0.6, 0.3); ctx.fill();
+        }
+
+        if (o.helmetColor) {
+          ctx.fillStyle = o.helmetColor;
+          ctx.strokeStyle = line;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.arc(hx, hy - 1.2, 4.0, Math.PI, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.fillRect(hx - 4.4, hy - 1.4, 8.8, 0.8);
+        }
+        if (isAstro) {
+          const vg = ctx.createRadialGradient(hx - 1.5, hy - 2, 0.5, hx, hy, 5.6);
+          vg.addColorStop(0, 'rgba(255,255,255,0.35)');
+          vg.addColorStop(1, 'rgba(56,189,248,0.18)');
+          ctx.fillStyle = vg;
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.lineWidth = 0.9;
+          ctx.beginPath(); ctx.arc(hx, hy - 0.2, 5.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
+        if (o.isHero || pose === 'winner') {
+          ctx.font = '7px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'alphabetic';
+          ctx.fillText('👑', hx, hy - 4.6);
+        }
+      };
+
+      const drawBook = () => {
+        ctx.save();
+        ctx.translate(0, -6.3);
+        ctx.fillStyle = '#1e3a8a';
+        ctx.beginPath(); ctx.moveTo(-4.4, 0.4); ctx.lineTo(0, 1.4); ctx.lineTo(4.4, 0.4); ctx.lineTo(4.4, 1.1); ctx.lineTo(0, 2.1); ctx.lineTo(-4.4, 1.1); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#fbf8ef';
+        ctx.strokeStyle = 'rgba(120,53,15,0.6)';
+        ctx.lineWidth = 0.4;
+        ctx.beginPath(); ctx.moveTo(0, 1.2); ctx.lineTo(-4.1, 0.2); ctx.lineTo(-4.0, -3.3); ctx.lineTo(0, -2.4); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, 1.2); ctx.lineTo(4.1, 0.2); ctx.lineTo(4.0, -3.3); ctx.lineTo(0, -2.4); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.strokeStyle = 'rgba(100,116,139,0.55)';
+        ctx.lineWidth = 0.3;
+        for (let i = 0; i < 3; i++) {
+          ctx.beginPath(); ctx.moveTo(-3.4, -2.2 + i * 0.9); ctx.lineTo(-0.6, -1.6 + i * 0.9); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(0.6, -1.6 + i * 0.9); ctx.lineTo(3.4, -2.2 + i * 0.9); ctx.stroke();
+        }
+        ctx.restore();
+        // Ngón tay giữ mép sách
+        ctx.fillStyle = skin;
+        [armNear, armFar].forEach(A => { ctx.beginPath(); ctx.ellipse(A.hx, A.hy, 0.95, 1.05, 0, 0, Math.PI * 2); ctx.fill(); });
+      };
+
+      // ---------- 3. THỨ TỰ VẼ (xa -> gần) ----------
+      ctx.lineJoin = 'round';
+      if (profile) {
+        withUpper(() => { drawCape(); drawArm(armFar, true); });
+        drawLeg(legFar, true, -1);
+        withUpper(() => { drawTorso(); });
+        drawLeg(legNear, false, 1);
+        withUpper(() => {
+          drawSkirt();
+          drawCollarScarf();
+          drawBackpack(false);
+          drawBackpack(true);
+          drawArm(armNear, false);
+          drawHead();
+        });
+      } else {
+        withUpper(() => { drawCape(); drawBackpack(false); drawBackHair(); });
+        drawLeg(legFar, true, -1);
+        drawLeg(legNear, false, 1);
+        withUpper(() => {
+          drawTorso();
+          drawSkirt();
+          drawBackpack(true);
+          drawCollarScarf();
+          drawArm(armFar, false);
+          drawArm(armNear, false);
+          if (pose === 'read') drawBook();
+          drawHead();
+        });
       }
 
-      ctx.restore();
       ctx.restore();
     }
 
@@ -31170,7 +31218,7 @@
 
       if (meteorSoundEnabled) ArcadePackAudio.tone(180, 0.45, 'sawtooth', 0.1, 480);
       const statusEl = document.getElementById('meteor-call-status');
-      if (statusEl) statusEl.innerText = '☄️ CẢNH BÁO: Bầu trời tối sầm! Thiên thạch rực lửa đang xé toạc màn đêm lao xuống đường phố!';
+      if (statusEl) statusEl.innerText = '☄️ Bầu trời tối sầm! Thiên thạch đang lao xuống — các bạn vẫn thong thả đi trên phố, ai sẽ được chọn?';
       if (!meteorAnimId) meteorAnimId = requestAnimationFrame(runMeteorLoop);
     }
 
@@ -31229,46 +31277,31 @@
         let facing = s.facing;
         let bob = Math.sin(now * 0.006 + s.phase) * 1.8;
 
-        if (meteorState === 'idle') {
-          if (s.activity === 'bike') {
-            const cycleAng = now * 0.0011 + s.phase;
-            s.nx = Math.max(0.06, Math.min(0.94, s.idleNx + Math.sin(cycleAng) * 0.055));
-            facing = Math.cos(cycleAng) >= 0 ? 1 : -1;
-            pose = 'bike';
-            bob = Math.sin(now * 0.015 + s.phase) * 0.7;
-          } else if (s.activity === 'read') {
-            pose = 'read';
-            facing = 1;
-            bob = 0;
-          } else if (s.activity === 'play') {
-            pose = 'idle';
-            bob = Math.abs(Math.sin(now * 0.007 + s.phase)) * -3.5;
-          } else {
-            const strollAngle = now * 0.0009 + s.phase;
-            s.nx = Math.max(0.05, Math.min(0.95, s.idleNx + Math.sin(strollAngle) * 0.032));
-            facing = Math.cos(strollAngle) >= 0 ? 1 : -1;
-            pose = 'walk';
-            bob = Math.abs(Math.sin(now * 0.008 + s.phase)) * -1.4;
-          }
-        } else if (meteorState === 'running') {
-          if (t < 0.68) {
-            // Panic reaction looking up at fiery meteor!
-            pose = (sIdx % 2 === 0) ? 'run' : 'idle';
-            facing = targetX >= s.nx * w ? 1 : -1;
-            bob = Math.abs(Math.sin(now * 0.012 + s.phase)) * -2.5;
-          } else {
-            // Meteor has landed
-            if (s.isWinner) {
-              pose = 'winner';
-              bob = 0;
-            } else {
-              pose = 'idle';
-              facing = targetX >= s.nx * w ? 1 : -1;
-            }
-          }
-        } else if (meteorState === 'finished') {
-          pose = s.isWinner ? 'winner' : 'idle';
-          facing = targetX >= s.nx * w ? 1 : -1;
+        // Học sinh luôn tiếp tục hoạt động (đi bộ / đạp xe / đọc sách / chơi) kể cả khi thiên thạch đang rơi.
+        // Chỉ học sinh bị thiên thạch chọn mới dừng lại sau khi va chạm.
+        const struck = s.isWinner && (meteorState === 'finished' || (meteorState === 'running' && t >= 0.68));
+        if (struck) {
+          pose = 'winner';
+          bob = 0;
+        } else if (s.activity === 'bike') {
+          const cycleAng = now * 0.0011 + s.phase;
+          s.nx = Math.max(0.06, Math.min(0.94, s.idleNx + Math.sin(cycleAng) * 0.055));
+          facing = Math.cos(cycleAng) >= 0 ? 1 : -1;
+          pose = 'bike';
+          bob = 0;
+        } else if (s.activity === 'read') {
+          pose = 'read';
+          facing = 1;
+          bob = 0;
+        } else if (s.activity === 'play') {
+          pose = 'idle';
+          bob = Math.abs(Math.sin(now * 0.007 + s.phase)) * -3.5;
+        } else {
+          const strollAngle = now * 0.0009 + s.phase;
+          s.nx = Math.max(0.05, Math.min(0.95, s.idleNx + Math.sin(strollAngle) * 0.032));
+          facing = Math.cos(strollAngle) >= 0 ? 1 : -1;
+          pose = 'walk';
+          bob = 0;
         }
 
         const sx = s.nx * w;
@@ -31280,7 +31313,7 @@
           ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 13, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
         }
 
-        if (meteorState === 'idle' && pose === 'bike') {
+        if (pose === 'bike') {
           drawStreetBicycle(ctx, sx, sy + 6, facing, s.color, now, true, isNightLit);
         }
 
@@ -31310,9 +31343,6 @@
           drawHighContrastBadge(ctx, sx, sy - 52, s.displayName, '#facc15', true);
         } else {
           ctx.save();
-          if (meteorState === 'running' && t >= 0.68 && !s.isWinner) {
-            ctx.globalAlpha = 0.55;
-          }
           drawCartoonHuman(ctx, sx, sy - (pose === 'bike' ? 5 : 0), {
             shirt: s.color,
             pants: '#1e293b',
