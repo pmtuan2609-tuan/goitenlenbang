@@ -2107,6 +2107,39 @@
           </div>
         </div>
 
+        <div onclick="openGameIntroModal('claw_machine')" data-mode="claw_machine" data-category="challenge" data-search="máy gắp thú gắp gấu bông càng gắp arcade thú nhồi bông gọi tên học sinh 🧸 gắp thú 🕹️ arcade" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-fuchsia-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-fuchsia-50 border border-fuchsia-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              🧸
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200 border">
+                ✨ Mới
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #25
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-fuchsia-600 transition-colors line-clamp-1">
+              Máy Gắp Thú
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Càng gắp lượn trên đống thú bông có tên học sinh, gắp trúng bạn nào là bạn đó lên bảng!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🧸 Thú Bông</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🕹️ Arcade</span>
+            </div>
+            <span class="text-fuchsia-600 group-hover:text-fuchsia-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
+
         <!-- Empty Search State -->
         <div id="home-empty-search" class="hidden col-span-full py-12 px-4 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
           <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-2xl shadow-xs">
@@ -2189,6 +2222,7 @@
               <option value="summon_card" class="bg-slate-900 text-purple-300 font-bold">🌟 Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)</option>
               <option value="meteor_call" class="bg-slate-900 text-rose-300 font-bold">☄️ Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)</option>
               <option value="naruto_summon" class="bg-slate-900 text-orange-300 font-bold">🍥 Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)</option>
+              <option value="claw_machine" class="bg-slate-900 text-fuchsia-300 font-bold">🧸 Máy Gắp Thú (Càng Gắp Thú Bông Arcade)</option>
             </select>
           </div>
 
@@ -2896,6 +2930,28 @@
             </div>
           </div>
           <canvas id="naruto-summon-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <!-- STAGE 25: MÁY GẮP THÚ -->
+        <div id="claw-machine-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-slate-950 border border-fuchsia-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-fuchsia-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-fuchsia-400 font-extrabold text-sm">🧸</span>
+              <span id="claw-machine-status">Máy gắp thú đã sẵn sàng! Bấm GẮP THÚ để gọi tên học sinh!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleClawSound()" id="claw-machine-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleClawFullscreen()" id="claw-machine-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-fuchsia-400"></i> Phóng to
+              </button>
+              <button onclick="initClawMachineGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới đống thú bông">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-fuchsia-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="claw-machine-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -3710,35 +3766,53 @@
     </div>
   </div>
 
-  <!-- ================= MODAL: KẾT QUẢ NGƯỜI THẮNG CUỘC ================= -->
+  <!-- ================= MODAL: THẺ GỌI TÊN (MỜI BẠN LÊN BẢNG) ================= -->
+  <style>
+    #result-modal-content{background:linear-gradient(120deg,#f0abfc,#818cf8,#38bdf8,#fcd34d,#f0abfc);background-size:300% 300%;animation:rcBorder 6s linear infinite}
+    @keyframes rcBorder{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+    @keyframes rcPop{0%{transform:scale(.7) rotate(-2deg);opacity:0}60%{transform:scale(1.06) rotate(1deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+    #result-modal.flex #winner-name-display{animation:rcPop .6s cubic-bezier(.2,.9,.3,1.2) both .15s}
+    @keyframes rcTwinkle{0%,100%{opacity:.15}50%{opacity:.9}}
+    #result-timer-btn.is-ending{animation:rcShake .5s ease-in-out 3;background:linear-gradient(180deg,#fb7185,#e11d48)!important;color:#fff!important}
+    @keyframes rcShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  </style>
   <div id="result-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md hidden items-center justify-center z-[700] p-4 opacity-0 transition-opacity duration-300">
-    <div id="result-modal-content" class="bg-slate-900 border-2 border-amber-400 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-[0_0_50px_rgba(245,158,11,0.3)] transform scale-95 transition-transform duration-300 text-center space-y-5">
-      <div class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl bg-gradient-to-tr from-amber-400 to-orange-500 text-white shadow-xl shadow-amber-500/40 ring-4 ring-white/20 animate-bounce">
-        👑
-      </div>
-      <div>
-        <div class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-wider mb-2">
-          Chúc Mừng Bạn Chiến Thắng!
+    <div id="result-modal-content" class="rounded-[28px] p-[3px] max-w-3xl w-full shadow-[0_0_80px_rgba(129,140,248,0.45)] transform scale-95 transition-transform duration-300">
+      <div class="relative overflow-hidden rounded-[25px] px-5 sm:px-10 pt-8 pb-7 text-center" style="background:radial-gradient(ellipse at 50% 0%,#3b2f9e 0%,#1e1b5e 55%,#12104a 100%)">
+        <span class="absolute left-[8%] top-[18%] text-sm text-amber-200" style="animation:rcTwinkle 2s infinite">✦</span>
+        <span class="absolute right-[10%] top-[28%] text-xs text-sky-200" style="animation:rcTwinkle 2.6s infinite .4s">✦</span>
+        <span class="absolute left-[16%] bottom-[30%] text-xs text-pink-200" style="animation:rcTwinkle 2.2s infinite .9s">✦</span>
+        <span class="absolute right-[18%] bottom-[24%] text-sm text-amber-200" style="animation:rcTwinkle 3s infinite .2s">✦</span>
+
+        <div class="relative inline-flex items-center gap-1.5 px-5 py-1.5 rounded-full text-sm font-black tracking-[0.18em] text-amber-950 uppercase" style="background:linear-gradient(180deg,#fde68a,#f59e0b);box-shadow:0 4px 0 #b45309,0 8px 18px rgba(245,158,11,.35)">
+          <span>✧</span> Mời bạn
         </div>
-        <h2 id="winner-name-display" class="text-2xl sm:text-3xl font-black text-white font-display">
+
+        <h2 id="winner-name-display" class="relative mt-5 font-display font-black leading-[1.08] break-words" style="color:#fff4d6;font-size:clamp(2.2rem,7.5vw,4.6rem);text-shadow:0 0 28px rgba(253,230,138,.55),0 4px 0 rgba(0,0,0,.25)">
           Nguyễn Văn A
         </h2>
-        <p id="winner-class-display" class="text-xs text-slate-400 mt-1 font-bold">Lớp 10A1</p>
-      </div>
+        <p class="relative mt-3 text-xl sm:text-2xl font-extrabold text-indigo-200">lên bảng nào! <span class="inline-block">🎉</span></p>
+        <p id="winner-class-display" class="relative mt-1 text-[11px] font-bold uppercase tracking-widest text-indigo-300/70">Lớp 10A1</p>
 
-      <div class="pt-3 border-t border-slate-800 flex flex-wrap items-center justify-center gap-2">
-        <button onclick="speakCurrentWinner()" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition flex items-center gap-1.5 border border-slate-700">
-          <i class="fa-solid fa-volume-high text-amber-400"></i> Đọc Tên
-        </button>
-        <button onclick="addBonusPointToCurrentWinner()" id="winner-bonus-btn" class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow" title="Cộng 1 điểm vào Sổ Điểm">
-          <i class="fa-solid fa-plus-circle text-amber-300"></i> +1 Sổ Điểm
-        </button>
-        <button onclick="closeResultModal(false)" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-black transition shadow-lg">
-          Đóng (Giữ Tên)
-        </button>
-        <button onclick="closeResultModal(true)" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-rose-950/60 text-slate-300 hover:text-rose-300 border border-slate-700 text-xs font-bold transition" title="Tạm ẩn học sinh này để không bị gọi lại">
-          Ẩn Khỏi Vòng
-        </button>
+        <div class="relative mt-6 flex flex-wrap items-center justify-center gap-2.5">
+          <button id="result-timer-btn" data-running="0" onclick="toggleResultTimer()" class="relative overflow-hidden px-4 py-2.5 rounded-xl text-sm font-extrabold text-amber-950 flex items-center gap-2 cursor-pointer transition active:translate-y-0.5" style="background:linear-gradient(180deg,#fcd34d,#f59e0b);box-shadow:0 4px 0 #b45309">
+            <i class="fa-regular fa-clock"></i>
+            <span id="result-timer-label">Tính giờ 30 giây</span>
+            <span id="result-timer-bar" class="absolute left-0 bottom-0 h-1 bg-amber-900/50" style="width:0%;transition:width 1s linear"></span>
+          </button>
+          <button onclick="markAbsentAndRecall()" class="px-4 py-2.5 rounded-xl text-sm font-bold text-indigo-100 flex items-center gap-2 cursor-pointer transition hover:bg-white/10 border border-white/15 bg-white/5" title="Ẩn bạn này khỏi vòng và gọi bạn khác">
+            <i class="fa-solid fa-user-xmark"></i> Vắng - gọi bạn khác
+          </button>
+          <button onclick="closeResultModal(false)" class="px-5 py-2.5 rounded-xl text-sm font-extrabold text-emerald-950 flex items-center gap-2 cursor-pointer transition active:translate-y-0.5" style="background:linear-gradient(180deg,#6ee7b7,#10b981);box-shadow:0 4px 0 #047857">
+            <i class="fa-solid fa-check"></i> Xong
+          </button>
+        </div>
+
+        <div class="relative mt-4 flex items-center justify-center gap-4 text-[11px] font-bold text-indigo-300/80">
+          <button onclick="speakCurrentWinner()" class="hover:text-white transition flex items-center gap-1.5 cursor-pointer"><i class="fa-solid fa-volume-high text-amber-300"></i> Đọc tên</button>
+          <span class="opacity-30">•</span>
+          <button onclick="addBonusPointToCurrentWinner()" id="winner-bonus-btn" class="hover:text-white transition flex items-center gap-1.5 cursor-pointer" title="Cộng 1 điểm vào Sổ Điểm"><i class="fa-solid fa-circle-plus text-emerald-300"></i> +1 Sổ điểm</button>
+        </div>
       </div>
     </div>
   </div>
@@ -4750,7 +4824,9 @@
         else if (mode === 'summon_card') initSummonCardGame(true);
         else if (mode === 'meteor_call') initMeteorCallGame(true);
         else if (mode === 'naruto_summon') initNarutoSummonGame(true);
+      else if (mode === 'claw_machine') initClawMachineGame(true);
       else if (mode === 'naruto_summon') initNarutoSummonGame(true);
+      else if (mode === 'claw_machine') initClawMachineGame(true);
       else if (mode === 'safe_zone') initSafeZoneGame(true);
       else if (mode === 'ufo_abduct') initUfoAbductGame(true);
       else if (mode === 'summon_card') initSummonCardGame(true);
@@ -5742,7 +5818,8 @@
       ufo_abduct: 'from-emerald-950 via-slate-950 to-indigo-950',
       summon_card: 'from-purple-950 via-indigo-950 to-slate-950',
       meteor_call: 'from-rose-950 via-slate-950 to-indigo-950',
-      naruto_summon: 'from-orange-950 via-amber-950 to-slate-950'
+      naruto_summon: 'from-orange-950 via-amber-950 to-slate-950',
+      claw_machine: 'from-fuchsia-950 via-purple-950 to-slate-950'
     };
 
     function renderStudioGameList() {
@@ -5963,7 +6040,7 @@
       var allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon', 'claw_machine'
       ];
       var randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       selectStudioGame(randomMode);
@@ -6033,7 +6110,7 @@
       const allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon', 'claw_machine'
       ];
       const randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       const opt = document.querySelector(`#spin-mode option[value="${randomMode}"]`);
@@ -6367,6 +6444,17 @@
     "rules": "Nhân vật Naruto vận luồng Chakra xanh, kết hợp nhanh 5 ấn chú nhẫn giả (Hợi - Tuất - Dậu - Thân - Mùi) rồi đập tay xuống đất khai mở Vòng Tròn Triệu Hồi! Từ trong làn khói trắng bùng nổ, một học sinh bước ra được gọi tên!",
     "tips": "Cực kỳ thu hút học sinh yêu thích anime, tạo màn xuất hiện ấn tượng trước khi lên bảng trả bài.",
     "shortcut": "Bấm phím Space để Naruto bắt đầu kết ấn triệu hồi chi thuật."
+  },
+  "claw_machine": {
+    "name": "Máy Gắp Thú",
+    "icon": "🧸",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "✨ Mới - Arcade",
+    "color": "fuchsia",
+    "context": "Phòng game arcade neon với chiếc máy gắp thú màu hồng, bên trong là những chú thú bông đáng yêu mang tên từng học sinh.",
+    "rules": "Càng gắp lượn qua lại phía trên đống thú bông, nhắm trúng một bạn, hạ xuống, kẹp chặt rồi nhấc lên, đưa về lối ra. Thú bông rơi xuống lối ra mang tên bạn nào thì bạn đó được gọi lên bảng!",
+    "tips": "Rất hợp với học sinh tiểu học và THCS. Mỗi lần gắp, thú bông được chọn sẽ rời khỏi đống nên trực quan, dễ theo dõi.",
+    "shortcut": "Bấm phím Space để càng gắp bắt đầu hoạt động."
   }
 };
 
@@ -6577,6 +6665,8 @@
         if (typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
       } else if (mode === 'meteor_call') {
         if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
+      } else if (mode === 'claw_machine') {
+        if (typeof resizeClawCanvas === 'function') resizeClawCanvas();
       } else if (mode === 'naruto_summon') {
         if (typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
       }
@@ -6613,6 +6703,7 @@
       const meteorContainer = document.getElementById('meteor-call-stage-container',
         'naruto-summon-stage-container');
       const narutoContainer = document.getElementById('naruto-summon-stage-container');
+      const clawContainer = document.getElementById('claw-machine-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -6639,6 +6730,7 @@
       if (summonContainer) summonContainer.classList.add('hidden');
       if (meteorContainer) meteorContainer.classList.add('hidden');
       if (narutoContainer) narutoContainer.classList.add('hidden');
+      if (clawContainer) clawContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -6795,6 +6887,12 @@
         setTimeout(() => {
           if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
         }, 40);
+      } else if (mode === 'claw_machine') {
+        if (clawContainer) clawContainer.classList.remove('hidden');
+        if (typeof initClawMachineGame === 'function') initClawMachineGame(true);
+        setTimeout(() => {
+          if (typeof resizeClawCanvas === 'function') resizeClawCanvas();
+        }, 40);
       } else if (mode === 'naruto_summon') {
         if (narutoContainer) narutoContainer.classList.remove('hidden');
         if (typeof initNarutoSummonGame === 'function') initNarutoSummonGame(true);
@@ -6837,7 +6935,8 @@
         ufo_abduct: { title: 'Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)', icon: '🛸' },
         summon_card: { title: 'Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)', icon: '🌟' },
         meteor_call: { title: 'Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)', icon: '☄️' },
-        naruto_summon: { title: 'Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)', icon: '🍥' }
+        naruto_summon: { title: 'Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)', icon: '🍥' },
+        claw_machine: { title: 'Máy Gắp Thú (Càng Gắp Thú Bông Arcade)', icon: '🧸' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -6882,6 +6981,8 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> TRIỆU HỒI THẺ SSR';
         } else if (mode === 'meteor_call') {
           spinBtn.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH';
+        } else if (mode === 'claw_machine') {
+          spinBtn.innerHTML = '<i class="fa-solid fa-hand-back-fist"></i> GẮP THÚ';
         } else if (mode === 'naruto_summon') {
           spinBtn.innerHTML = '<i class="fa-solid fa-hand-sparkles"></i> KẾT ẤN TRIỆU HỒI';
         
@@ -6962,6 +7063,7 @@
         else if (mode === 'summon_card') initSummonCardGame(true);
         else if (mode === 'meteor_call') initMeteorCallGame(true);
         else if (mode === 'naruto_summon') initNarutoSummonGame(true);
+      else if (mode === 'claw_machine') initClawMachineGame(true);
       }
     }
 
@@ -12193,7 +12295,7 @@
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) {
         const m = modeSelect.value;
-        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call' || m === 'naruto_summon') {
+        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call' || m === 'naruto_summon' || m === 'claw_machine') {
           if (grid) grid.classList.add('hidden');
         }
         if (m === 'wheel_pie') {
@@ -12256,6 +12358,10 @@
           const c = document.getElementById('naruto-summon-stage-container');
           if (c) c.classList.remove('hidden');
           if (typeof initNarutoSummonGame === 'function') initNarutoSummonGame(false);
+        } else if (m === 'claw_machine') {
+          const c = document.getElementById('claw-machine-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initClawMachineGame === 'function') initClawMachineGame(false);
         }
       }
     }
@@ -15239,6 +15345,7 @@
       else if (mode === 'summon_card' && typeof resizeSummonCanvas === 'function') resizeSummonCanvas();
       else if (mode === 'meteor_call' && typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
       else if (mode === 'naruto_summon' && typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
+      else if (mode === 'claw_machine' && typeof resizeClawCanvas === 'function') resizeClawCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -15268,7 +15375,8 @@
         { id: 'ufo-abduct-fullscreen-btn', color: 'text-emerald-400' },
         { id: 'summon-card-fullscreen-btn', color: 'text-purple-400' },
         { id: 'meteor-call-fullscreen-btn', color: 'text-rose-400' },
-        { id: 'naruto-summon-fullscreen-btn', color: 'text-orange-400' }
+        { id: 'naruto-summon-fullscreen-btn', color: 'text-orange-400' },
+        { id: 'claw-machine-fullscreen-btn', color: 'text-fuchsia-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -15346,7 +15454,9 @@
         'safe-zone-stage-container',
         'ufo-abduct-stage-container',
         'summon-card-stage-container',
-        'meteor-call-stage-container'
+        'meteor-call-stage-container',
+        'naruto-summon-stage-container',
+        'claw-machine-stage-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -15382,6 +15492,7 @@
       if (mode === 'summon_card') return summonState === 'running';
       if (mode === 'meteor_call') return meteorState === 'running';
       if (mode === 'naruto_summon') return narutoState === 'running';
+      if (mode === 'claw_machine') return clawState === 'running';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -31474,6 +31585,439 @@
     // Bối cảnh Làng Lá (Tượng Hokage, cổng Torii, hoa anh đào)
     // Naruto kết hợp 5 ấn chú -> Đập tay xuống đất -> Khói trắng bùng nổ -> Triệu hồi học sinh!
     // ==========================================
+    // ==========================================
+    // 25. MÁY GẮP THÚ (CLAW MACHINE) - Càng gắp chọn thú bông có tên học sinh
+    // ==========================================
+    let clawAnimId = null, clawState = 'idle', clawStartTime = 0, clawDuration = 7000;
+    let clawTargetWinner = null, clawFinishCallback = null, clawToys = [], clawWinnerIdx = -1;
+    let clawSoundEnabled = true, clawPhaseIdx = -1, clawFinishFired = false;
+    const CLAW_TYPES = ['chick', 'pig', 'frog', 'bunny', 'cat', 'panda', 'dog'];
+    const CLAW_STATUS = [
+      '🧸 Càng gắp đang chọn...', '🎯 Càng gắp đã nhắm trúng mục tiêu!', '⬇️ Hạ càng xuống...',
+      '🤏 Gắp!', '⬆️ Đang nhấc thú bông lên...', '➡️ Đưa về lối ra...', '🎁 Thả xuống lối ra!'
+    ];
+
+    function uiBeep(f, d, type, v) {
+      try {
+        if (typeof isAppSoundActive !== 'undefined' && !isAppSoundActive) return;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        if (!window._uiAC) window._uiAC = new AC();
+        const c = window._uiAC;
+        const o = c.createOscillator(), g = c.createGain();
+        o.type = type || 'square'; o.frequency.value = f;
+        g.gain.value = v || 0.04;
+        o.connect(g); g.connect(c.destination);
+        o.start();
+        g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + (d || 0.1));
+        o.stop(c.currentTime + (d || 0.1));
+      } catch (e) {}
+    }
+    function clawBeep(f, d) { if (clawSoundEnabled) uiBeep(f, d, 'square', 0.035); }
+
+    function toggleClawSound() {
+      clawSoundEnabled = !clawSoundEnabled;
+      const btn = document.getElementById('claw-machine-sound-btn');
+      if (btn) btn.innerHTML = clawSoundEnabled ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleClawFullscreen() {
+      toggleContainerFullscreen('claw-machine-stage-container', resizeClawCanvas);
+    }
+    function resizeClawCanvas() {
+      const canvas = document.getElementById('claw-machine-canvas');
+      const container = document.getElementById('claw-machine-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width), h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+
+    function buildClawToys(winnerStudent) {
+      let list = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      list = list.slice(0, 40);
+      if (winnerStudent && !list.some(s => s.id === winnerStudent.id)) {
+        if (list.length) list[list.length - 1] = winnerStudent; else list = [winnerStudent];
+      }
+      clawToys = list.map((st, i) => ({
+        id: st.id, name: shortStudentName(st.name),
+        type: CLAW_TYPES[(i * 3 + (i >> 1)) % CLAW_TYPES.length]
+      }));
+    }
+
+    function initClawMachineGame(reset = true) {
+      const container = document.getElementById('claw-machine-stage-container');
+      const canvas = document.getElementById('claw-machine-canvas');
+      if (!container || !canvas) return;
+      resizeClawCanvas();
+      if (reset || !clawToys.length) buildClawToys(null);
+      clawState = 'idle'; clawPhaseIdx = -1; clawWinnerIdx = -1; clawTargetWinner = null; clawFinishFired = false;
+      const st = document.getElementById('claw-machine-status');
+      if (st) st.innerText = 'Máy gắp thú đã sẵn sàng! Bấm GẮP THÚ để gọi tên học sinh!';
+      if (!clawAnimId) clawAnimId = requestAnimationFrame(runClawLoop);
+    }
+
+    function startClawMachineGame(winnerStudent, durationMs = 7000, callback) {
+      if (clawState === 'running') return;
+      buildClawToys(winnerStudent);
+      clawWinnerIdx = Math.max(0, clawToys.findIndex(t => t.id === winnerStudent.id));
+      clawTargetWinner = winnerStudent;
+      clawFinishCallback = callback;
+      clawDuration = Math.max(5000, durationMs);
+      clawStartTime = performance.now();
+      clawState = 'running'; clawPhaseIdx = -1; clawFinishFired = false;
+      if (!clawAnimId) clawAnimId = requestAnimationFrame(runClawLoop);
+    }
+
+    function runClawLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value;
+      const container = document.getElementById('claw-machine-stage-container');
+      if (mode !== 'claw_machine' || !container || container.classList.contains('hidden')) {
+        clawAnimId = null; return;
+      }
+      renderClawCanvas(now);
+      clawAnimId = requestAnimationFrame(runClawLoop);
+    }
+
+    function clawGeom(w, h) {
+      const top = 58, mh = h - top - 10, mw = Math.min(w * 0.82, mh * 1.2);
+      const mx = (w - mw) / 2, my = top;
+      const gx = mx + mw * 0.05, gw = mw * 0.9, gy = my + mh * 0.15, gh = mh * 0.58;
+      const chuteW = gw * 0.19;
+      return { mx, my, mw, mh, gx, gy, gw, gh, chuteW,
+        floorY: gy + gh * 0.96, railY: gy + gh * 0.07, restY: gy + gh * 0.2,
+        px0: gx + chuteW + gw * 0.02, px1: gx + gw - gw * 0.02 };
+    }
+
+    function clawLayout(g, n) {
+      const pw = g.px1 - g.px0;
+      let r = g.gh * 0.16, cols = 1;
+      for (; r >= 6; r -= 1) {
+        cols = Math.max(1, Math.floor(pw / (r * 1.8)));
+        const rows = Math.ceil(n / cols);
+        if (rows * r * 1.35 + r * 0.9 <= g.gh * 0.66) break;
+      }
+      const pos = [];
+      for (let i = 0; i < n; i++) {
+        const row = Math.floor(i / cols), inRow = Math.min(cols, n - row * cols), c = i - row * cols;
+        const sp = pw / cols, jit = (((i * 7919) % 13) / 13 - 0.5);
+        pos.push({ x: g.px0 + pw / 2 + (c - (inRow - 1) / 2) * sp + jit * r * 0.3,
+                   y: g.floorY - r * 0.95 - row * r * 1.35 + jit * r * 0.12, row });
+      }
+      return { r, pos };
+    }
+
+    function clawEllipse(ctx, x, y, rx, ry, rot, fill) {
+      ctx.beginPath(); ctx.ellipse(x, y, rx, ry, rot || 0, 0, Math.PI * 2);
+      ctx.fillStyle = fill; ctx.fill();
+    }
+    function clawTri(ctx, x1, y1, x2, y2, x3, y3, fill) {
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.closePath();
+      ctx.fillStyle = fill; ctx.fill();
+    }
+
+    function drawClawPlush(ctx, x, y, r, type, name, tilt) {
+      const P = { chick: ['#fde047', '#f59e0b'], pig: ['#f9a8d4', '#ec4899'], frog: ['#86efac', '#16a34a'],
+        bunny: ['#f8fafc', '#fda4af'], cat: ['#cbd5e1', '#94a3b8'], panda: ['#f8fafc', '#111827'], dog: ['#fcd9a8', '#92400e'] }[type];
+      const body = P[0], acc = P[1];
+      ctx.save(); ctx.translate(x, y);
+      // Tai / chi tiết phía sau thân
+      if (type === 'bunny') {
+        clawEllipse(ctx, -r * 0.42, -r * 1.2, r * 0.2, r * 0.58, -0.15, body);
+        clawEllipse(ctx, r * 0.42, -r * 1.2, r * 0.2, r * 0.58, 0.15, body);
+        clawEllipse(ctx, -r * 0.42, -r * 1.2, r * 0.09, r * 0.4, -0.15, acc);
+        clawEllipse(ctx, r * 0.42, -r * 1.2, r * 0.09, r * 0.4, 0.15, acc);
+      } else if (type === 'pig' || type === 'cat') {
+        clawTri(ctx, -r * 0.85, -r * 0.3, -r * 0.35, -r * 0.95, -r * 0.05, -r * 0.7, type === 'pig' ? acc : body);
+        clawTri(ctx, r * 0.85, -r * 0.3, r * 0.35, -r * 0.95, r * 0.05, -r * 0.7, type === 'pig' ? acc : body);
+      } else if (type === 'panda') {
+        clawEllipse(ctx, -r * 0.72, -r * 0.72, r * 0.3, r * 0.3, 0, acc);
+        clawEllipse(ctx, r * 0.72, -r * 0.72, r * 0.3, r * 0.3, 0, acc);
+      } else if (type === 'dog') {
+        clawEllipse(ctx, -r * 0.92, -r * 0.1, r * 0.3, r * 0.55, 0.2, acc);
+        clawEllipse(ctx, r * 0.92, -r * 0.1, r * 0.3, r * 0.55, -0.2, acc);
+      } else if (type === 'chick') {
+        clawEllipse(ctx, 0, -r * 1.02, r * 0.12, r * 0.22, 0, acc);
+        clawEllipse(ctx, -r * 0.2, -r * 0.98, r * 0.1, r * 0.2, -0.5, acc);
+        clawEllipse(ctx, r * 0.2, -r * 0.98, r * 0.1, r * 0.2, 0.5, acc);
+      }
+      // Thân
+      const gr = ctx.createRadialGradient(-r * 0.3, -r * 0.4, r * 0.1, 0, 0, r * 1.1);
+      gr.addColorStop(0, '#ffffff'); gr.addColorStop(0.25, body); gr.addColorStop(1, body);
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.fillStyle = body; ctx.fill();
+      ctx.lineWidth = Math.max(1, r * 0.05); ctx.strokeStyle = 'rgba(15,23,42,0.25)'; ctx.stroke();
+      clawEllipse(ctx, -r * 0.35, -r * 0.45, r * 0.25, r * 0.14, -0.6, 'rgba(255,255,255,0.45)');
+      if (type === 'frog') {
+        clawEllipse(ctx, -r * 0.5, -r * 0.78, r * 0.3, r * 0.3, 0, body);
+        clawEllipse(ctx, r * 0.5, -r * 0.78, r * 0.3, r * 0.3, 0, body);
+      }
+      if (type === 'panda') {
+        clawEllipse(ctx, -r * 0.36, -r * 0.1, r * 0.2, r * 0.26, 0.4, acc);
+        clawEllipse(ctx, r * 0.36, -r * 0.1, r * 0.2, r * 0.26, -0.4, acc);
+      }
+      // Mắt
+      const eyeCol = type === 'panda' ? '#fff' : '#1e293b';
+      clawEllipse(ctx, -r * 0.36, -r * 0.1, r * 0.09, r * 0.11, 0, eyeCol);
+      clawEllipse(ctx, r * 0.36, -r * 0.1, r * 0.09, r * 0.11, 0, eyeCol);
+      if (type !== 'panda') {
+        clawEllipse(ctx, -r * 0.33, -r * 0.14, r * 0.03, r * 0.035, 0, '#fff');
+        clawEllipse(ctx, r * 0.39, -r * 0.14, r * 0.03, r * 0.035, 0, '#fff');
+      }
+      clawEllipse(ctx, -r * 0.6, r * 0.12, r * 0.14, r * 0.09, 0, 'rgba(244,114,182,0.55)');
+      clawEllipse(ctx, r * 0.6, r * 0.12, r * 0.14, r * 0.09, 0, 'rgba(244,114,182,0.55)');
+      // Mũi / mỏ
+      if (type === 'chick') clawTri(ctx, -r * 0.13, r * 0.08, r * 0.13, r * 0.08, 0, r * 0.26, '#f97316');
+      else if (type === 'pig') {
+        clawEllipse(ctx, 0, r * 0.14, r * 0.3, r * 0.2, 0, acc);
+        clawEllipse(ctx, -r * 0.1, r * 0.14, r * 0.04, r * 0.07, 0, '#9d174d');
+        clawEllipse(ctx, r * 0.1, r * 0.14, r * 0.04, r * 0.07, 0, '#9d174d');
+      } else if (type === 'dog') clawEllipse(ctx, 0, r * 0.12, r * 0.12, r * 0.08, 0, '#1e293b');
+      else if (type === 'cat') {
+        clawTri(ctx, -r * 0.07, r * 0.07, r * 0.07, r * 0.07, 0, r * 0.15, '#f472b6');
+        ctx.strokeStyle = 'rgba(71,85,105,0.7)'; ctx.lineWidth = Math.max(1, r * 0.03);
+        for (const sgn of [-1, 1]) for (const dy of [0, 0.1]) {
+          ctx.beginPath(); ctx.moveTo(sgn * r * 0.3, r * (0.14 + dy)); ctx.lineTo(sgn * r * 0.8, r * (0.08 + dy * 2)); ctx.stroke();
+        }
+      } else {
+        ctx.beginPath(); ctx.arc(0, r * 0.1, r * 0.14, 0.15 * Math.PI, 0.85 * Math.PI);
+        ctx.strokeStyle = '#1e293b'; ctx.lineWidth = Math.max(1, r * 0.05); ctx.stroke();
+      }
+      // Bảng tên
+      let label = name || '';
+      if (label.length > 9) label = label.slice(0, 8) + '…';
+      const fs = Math.max(8, r * 0.46);
+      ctx.font = '800 ' + fs + 'px system-ui, sans-serif';
+      const tw = ctx.measureText(label).width + fs * 0.9, th = fs * 1.35;
+      ctx.save(); ctx.translate(0, r * 0.78); ctx.rotate(tilt || 0);
+      ctx.fillStyle = '#fffdf5'; ctx.strokeStyle = 'rgba(15,23,42,0.35)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(-tw / 2, -th / 2, tw, th, th * 0.35); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#1e293b'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, 0, fs * 0.04);
+      ctx.restore();
+      ctx.restore();
+    }
+
+    function drawClawHook(ctx, x, y, open, r, railY) {
+      const armL = r * 1.5, ang = 0.12 + open * 0.55;
+      ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = Math.max(2, r * 0.07);
+      ctx.beginPath(); ctx.moveTo(x, railY); ctx.lineTo(x, y - r * 0.25); ctx.stroke();
+      // Đầu càng
+      ctx.fillStyle = '#f59e0b'; ctx.strokeStyle = '#78350f'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(x - r * 0.42, y - r * 0.3, r * 0.84, r * 0.4, r * 0.12); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fde68a'; ctx.beginPath(); ctx.arc(x, y - r * 0.1, r * 0.09, 0, Math.PI * 2); ctx.fill();
+      // Hai ngón càng
+      for (const sgn of [-1, 1]) {
+        const x1 = x + sgn * r * 0.34, y1 = y + r * 0.08;
+        const x2 = x1 + sgn * Math.sin(ang) * armL * 0.7, y2 = y1 + Math.cos(ang) * armL * 0.7;
+        const x3 = x2 - sgn * Math.sin(ang * 0.4) * armL * 0.4, y3 = y2 + Math.cos(ang * 0.4) * armL * 0.35;
+        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        ctx.strokeStyle = '#334155'; ctx.lineWidth = Math.max(4, r * 0.2);
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.stroke();
+        ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = Math.max(2.5, r * 0.13);
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.stroke();
+        ctx.lineCap = 'butt';
+      }
+    }
+
+    function renderClawCanvas(now) {
+      const canvas = document.getElementById('claw-machine-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr, h = canvas.height / dpr;
+      if (w < 10 || h < 10) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Nền phòng game
+      const bg = ctx.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0, '#1e1040'); bg.addColorStop(1, '#0b0620');
+      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < 6; i++) {
+        const bx = (i * 0.19 + 0.08) * w, by = (0.2 + (i % 3) * 0.25) * h;
+        const rg = ctx.createRadialGradient(bx, by, 0, bx, by, h * 0.3);
+        rg.addColorStop(0, i % 2 ? 'rgba(236,72,153,0.16)' : 'rgba(99,102,241,0.18)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
+      }
+      // Sàn caro
+      const fy = h * 0.9, tile = 40;
+      for (let r2 = 0; fy + r2 * 14 < h; r2++) for (let c = -2; c < w / tile + 2; c++) {
+        ctx.fillStyle = (r2 + c) % 2 ? 'rgba(76,29,149,0.45)' : 'rgba(30,16,64,0.6)';
+        ctx.fillRect(c * tile, fy + r2 * 14, tile, 14);
+      }
+
+      const g = clawGeom(w, h);
+      const n = clawToys.length;
+      const lay = clawLayout(g, Math.max(1, n));
+      const r = lay.r, armL = r * 1.5;
+
+      // Biển neon hai bên
+      if (g.mx > 130) {
+        ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        const fs = Math.min(g.mx * 0.42, 54);
+        ctx.font = '900 ' + fs + 'px system-ui, sans-serif';
+        ctx.shadowBlur = 18; ctx.shadowColor = '#f472b6'; ctx.fillStyle = '#fdf2f8';
+        ctx.fillText('GẮP', g.mx * 0.5, g.my + g.mh * 0.3);
+        ctx.shadowColor = '#fbbf24'; ctx.fillStyle = '#fef3c7';
+        ctx.fillText('THÚ', g.mx * 0.5, g.my + g.mh * 0.3 + fs * 1.05);
+        const rx = g.mx + g.mw + g.mx * 0.5, ry = g.my + g.mh * 0.3, br = Math.min(g.mx * 0.3, 44);
+        ctx.shadowColor = '#22d3ee'; ctx.strokeStyle = '#a5f3fc'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(rx, ry, br, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(rx - br * 0.8, ry - br * 0.8, br * 0.38, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(rx + br * 0.8, ry - br * 0.8, br * 0.38, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(rx, ry + br * 0.1, br * 0.5, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+        ctx.restore();
+      }
+
+      // Thân máy màu hồng
+      const body = ctx.createLinearGradient(g.mx, 0, g.mx + g.mw, 0);
+      body.addColorStop(0, '#f472b6'); body.addColorStop(0.5, '#ec4899'); body.addColorStop(1, '#db2777');
+      ctx.fillStyle = body; ctx.strokeStyle = '#fbcfe8'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.roundRect(g.mx, g.my, g.mw, g.mh, 22); ctx.fill(); ctx.stroke();
+      // Bảng hiệu
+      const mqH = g.mh * 0.095, mqX = g.mx + g.mw * 0.14, mqW = g.mw * 0.72, mqY = g.my + g.mh * 0.03;
+      ctx.fillStyle = '#2e1065'; ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.roundRect(mqX, mqY, mqW, mqH, 10); ctx.fill(); ctx.stroke();
+      for (let i = 0; i < 18; i++) {
+        const on = (Math.floor(now / 300) + i) % 2 === 0;
+        ctx.fillStyle = on ? '#fef08a' : '#fbbf24';
+        ctx.beginPath(); ctx.arc(mqX + (i + 0.5) * mqW / 18, mqY - 3, 2.4, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = '900 ' + Math.max(12, mqH * 0.55) + 'px system-ui, sans-serif';
+      ctx.shadowColor = '#f59e0b'; ctx.shadowBlur = 10; ctx.fillStyle = '#fde68a';
+      ctx.fillText('★ MÁY GẮP THÚ ★', mqX + mqW / 2, mqY + mqH / 2 + 1);
+      ctx.restore();
+
+      // Kính
+      const gl = ctx.createLinearGradient(0, g.gy, 0, g.gy + g.gh);
+      gl.addColorStop(0, '#3b1a7a'); gl.addColorStop(1, '#1e0d4a');
+      ctx.fillStyle = gl; ctx.fillRect(g.gx, g.gy, g.gw, g.gh);
+      ctx.save(); ctx.beginPath(); ctx.rect(g.gx, g.gy, g.gw, g.gh); ctx.clip();
+      // Bóng nhựa dưới đáy
+      const ballCols = ['#f472b6', '#60a5fa', '#fde047', '#4ade80', '#c084fc'];
+      for (let i = 0; i < 40; i++) {
+        ctx.fillStyle = ballCols[i % 5]; ctx.globalAlpha = 0.9;
+        ctx.beginPath(); ctx.arc(g.gx + ((i * 37) % 100) / 100 * g.gw, g.floorY + ((i * 13) % 7), r * 0.2, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      // Lối ra
+      ctx.fillStyle = '#0f172a'; ctx.fillRect(g.gx, g.gy + g.gh * 0.52, g.chuteW, g.gh * 0.48);
+      ctx.fillStyle = '#facc15'; ctx.fillRect(g.gx, g.gy + g.gh * 0.52, g.chuteW, g.gh * 0.035);
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath(); ctx.roundRect(g.gx + g.chuteW * 0.12, g.gy + g.gh * 0.62, g.chuteW * 0.76, g.gh * 0.1, 6); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.font = '900 ' + Math.max(9, g.chuteW * 0.16) + 'px system-ui, sans-serif';
+      ctx.fillText('LỐI RA', g.gx + g.chuteW / 2, g.gy + g.gh * 0.67);
+      ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '900 ' + (g.chuteW * 0.22) + 'px system-ui';
+      ctx.fillText('⌄', g.gx + g.chuteW / 2, g.gy + g.gh * 0.79);
+
+      // Tiến trình
+      const elapsed = clawState === 'running' ? now - clawStartTime : 0;
+      const t = clawState === 'running' ? Math.min(1, elapsed / clawDuration) : (clawState === 'finished' ? 1 : 0);
+      const ease = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      const lerp = (a, b, k) => a + (b - a) * k;
+      const mid = (g.px0 + g.px1) / 2, pw = g.px1 - g.px0;
+      const exitX = g.gx + g.chuteW * 0.5;
+      const tp = clawWinnerIdx >= 0 && lay.pos[clawWinnerIdx] ? lay.pos[clawWinnerIdx] : { x: mid, y: g.floorY - r };
+      const grabY = tp.y - armL * 0.7;
+      const xw = ms => mid + Math.sin(ms / 520) * pw * 0.36;
+      let cx = mid, cy = g.restY, open = 1, attached = false, attY = 0, phase = 0;
+      if (clawState === 'idle') {
+        cx = mid + Math.sin(now / 1500) * pw * 0.25; cy = g.restY + Math.sin(now / 700) * 3;
+      } else if (t < 0.3) {
+        phase = 0; cx = xw(elapsed); cy = g.restY + Math.sin(elapsed / 300) * 3;
+      } else if (t < 0.45) {
+        phase = 1; cx = lerp(xw(clawDuration * 0.3), tp.x, ease((t - 0.3) / 0.15));
+      } else if (t < 0.6) {
+        phase = 2; cx = tp.x; cy = lerp(g.restY, grabY, ease((t - 0.45) / 0.15));
+      } else if (t < 0.68) {
+        phase = 3; cx = tp.x; cy = grabY; open = lerp(1, 0.15, (t - 0.6) / 0.08);
+      } else if (t < 0.82) {
+        phase = 4; cx = tp.x; cy = lerp(grabY, g.restY, ease((t - 0.68) / 0.14)); open = 0.15; attached = true;
+      } else if (t < 0.94) {
+        phase = 5; cx = lerp(tp.x, exitX, ease((t - 0.82) / 0.12)); cy = g.restY; open = 0.15; attached = true;
+      } else if (t < 1) {
+        phase = 6; const k = (t - 0.94) / 0.06;
+        cx = exitX; cy = g.restY; open = lerp(0.15, 1, Math.min(1, k * 2)); attached = true;
+        attY = lerp(g.restY + armL * 0.7, g.floorY - r * 0.9, ease(k));
+      } else {
+        phase = 6; cx = exitX; cy = g.restY; open = 1;
+      }
+      if (clawState === 'running' && phase !== clawPhaseIdx) {
+        clawPhaseIdx = phase;
+        const st = document.getElementById('claw-machine-status');
+        if (st) st.innerText = CLAW_STATUS[phase];
+        clawBeep([520, 620, 440, 880, 560, 600, 760][phase], 0.12);
+      }
+
+      // Đống thú bông (vẽ từ hàng trên xuống hàng dưới)
+      const winnerGone = clawState !== 'idle' && t >= 0.6;
+      for (let i = n - 1; i >= 0; i--) {
+        if (winnerGone && i === clawWinnerIdx) continue;
+        const p = lay.pos[i], tt = clawToys[i];
+        drawClawPlush(ctx, p.x, p.y, r, tt.type, tt.name, (((i * 31) % 11) / 11 - 0.5) * 0.14);
+      }
+      // Thú bông trúng giải
+      if (winnerGone && clawWinnerIdx >= 0) {
+        const wt = clawToys[clawWinnerIdx];
+        let wx = cx, wy = cy + armL * 0.7;
+        if (clawState === 'finished' || t >= 1) { wx = exitX; wy = g.floorY - r * 0.9; }
+        else if (phase === 6) { wx = exitX; wy = attY; }
+        else if (phase === 3) { wx = tp.x; wy = tp.y; }
+        drawClawPlush(ctx, wx, wy, r, wt.type, wt.name, 0);
+        if (clawState === 'finished') {
+          ctx.save(); ctx.globalAlpha = 0.6 + Math.sin(now / 200) * 0.3; ctx.fillStyle = '#fde68a';
+          for (let i = 0; i < 6; i++) {
+            const a = now / 600 + i * Math.PI / 3;
+            ctx.beginPath(); ctx.arc(wx + Math.cos(a) * r * 1.5, wy + Math.sin(a) * r * 1.2, 3, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+      // Càng gắp
+      ctx.fillStyle = '#cbd5e1'; ctx.fillRect(g.gx, g.railY - 3, g.gw, 6);
+      ctx.fillStyle = '#64748b'; ctx.fillRect(g.gx, g.railY + 1, g.gw, 2);
+      drawClawHook(ctx, cx, cy, open, r, g.railY);
+      ctx.restore();
+
+      // Phản chiếu kính + khung
+      const sh = ctx.createLinearGradient(g.gx, g.gy, g.gx + g.gw * 0.5, g.gy + g.gh);
+      sh.addColorStop(0, 'rgba(255,255,255,0.12)'); sh.addColorStop(0.35, 'rgba(255,255,255,0)');
+      ctx.fillStyle = sh; ctx.fillRect(g.gx, g.gy, g.gw, g.gh);
+      ctx.strokeStyle = '#fbcfe8'; ctx.lineWidth = 4; ctx.strokeRect(g.gx, g.gy, g.gw, g.gh);
+
+      // Bảng điều khiển
+      const pY = g.gy + g.gh + g.mh * 0.03, pH = g.my + g.mh - pY - g.mh * 0.03;
+      ctx.fillStyle = '#be185d'; ctx.beginPath(); ctx.roundRect(g.mx + g.mw * 0.03, pY, g.mw * 0.94, pH, 14); ctx.fill();
+      const jx = g.mx + g.mw * 0.14, jy = pY + pH * 0.5;
+      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 5;
+      ctx.beginPath(); ctx.moveTo(jx, jy + pH * 0.2); ctx.lineTo(jx + Math.sin(now / 400) * 3 * (clawState === 'running' ? 1 : 0), jy - pH * 0.1); ctx.stroke();
+      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(jx + Math.sin(now / 400) * 3 * (clawState === 'running' ? 1 : 0), jy - pH * 0.14, pH * 0.15, 0, Math.PI * 2); ctx.fill();
+      const bx2 = g.mx + g.mw * 0.3;
+      ctx.fillStyle = (clawState === 'running' && phase === 3) ? '#7dd3fc' : '#38bdf8';
+      ctx.beginPath(); ctx.ellipse(bx2, jy, pH * 0.28, pH * 0.17, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '800 ' + Math.max(8, pH * 0.12) + 'px system-ui';
+      ctx.fillText('DI CHUYỂN', jx, pY + pH * 0.92); ctx.fillText('GẮP', bx2, pY + pH * 0.92);
+      ctx.fillStyle = '#4c1d95'; ctx.beginPath(); ctx.roundRect(g.mx + g.mw * 0.42, pY + pH * 0.18, g.mw * 0.5, pH * 0.5, 10); ctx.fill();
+      ctx.fillStyle = '#fde68a'; ctx.font = '900 ' + Math.max(10, pH * 0.2) + 'px system-ui';
+      ctx.fillText('★ GẮP LÀ TRÚNG ★', g.mx + g.mw * 0.67, pY + pH * 0.45);
+
+      if (clawState === 'running' && t >= 1 && !clawFinishFired) {
+        clawFinishFired = true; clawState = 'finished';
+        const st = document.getElementById('claw-machine-status');
+        if (st) st.innerText = '🎉 Gắp trúng: ' + (clawTargetWinner ? clawTargetWinner.name : '') + '!';
+        clawBeep(988, 0.15); setTimeout(() => clawBeep(1318, 0.25), 150);
+        const cb = clawFinishCallback;
+        setTimeout(() => { if (typeof cb === 'function') cb(clawTargetWinner); }, 700);
+      }
+    }
+
     let narutoAnimId = null;
     let narutoState = 'idle';
     let narutoStartTime = 0;
@@ -40832,6 +41376,21 @@
         return;
       }
 
+      // 25. Máy Gắp Thú
+      if (mode === 'claw_machine') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(5000, durationSec * 1000 + 2000);
+        btn.innerHTML = "🧸 CÀNG ĐANG GẮP...";
+        if (typeof startClawMachineGame === 'function') {
+          startClawMachineGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
       // 24. Triệu Hồi Chi Thuật (Naruto Làng Lá)
       if (mode === 'naruto_summon') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
@@ -40943,6 +41502,8 @@
           btnElement.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> TRIỆU HỒI THẺ MỚI';
         } else if (mode === 'meteor_call') {
           btnElement.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH MỚI';
+        } else if (mode === 'claw_machine') {
+          btnElement.innerHTML = '<i class="fa-solid fa-hand-back-fist"></i> TIẾP TỤC GẮP THÚ';
         } else if (mode === 'naruto_summon') {
           btnElement.innerHTML = '<i class="fa-solid fa-hand-sparkles"></i> KẾT ẤN TRIỆU HỒI TIẾP';
         } else {
@@ -40979,7 +41540,50 @@
       }, 100);
     }
 
+    let resultTimerId = null;
+    function resetResultTimer() {
+      if (resultTimerId) { clearInterval(resultTimerId); resultTimerId = null; }
+      const b = document.getElementById('result-timer-btn');
+      if (b) { b.dataset.running = '0'; b.classList.remove('is-ending'); }
+      const l = document.getElementById('result-timer-label');
+      if (l) l.textContent = 'Tính giờ 30 giây';
+      const bar = document.getElementById('result-timer-bar');
+      if (bar) { bar.style.transition = 'none'; bar.style.width = '0%'; }
+    }
+    function toggleResultTimer() {
+      const b = document.getElementById('result-timer-btn');
+      if (!b) return;
+      if (b.dataset.running === '1' || b.classList.contains('is-ending')) { resetResultTimer(); return; }
+      const l = document.getElementById('result-timer-label');
+      const bar = document.getElementById('result-timer-bar');
+      let left = 30;
+      b.dataset.running = '1';
+      if (l) l.textContent = 'Còn ' + left + ' giây';
+      if (bar) { bar.style.transition = 'width 1s linear'; bar.style.width = '0%'; }
+      resultTimerId = setInterval(() => {
+        left--;
+        if (bar) bar.style.width = ((30 - left) / 30 * 100) + '%';
+        if (left > 0) {
+          if (l) l.textContent = 'Còn ' + left + ' giây';
+          if (left <= 5 && typeof uiBeep === 'function') uiBeep(700, 0.08, 'square', 0.04);
+        } else {
+          clearInterval(resultTimerId); resultTimerId = null;
+          b.dataset.running = '0'; b.classList.add('is-ending');
+          if (l) l.textContent = 'Hết giờ!';
+          if (typeof uiBeep === 'function') { uiBeep(520, 0.25, 'sawtooth', 0.05); setTimeout(() => uiBeep(390, 0.4, 'sawtooth', 0.05), 260); }
+        }
+      }, 1000);
+    }
+    function markAbsentAndRecall() {
+      closeResultModal(true);
+      setTimeout(() => {
+        const sb = document.getElementById('spin-btn');
+        if (sb && !sb.disabled) sb.click();
+      }, 450);
+    }
+
     function openResultModal() {
+      resetResultTimer();
       const modal = document.getElementById('result-modal');
       const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
       if (modal && fsEl && fsEl !== document.documentElement && modal.parentElement !== fsEl) {
@@ -40989,6 +41593,7 @@
     }
 
     function closeResultModal(hideWinner = false) {
+      resetResultTimer();
       closeModalUi('result-modal', 'result-modal-content');
       if (hideWinner && currentWinner) {
         hiddenWheelIds.push(currentWinner.id);
@@ -41017,6 +41622,7 @@
         else if (mode === 'summon_card') initSummonCardGame(true);
         else if (mode === 'meteor_call') initMeteorCallGame(true);
         else if (mode === 'naruto_summon') initNarutoSummonGame(true);
+      else if (mode === 'claw_machine') initClawMachineGame(true);
       }
     }
 
@@ -41043,6 +41649,8 @@
           text = `Chúc mừng thẻ tướng ét ét rờ đã triệu hồi thành công bạn ${currentWinner.name}!`;
         } else if (document.getElementById('spin-mode')?.value === 'meteor_call') {
           text = `Thiên thạch đã rơi trúng bạn ${currentWinner.name} và gọi tên!`;
+        } else if (document.getElementById('spin-mode')?.value === 'claw_machine') {
+          text = `Máy gắp thú đã gắp trúng bạn ${currentWinner.name}! Mời bạn lên bảng nào!`;
         } else if (document.getElementById('spin-mode')?.value === 'naruto_summon') {
           if (typeof NarutoAnimeAudio !== 'undefined' && NarutoAnimeAudio.isEnabled()) {
             NarutoAnimeAudio.speakWinnerJapanese(currentWinner.name);
