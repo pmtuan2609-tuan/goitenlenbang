@@ -31586,16 +31586,33 @@
     // Naruto kết hợp 5 ấn chú -> Đập tay xuống đất -> Khói trắng bùng nổ -> Triệu hồi học sinh!
     // ==========================================
     // ==========================================
-    // 25. MÁY GẮP THÚ (CLAW MACHINE) - Càng gắp chọn thú bông có tên học sinh
+    // 25. MÁY GẮP THÚ (CLAW MACHINE) v2 - Càng 3 ngón hiện đại, chuyển động mượt, 14 loài thú bông
     // ==========================================
     let clawAnimId = null, clawState = 'idle', clawStartTime = 0, clawDuration = 7000;
     let clawTargetWinner = null, clawFinishCallback = null, clawToys = [], clawWinnerIdx = -1;
     let clawSoundEnabled = true, clawPhaseIdx = -1, clawFinishFired = false;
-    const CLAW_TYPES = ['chick', 'pig', 'frog', 'bunny', 'cat', 'panda', 'dog'];
+    let clawLast = 0, clawSwing = 0, clawSwingV = 0, clawPrevX = null, clawStartX = null, clawFinishAt = 0;
+    let clawParts = [], clawLayers = null, clawLayerKey = '', clawSprites = new Map(), clawJoy = 0;
+    const CLAW_SEQ = ['capybara', 'shiba', 'penguin', 'bunny', 'capybara', 'cat', 'panda', 'duck', 'pig', 'capybara', 'frog', 'hamster', 'koala', 'axolotl', 'fox', 'hedgehog'];
+    const CLAW_PAL = {
+      capybara: { b: '#c9955f', d: '#9a6a3c', l: '#e6bd8e' }, shiba: { b: '#f2a65a', d: '#c9742c', l: '#fff4e3' },
+      penguin: { b: '#3b4a63', d: '#1e293b', l: '#f8fafc' }, bunny: { b: '#fafafa', d: '#fda4af', l: '#ffffff' },
+      cat: { b: '#cbd5e1', d: '#94a3b8', l: '#f1f5f9' }, panda: { b: '#f8fafc', d: '#1f2937', l: '#ffffff' },
+      duck: { b: '#fde047', d: '#f59e0b', l: '#fef9c3' }, pig: { b: '#f9a8d4', d: '#ec4899', l: '#fbcfe8' },
+      frog: { b: '#86efac', d: '#16a34a', l: '#d9f99d' }, hamster: { b: '#fcd9a8', d: '#d49a5a', l: '#fff7ed' },
+      koala: { b: '#a8b3c4', d: '#64748b', l: '#e2e8f0' }, axolotl: { b: '#fbcfe8', d: '#f472b6', l: '#fdf2f8' },
+      fox: { b: '#fb923c', d: '#c2410c', l: '#fff7ed' }, hedgehog: { b: '#d9bb98', d: '#6b4f3a', l: '#fde8cf' }
+    };
     const CLAW_STATUS = [
-      '🧸 Càng gắp đang chọn...', '🎯 Càng gắp đã nhắm trúng mục tiêu!', '⬇️ Hạ càng xuống...',
-      '🤏 Gắp!', '⬆️ Đang nhấc thú bông lên...', '➡️ Đưa về lối ra...', '🎁 Thả xuống lối ra!'
+      '🧸 Càng gắp đang dò tìm...', '🎯 Đã khóa mục tiêu!', '⬇️ Hạ càng xuống...',
+      '🤏 Gắp chặt!', '⬆️ Nhấc bổng thú bông lên...', '➡️ Đưa về lối ra...', '🎁 Thả xuống lối ra!'
     ];
+    const CLAW_LED = ['#a78bfa', '#22d3ee', '#facc15', '#fb7185', '#4ade80', '#4ade80', '#f472b6'];
+    const CLAW_EASE = {
+      io: k => k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2,
+      sine: k => -(Math.cos(Math.PI * k) - 1) / 2,
+      out: k => 1 - Math.pow(1 - k, 3)
+    };
 
     function uiBeep(f, d, type, v) {
       try {
@@ -31613,7 +31630,7 @@
         o.stop(c.currentTime + (d || 0.1));
       } catch (e) {}
     }
-    function clawBeep(f, d) { if (clawSoundEnabled) uiBeep(f, d, 'square', 0.035); }
+    function clawBeep(f, d) { if (clawSoundEnabled) uiBeep(f, d, 'triangle', 0.05); }
 
     function toggleClawSound() {
       clawSoundEnabled = !clawSoundEnabled;
@@ -31635,6 +31652,7 @@
         canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
         const ctx = canvas.getContext('2d');
         if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        clawLayerKey = '';
       }
     }
 
@@ -31646,7 +31664,7 @@
       }
       clawToys = list.map((st, i) => ({
         id: st.id, name: shortStudentName(st.name),
-        type: CLAW_TYPES[(i * 3 + (i >> 1)) % CLAW_TYPES.length]
+        type: CLAW_SEQ[(i * 5 + (i >> 2)) % CLAW_SEQ.length]
       }));
     }
 
@@ -31657,6 +31675,7 @@
       resizeClawCanvas();
       if (reset || !clawToys.length) buildClawToys(null);
       clawState = 'idle'; clawPhaseIdx = -1; clawWinnerIdx = -1; clawTargetWinner = null; clawFinishFired = false;
+      clawParts = []; clawSwing = 0; clawSwingV = 0;
       const st = document.getElementById('claw-machine-status');
       if (st) st.innerText = 'Máy gắp thú đã sẵn sàng! Bấm GẮP THÚ để gọi tên học sinh!';
       if (!clawAnimId) clawAnimId = requestAnimationFrame(runClawLoop);
@@ -31670,7 +31689,8 @@
       clawFinishCallback = callback;
       clawDuration = Math.max(5000, durationMs);
       clawStartTime = performance.now();
-      clawState = 'running'; clawPhaseIdx = -1; clawFinishFired = false;
+      clawStartX = clawPrevX;
+      clawState = 'running'; clawPhaseIdx = -1; clawFinishFired = false; clawParts = [];
       if (!clawAnimId) clawAnimId = requestAnimationFrame(runClawLoop);
     }
 
@@ -31678,7 +31698,7 @@
       const mode = document.getElementById('spin-mode')?.value;
       const container = document.getElementById('claw-machine-stage-container');
       if (mode !== 'claw_machine' || !container || container.classList.contains('hidden')) {
-        clawAnimId = null; return;
+        clawAnimId = null; clawLast = 0; return;
       }
       renderClawCanvas(now);
       clawAnimId = requestAnimationFrame(runClawLoop);
@@ -31689,9 +31709,10 @@
       const mx = (w - mw) / 2, my = top;
       const gx = mx + mw * 0.05, gw = mw * 0.9, gy = my + mh * 0.15, gh = mh * 0.58;
       const chuteW = gw * 0.19;
-      return { mx, my, mw, mh, gx, gy, gw, gh, chuteW,
+      return { mx, my, mw, mh, gx, gw, gy, gh, chuteW,
         floorY: gy + gh * 0.96, railY: gy + gh * 0.07, restY: gy + gh * 0.2,
-        px0: gx + chuteW + gw * 0.02, px1: gx + gw - gw * 0.02 };
+        px0: gx + chuteW + gw * 0.02, px1: gx + gw - gw * 0.02,
+        pY: gy + gh + mh * 0.03, pH: my + mh - (gy + gh + mh * 0.03) - mh * 0.03 };
     }
 
     function clawLayout(g, n) {
@@ -31721,108 +31742,199 @@
       ctx.fillStyle = fill; ctx.fill();
     }
 
-    function drawClawPlush(ctx, x, y, r, type, name, tilt) {
-      const P = { chick: ['#fde047', '#f59e0b'], pig: ['#f9a8d4', '#ec4899'], frog: ['#86efac', '#16a34a'],
-        bunny: ['#f8fafc', '#fda4af'], cat: ['#cbd5e1', '#94a3b8'], panda: ['#f8fafc', '#111827'], dog: ['#fcd9a8', '#92400e'] }[type];
-      const body = P[0], acc = P[1];
-      ctx.save(); ctx.translate(x, y);
-      // Tai / chi tiết phía sau thân
+    // Vẽ 1 chú thú bông vào sprite (gốc toạ độ = tâm thân) - cache lại để chạy mượt
+    function clawPaintPlush(ctx, type, name, r) {
+      const P = CLAW_PAL[type] || CLAW_PAL.capybara, b = P.b, d = P.d, l = P.l, E = (x, y, rx, ry, rot, f) => clawEllipse(ctx, x, y, rx * r, ry * r, rot, f);
+      const eye = (x, y, s, col) => { E(x, y, s, s * 1.2, 0, col || '#1e293b'); E(x - s * 0.3, y - s * 0.4, s * 0.32, s * 0.36, 0, '#fff'); };
+      // Bộ phận phía sau thân
       if (type === 'bunny') {
-        clawEllipse(ctx, -r * 0.42, -r * 1.2, r * 0.2, r * 0.58, -0.15, body);
-        clawEllipse(ctx, r * 0.42, -r * 1.2, r * 0.2, r * 0.58, 0.15, body);
-        clawEllipse(ctx, -r * 0.42, -r * 1.2, r * 0.09, r * 0.4, -0.15, acc);
-        clawEllipse(ctx, r * 0.42, -r * 1.2, r * 0.09, r * 0.4, 0.15, acc);
-      } else if (type === 'pig' || type === 'cat') {
-        clawTri(ctx, -r * 0.85, -r * 0.3, -r * 0.35, -r * 0.95, -r * 0.05, -r * 0.7, type === 'pig' ? acc : body);
-        clawTri(ctx, r * 0.85, -r * 0.3, r * 0.35, -r * 0.95, r * 0.05, -r * 0.7, type === 'pig' ? acc : body);
-      } else if (type === 'panda') {
-        clawEllipse(ctx, -r * 0.72, -r * 0.72, r * 0.3, r * 0.3, 0, acc);
-        clawEllipse(ctx, r * 0.72, -r * 0.72, r * 0.3, r * 0.3, 0, acc);
-      } else if (type === 'dog') {
-        clawEllipse(ctx, -r * 0.92, -r * 0.1, r * 0.3, r * 0.55, 0.2, acc);
-        clawEllipse(ctx, r * 0.92, -r * 0.1, r * 0.3, r * 0.55, -0.2, acc);
-      } else if (type === 'chick') {
-        clawEllipse(ctx, 0, -r * 1.02, r * 0.12, r * 0.22, 0, acc);
-        clawEllipse(ctx, -r * 0.2, -r * 0.98, r * 0.1, r * 0.2, -0.5, acc);
-        clawEllipse(ctx, r * 0.2, -r * 0.98, r * 0.1, r * 0.2, 0.5, acc);
-      }
-      // Thân
-      const gr = ctx.createRadialGradient(-r * 0.3, -r * 0.4, r * 0.1, 0, 0, r * 1.1);
-      gr.addColorStop(0, '#ffffff'); gr.addColorStop(0.25, body); gr.addColorStop(1, body);
-      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
-      ctx.fillStyle = body; ctx.fill();
-      ctx.lineWidth = Math.max(1, r * 0.05); ctx.strokeStyle = 'rgba(15,23,42,0.25)'; ctx.stroke();
-      clawEllipse(ctx, -r * 0.35, -r * 0.45, r * 0.25, r * 0.14, -0.6, 'rgba(255,255,255,0.45)');
-      if (type === 'frog') {
-        clawEllipse(ctx, -r * 0.5, -r * 0.78, r * 0.3, r * 0.3, 0, body);
-        clawEllipse(ctx, r * 0.5, -r * 0.78, r * 0.3, r * 0.3, 0, body);
-      }
-      if (type === 'panda') {
-        clawEllipse(ctx, -r * 0.36, -r * 0.1, r * 0.2, r * 0.26, 0.4, acc);
-        clawEllipse(ctx, r * 0.36, -r * 0.1, r * 0.2, r * 0.26, -0.4, acc);
-      }
+        E(-0.42, -1.25, 0.2, 0.6, -0.15, b); E(0.42, -1.25, 0.2, 0.6, 0.15, b);
+        E(-0.42, -1.25, 0.09, 0.42, -0.15, d); E(0.42, -1.25, 0.09, 0.42, 0.15, d);
+      } else if (type === 'cat' || type === 'fox' || type === 'shiba' || type === 'pig') {
+        const c = type === 'pig' ? d : b, s = type === 'shiba' ? 0.8 : 1;
+        for (const k of [-1, 1]) { clawTri(ctx, k * r * 0.88, -r * 0.2, k * r * 0.4, -r * 1.02 * s, k * r * 0.05, -r * 0.72, c);
+          if (type !== 'pig') clawTri(ctx, k * r * 0.7, -r * 0.4, k * r * 0.42, -r * 0.82 * s, k * r * 0.22, -r * 0.65, type === 'fox' ? '#431407' : l); }
+      } else if (type === 'panda') { E(-0.74, -0.74, 0.3, 0.3, 0, d); E(0.74, -0.74, 0.3, 0.3, 0, d); }
+      else if (type === 'koala') { E(-0.85, -0.6, 0.38, 0.38, 0, d); E(0.85, -0.6, 0.38, 0.38, 0, d); E(-0.85, -0.6, 0.22, 0.22, 0, l); E(0.85, -0.6, 0.22, 0.22, 0, l); }
+      else if (type === 'hamster') { E(-0.66, -0.76, 0.24, 0.24, 0, d); E(0.66, -0.76, 0.24, 0.24, 0, d); E(-0.66, -0.76, 0.13, 0.13, 0, '#fbcfe8'); E(0.66, -0.76, 0.13, 0.13, 0, '#fbcfe8'); }
+      else if (type === 'capybara') { E(-0.62, -0.82, 0.2, 0.2, 0, d); E(0.62, -0.82, 0.2, 0.2, 0, d); }
+      else if (type === 'axolotl') {
+        for (const k of [-1, 1]) for (let j = 0; j < 3; j++) E(k * 0.98, -0.5 + j * 0.28, 0.34, 0.1, k * (-0.5 + j * 0.45), d);
+      } else if (type === 'hedgehog') {
+        for (let j = 0; j < 9; j++) { const a = Math.PI * (1.05 + j * 0.11); clawTri(ctx, Math.cos(a - 0.2) * r * 0.9, Math.sin(a - 0.2) * r * 0.9, Math.cos(a) * r * 1.3, Math.sin(a) * r * 1.3, Math.cos(a + 0.2) * r * 0.9, Math.sin(a + 0.2) * r * 0.9, d); }
+      } else if (type === 'duck') { E(0, -1.02, 0.12, 0.22, 0, d); E(-0.2, -0.98, 0.1, 0.2, -0.5, d); E(0.2, -0.98, 0.1, 0.2, 0.5, d); }
+      // Chân tay
+      const lim = type === 'penguin' ? '#fb923c' : b;
+      E(-0.45, 0.88, 0.3, 0.17, 0, type === 'penguin' ? lim : d); E(0.45, 0.88, 0.3, 0.17, 0, type === 'penguin' ? lim : d);
+      E(-1.0, 0.15, 0.2, 0.32, 0.35, type === 'penguin' ? d : b); E(1.0, 0.15, 0.2, 0.32, -0.35, type === 'penguin' ? d : b);
+      // Thân bông
+      const gr = ctx.createRadialGradient(-r * 0.35, -r * 0.45, r * 0.1, 0, 0, r * 1.15);
+      gr.addColorStop(0, l); gr.addColorStop(0.35, b); gr.addColorStop(1, d);
+      ctx.beginPath(); ctx.ellipse(0, 0, r * 1.02, r * 0.95, 0, 0, Math.PI * 2); ctx.fillStyle = gr; ctx.fill();
+      ctx.lineWidth = Math.max(1, r * 0.05); ctx.strokeStyle = 'rgba(15,23,42,0.22)'; ctx.stroke();
+      // Chi tiết mặt trước
+      if (type === 'penguin') { E(0, 0.3, 0.68, 0.6, 0, l); E(-0.42, -0.1, 0.24, 0.3, 0, l); E(0.42, -0.1, 0.24, 0.3, 0, l); }
+      if (type === 'panda') { E(-0.38, -0.1, 0.22, 0.28, 0.4, d); E(0.38, -0.1, 0.22, 0.28, -0.4, d); }
+      if (type === 'shiba' || type === 'fox') { E(-0.4, 0.3, 0.42, 0.32, 0.25, l); E(0.4, 0.3, 0.42, 0.32, -0.25, l); E(0, 0.2, 0.3, 0.3, 0, l); }
+      if (type === 'hedgehog') E(0, 0.18, 0.78, 0.62, 0, l);
+      if (type === 'capybara') E(0, 0.3, 0.52, 0.34, 0, l);
+      if (type === 'frog') { for (const k of [-1, 1]) { E(k * 0.5, -0.8, 0.3, 0.3, 0, b); E(k * 0.5, -0.8, 0.2, 0.2, 0, '#fff'); E(k * 0.5, -0.78, 0.1, 0.12, 0, '#1e293b'); } }
+      E(-0.35, -0.5, 0.26, 0.14, -0.6, 'rgba(255,255,255,0.4)');
       // Mắt
-      const eyeCol = type === 'panda' ? '#fff' : '#1e293b';
-      clawEllipse(ctx, -r * 0.36, -r * 0.1, r * 0.09, r * 0.11, 0, eyeCol);
-      clawEllipse(ctx, r * 0.36, -r * 0.1, r * 0.09, r * 0.11, 0, eyeCol);
-      if (type !== 'panda') {
-        clawEllipse(ctx, -r * 0.33, -r * 0.14, r * 0.03, r * 0.035, 0, '#fff');
-        clawEllipse(ctx, r * 0.39, -r * 0.14, r * 0.03, r * 0.035, 0, '#fff');
-      }
-      clawEllipse(ctx, -r * 0.6, r * 0.12, r * 0.14, r * 0.09, 0, 'rgba(244,114,182,0.55)');
-      clawEllipse(ctx, r * 0.6, r * 0.12, r * 0.14, r * 0.09, 0, 'rgba(244,114,182,0.55)');
-      // Mũi / mỏ
-      if (type === 'chick') clawTri(ctx, -r * 0.13, r * 0.08, r * 0.13, r * 0.08, 0, r * 0.26, '#f97316');
-      else if (type === 'pig') {
-        clawEllipse(ctx, 0, r * 0.14, r * 0.3, r * 0.2, 0, acc);
-        clawEllipse(ctx, -r * 0.1, r * 0.14, r * 0.04, r * 0.07, 0, '#9d174d');
-        clawEllipse(ctx, r * 0.1, r * 0.14, r * 0.04, r * 0.07, 0, '#9d174d');
-      } else if (type === 'dog') clawEllipse(ctx, 0, r * 0.12, r * 0.12, r * 0.08, 0, '#1e293b');
+      if (type === 'capybara') { eye(-0.44, -0.12, 0.07); eye(0.44, -0.12, 0.07); }
+      else if (type === 'panda') { eye(-0.38, -0.1, 0.07, '#fff'); eye(0.38, -0.1, 0.07, '#fff'); }
+      else if (type === 'axolotl') { eye(-0.55, -0.12, 0.08); eye(0.55, -0.12, 0.08); }
+      else if (type !== 'frog') { eye(-0.36, -0.1, 0.09); eye(0.36, -0.1, 0.09); }
+      else { E(-0.5, -0.1, 0.05, 0.05, 0, '#1e293b'); E(0.5, -0.1, 0.05, 0.05, 0, '#1e293b'); }
+      E(-0.62, 0.14, 0.14, 0.09, 0, 'rgba(244,114,182,0.5)'); E(0.62, 0.14, 0.14, 0.09, 0, 'rgba(244,114,182,0.5)');
+      // Mũi / miệng
+      const smile = (y, w) => { ctx.beginPath(); ctx.arc(0, r * y, r * w, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = '#1e293b'; ctx.lineWidth = Math.max(1, r * 0.05); ctx.stroke(); };
+      if (type === 'capybara') { E(-0.15, 0.2, 0.05, 0.035, 0, '#4a2e17'); E(0.15, 0.2, 0.05, 0.035, 0, '#4a2e17'); smile(0.24, 0.12);
+        E(0.08, -0.98, 0.25, 0.23, 0, '#fb923c'); E(0.02, -1.03, 0.08, 0.05, -0.5, 'rgba(255,255,255,0.6)'); E(0.1, -1.24, 0.1, 0.05, -0.6, '#4ade80'); }
+      else if (type === 'duck') { E(0, 0.18, 0.3, 0.16, 0, '#fb923c'); }
+      else if (type === 'penguin') { clawTri(ctx, -r * 0.14, r * 0.08, r * 0.14, r * 0.08, 0, r * 0.28, '#fb923c'); }
+      else if (type === 'pig') { E(0, 0.16, 0.3, 0.2, 0, d); E(-0.1, 0.16, 0.04, 0.07, 0, '#9d174d'); E(0.1, 0.16, 0.04, 0.07, 0, '#9d174d'); }
+      else if (type === 'koala') { E(0, 0.04, 0.2, 0.26, 0, '#1e293b'); }
+      else if (type === 'shiba' || type === 'fox' || type === 'hedgehog') { E(0, 0.1, 0.12, 0.08, 0, '#1e293b'); smile(0.14, 0.12); }
       else if (type === 'cat') {
         clawTri(ctx, -r * 0.07, r * 0.07, r * 0.07, r * 0.07, 0, r * 0.15, '#f472b6');
         ctx.strokeStyle = 'rgba(71,85,105,0.7)'; ctx.lineWidth = Math.max(1, r * 0.03);
-        for (const sgn of [-1, 1]) for (const dy of [0, 0.1]) {
-          ctx.beginPath(); ctx.moveTo(sgn * r * 0.3, r * (0.14 + dy)); ctx.lineTo(sgn * r * 0.8, r * (0.08 + dy * 2)); ctx.stroke();
-        }
-      } else {
-        ctx.beginPath(); ctx.arc(0, r * 0.1, r * 0.14, 0.15 * Math.PI, 0.85 * Math.PI);
-        ctx.strokeStyle = '#1e293b'; ctx.lineWidth = Math.max(1, r * 0.05); ctx.stroke();
-      }
+        for (const k of [-1, 1]) for (const dy of [0, 0.1]) { ctx.beginPath(); ctx.moveTo(k * r * 0.3, r * (0.14 + dy)); ctx.lineTo(k * r * 0.8, r * (0.08 + dy * 2)); ctx.stroke(); }
+      } else if (type === 'hamster') { E(0, 0.1, 0.07, 0.05, 0, '#f472b6'); E(0, 0.26, 0.07, 0.09, 0, '#fff'); }
+      else smile(0.12, 0.15);
       // Bảng tên
       let label = name || '';
       if (label.length > 9) label = label.slice(0, 8) + '…';
       const fs = Math.max(8, r * 0.46);
       ctx.font = '800 ' + fs + 'px system-ui, sans-serif';
       const tw = ctx.measureText(label).width + fs * 0.9, th = fs * 1.35;
-      ctx.save(); ctx.translate(0, r * 0.78); ctx.rotate(tilt || 0);
+      ctx.save(); ctx.translate(0, r * 0.8);
       ctx.fillStyle = '#fffdf5'; ctx.strokeStyle = 'rgba(15,23,42,0.35)'; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.roundRect(-tw / 2, -th / 2, tw, th, th * 0.35); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.roundRect(-tw / 2, -th / 2, tw, th, th * 0.4); ctx.fill(); ctx.stroke();
       ctx.fillStyle = '#1e293b'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText(label, 0, fs * 0.04);
       ctx.restore();
+    }
+
+    function drawClawPlush(ctx, x, y, r, type, name, rot, sx, sy) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), rr = Math.round(r * 2) / 2;
+      const key = type + '|' + name + '|' + rr + '|' + dpr;
+      let sp = clawSprites.get(key);
+      if (!sp) {
+        if (clawSprites.size > 160) clawSprites.clear();
+        sp = document.createElement('canvas');
+        sp.width = Math.ceil(2.8 * rr * dpr); sp.height = Math.ceil(3.1 * rr * dpr);
+        const c2 = sp.getContext('2d'); c2.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c2.translate(1.4 * rr, 1.95 * rr); clawPaintPlush(c2, type, name, rr);
+        clawSprites.set(key, sp);
+      }
+      ctx.save(); ctx.translate(x, y); if (rot) ctx.rotate(rot); if (sx !== undefined) ctx.scale(sx, sy);
+      ctx.drawImage(sp, -1.4 * rr, -1.95 * rr, 2.8 * rr, 3.1 * rr);
       ctx.restore();
     }
 
-    function drawClawHook(ctx, x, y, open, r, railY) {
-      const armL = r * 1.5, ang = 0.12 + open * 0.55;
-      ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = Math.max(2, r * 0.07);
-      ctx.beginPath(); ctx.moveTo(x, railY); ctx.lineTo(x, y - r * 0.25); ctx.stroke();
-      // Đầu càng
-      ctx.fillStyle = '#f59e0b'; ctx.strokeStyle = '#78350f'; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.roundRect(x - r * 0.42, y - r * 0.3, r * 0.84, r * 0.4, r * 0.12); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#fde68a'; ctx.beginPath(); ctx.arc(x, y - r * 0.1, r * 0.09, 0, Math.PI * 2); ctx.fill();
-      // Hai ngón càng
-      for (const sgn of [-1, 1]) {
-        const x1 = x + sgn * r * 0.34, y1 = y + r * 0.08;
-        const x2 = x1 + sgn * Math.sin(ang) * armL * 0.7, y2 = y1 + Math.cos(ang) * armL * 0.7;
-        const x3 = x2 - sgn * Math.sin(ang * 0.4) * armL * 0.4, y3 = y2 + Math.cos(ang * 0.4) * armL * 0.35;
-        ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-        ctx.strokeStyle = '#334155'; ctx.lineWidth = Math.max(4, r * 0.2);
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.stroke();
-        ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = Math.max(2.5, r * 0.13);
-        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); ctx.stroke();
-        ctx.lineCap = 'butt';
+    // Ngón càng kim loại 3 đốt, đầu bọc cao su neon
+    function clawFinger(ctx, x, y, sgn, r, open, led) {
+      const a1 = 0.2 + open * 0.58, a2 = a1 - (1.15 + (1 - open) * 0.1);
+      const x1 = x + sgn * r * 0.3, y1 = y + r * 0.12;
+      const x2 = x1 + sgn * Math.sin(a1) * r * 1.25, y2 = y1 + Math.cos(a1) * r * 1.25;
+      const x3 = x2 + sgn * Math.sin(a2) * r * 0.9, y3 = y2 + Math.cos(a2) * r * 0.9;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      const path = () => { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.lineTo(x3, y3); };
+      ctx.strokeStyle = '#1e293b'; ctx.lineWidth = Math.max(5, r * 0.26); path(); ctx.stroke();
+      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = Math.max(3, r * 0.16); path(); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,255,255,0.75)'; ctx.lineWidth = Math.max(1, r * 0.04);
+      ctx.beginPath(); ctx.moveTo(x1 - sgn * r * 0.03, y1); ctx.lineTo(x2 - sgn * r * 0.03, y2); ctx.stroke();
+      ctx.fillStyle = '#475569'; ctx.beginPath(); ctx.arc(x2, y2, r * 0.13, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#94a3b8'; ctx.beginPath(); ctx.arc(x2, y2, r * 0.06, 0, Math.PI * 2); ctx.fill();
+      ctx.save(); ctx.shadowColor = led; ctx.shadowBlur = r * 0.35; ctx.fillStyle = led;
+      ctx.beginPath(); ctx.arc(x3, y3, r * 0.1, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+      ctx.lineCap = 'butt';
+    }
+    function drawClawBack(ctx, x, y, r, open) {
+      ctx.save(); ctx.globalAlpha = 0.55; ctx.lineCap = 'round';
+      ctx.strokeStyle = '#475569'; ctx.lineWidth = Math.max(4, r * 0.2);
+      ctx.beginPath(); ctx.moveTo(x, y + r * 0.2); ctx.lineTo(x, y + r * (0.9 + open * 0.15)); ctx.lineTo(x - r * 0.12, y + r * 1.5); ctx.stroke();
+      ctx.restore();
+    }
+    function drawClawFront(ctx, x, y, railY, r, open, led) {
+      // Dây cáp bện
+      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(x, railY); ctx.lineTo(x, y - r * 0.4); ctx.stroke();
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1.4; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(x, railY); ctx.lineTo(x, y - r * 0.4); ctx.stroke(); ctx.setLineDash([]);
+      clawFinger(ctx, x, y, -1, r, open, led); clawFinger(ctx, x, y, 1, r, open, led);
+      // Thân hub kim loại
+      const hg = ctx.createLinearGradient(0, y - r * 0.45, 0, y + r * 0.2);
+      hg.addColorStop(0, '#f8fafc'); hg.addColorStop(0.5, '#94a3b8'); hg.addColorStop(1, '#475569');
+      ctx.fillStyle = hg; ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(x - r * 0.5, y - r * 0.45, r, r * 0.6, r * 0.22); ctx.fill(); ctx.stroke();
+      ctx.save(); ctx.shadowColor = led; ctx.shadowBlur = r * 0.5; ctx.fillStyle = led;
+      ctx.beginPath(); ctx.roundRect(x - r * 0.3, y - r * 0.22, r * 0.6, r * 0.09, r * 0.045); ctx.fill(); ctx.restore();
+    }
+
+    // Lớp nền tĩnh: dựng 1 lần cho mỗi kích thước rồi tái sử dụng
+    function clawBuildLayers(w, h, dpr, g, r) {
+      const mk = () => { const c = document.createElement('canvas'); c.width = Math.ceil(w * dpr); c.height = Math.ceil(h * dpr); const x = c.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0); return [c, x]; };
+      const [ca, A] = mk(), [cb, B] = mk();
+      const bg = A.createLinearGradient(0, 0, 0, h);
+      bg.addColorStop(0, '#1e1040'); bg.addColorStop(1, '#0b0620'); A.fillStyle = bg; A.fillRect(0, 0, w, h);
+      for (let i = 0; i < 6; i++) {
+        const bx = (i * 0.19 + 0.08) * w, by = (0.2 + (i % 3) * 0.25) * h;
+        const rg = A.createRadialGradient(bx, by, 0, bx, by, h * 0.3);
+        rg.addColorStop(0, i % 2 ? 'rgba(236,72,153,0.16)' : 'rgba(99,102,241,0.18)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
+        A.fillStyle = rg; A.fillRect(0, 0, w, h);
       }
+      const fy = h * 0.9, tile = 40;
+      for (let r2 = 0; fy + r2 * 14 < h; r2++) for (let c = -2; c < w / tile + 2; c++) {
+        A.fillStyle = (r2 + c) % 2 ? 'rgba(76,29,149,0.45)' : 'rgba(30,16,64,0.6)'; A.fillRect(c * tile, fy + r2 * 14, tile, 14);
+      }
+      if (g.mx > 130) {
+        A.save(); A.textAlign = 'center'; A.textBaseline = 'middle';
+        const fs = Math.min(g.mx * 0.42, 54); A.font = '900 ' + fs + 'px system-ui, sans-serif';
+        A.shadowBlur = 18; A.shadowColor = '#f472b6'; A.fillStyle = '#fdf2f8'; A.fillText('GẮP', g.mx * 0.5, g.my + g.mh * 0.3);
+        A.shadowColor = '#fbbf24'; A.fillStyle = '#fef3c7'; A.fillText('THÚ', g.mx * 0.5, g.my + g.mh * 0.3 + fs * 1.05);
+        const rx = g.mx + g.mw + g.mx * 0.5, ry = g.my + g.mh * 0.3, br = Math.min(g.mx * 0.3, 44);
+        A.shadowColor = '#22d3ee'; A.strokeStyle = '#a5f3fc'; A.lineWidth = 4;
+        A.beginPath(); A.arc(rx, ry, br, 0, Math.PI * 2); A.stroke();
+        A.beginPath(); A.arc(rx - br * 0.8, ry - br * 0.8, br * 0.38, 0, Math.PI * 2); A.stroke();
+        A.beginPath(); A.arc(rx + br * 0.8, ry - br * 0.8, br * 0.38, 0, Math.PI * 2); A.stroke();
+        A.beginPath(); A.arc(rx, ry + br * 0.1, br * 0.5, 0.15 * Math.PI, 0.85 * Math.PI); A.stroke();
+        A.restore();
+      }
+      // Thân máy
+      const body = A.createLinearGradient(g.mx, g.my, g.mx + g.mw, g.my + g.mh);
+      body.addColorStop(0, '#ff6ec4'); body.addColorStop(0.5, '#d946ef'); body.addColorStop(1, '#9333ea');
+      A.save(); A.shadowColor = 'rgba(217,70,239,0.55)'; A.shadowBlur = 30; A.fillStyle = body;
+      A.beginPath(); A.roundRect(g.mx, g.my, g.mw, g.mh, 26); A.fill(); A.restore();
+      A.strokeStyle = 'rgba(255,255,255,0.55)'; A.lineWidth = 2.5; A.beginPath(); A.roundRect(g.mx + 3, g.my + 3, g.mw - 6, g.mh - 6, 23); A.stroke();
+      const mqH = g.mh * 0.095, mqX = g.mx + g.mw * 0.14, mqW = g.mw * 0.72, mqY = g.my + g.mh * 0.03;
+      A.fillStyle = '#1e0b4b'; A.strokeStyle = '#fde68a'; A.lineWidth = 2; A.beginPath(); A.roundRect(mqX, mqY, mqW, mqH, 12); A.fill(); A.stroke();
+      A.textAlign = 'center'; A.textBaseline = 'middle'; A.font = '900 ' + Math.max(12, mqH * 0.55) + 'px system-ui, sans-serif';
+      A.shadowColor = '#f59e0b'; A.shadowBlur = 10; A.fillStyle = '#fde68a'; A.fillText('★ MÁY GẮP THÚ ★', mqX + mqW / 2, mqY + mqH / 2 + 1); A.shadowBlur = 0;
+      // Kính + sàn bóng + lối ra + ray
+      const gl = A.createLinearGradient(0, g.gy, 0, g.gy + g.gh); gl.addColorStop(0, '#3b1a7a'); gl.addColorStop(1, '#1e0d4a');
+      A.fillStyle = gl; A.fillRect(g.gx, g.gy, g.gw, g.gh);
+      A.save(); A.beginPath(); A.rect(g.gx, g.gy, g.gw, g.gh); A.clip();
+      const cols = ['#f472b6', '#60a5fa', '#fde047', '#4ade80', '#c084fc'];
+      for (let i = 0; i < 40; i++) { A.fillStyle = cols[i % 5]; A.beginPath(); A.arc(g.gx + ((i * 37) % 100) / 100 * g.gw, g.floorY + ((i * 13) % 7), r * 0.2, 0, Math.PI * 2); A.fill(); }
+      A.fillStyle = '#0f172a'; A.fillRect(g.gx, g.gy + g.gh * 0.52, g.chuteW, g.gh * 0.48);
+      A.fillStyle = '#facc15'; A.fillRect(g.gx, g.gy + g.gh * 0.52, g.chuteW, g.gh * 0.035);
+      A.fillStyle = '#ef4444'; A.beginPath(); A.roundRect(g.gx + g.chuteW * 0.12, g.gy + g.gh * 0.62, g.chuteW * 0.76, g.gh * 0.1, 6); A.fill();
+      A.fillStyle = '#fff'; A.textAlign = 'center'; A.textBaseline = 'middle'; A.font = '900 ' + Math.max(9, g.chuteW * 0.16) + 'px system-ui, sans-serif';
+      A.fillText('LỐI RA', g.gx + g.chuteW / 2, g.gy + g.gh * 0.67);
+      const rl = A.createLinearGradient(0, g.railY - 4, 0, g.railY + 4); rl.addColorStop(0, '#f1f5f9'); rl.addColorStop(1, '#64748b');
+      A.fillStyle = rl; A.fillRect(g.gx, g.railY - 3, g.gw, 7);
+      A.restore();
+      // Lớp trước: ánh kính, khung, bảng điều khiển
+      const sh = B.createLinearGradient(g.gx, g.gy, g.gx + g.gw * 0.6, g.gy + g.gh);
+      sh.addColorStop(0, 'rgba(255,255,255,0.16)'); sh.addColorStop(0.3, 'rgba(255,255,255,0)'); sh.addColorStop(0.7, 'rgba(255,255,255,0.04)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
+      B.fillStyle = sh; B.fillRect(g.gx, g.gy, g.gw, g.gh);
+      B.strokeStyle = '#fbcfe8'; B.lineWidth = 4; B.strokeRect(g.gx, g.gy, g.gw, g.gh);
+      B.fillStyle = '#9d174d'; B.beginPath(); B.roundRect(g.mx + g.mw * 0.03, g.pY, g.mw * 0.94, g.pH, 16); B.fill();
+      B.fillStyle = '#fff'; B.textAlign = 'center'; B.font = '800 ' + Math.max(8, g.pH * 0.12) + 'px system-ui';
+      B.fillText('DI CHUYỂN', g.mx + g.mw * 0.14, g.pY + g.pH * 0.92); B.fillText('GẮP', g.mx + g.mw * 0.3, g.pY + g.pH * 0.92);
+      B.fillStyle = '#3b0764'; B.beginPath(); B.roundRect(g.mx + g.mw * 0.42, g.pY + g.pH * 0.18, g.mw * 0.5, g.pH * 0.5, 12); B.fill();
+      B.fillStyle = '#fde68a'; B.font = '900 ' + Math.max(10, g.pH * 0.2) + 'px system-ui'; B.fillText('★ GẮP LÀ TRÚNG ★', g.mx + g.mw * 0.67, g.pY + g.pH * 0.45);
+      return { ca, cb };
     }
 
     function renderClawCanvas(now) {
@@ -31833,183 +31945,158 @@
       const w = canvas.width / dpr, h = canvas.height / dpr;
       if (w < 10 || h < 10) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // Nền phòng game
-      const bg = ctx.createLinearGradient(0, 0, 0, h);
-      bg.addColorStop(0, '#1e1040'); bg.addColorStop(1, '#0b0620');
-      ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-      for (let i = 0; i < 6; i++) {
-        const bx = (i * 0.19 + 0.08) * w, by = (0.2 + (i % 3) * 0.25) * h;
-        const rg = ctx.createRadialGradient(bx, by, 0, bx, by, h * 0.3);
-        rg.addColorStop(0, i % 2 ? 'rgba(236,72,153,0.16)' : 'rgba(99,102,241,0.18)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
-      }
-      // Sàn caro
-      const fy = h * 0.9, tile = 40;
-      for (let r2 = 0; fy + r2 * 14 < h; r2++) for (let c = -2; c < w / tile + 2; c++) {
-        ctx.fillStyle = (r2 + c) % 2 ? 'rgba(76,29,149,0.45)' : 'rgba(30,16,64,0.6)';
-        ctx.fillRect(c * tile, fy + r2 * 14, tile, 14);
-      }
+      const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, k) => a + (b - a) * k, EZ = CLAW_EASE;
+      const dt = clawLast ? clamp((now - clawLast) / 1000, 0, 0.05) : 0.016; clawLast = now;
 
       const g = clawGeom(w, h);
       const n = clawToys.length;
       const lay = clawLayout(g, Math.max(1, n));
-      const r = lay.r, armL = r * 1.5;
+      const r = lay.r, hang = r * 1.1;
+      const key = w + 'x' + h + 'x' + dpr + 'x' + Math.round(r);
+      if (key !== clawLayerKey || !clawLayers) { clawLayers = clawBuildLayers(w, h, dpr, g, r); clawLayerKey = key; }
+      ctx.drawImage(clawLayers.ca, 0, 0, w, h);
 
-      // Biển neon hai bên
-      if (g.mx > 130) {
-        ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        const fs = Math.min(g.mx * 0.42, 54);
-        ctx.font = '900 ' + fs + 'px system-ui, sans-serif';
-        ctx.shadowBlur = 18; ctx.shadowColor = '#f472b6'; ctx.fillStyle = '#fdf2f8';
-        ctx.fillText('GẮP', g.mx * 0.5, g.my + g.mh * 0.3);
-        ctx.shadowColor = '#fbbf24'; ctx.fillStyle = '#fef3c7';
-        ctx.fillText('THÚ', g.mx * 0.5, g.my + g.mh * 0.3 + fs * 1.05);
-        const rx = g.mx + g.mw + g.mx * 0.5, ry = g.my + g.mh * 0.3, br = Math.min(g.mx * 0.3, 44);
-        ctx.shadowColor = '#22d3ee'; ctx.strokeStyle = '#a5f3fc'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.arc(rx, ry, br, 0, Math.PI * 2); ctx.stroke();
-        ctx.beginPath(); ctx.arc(rx - br * 0.8, ry - br * 0.8, br * 0.38, 0, Math.PI * 2); ctx.stroke();
-        ctx.beginPath(); ctx.arc(rx + br * 0.8, ry - br * 0.8, br * 0.38, 0, Math.PI * 2); ctx.stroke();
-        ctx.beginPath(); ctx.arc(rx, ry + br * 0.1, br * 0.5, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
-        ctx.restore();
-      }
-
-      // Thân máy màu hồng
-      const body = ctx.createLinearGradient(g.mx, 0, g.mx + g.mw, 0);
-      body.addColorStop(0, '#f472b6'); body.addColorStop(0.5, '#ec4899'); body.addColorStop(1, '#db2777');
-      ctx.fillStyle = body; ctx.strokeStyle = '#fbcfe8'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.roundRect(g.mx, g.my, g.mw, g.mh, 22); ctx.fill(); ctx.stroke();
-      // Bảng hiệu
-      const mqH = g.mh * 0.095, mqX = g.mx + g.mw * 0.14, mqW = g.mw * 0.72, mqY = g.my + g.mh * 0.03;
-      ctx.fillStyle = '#2e1065'; ctx.strokeStyle = '#fde68a'; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.roundRect(mqX, mqY, mqW, mqH, 10); ctx.fill(); ctx.stroke();
-      for (let i = 0; i < 18; i++) {
-        const on = (Math.floor(now / 300) + i) % 2 === 0;
-        ctx.fillStyle = on ? '#fef08a' : '#fbbf24';
-        ctx.beginPath(); ctx.arc(mqX + (i + 0.5) * mqW / 18, mqY - 3, 2.4, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.font = '900 ' + Math.max(12, mqH * 0.55) + 'px system-ui, sans-serif';
-      ctx.shadowColor = '#f59e0b'; ctx.shadowBlur = 10; ctx.fillStyle = '#fde68a';
-      ctx.fillText('★ MÁY GẮP THÚ ★', mqX + mqW / 2, mqY + mqH / 2 + 1);
-      ctx.restore();
-
-      // Kính
-      const gl = ctx.createLinearGradient(0, g.gy, 0, g.gy + g.gh);
-      gl.addColorStop(0, '#3b1a7a'); gl.addColorStop(1, '#1e0d4a');
-      ctx.fillStyle = gl; ctx.fillRect(g.gx, g.gy, g.gw, g.gh);
-      ctx.save(); ctx.beginPath(); ctx.rect(g.gx, g.gy, g.gw, g.gh); ctx.clip();
-      // Bóng nhựa dưới đáy
-      const ballCols = ['#f472b6', '#60a5fa', '#fde047', '#4ade80', '#c084fc'];
-      for (let i = 0; i < 40; i++) {
-        ctx.fillStyle = ballCols[i % 5]; ctx.globalAlpha = 0.9;
-        ctx.beginPath(); ctx.arc(g.gx + ((i * 37) % 100) / 100 * g.gw, g.floorY + ((i * 13) % 7), r * 0.2, 0, Math.PI * 2); ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-      // Lối ra
-      ctx.fillStyle = '#0f172a'; ctx.fillRect(g.gx, g.gy + g.gh * 0.52, g.chuteW, g.gh * 0.48);
-      ctx.fillStyle = '#facc15'; ctx.fillRect(g.gx, g.gy + g.gh * 0.52, g.chuteW, g.gh * 0.035);
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath(); ctx.roundRect(g.gx + g.chuteW * 0.12, g.gy + g.gh * 0.62, g.chuteW * 0.76, g.gh * 0.1, 6); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.font = '900 ' + Math.max(9, g.chuteW * 0.16) + 'px system-ui, sans-serif';
-      ctx.fillText('LỐI RA', g.gx + g.chuteW / 2, g.gy + g.gh * 0.67);
-      ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '900 ' + (g.chuteW * 0.22) + 'px system-ui';
-      ctx.fillText('⌄', g.gx + g.chuteW / 2, g.gy + g.gh * 0.79);
-
-      // Tiến trình
+      // --- Dòng thời gian chuyển động ---
       const elapsed = clawState === 'running' ? now - clawStartTime : 0;
       const t = clawState === 'running' ? Math.min(1, elapsed / clawDuration) : (clawState === 'finished' ? 1 : 0);
-      const ease = k => k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-      const lerp = (a, b, k) => a + (b - a) * k;
-      const mid = (g.px0 + g.px1) / 2, pw = g.px1 - g.px0;
-      const exitX = g.gx + g.chuteW * 0.5;
+      const seg = (a, b) => clamp((t - a) / (b - a), 0, 1);
+      const mid = (g.px0 + g.px1) / 2, pw = g.px1 - g.px0, exitX = g.gx + g.chuteW * 0.5;
       const tp = clawWinnerIdx >= 0 && lay.pos[clawWinnerIdx] ? lay.pos[clawWinnerIdx] : { x: mid, y: g.floorY - r };
-      const grabY = tp.y - armL * 0.7;
-      const xw = ms => mid + Math.sin(ms / 520) * pw * 0.36;
-      let cx = mid, cy = g.restY, open = 1, attached = false, attY = 0, phase = 0;
+      const grabY = tp.y - hang;
+      const wander = ms => mid + Math.sin(ms / 720) * pw * 0.3 + Math.sin(ms / 310) * pw * 0.05;
+      let cx = mid, cy = g.restY, open = 1, phase = 0, held = false, drop = null, sq = 0;
       if (clawState === 'idle') {
-        cx = mid + Math.sin(now / 1500) * pw * 0.25; cy = g.restY + Math.sin(now / 700) * 3;
-      } else if (t < 0.3) {
-        phase = 0; cx = xw(elapsed); cy = g.restY + Math.sin(elapsed / 300) * 3;
-      } else if (t < 0.45) {
-        phase = 1; cx = lerp(xw(clawDuration * 0.3), tp.x, ease((t - 0.3) / 0.15));
-      } else if (t < 0.6) {
-        phase = 2; cx = tp.x; cy = lerp(g.restY, grabY, ease((t - 0.45) / 0.15));
-      } else if (t < 0.68) {
-        phase = 3; cx = tp.x; cy = grabY; open = lerp(1, 0.15, (t - 0.6) / 0.08);
-      } else if (t < 0.82) {
-        phase = 4; cx = tp.x; cy = lerp(grabY, g.restY, ease((t - 0.68) / 0.14)); open = 0.15; attached = true;
-      } else if (t < 0.94) {
-        phase = 5; cx = lerp(tp.x, exitX, ease((t - 0.82) / 0.12)); cy = g.restY; open = 0.15; attached = true;
-      } else if (t < 1) {
-        phase = 6; const k = (t - 0.94) / 0.06;
-        cx = exitX; cy = g.restY; open = lerp(0.15, 1, Math.min(1, k * 2)); attached = true;
-        attY = lerp(g.restY + armL * 0.7, g.floorY - r * 0.9, ease(k));
+        cx = mid + Math.sin(now / 1700) * pw * 0.22; cy = g.restY + Math.sin(now / 800) * 2;
+      } else if (clawState === 'finished') {
+        phase = 6; cx = lerp(exitX, mid, EZ.io(clamp((now - clawFinishAt) / 1500, 0, 1)));
+      } else if (t < 0.26) {
+        phase = 0; const sx = clawStartX == null ? mid : clawStartX;
+        cx = lerp(sx, wander(elapsed), EZ.sine(clamp(elapsed / 700, 0, 1))); cy = g.restY + Math.sin(elapsed / 260) * 2;
+      } else if (t < 0.4) {
+        phase = 1; cx = lerp(wander(clawDuration * 0.26), tp.x, EZ.io(seg(0.26, 0.4)));
+      } else if (t < 0.55) {
+        phase = 2; cx = tp.x; cy = lerp(g.restY, grabY, EZ.sine(seg(0.4, 0.55)));
+      } else if (t < 0.63) {
+        phase = 3; cx = tp.x; cy = grabY; open = lerp(1, 0.18, EZ.out(seg(0.55, 0.63))); sq = seg(0.58, 0.63);
+      } else if (t < 0.77) {
+        phase = 4; cx = tp.x; cy = lerp(grabY, g.restY, EZ.io(seg(0.63, 0.77))); open = 0.18; held = true; sq = 1;
+      } else if (t < 0.91) {
+        phase = 5; cx = lerp(tp.x, exitX, EZ.io(seg(0.77, 0.91))); open = 0.18; held = true; sq = 1;
       } else {
-        phase = 6; cx = exitX; cy = g.restY; open = 1;
+        phase = 6; const k = seg(0.91, 1); cx = exitX;
+        open = lerp(0.18, 1, EZ.out(clamp(k * 3, 0, 1)));
+        if (k < 0.12) held = true; else drop = { u: (k - 0.12) / 0.88 };
       }
       if (clawState === 'running' && phase !== clawPhaseIdx) {
         clawPhaseIdx = phase;
         const st = document.getElementById('claw-machine-status');
         if (st) st.innerText = CLAW_STATUS[phase];
-        clawBeep([520, 620, 440, 880, 560, 600, 760][phase], 0.12);
+        clawBeep([520, 660, 440, 880, 560, 600, 760][phase], 0.14);
       }
+      // Quán tính: càng đung đưa như con lắc khi di chuyển
+      const vx = clawPrevX == null ? 0 : (cx - clawPrevX) / Math.max(dt, 0.001); clawPrevX = cx;
+      const swTarget = clamp(vx * 0.0007, -0.3, 0.3);
+      clawSwingV += ((swTarget - clawSwing) * 55 - clawSwingV * 5.5) * dt; clawSwing += clawSwingV * dt;
+      clawJoy += (clamp(vx * 0.004, -1, 1) - clawJoy) * Math.min(1, dt * 10);
 
-      // Đống thú bông (vẽ từ hàng trên xuống hàng dưới)
-      const winnerGone = clawState !== 'idle' && t >= 0.6;
+      // --- Đống thú bông ---
+      ctx.save(); ctx.beginPath(); ctx.rect(g.gx, g.gy, g.gw, g.gh); ctx.clip();
+      const winnerGone = clawState !== 'idle' && t >= 0.63;
+      const low = (phase >= 2 && phase <= 4) ? clamp((cy - g.restY) / Math.max(1, grabY - g.restY), 0, 1) : 0;
       for (let i = n - 1; i >= 0; i--) {
         if (winnerGone && i === clawWinnerIdx) continue;
         const p = lay.pos[i], tt = clawToys[i];
-        drawClawPlush(ctx, p.x, p.y, r, tt.type, tt.name, (((i * 31) % 11) / 11 - 0.5) * 0.14);
+        const dx = p.x - cx, near = Math.abs(dx) < r * 2.2 ? 1 - Math.abs(dx) / (r * 2.2) : 0;
+        const rot = (((i * 31) % 11) / 11 - 0.5) * 0.14 + Math.sign(dx) * near * low * 0.07;
+        const br = 1 + Math.sin(now / 900 + i * 1.7) * 0.012;
+        // bóng đổ dưới chân
+        ctx.fillStyle = 'rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(p.x, p.y + r * 0.95, r * 0.85, r * 0.16, 0, 0, Math.PI * 2); ctx.fill();
+        drawClawPlush(ctx, p.x, p.y - (br - 1) * r * 6, r, tt.type, tt.name, rot, 1 / br, br);
       }
-      // Thú bông trúng giải
-      if (winnerGone && clawWinnerIdx >= 0) {
+      // Tia ngắm + vòng khóa mục tiêu
+      if (clawState === 'running' && (phase === 1 || phase === 2)) {
+        const a = phase === 1 ? EZ.sine(seg(0.26, 0.4)) : 1;
+        const bm = ctx.createLinearGradient(0, cy, 0, tp.y + r);
+        bm.addColorStop(0, 'rgba(34,211,238,' + (0.28 * a) + ')'); bm.addColorStop(1, 'rgba(34,211,238,0)');
+        ctx.fillStyle = bm; ctx.beginPath(); ctx.moveTo(cx - r * 0.3, cy); ctx.lineTo(cx + r * 0.3, cy); ctx.lineTo(tp.x + r * 1.1, tp.y + r); ctx.lineTo(tp.x - r * 1.1, tp.y + r); ctx.closePath(); ctx.fill();
+        ctx.save(); ctx.translate(tp.x, tp.y); ctx.rotate(now / 700); ctx.strokeStyle = 'rgba(103,232,249,' + (0.9 * a) + ')'; ctx.lineWidth = 2.5;
+        ctx.setLineDash([r * 0.35, r * 0.2]); ctx.beginPath(); ctx.arc(0, 0, r * (1.35 + Math.sin(now / 160) * 0.05), 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+      }
+      // Bóng càng đổ lên đống thú
+      const sAlpha = clawState === 'idle' ? 0.12 : 0.1 + 0.16 * clamp((cy - g.restY) / (r * 3), 0, 1);
+      ctx.fillStyle = 'rgba(0,0,0,' + sAlpha + ')'; ctx.beginPath(); ctx.ellipse(cx, g.floorY - r * 0.4, r * 1.5, r * 0.28, 0, 0, Math.PI * 2); ctx.fill();
+
+      // --- Xe tời trên ray (không đung đưa) ---
+      const cg = ctx.createLinearGradient(0, g.railY - r * 0.3, 0, g.railY + r * 0.3);
+      cg.addColorStop(0, '#e9d5ff'); cg.addColorStop(1, '#7c3aed');
+      ctx.fillStyle = cg; ctx.strokeStyle = '#2e1065'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(cx - r * 0.6, g.railY - r * 0.27, r * 1.2, r * 0.54, r * 0.2); ctx.fill(); ctx.stroke();
+      const led = CLAW_LED[phase];
+      ctx.save(); ctx.shadowColor = led; ctx.shadowBlur = 8; ctx.fillStyle = led; ctx.beginPath(); ctx.arc(cx, g.railY, r * 0.09, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+
+      // --- Càng + thú đang được nhấc (xoay quanh điểm treo) ---
+      ctx.save(); ctx.translate(cx, g.railY); ctx.rotate(clawSwing); ctx.translate(-cx, -g.railY);
+      drawClawBack(ctx, cx, cy, r, open);
+      if ((held || (phase === 3 && winnerGone)) && clawWinnerIdx >= 0) {
         const wt = clawToys[clawWinnerIdx];
-        let wx = cx, wy = cy + armL * 0.7;
-        if (clawState === 'finished' || t >= 1) { wx = exitX; wy = g.floorY - r * 0.9; }
-        else if (phase === 6) { wx = exitX; wy = attY; }
-        else if (phase === 3) { wx = tp.x; wy = tp.y; }
-        drawClawPlush(ctx, wx, wy, r, wt.type, wt.name, 0);
-        if (clawState === 'finished') {
-          ctx.save(); ctx.globalAlpha = 0.6 + Math.sin(now / 200) * 0.3; ctx.fillStyle = '#fde68a';
-          for (let i = 0; i < 6; i++) {
-            const a = now / 600 + i * Math.PI / 3;
-            ctx.beginPath(); ctx.arc(wx + Math.cos(a) * r * 1.5, wy + Math.sin(a) * r * 1.2, 3, 0, Math.PI * 2); ctx.fill();
-          }
-          ctx.restore();
-        }
+        ctx.save(); ctx.translate(cx, cy); ctx.rotate(clawSwing * 0.6 + Math.sin(now / 260) * 0.03 * sq); ctx.translate(-cx, -cy);
+        drawClawPlush(ctx, cx, cy + hang, r, wt.type, wt.name, 0, 1 + 0.05 * sq, 1 - 0.06 * sq);
+        ctx.restore();
       }
-      // Càng gắp
-      ctx.fillStyle = '#cbd5e1'; ctx.fillRect(g.gx, g.railY - 3, g.gw, 6);
-      ctx.fillStyle = '#64748b'; ctx.fillRect(g.gx, g.railY + 1, g.gw, 2);
-      drawClawHook(ctx, cx, cy, open, r, g.railY);
+      drawClawFront(ctx, cx, cy, g.railY, r, open, led);
       ctx.restore();
 
-      // Phản chiếu kính + khung
-      const sh = ctx.createLinearGradient(g.gx, g.gy, g.gx + g.gw * 0.5, g.gy + g.gh);
-      sh.addColorStop(0, 'rgba(255,255,255,0.12)'); sh.addColorStop(0.35, 'rgba(255,255,255,0)');
-      ctx.fillStyle = sh; ctx.fillRect(g.gx, g.gy, g.gw, g.gh);
-      ctx.strokeStyle = '#fbcfe8'; ctx.lineWidth = 4; ctx.strokeRect(g.gx, g.gy, g.gw, g.gh);
+      // --- Thú rơi xuống lối ra: rơi tự do + nảy ---
+      if (clawWinnerIdx >= 0 && (drop || clawState === 'finished')) {
+        const wt = clawToys[clawWinnerIdx], y0 = g.restY + hang, yEnd = g.floorY - r * 0.9;
+        let u = drop ? drop.u : 1, wy, rot = 0;
+        if (clawState === 'finished') {
+          const s = (now - clawFinishAt) / 1000; wy = yEnd - Math.abs(Math.sin(s * 9)) * r * 0.22 * Math.exp(-s * 5);
+        } else if (u < 0.55) { const f = u / 0.55; wy = lerp(y0, yEnd, f * f); rot = Math.sin(f * 3) * 0.08; }
+        else { const f = (u - 0.55) / 0.45; wy = yEnd - Math.sin(f * Math.PI) * r * 0.55 * (1 - f * 0.4); }
+        if (drop && u >= 0.55 && !clawFinishFired && !clawParts.some(q => q.land)) {
+          for (let i = 0; i < 22; i++) { const a = Math.random() * Math.PI * 2, s = 60 + Math.random() * 140;
+            clawParts.push({ x: exitX, y: yEnd + r * 0.4, vx: Math.cos(a) * s, vy: Math.sin(a) * s - 120, life: 1, c: ['#fde68a', '#f9a8d4', '#67e8f9', '#bbf7d0'][i % 4], s: 2 + Math.random() * 3, land: i === 0 }); }
+          clawBeep(300, 0.12);
+        }
+        ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(exitX, yEnd + r * 0.9, r * 0.8, r * 0.14, 0, 0, Math.PI * 2); ctx.fill();
+        drawClawPlush(ctx, exitX, wy, r, wt.type, wt.name, rot);
+      }
+      // Hạt lấp lánh
+      for (let i = clawParts.length - 1; i >= 0; i--) {
+        const q = clawParts[i]; q.life -= dt * 1.1; if (q.life <= 0) { clawParts.splice(i, 1); continue; }
+        q.vy += 380 * dt; q.x += q.vx * dt; q.y += q.vy * dt;
+        ctx.globalAlpha = clamp(q.life, 0, 1); ctx.fillStyle = q.c;
+        ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.life * 6); ctx.fillRect(-q.s, -q.s * 0.4, q.s * 2, q.s * 0.8); ctx.fillRect(-q.s * 0.4, -q.s, q.s * 0.8, q.s * 2); ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+      if (clawState === 'finished') {
+        ctx.save(); ctx.globalAlpha = 0.55 + Math.sin(now / 200) * 0.3; ctx.fillStyle = '#fde68a';
+        for (let i = 0; i < 6; i++) { const a = now / 600 + i * Math.PI / 3; ctx.beginPath(); ctx.arc(exitX + Math.cos(a) * r * 1.5, g.floorY - r * 0.9 + Math.sin(a) * r * 1.2, 3, 0, Math.PI * 2); ctx.fill(); }
+        ctx.restore();
+      }
+      ctx.restore();
 
-      // Bảng điều khiển
-      const pY = g.gy + g.gh + g.mh * 0.03, pH = g.my + g.mh - pY - g.mh * 0.03;
-      ctx.fillStyle = '#be185d'; ctx.beginPath(); ctx.roundRect(g.mx + g.mw * 0.03, pY, g.mw * 0.94, pH, 14); ctx.fill();
-      const jx = g.mx + g.mw * 0.14, jy = pY + pH * 0.5;
-      ctx.strokeStyle = '#64748b'; ctx.lineWidth = 5;
-      ctx.beginPath(); ctx.moveTo(jx, jy + pH * 0.2); ctx.lineTo(jx + Math.sin(now / 400) * 3 * (clawState === 'running' ? 1 : 0), jy - pH * 0.1); ctx.stroke();
-      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(jx + Math.sin(now / 400) * 3 * (clawState === 'running' ? 1 : 0), jy - pH * 0.14, pH * 0.15, 0, Math.PI * 2); ctx.fill();
-      const bx2 = g.mx + g.mw * 0.3;
-      ctx.fillStyle = (clawState === 'running' && phase === 3) ? '#7dd3fc' : '#38bdf8';
-      ctx.beginPath(); ctx.ellipse(bx2, jy, pH * 0.28, pH * 0.17, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = '800 ' + Math.max(8, pH * 0.12) + 'px system-ui';
-      ctx.fillText('DI CHUYỂN', jx, pY + pH * 0.92); ctx.fillText('GẮP', bx2, pY + pH * 0.92);
-      ctx.fillStyle = '#4c1d95'; ctx.beginPath(); ctx.roundRect(g.mx + g.mw * 0.42, pY + pH * 0.18, g.mw * 0.5, pH * 0.5, 10); ctx.fill();
-      ctx.fillStyle = '#fde68a'; ctx.font = '900 ' + Math.max(10, pH * 0.2) + 'px system-ui';
-      ctx.fillText('★ GẮP LÀ TRÚNG ★', g.mx + g.mw * 0.67, pY + pH * 0.45);
+      // --- Lớp kính + bảng điều khiển ---
+      ctx.drawImage(clawLayers.cb, 0, 0, w, h);
+      const mqH = g.mh * 0.095, mqX = g.mx + g.mw * 0.14, mqW = g.mw * 0.72, mqY = g.my + g.mh * 0.03;
+      for (let i = 0; i < 18; i++) {
+        const on = (Math.floor(now / 300) + i) % 2 === 0;
+        ctx.fillStyle = on ? '#fef08a' : '#fbbf24'; ctx.globalAlpha = on ? 1 : 0.55;
+        ctx.beginPath(); ctx.arc(mqX + (i + 0.5) * mqW / 18, mqY - 3, 2.4, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      const jx = g.mx + g.mw * 0.14, jy = g.pY + g.pH * 0.5, tilt = clawJoy * g.pH * 0.12;
+      ctx.lineCap = 'round'; ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 5;
+      ctx.beginPath(); ctx.moveTo(jx, jy + g.pH * 0.2); ctx.lineTo(jx + tilt, jy - g.pH * 0.1); ctx.stroke(); ctx.lineCap = 'butt';
+      ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(jx + tilt, jy - g.pH * 0.14, g.pH * 0.15, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.arc(jx + tilt - g.pH * 0.04, jy - g.pH * 0.18, g.pH * 0.04, 0, Math.PI * 2); ctx.fill();
+      const press = clawState === 'running' && phase === 3;
+      ctx.save(); if (press) { ctx.shadowColor = '#7dd3fc'; ctx.shadowBlur = 18; }
+      ctx.fillStyle = press ? '#7dd3fc' : '#38bdf8'; ctx.beginPath(); ctx.ellipse(g.mx + g.mw * 0.3, jy + (press ? 2 : 0), g.pH * 0.28, g.pH * (press ? 0.14 : 0.17), 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
 
       if (clawState === 'running' && t >= 1 && !clawFinishFired) {
-        clawFinishFired = true; clawState = 'finished';
+        clawFinishFired = true; clawState = 'finished'; clawFinishAt = now;
         const st = document.getElementById('claw-machine-status');
         if (st) st.innerText = '🎉 Gắp trúng: ' + (clawTargetWinner ? clawTargetWinner.name : '') + '!';
         clawBeep(988, 0.15); setTimeout(() => clawBeep(1318, 0.25), 150);
