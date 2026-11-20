@@ -31595,7 +31595,7 @@
     let clawParts = [], clawLayers = null, clawLayerKey = '', clawSprites = new Map(), clawJoy = 0;
     const CLAW_SEQ = ['capybara', 'shiba', 'penguin', 'bunny', 'capybara', 'cat', 'panda', 'duck', 'pig', 'capybara', 'frog', 'hamster', 'koala', 'axolotl', 'fox', 'hedgehog'];
     const CLAW_PAL = {
-      capybara: { b: '#c9955f', d: '#9a6a3c', l: '#e6bd8e' }, shiba: { b: '#f2a65a', d: '#c9742c', l: '#fff4e3' },
+      capybara: { b: '#c58a52', d: '#8f5f35', l: '#e8c49a' }, shiba: { b: '#f2a65a', d: '#c9742c', l: '#fff4e3' },
       penguin: { b: '#3b4a63', d: '#1e293b', l: '#f8fafc' }, bunny: { b: '#fafafa', d: '#fda4af', l: '#ffffff' },
       cat: { b: '#cbd5e1', d: '#94a3b8', l: '#f1f5f9' }, panda: { b: '#f8fafc', d: '#1f2937', l: '#ffffff' },
       duck: { b: '#fde047', d: '#f59e0b', l: '#fef9c3' }, pig: { b: '#f9a8d4', d: '#ec4899', l: '#fbcfe8' },
@@ -31744,20 +31744,20 @@
 
     // Vẽ 1 chú thú bông vào sprite (gốc toạ độ = tâm thân) - cache lại để chạy mượt
     function clawPaintPlush(ctx, type, name, r) {
-      const P = CLAW_PAL[type] || CLAW_PAL.capybara, b = P.b, d = P.d, l = P.l, E = (x, y, rx, ry, rot, f) => clawEllipse(ctx, x, y, rx * r, ry * r, rot, f);
+      const P = CLAW_PAL[type] || CLAW_PAL.capybara, b = P.b, d = P.d, l = P.l, E = (x, y, rx, ry, rot, f) => clawEllipse(ctx, x * r, y * r, rx * r, ry * r, rot, f);
       const eye = (x, y, s, col) => { E(x, y, s, s * 1.2, 0, col || '#1e293b'); E(x - s * 0.3, y - s * 0.4, s * 0.32, s * 0.36, 0, '#fff'); };
       // Bộ phận phía sau thân
       if (type === 'bunny') {
         E(-0.42, -1.25, 0.2, 0.6, -0.15, b); E(0.42, -1.25, 0.2, 0.6, 0.15, b);
         E(-0.42, -1.25, 0.09, 0.42, -0.15, d); E(0.42, -1.25, 0.09, 0.42, 0.15, d);
       } else if (type === 'cat' || type === 'fox' || type === 'shiba' || type === 'pig') {
-        const c = type === 'pig' ? d : b, s = type === 'shiba' ? 0.8 : 1;
-        for (const k of [-1, 1]) { clawTri(ctx, k * r * 0.88, -r * 0.2, k * r * 0.4, -r * 1.02 * s, k * r * 0.05, -r * 0.72, c);
-          if (type !== 'pig') clawTri(ctx, k * r * 0.7, -r * 0.4, k * r * 0.42, -r * 0.82 * s, k * r * 0.22, -r * 0.65, type === 'fox' ? '#431407' : l); }
+        const c = type === 'pig' ? d : b, ap = { pig: 1.1, shiba: 1.2, cat: 1.22, fox: 1.3 }[type];
+        for (const k of [-1, 1]) { clawTri(ctx, k * r * 0.95, -r * 0.3, k * r * 0.55, -r * ap, k * r * 0.1, -r * 0.8, c);
+          if (type !== 'pig') clawTri(ctx, k * r * 0.78, -r * 0.42, k * r * 0.55, -r * (ap - 0.17), k * r * 0.28, -r * 0.76, type === 'fox' ? '#431407' : (type === 'cat' ? '#fbcfe8' : l)); }
       } else if (type === 'panda') { E(-0.74, -0.74, 0.3, 0.3, 0, d); E(0.74, -0.74, 0.3, 0.3, 0, d); }
       else if (type === 'koala') { E(-0.85, -0.6, 0.38, 0.38, 0, d); E(0.85, -0.6, 0.38, 0.38, 0, d); E(-0.85, -0.6, 0.22, 0.22, 0, l); E(0.85, -0.6, 0.22, 0.22, 0, l); }
       else if (type === 'hamster') { E(-0.66, -0.76, 0.24, 0.24, 0, d); E(0.66, -0.76, 0.24, 0.24, 0, d); E(-0.66, -0.76, 0.13, 0.13, 0, '#fbcfe8'); E(0.66, -0.76, 0.13, 0.13, 0, '#fbcfe8'); }
-      else if (type === 'capybara') { E(-0.62, -0.82, 0.2, 0.2, 0, d); E(0.62, -0.82, 0.2, 0.2, 0, d); }
+      else if (type === 'capybara') { for (const k of [-1, 1]) { E(k * 0.74, -0.66, 0.12, 0.15, k * 0.6, d); E(k * 0.74, -0.65, 0.065, 0.085, k * 0.6, '#5a3a22'); } }
       else if (type === 'axolotl') {
         for (const k of [-1, 1]) for (let j = 0; j < 3; j++) E(k * 0.98, -0.5 + j * 0.28, 0.34, 0.1, k * (-0.5 + j * 0.45), d);
       } else if (type === 'hedgehog') {
@@ -31766,30 +31766,35 @@
       // Chân tay
       const lim = type === 'penguin' ? '#fb923c' : b;
       E(-0.45, 0.88, 0.3, 0.17, 0, type === 'penguin' ? lim : d); E(0.45, 0.88, 0.3, 0.17, 0, type === 'penguin' ? lim : d);
-      E(-1.0, 0.15, 0.2, 0.32, 0.35, type === 'penguin' ? d : b); E(1.0, 0.15, 0.2, 0.32, -0.35, type === 'penguin' ? d : b);
+      if (type !== 'capybara') E(-1.0, 0.15, 0.2, 0.32, 0.35, (type === 'penguin' || type === 'panda') ? d : b); if (type !== 'capybara') E(1.0, 0.15, 0.2, 0.32, -0.35, (type === 'penguin' || type === 'panda') ? d : b);
       // Thân bông
       const gr = ctx.createRadialGradient(-r * 0.35, -r * 0.45, r * 0.1, 0, 0, r * 1.15);
       gr.addColorStop(0, l); gr.addColorStop(0.35, b); gr.addColorStop(1, d);
-      ctx.beginPath(); ctx.ellipse(0, 0, r * 1.02, r * 0.95, 0, 0, Math.PI * 2); ctx.fillStyle = gr; ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0, type === 'capybara' ? r * 0.06 : 0, r * (type === 'capybara' ? 1.1 : 1.02), r * (type === 'capybara' ? 0.86 : 0.95), 0, 0, Math.PI * 2); ctx.fillStyle = gr; ctx.fill();
       ctx.lineWidth = Math.max(1, r * 0.05); ctx.strokeStyle = 'rgba(15,23,42,0.22)'; ctx.stroke();
       // Chi tiết mặt trước
       if (type === 'penguin') { E(0, 0.3, 0.68, 0.6, 0, l); E(-0.42, -0.1, 0.24, 0.3, 0, l); E(0.42, -0.1, 0.24, 0.3, 0, l); }
       if (type === 'panda') { E(-0.38, -0.1, 0.22, 0.28, 0.4, d); E(0.38, -0.1, 0.22, 0.28, -0.4, d); }
       if (type === 'shiba' || type === 'fox') { E(-0.4, 0.3, 0.42, 0.32, 0.25, l); E(0.4, 0.3, 0.42, 0.32, -0.25, l); E(0, 0.2, 0.3, 0.3, 0, l); }
       if (type === 'hedgehog') E(0, 0.18, 0.78, 0.62, 0, l);
-      if (type === 'capybara') E(0, 0.3, 0.52, 0.34, 0, l);
+      if (type === 'capybara') {
+        ctx.beginPath(); ctx.roundRect(-0.72 * r, -0.12 * r, 1.44 * r, 0.8 * r, 0.36 * r); ctx.fillStyle = l; ctx.fill();
+        ctx.strokeStyle = 'rgba(90,58,34,0.35)'; ctx.lineWidth = Math.max(1, r * 0.03); ctx.stroke();
+        ctx.beginPath(); ctx.roundRect(-0.42 * r, -0.15 * r, 0.84 * r, 0.27 * r, 0.13 * r); ctx.fillStyle = '#5a3a22'; ctx.fill();
+        E(-0.16, -0.01, 0.055, 0.035, 0, '#1f1208'); E(0.16, -0.01, 0.055, 0.035, 0, '#1f1208'); E(-0.24, -0.08, 0.09, 0.03, -0.2, 'rgba(255,255,255,0.28)');
+      }
       if (type === 'frog') { for (const k of [-1, 1]) { E(k * 0.5, -0.8, 0.3, 0.3, 0, b); E(k * 0.5, -0.8, 0.2, 0.2, 0, '#fff'); E(k * 0.5, -0.78, 0.1, 0.12, 0, '#1e293b'); } }
       E(-0.35, -0.5, 0.26, 0.14, -0.6, 'rgba(255,255,255,0.4)');
       // Mắt
-      if (type === 'capybara') { eye(-0.44, -0.12, 0.07); eye(0.44, -0.12, 0.07); }
+      if (type === 'capybara') { eye(-0.58, -0.3, 0.065); eye(0.58, -0.3, 0.065); }
       else if (type === 'panda') { eye(-0.38, -0.1, 0.07, '#fff'); eye(0.38, -0.1, 0.07, '#fff'); }
       else if (type === 'axolotl') { eye(-0.55, -0.12, 0.08); eye(0.55, -0.12, 0.08); }
       else if (type !== 'frog') { eye(-0.36, -0.1, 0.09); eye(0.36, -0.1, 0.09); }
       else { E(-0.5, -0.1, 0.05, 0.05, 0, '#1e293b'); E(0.5, -0.1, 0.05, 0.05, 0, '#1e293b'); }
-      E(-0.62, 0.14, 0.14, 0.09, 0, 'rgba(244,114,182,0.5)'); E(0.62, 0.14, 0.14, 0.09, 0, 'rgba(244,114,182,0.5)');
+      if (type !== 'capybara') { E(-0.62, 0.14, 0.14, 0.09, 0, 'rgba(244,114,182,0.5)'); E(0.62, 0.14, 0.14, 0.09, 0, 'rgba(244,114,182,0.5)'); }
       // Mũi / miệng
       const smile = (y, w) => { ctx.beginPath(); ctx.arc(0, r * y, r * w, 0.15 * Math.PI, 0.85 * Math.PI); ctx.strokeStyle = '#1e293b'; ctx.lineWidth = Math.max(1, r * 0.05); ctx.stroke(); };
-      if (type === 'capybara') { E(-0.15, 0.2, 0.05, 0.035, 0, '#4a2e17'); E(0.15, 0.2, 0.05, 0.035, 0, '#4a2e17'); smile(0.24, 0.12);
+      if (type === 'capybara') { ctx.beginPath(); ctx.moveTo(0, r * 0.12); ctx.lineTo(0, r * 0.3); ctx.strokeStyle = '#5a3a22'; ctx.lineWidth = Math.max(1, r * 0.04); ctx.stroke(); smile(0.27, 0.14);
         E(0.08, -0.98, 0.25, 0.23, 0, '#fb923c'); E(0.02, -1.03, 0.08, 0.05, -0.5, 'rgba(255,255,255,0.6)'); E(0.1, -1.24, 0.1, 0.05, -0.6, '#4ade80'); }
       else if (type === 'duck') { E(0, 0.18, 0.3, 0.16, 0, '#fb923c'); }
       else if (type === 'penguin') { clawTri(ctx, -r * 0.14, r * 0.08, r * 0.14, r * 0.08, 0, r * 0.28, '#fb923c'); }
