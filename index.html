@@ -2058,7 +2058,7 @@
               Thiên Thạch Gọi Tên
             </h3>
             <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
-              Thiên thạch rực lửa lao xuyên ngân hà va chạm khoang pha lê lộ diện người được chọn!
+              Thiên thạch rực lửa giáng xuống khu rừng thời tiền sử, học sinh hóa thành khủng long và lộ diện người được chọn!
             </p>
           </div>
           <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
@@ -2220,7 +2220,7 @@
               <option value="safe_zone" class="bg-slate-900 text-cyan-300 font-bold">🏝️ Vòng Bo May Mắn (Sinh Tồn Thu Hẹp Vòng Bo)</option>
               <option value="ufo_abduct" class="bg-slate-900 text-emerald-300 font-bold">🛸 Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)</option>
               <option value="summon_card" class="bg-slate-900 text-purple-300 font-bold">🌟 Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)</option>
-              <option value="meteor_call" class="bg-slate-900 text-rose-300 font-bold">☄️ Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)</option>
+              <option value="meteor_call" class="bg-slate-900 text-rose-300 font-bold">☄️ Thiên Thạch Gọi Tên (Khủng Long Thời Tiền Sử)</option>
               <option value="naruto_summon" class="bg-slate-900 text-orange-300 font-bold">🍥 Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)</option>
               <option value="claw_machine" class="bg-slate-900 text-fuchsia-300 font-bold">🧸 Máy Gắp Thú (Càng Gắp Thú Bông Arcade)</option>
             </select>
@@ -2893,7 +2893,7 @@
           <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
             <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-rose-400/40 text-white text-xs font-bold shadow-md">
               <span class="text-rose-400 font-extrabold text-sm">☄️</span>
-              <span id="meteor-call-status">Các khoang pha lê học sinh đang lơ lửng trong tinh vân! Bấm PHÓNG THIÊN THẠCH để chọn tên!</span>
+              <span id="meteor-call-status">Học sinh hóa thành khủng long dạo chơi trong rừng rậm! Bấm PHÓNG THIÊN THẠCH để chọn tên!</span>
             </div>
             <div class="flex items-center gap-1.5">
               <button onclick="toggleMeteorSound()" id="meteor-call-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
@@ -6430,7 +6430,7 @@
     "badge": "🌠 Siêu Ấn Tượng",
     "color": "rose",
     "context": "Tinh vân vũ trụ sâu thẳm rực rỡ sắc hồng lam, nơi tên các học sinh nằm bên trong những khoang pha lê trôi nổi.",
-    "rules": "Một thiên thạch rực lửa lao xé bầu trời ngân hà, lượn qua vài khoang pha lê rồi giáng xuống va chạm mạnh làm vỡ lớp vỏ tinh thể, tỏa sáng rực rỡ tên bạn được chọn!",
+    "rules": "Một thiên thạch rực lửa lao xuống khu rừng rậm thời tiền sử, giáng trúng một chú khủng long (học sinh) làm bùng nổ ánh sáng rực rỡ và gọi tên bạn được chọn!",
     "tips": "Hiệu ứng ánh sáng và âm thanh vũ trụ hoành tráng giúp giữ trọn sự tập trung của cả lớp.",
     "shortcut": "Bấm phím Space để phóng thiên thạch triệu hồi."
   },
@@ -6934,7 +6934,7 @@
         safe_zone: { title: 'Vòng Bo May Mắn (Đảo Sinh Tồn Top 1)', icon: '🏝️' },
         ufo_abduct: { title: 'Phi Thuyền Bắt Cóc (UFO Quét Tia Sáng)', icon: '🛸' },
         summon_card: { title: 'Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)', icon: '🌟' },
-        meteor_call: { title: 'Thiên Thạch Gọi Tên (Va Chạm Khoang Pha Lê)', icon: '☄️' },
+        meteor_call: { title: 'Thiên Thạch Gọi Tên (Khủng Long Thời Tiền Sử)', icon: '☄️' },
         naruto_summon: { title: 'Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)', icon: '🍥' },
         claw_machine: { title: 'Máy Gắp Thú (Càng Gắp Thú Bông Arcade)', icon: '🧸' }
       };
@@ -31267,7 +31267,7 @@
       if (!container || !canvas) return;
       resizeMeteorCanvas();
 
-      meteorProps = buildUfoFieldProps();
+      meteorProps = buildMeteorJungleProps();
       const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
       if (reset || meteorStudents.length !== visible.length) {
         const count = Math.max(1, visible.length);
@@ -31310,7 +31310,7 @@
       meteorShards = [];
       meteorTargetWinner = null;
       const statusEl = document.getElementById('meteor-call-status');
-      if (statusEl) statusEl.innerText = '☀️ Trời nắng đẹp trước cổng trường! Bấm PHÓNG THIÊN THẠCH để bầu trời tối sầm & thiên thạch giáng xuống!';
+      if (statusEl) statusEl.innerText = '☀️ Khu rừng thời tiền sử thật yên bình! Bấm PHÓNG THIÊN THẠCH để thiên thạch giáng xuống!';
 
       if (!meteorAnimId) meteorAnimId = requestAnimationFrame(runMeteorLoop);
     }
@@ -31329,7 +31329,7 @@
 
       if (meteorSoundEnabled) ArcadePackAudio.tone(180, 0.45, 'sawtooth', 0.1, 480);
       const statusEl = document.getElementById('meteor-call-status');
-      if (statusEl) statusEl.innerText = '☄️ Bầu trời tối sầm! Thiên thạch đang lao xuống — các bạn vẫn thong thả đi trên phố, ai sẽ được chọn?';
+      if (statusEl) statusEl.innerText = '☄️ Bầu trời đỏ rực! Thiên thạch đang lao xuống — các chú khủng long vẫn thong thả dạo rừng, ai sẽ bị chọn?';
       if (!meteorAnimId) meteorAnimId = requestAnimationFrame(runMeteorLoop);
     }
 
@@ -31342,6 +31342,119 @@
       }
       renderMeteorCanvas(now);
       meteorAnimId = requestAnimationFrame(runMeteorLoop);
+    }
+
+    // ---- Rừng rậm thời tiền sử + khủng long cho Thiên Thạch Gọi Tên ----
+    const METEOR_DINOS = ['trex', 'tric', 'steg', 'brachio', 'raptor', 'ankylo'];
+    const METEOR_TOP = { trex: 44, tric: 30, steg: 36, brachio: 66, raptor: 38, ankylo: 26 };
+    let meteorBgCache = null, meteorBgKey = '';
+    const mRand = n => { const x = Math.sin(n * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+    function buildMeteorJungleProps() {
+      const arr = [], types = ['fern', 'cycad', 'rock', 'mush', 'egg', 'fern', 'cycad', 'bone'];
+      for (let i = 0; i < 16; i++) arr.push({ type: types[i % 8], nx: 0.04 + mRand(i + 1) * 0.92, ny: 0.5 + mRand(i + 9) * 0.09, s: 0.8 + mRand(i + 20) * 0.6, fg: false, ph: i });
+      for (let i = 0; i < 7; i++) arr.push({ type: i % 2 ? 'fern' : 'cycad', nx: 0.02 + i * 0.16 + mRand(i + 40) * 0.05, ny: 1.0, s: 1.7 + mRand(i + 50) * 0.7, fg: true, ph: i + 30 });
+      return arr;
+    }
+
+    function drawMeteorProp(ctx, pr, w, h, now) {
+      const sw = Math.sin(now * 0.0015 + pr.ph) * 0.05;
+      ctx.save(); ctx.translate(pr.nx * w, pr.ny * h); ctx.scale(pr.s, pr.s);
+      if (!pr.fg) { ctx.fillStyle = 'rgba(0,0,0,0.22)'; ctx.beginPath(); ctx.ellipse(0, 1, 16, 4, 0, 0, 7); ctx.fill(); }
+      const frond = (x, y, ang, len, col) => { ctx.save(); ctx.translate(x, y); ctx.rotate(ang); ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(0, 0); ctx.quadraticCurveTo(-7, -len * 0.5, 0, -len); ctx.quadraticCurveTo(7, -len * 0.5, 0, 0); ctx.fill(); ctx.restore(); };
+      const E = (x, y, rx, ry, f) => { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, 7); ctx.fillStyle = f; ctx.fill(); };
+      if (pr.type === 'fern') { for (let i = -3; i <= 3; i++) frond(0, 0, i * 0.4 + sw, 46 - Math.abs(i) * 3, i % 2 ? '#2f8f46' : '#3fae55'); }
+      else if (pr.type === 'cycad') { ctx.fillStyle = '#7c5a3a'; ctx.fillRect(-4, -26, 8, 26); for (let i = -3; i <= 3; i++) frond(0, -26, i * 0.5 + sw, 30, i % 2 ? '#2f8f46' : '#46b85c'); }
+      else if (pr.type === 'rock') { E(0, -8, 15, 9, '#78716c'); E(-4, -11, 7, 3, 'rgba(255,255,255,0.25)'); }
+      else if (pr.type === 'mush') { ctx.fillStyle = '#fde7c8'; ctx.fillRect(-3, -16, 6, 16); E(0, -17, 15, 8, '#ef4444'); E(-5, -19, 2.5, 2, '#fff'); E(4, -16, 2, 1.6, '#fff'); }
+      else if (pr.type === 'egg') { E(0, -2, 14, 4, '#6b4a2b'); E(-5, -7, 4.5, 6, '#f5f0dc'); E(5, -7, 4.5, 6, '#f5f0dc'); E(0, -11, 4.5, 6, '#e9f5d8'); E(0, -11, 1.5, 1.5, '#9bbf6a'); }
+      else { ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(-10, -4); ctx.lineTo(10, -8); ctx.stroke(); E(-11, -4, 3, 3, '#f1f5f9'); E(11, -8, 3, 3, '#f1f5f9'); }
+      ctx.restore();
+    }
+
+    function drawMeteorJungleBackdrop(ctx, w, h, now, darkness) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), key = w + 'x' + h + 'x' + dpr;
+      if (key !== meteorBgKey || !meteorBgCache) {
+        const c = document.createElement('canvas'); c.width = Math.ceil(w * dpr); c.height = Math.ceil(h * dpr);
+        const C = c.getContext('2d'); C.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const gy = h * 0.5;
+        const ridge = (base, amp, col, sd) => { C.fillStyle = col; C.beginPath(); C.moveTo(0, gy); for (let i = 0; i <= 12; i++) C.lineTo(i / 12 * w, base - mRand(i + sd) * amp); C.lineTo(w, gy); C.fill(); };
+        ridge(h * 0.42, h * 0.12, '#4b8f86', 3); ridge(h * 0.46, h * 0.08, '#2f6f55', 17);
+        C.fillStyle = '#5b4636'; C.beginPath(); C.moveTo(w * 0.05, gy); C.lineTo(w * 0.19, h * 0.2); C.lineTo(w * 0.23, h * 0.2); C.lineTo(w * 0.37, gy); C.fill();
+        C.fillStyle = '#f97316'; C.beginPath(); C.moveTo(w * 0.19, h * 0.2); C.lineTo(w * 0.23, h * 0.2); C.lineTo(w * 0.225, h * 0.27); C.lineTo(w * 0.205, h * 0.24); C.lineTo(w * 0.195, h * 0.28); C.fill();
+        for (let i = 0; i < 30; i++) {
+          const x = i / 29 * w + (mRand(i) - 0.5) * 30, th = 50 + mRand(i + 5) * 60, gb = gy + 4 + mRand(i + 8) * 8;
+          C.fillStyle = '#6b4a2b'; C.fillRect(x - 3, gb - th, 6, th);
+          const cols = ['#1f6b3a', '#2a8a4a', '#17562f'];
+          for (let j = 0; j < 3; j++) { C.fillStyle = cols[(i + j) % 3]; C.beginPath(); C.arc(x + (j - 1) * 14, gb - th - 4 + (j === 1 ? -8 : 0), 20 + mRand(i + j) * 8, 0, 7); C.fill(); }
+        }
+        const gg = C.createLinearGradient(0, gy - 6, 0, h); gg.addColorStop(0, '#4d9140'); gg.addColorStop(1, '#27552a');
+        C.fillStyle = gg; C.fillRect(0, gy - 6, w, h - gy + 6);
+        for (let i = 0; i < 14; i++) { C.fillStyle = 'rgba(138,106,63,0.4)'; C.beginPath(); C.ellipse(mRand(i + 60) * w, h * (0.6 + mRand(i + 70) * 0.36), 40 + mRand(i) * 50, 8 + mRand(i + 3) * 8, 0, 0, 7); C.fill(); }
+        for (let i = 0; i < 160; i++) { const x = mRand(i + 90) * w, y = gy + 14 + mRand(i + 120) * (h - gy - 14); C.strokeStyle = i % 2 ? '#3a7f35' : '#5fae4f'; C.lineWidth = 2; C.beginPath(); C.moveTo(x, y); C.lineTo(x - 2, y - 7); C.moveTo(x, y); C.lineTo(x + 3, y - 6); C.stroke(); }
+        for (const sx of [0.015, 0.985]) { C.fillStyle = '#4a3320'; C.fillRect(w * sx - 9, 0, 18, gy + 20); C.fillStyle = '#12502a'; C.beginPath(); C.ellipse(w * sx, h * 0.08, w * 0.09, h * 0.1, 0, 0, 7); C.fill(); C.fillStyle = '#1c6b38'; C.beginPath(); C.ellipse(w * sx + (sx < 0.5 ? 20 : -20), h * 0.2, w * 0.07, h * 0.07, 0, 0, 7); C.fill(); }
+        meteorBgCache = c; meteorBgKey = key;
+      }
+      const sky = ctx.createLinearGradient(0, 0, 0, h * 0.55); sky.addColorStop(0, '#4fb6d6'); sky.addColorStop(1, '#ffe7a3');
+      ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = 'rgba(255,244,190,' + (0.95 - darkness * 0.8) + ')'; ctx.beginPath(); ctx.arc(w * 0.8, h * 0.14, 34, 0, 7); ctx.fill();
+      ctx.drawImage(meteorBgCache, 0, 0, w, h);
+      const gl = ctx.createRadialGradient(w * 0.21, h * 0.2, 4, w * 0.21, h * 0.2, 70); gl.addColorStop(0, 'rgba(251,146,60,' + (0.55 + darkness * 0.4) + ')'); gl.addColorStop(1, 'rgba(251,146,60,0)');
+      ctx.fillStyle = gl; ctx.fillRect(w * 0.21 - 80, h * 0.2 - 80, 160, 160);
+      for (let i = 0; i < 5; i++) { const p = ((now * 0.00004 + i * 0.2) % 1); ctx.fillStyle = 'rgba(90,80,80,' + (0.35 * (1 - p)) + ')'; ctx.beginPath(); ctx.arc(w * 0.21 + p * 70 + Math.sin(i) * 8, h * 0.19 - p * h * 0.16, 12 + p * 26, 0, 7); ctx.fill(); }
+      for (let i = 0; i < 3; i++) {
+        const px = ((now * 0.03 * (1 + i * 0.3) + i * w * 0.4) % (w + 160)) - 80, py = h * (0.1 + i * 0.07) + Math.sin(now * 0.002 + i) * 8, f = Math.sin(now * 0.01 + i * 2);
+        ctx.strokeStyle = '#2b2d42'; ctx.fillStyle = '#2b2d42'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(px - 20, py + f * 9); ctx.quadraticCurveTo(px - 9, py - 9, px, py); ctx.quadraticCurveTo(px + 9, py - 9, px + 20, py + f * 9); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse(px, py + 1, 5, 3, 0, 0, 7); ctx.fill(); ctx.beginPath(); ctx.moveTo(px + 5, py); ctx.lineTo(px + 15, py + 2); ctx.lineTo(px + 5, py + 4); ctx.fill();
+      }
+      if (darkness > 0) { ctx.fillStyle = 'rgba(70,8,8,' + (darkness * 0.5) + ')'; ctx.fillRect(0, 0, w, h); ctx.fillStyle = 'rgba(153,27,27,' + (darkness * 0.14) + ')'; ctx.fillRect(0, 0, w, h); }
+    }
+
+    function drawMeteorDino(ctx, x, y, o) {
+      const sp = o.sp, c = o.col, now = o.now, ph = o.ph || 0, pose = o.pose;
+      const sw = pose === 'walk' ? Math.sin(now * 0.012 + ph) : (pose === 'run' ? Math.sin(now * 0.025 + ph) : 0);
+      const wag = Math.sin(now * 0.006 + ph) * 3, roar = pose === 'winner', graze = pose === 'graze';
+      const E = (cx, cy, rx, ry, f, rot) => { ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, rot || 0, 0, 7); ctx.fillStyle = f; ctx.fill(); };
+      const T = (a, b, c2, d, e, f, fill) => { ctx.beginPath(); ctx.moveTo(a, b); ctx.lineTo(c2, d); ctx.lineTo(e, f); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); };
+      const lite = a => 'rgba(255,255,255,' + a + ')', shade = a => 'rgba(0,0,0,' + a + ')';
+      ctx.save(); ctx.translate(x, y); ctx.scale(o.facing * o.scale, o.scale);
+      if (roar) ctx.translate(0, -Math.abs(Math.sin(now * 0.012)) * 3);
+      const by = sp === 'brachio' ? -20 : (sp === 'ankylo' ? -10 : -15), bw = sp === 'ankylo' ? 20 : (sp === 'brachio' ? 19 : 16), bh = sp === 'ankylo' ? 9 : 11;
+      ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(-bw + 4, by - 6); ctx.quadraticCurveTo(-bw - 16, by + wag - 2, -bw - 30, by + 2 + wag); ctx.quadraticCurveTo(-bw - 14, by + 8 + wag * 0.5, -bw + 4, by + 7); ctx.fill();
+      if (sp === 'steg') { T(-bw - 26, by + wag, -bw - 33, by - 6 + wag, -bw - 21, by + 1 + wag, '#f1f5f9'); T(-bw - 24, by + 4 + wag, -bw - 33, by + 7 + wag, -bw - 21, by + 1 + wag, '#f1f5f9'); }
+      if (sp === 'ankylo') { E(-bw - 30, by + 2 + wag, 6.5, 5.5, c); E(-bw - 30, by + 2 + wag, 6.5, 5.5, shade(0.25)); T(-bw - 33, by - 3 + wag, -bw - 29, by - 10 + wag, -bw - 26, by - 2 + wag, '#e2e8f0'); }
+      const hw = sp === 'brachio' ? 5 : 4.5;
+      for (const [lx, s, far] of [[-8, sw, true], [7, -sw, true], [-5, -sw, false], [10, sw, false]]) {
+        const lift = Math.max(0, -s) * 3;
+        E(lx + s * 3, -6 - lift, hw, 7, c); if (far) E(lx + s * 3, -6 - lift, hw, 7, shade(0.28));
+        E(lx + s * 3 + 2, -1.5 - lift, hw + 1.5, 2.6, '#3b2a1a');
+      }
+      E(0, by, bw, bh, c); E(2, by + 4, bw * 0.7, bh * 0.55, lite(0.28)); E(-3, by - 5, bw * 0.55, bh * 0.3, lite(0.22));
+      if (sp === 'steg') for (let i = 0; i < 5; i++) { const px = -11 + i * 6, ph2 = 6 + (i === 2 ? 4 : (i % 2 ? 0 : 2)); T(px - 3.5, by - bh + 2, px, by - bh - ph2, px + 3.5, by - bh + 2, '#fb923c'); }
+      if (sp === 'ankylo') for (let i = 0; i < 5; i++) E(-12 + i * 6, by - bh + 2, 3.2, 2.6, shade(0.35));
+      if (sp === 'raptor') for (let i = 0; i < 4; i++) E(-9 + i * 5, by - 7, 1.8, 4, shade(0.3), 0.3);
+      const eye = (ex, ey) => { E(ex, ey, 2.9, 3.1, '#fff'); E(ex + 0.9, ey + 0.2, 1.5, 1.7, '#111827'); };
+      const hy = graze ? 10 : (roar ? -5 : 0), hx = graze ? 3 : 0;
+      if (sp === 'brachio') {
+        const ex = graze ? 32 : 22, ey = graze ? by + 2 : by - 44;
+        ctx.lineCap = 'round'; ctx.strokeStyle = c; ctx.lineWidth = 10; ctx.beginPath(); ctx.moveTo(10, by - 6); ctx.quadraticCurveTo(22, by - 20, ex, ey + 2); ctx.stroke();
+        E(ex + 3, ey, 7.5, 5.2, c); E(ex + 3, ey + 2, 6, 2.5, lite(0.25)); eye(ex + 4, ey - 1.5);
+      } else {
+        ctx.save(); ctx.translate(hx, hy);
+        if (sp === 'trex') {
+          E(14, by - 9, 8, 7, c); E(21, by - 14, 11.5, 8.5, c, roar ? -0.25 : 0);
+          if (roar) { E(24, by - 8, 8, 4, '#7f1d1d'); T(19, by - 8, 21, by - 4, 23, by - 8, '#fff'); T(25, by - 8, 27, by - 4, 29, by - 8, '#fff'); }
+          E(22, by - 8 + (roar ? 5 : 0), 9, 3.5, c); eye(25, by - 17); E(10, by - 1, 3.2, 2, c);
+        } else if (sp === 'tric') {
+          E(13, by - 5, 12, 13, c); E(13, by - 5, 12, 13, shade(0.25)); E(20, by + 1, 10, 9, c);
+          T(21, by - 5, 28, by - 17, 25, by - 4, '#fef3c7'); T(15, by - 6, 18, by - 17, 20, by - 5, '#fef3c7'); T(28, by + 2, 34, by + 5, 28, by + 6, '#fef3c7'); eye(24, by - 1);
+        } else if (sp === 'steg') { E(21, by + 4, 7.5, 6, c); eye(23, by + 2); }
+        else if (sp === 'raptor') { E(13, by - 6, 6, 6, c); E(21, by - 10, 9, 5.5, c, -0.15); E(27, by - 8, 5, 3, c); if (roar) E(27, by - 6, 4, 2, '#7f1d1d'); eye(24, by - 12); E(11, by + 1, 3.5, 1.8, c); }
+        else { E(22, by + 2, 8.5, 6.5, c); E(25, by + 5, 5, 2.5, lite(0.25)); eye(24, by); }
+        ctx.restore();
+      }
+      ctx.restore();
     }
 
     function renderMeteorCanvas(now) {
@@ -31364,13 +31477,9 @@
       }
       const isNightLit = darkness >= 0.35;
 
-      // 1. Shared Realistic School Street Backdrop with fiery meteor storm tint when running
-      drawSchoolStreetBackdrop(ctx, w, h, now, darkness, {
-        skyTint: 'rgba(153, 27, 27, 0.28)'
-      });
-
-      // 2. Field Props (Trees, Rocks, Lampposts, Benches, Bus Stop, Hydrants, Manholes)
-      meteorProps.forEach(pr => drawUfoProp(ctx, pr, w, h, now, darkness));
+      // 1. Rừng rậm thời tiền sử (núi lửa, dương xỉ, khủng long bay)
+      drawMeteorJungleBackdrop(ctx, w, h, now, darkness);
+      meteorProps.forEach(pr => { if (!pr.fg) drawMeteorProp(ctx, pr, w, h, now); });
 
       const winStudent = meteorStudents.find(p => p.isWinner) || meteorStudents[0];
       const targetX = winStudent ? winStudent.nx * w : w * 0.5;
@@ -31382,95 +31491,31 @@
         ctx.translate((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 8);
       }
 
-      // 3. Draw Articulated Human Students (Walking, Biking, Reading -> Panic when Meteor descends -> Winner gets struck with fiery aura!)
+      // 3. Học sinh hóa thành khủng long thời tiền sử
+      const mcl = (v, a, b) => Math.min(b, Math.max(a, v));
       meteorStudents.forEach((s, sIdx) => {
-        let pose = 'idle';
-        let facing = s.facing;
-        let bob = Math.sin(now * 0.006 + s.phase) * 1.8;
-
-        // Học sinh luôn tiếp tục hoạt động (đi bộ / đạp xe / đọc sách / chơi) kể cả khi thiên thạch đang rơi.
-        // Chỉ học sinh bị thiên thạch chọn mới dừng lại sau khi va chạm.
+        const sp = METEOR_DINOS[sIdx % METEOR_DINOS.length];
+        let pose = 'walk', facing = s.facing, bob = 0;
         const struck = s.isWinner && (meteorState === 'finished' || (meteorState === 'running' && t >= 0.68));
-        if (struck) {
-          pose = 'winner';
-          bob = 0;
-        } else if (s.activity === 'bike') {
-          const cycleAng = now * 0.0011 + s.phase;
-          s.nx = Math.max(0.06, Math.min(0.94, s.idleNx + Math.sin(cycleAng) * 0.055));
-          facing = Math.cos(cycleAng) >= 0 ? 1 : -1;
-          pose = 'bike';
-          bob = 0;
-        } else if (s.activity === 'read') {
-          pose = 'read';
-          facing = 1;
-          bob = 0;
-        } else if (s.activity === 'play') {
-          pose = 'idle';
-          bob = Math.abs(Math.sin(now * 0.007 + s.phase)) * -3.5;
-        } else {
-          const strollAngle = now * 0.0009 + s.phase;
-          s.nx = Math.max(0.05, Math.min(0.95, s.idleNx + Math.sin(strollAngle) * 0.032));
-          facing = Math.cos(strollAngle) >= 0 ? 1 : -1;
-          pose = 'walk';
-          bob = 0;
-        }
-
-        const sx = s.nx * w;
-        const sy = s.ny * h + bob;
-
+        if (struck) { pose = 'winner'; }
+        else if (s.activity === 'bike') { const a = now * 0.0016 + s.phase; s.nx = mcl(s.idleNx + Math.sin(a) * 0.05, 0.06, 0.94); facing = Math.cos(a) >= 0 ? 1 : -1; pose = 'run'; }
+        else if (s.activity === 'read') { pose = 'graze'; facing = 1; }
+        else if (s.activity === 'play') { pose = 'hop'; bob = -Math.abs(Math.sin(now * 0.007 + s.phase)) * 4; }
+        else { const a = now * 0.0009 + s.phase; s.nx = mcl(s.idleNx + Math.sin(a) * 0.032, 0.05, 0.95); facing = Math.cos(a) >= 0 ? 1 : -1; pose = 'walk'; }
+        const sx = s.nx * w, sy = s.ny * h + bob;
+        const sc = (0.78 + (s.ny - 0.6) * 0.6) * (struck ? 1.35 : 1);
         ctx.save();
-        if (pose !== 'bike') {
-          ctx.fillStyle = 'rgba(0,0,0,0.30)';
-          ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 13, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(0,0,0,0.30)'; ctx.beginPath(); ctx.ellipse(sx, s.ny * h + 2, 20 * sc, 4.5 * sc, 0, 0, Math.PI * 2); ctx.fill();
+        if (struck) {
+          const aura = ctx.createRadialGradient(sx, sy - 16, 8, sx, sy - 16, 62);
+          aura.addColorStop(0, 'rgba(254, 240, 138, 0.72)'); aura.addColorStop(0.5, 'rgba(249, 115, 22, 0.45)'); aura.addColorStop(1, 'rgba(239, 68, 68, 0)');
+          ctx.fillStyle = aura; ctx.beginPath(); ctx.arc(sx, sy - 16, 62 + Math.sin(now * 0.01) * 6, 0, Math.PI * 2); ctx.fill();
         }
-
-        if (pose === 'bike') {
-          drawStreetBicycle(ctx, sx, sy + 6, facing, s.color, now, true, isNightLit);
-        }
-
-        if (s.isWinner && t >= 0.68) {
-          // Fiery golden aura around struck winner student
-          ctx.save();
-          const aura = ctx.createRadialGradient(sx, sy - 8, 8, sx, sy - 8, 48);
-          aura.addColorStop(0, 'rgba(254, 240, 138, 0.72)');
-          aura.addColorStop(0.5, 'rgba(249, 115, 22, 0.45)');
-          aura.addColorStop(1, 'rgba(239, 68, 68, 0)');
-          ctx.fillStyle = aura;
-          ctx.beginPath(); ctx.arc(sx, sy - 8, 48 + Math.sin(now * 0.01) * 6, 0, Math.PI * 2); ctx.fill();
-          ctx.restore();
-
-          drawCartoonHuman(ctx, sx, sy - 2, {
-            shirt: s.color,
-            pants: '#1e293b',
-            backpackColor: s.color,
-            isStudent: true,
-            name: s.student ? s.student.name : s.displayName,
-            seed: sIdx,
-            scale: 1.25,
-            pose: 'winner',
-            facing: 1,
-            now: now
-          });
-          drawHighContrastBadge(ctx, sx, sy - 52, s.displayName, '#facc15', true);
-        } else {
-          ctx.save();
-          drawCartoonHuman(ctx, sx, sy - (pose === 'bike' ? 5 : 0), {
-            shirt: s.color,
-            pants: '#1e293b',
-            backpackColor: s.color,
-            isStudent: true,
-            name: s.student ? s.student.name : s.displayName,
-            seed: sIdx,
-            scale: 0.92,
-            pose: pose,
-            facing: facing,
-            now: now
-          });
-          drawHighContrastBadge(ctx, sx, sy - 30, s.displayName, s.color, false);
-          ctx.restore();
-        }
+        drawMeteorDino(ctx, sx, sy, { sp: sp, col: s.color, scale: sc, facing: struck ? 1 : facing, pose: pose, now: now, ph: s.phase });
+        drawHighContrastBadge(ctx, sx, sy - METEOR_TOP[sp] * sc - 6, s.displayName, struck ? '#facc15' : s.color, struck);
         ctx.restore();
       });
+      meteorProps.forEach(pr => { if (pr.fg) drawMeteorProp(ctx, pr, w, h, now); });
 
       // 4. Fiery Meteor Tail & Burning Core Descending from Sky onto Winner Student
       if (meteorState === 'running' && t >= 0.12 && t <= 0.72 && winStudent) {
@@ -31807,23 +31852,11 @@
         for (const k of [-1, 1]) for (const dy of [0, 0.1]) { ctx.beginPath(); ctx.moveTo(k * r * 0.3, r * (0.14 + dy)); ctx.lineTo(k * r * 0.8, r * (0.08 + dy * 2)); ctx.stroke(); }
       } else if (type === 'hamster') { E(0, 0.1, 0.07, 0.05, 0, '#f472b6'); E(0, 0.26, 0.07, 0.09, 0, '#fff'); }
       else smile(0.12, 0.15);
-      // Bảng tên
-      let label = name || '';
-      if (label.length > 9) label = label.slice(0, 8) + '…';
-      const fs = Math.max(8, r * 0.46);
-      ctx.font = '800 ' + fs + 'px system-ui, sans-serif';
-      const tw = ctx.measureText(label).width + fs * 0.9, th = fs * 1.35;
-      ctx.save(); ctx.translate(0, r * 0.8);
-      ctx.fillStyle = '#fffdf5'; ctx.strokeStyle = 'rgba(15,23,42,0.35)'; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.roundRect(-tw / 2, -th / 2, tw, th, th * 0.4); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#1e293b'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.fillText(label, 0, fs * 0.04);
-      ctx.restore();
     }
 
     function drawClawPlush(ctx, x, y, r, type, name, rot, sx, sy) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2), rr = Math.round(r * 2) / 2;
-      const key = type + '|' + name + '|' + rr + '|' + dpr;
+      const key = type + '|' + rr + '|' + dpr;
       let sp = clawSprites.get(key);
       if (!sp) {
         if (clawSprites.size > 160) clawSprites.clear();
