@@ -2139,6 +2139,38 @@
             </span>
           </div>
         </div>
+        <div onclick="openGameIntroModal('ferryman')" data-mode="ferryman" data-category="challenge" data-search="người lái đò chèo đò đưa học sinh sang sông té sông thuyền gọi tên 🚣 lái đò" class="game-card-item cursor-pointer rounded-2xl bg-white border border-slate-200/90 hover:border-sky-500 p-3.5 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 group hover:-translate-y-1">
+          <div class="flex items-start justify-between gap-2 mb-2">
+            <div class="w-10 h-10 rounded-xl bg-sky-50 border border-sky-200/80 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform shrink-0">
+              🚣
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-sky-50 text-sky-700 border-sky-200 border">
+                ✨ Mới
+              </span>
+              <span class="text-[10px] font-extrabold text-slate-400 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md font-mono">
+                #26
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1 mb-2.5">
+            <h3 class="text-sm font-black text-slate-900 group-hover:text-sky-600 transition-colors line-clamp-1">
+              Người lái đò
+            </h3>
+            <p class="card-desc text-[11px] text-slate-500 font-medium line-clamp-2 leading-relaxed">
+              Cô lái đò chèo thuyền đưa học sinh sang sông, sóng lớn nổi lên – bạn nào té sông sẽ bị gọi tên!
+            </p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]">
+            <div class="card-tags flex items-center gap-1 truncate">
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🚣 Thú Bông</span>
+              <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-1.5 py-0.5 rounded-md truncate">🕹️ Arcade</span>
+            </div>
+            <span class="text-sky-600 group-hover:text-sky-700 font-black text-[11px] flex items-center gap-1 shrink-0 whitespace-nowrap">
+              Vào Chơi <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
+            </span>
+          </div>
+        </div>
 
         <!-- Empty Search State -->
         <div id="home-empty-search" class="hidden col-span-full py-12 px-4 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
@@ -2223,6 +2255,7 @@
               <option value="meteor_call" class="bg-slate-900 text-rose-300 font-bold">☄️ Thiên Thạch Gọi Tên (Khủng Long Thời Tiền Sử)</option>
               <option value="naruto_summon" class="bg-slate-900 text-orange-300 font-bold">🍥 Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)</option>
               <option value="claw_machine" class="bg-slate-900 text-fuchsia-300 font-bold">🧸 Máy Gắp Thú (Càng Gắp Thú Bông Arcade)</option>
+              <option value="ferryman" class="bg-slate-900 text-sky-300 font-bold">🚣 Người lái đò</option>
             </select>
           </div>
 
@@ -2952,6 +2985,27 @@
             </div>
           </div>
           <canvas id="claw-machine-canvas" class="w-full h-full block"></canvas>
+        </div>
+
+        <div id="ferryman-stage-container" class="hidden flex flex-col relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[700px] min-h-[480px] bg-sky-950 border border-sky-500/40 rounded-3xl overflow-hidden shadow-inner select-none transition-all">
+          <div class="absolute top-3 left-3 right-3 z-30 flex flex-wrap items-center justify-between gap-2 pointer-events-auto">
+            <div class="flex items-center gap-2 bg-slate-900/85 backdrop-blur-md px-3.5 py-1.5 rounded-2xl border border-sky-400/40 text-white text-xs font-bold shadow-md">
+              <span class="text-sky-400 font-extrabold text-sm">🚣</span>
+              <span id="ferryman-status">Cô lái đò đã sẵn sàng đưa các em sang sông! Bấm CHÈO ĐÒ để bắt đầu!</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="toggleFerrySound()" id="ferryman-sound-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                🔊 Bật
+              </button>
+              <button onclick="toggleFerryFullscreen()" id="ferryman-fullscreen-btn" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer">
+                <i data-lucide="maximize" class="w-3.5 h-3.5 text-sky-400"></i> Phóng to
+              </button>
+              <button onclick="initFerrymanGame(true)" class="bg-slate-900/85 hover:bg-slate-800 text-white text-xs font-bold px-2.5 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-1 shadow-md cursor-pointer" title="Làm mới thuyền">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-sky-400"></i> Đặt lại
+              </button>
+            </div>
+          </div>
+          <canvas id="ferryman-canvas" class="w-full h-full block"></canvas>
         </div>
 
       </div>
@@ -4825,8 +4879,10 @@
         else if (mode === 'meteor_call') initMeteorCallGame(true);
         else if (mode === 'naruto_summon') initNarutoSummonGame(true);
       else if (mode === 'claw_machine') initClawMachineGame(true);
+      else if (mode === 'ferryman') initFerrymanGame(true);
       else if (mode === 'naruto_summon') initNarutoSummonGame(true);
       else if (mode === 'claw_machine') initClawMachineGame(true);
+      else if (mode === 'ferryman') initFerrymanGame(true);
       else if (mode === 'safe_zone') initSafeZoneGame(true);
       else if (mode === 'ufo_abduct') initUfoAbductGame(true);
       else if (mode === 'summon_card') initSummonCardGame(true);
@@ -5819,7 +5875,8 @@
       summon_card: 'from-purple-950 via-indigo-950 to-slate-950',
       meteor_call: 'from-rose-950 via-slate-950 to-indigo-950',
       naruto_summon: 'from-orange-950 via-amber-950 to-slate-950',
-      claw_machine: 'from-fuchsia-950 via-purple-950 to-slate-950'
+      claw_machine: 'from-fuchsia-950 via-purple-950 to-slate-950',
+      ferryman: 'from-sky-950 via-teal-950 to-slate-950'
     };
 
     function renderStudioGameList() {
@@ -6040,7 +6097,7 @@
       var allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon', 'claw_machine'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon', 'claw_machine', 'ferryman'
       ];
       var randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       selectStudioGame(randomMode);
@@ -6110,7 +6167,7 @@
       const allModes = [
         'duck', 'bike', 'motogp', 'f1', 'horse', 'wheel_pie',
         'gift', 'balloon', 'ski', 'lixi', 'wheel_slot', 'athletics',
-        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon', 'claw_machine'
+        'swimming', 'frog', 'fishing', 'lion', 'penalty', 'dragon_boat', 'sack_race', 'safe_zone', 'ufo_abduct', 'summon_card', 'meteor_call', 'naruto_summon', 'claw_machine', 'ferryman'
       ];
       const randomMode = allModes[Math.floor(Math.random() * allModes.length)];
       const opt = document.querySelector(`#spin-mode option[value="${randomMode}"]`);
@@ -6455,6 +6512,17 @@
     "rules": "Càng gắp lượn qua lại phía trên đống thú bông, nhắm trúng một bạn, hạ xuống, kẹp chặt rồi nhấc lên, đưa về lối ra. Thú bông rơi xuống lối ra mang tên bạn nào thì bạn đó được gọi lên bảng!",
     "tips": "Rất hợp với học sinh tiểu học và THCS. Mỗi lần gắp, thú bông được chọn sẽ rời khỏi đống nên trực quan, dễ theo dõi.",
     "shortcut": "Bấm phím Space để càng gắp bắt đầu hoạt động."
+  },
+  "ferryman": {
+    "name": "Người lái đò",
+    "icon": "🚣",
+    "category": "⚽ Kỹ Năng & Thử Thách",
+    "badge": "✨ Mới - Sông nước",
+    "color": "sky",
+    "context": "Dòng sông quê hiền hòa với hàng dừa, bờ tre và những mái nhà tranh. Cô lái đò chở cả lớp (mặc áo phao cam) ngồi trên thuyền gỗ sang sông.",
+    "rules": "Cô lái đò chèo thuyền đưa các em sang sông. Giữa dòng bất ngờ nổi sóng lớn, thuyền chao đảo dữ dội và một bạn bị té xuống sông. Bạn nào té sông thì bị gọi tên lên bảng!",
+    "tips": "Rất vui nhộn, hợp để kiểm tra bài đầu giờ hoặc gọi trả lời. Có thể tăng thời gian quay để kịch tính hơn.",
+    "shortcut": "Bấm phím Space để cô lái đò bắt đầu chèo đò."
   }
 };
 
@@ -6667,6 +6735,8 @@
         if (typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
       } else if (mode === 'claw_machine') {
         if (typeof resizeClawCanvas === 'function') resizeClawCanvas();
+      } else if (mode === 'ferryman') {
+        if (typeof resizeFerryCanvas === 'function') resizeFerryCanvas();
       } else if (mode === 'naruto_summon') {
         if (typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
       }
@@ -6704,6 +6774,7 @@
         'naruto-summon-stage-container');
       const narutoContainer = document.getElementById('naruto-summon-stage-container');
       const clawContainer = document.getElementById('claw-machine-stage-container');
+      const ferryContainer = document.getElementById('ferryman-stage-container');
 
       if (grid) grid.classList.add('hidden');
       if (canvasContainer) canvasContainer.classList.add('hidden');
@@ -6731,6 +6802,7 @@
       if (meteorContainer) meteorContainer.classList.add('hidden');
       if (narutoContainer) narutoContainer.classList.add('hidden');
       if (clawContainer) clawContainer.classList.add('hidden');
+      if (ferryContainer) ferryContainer.classList.add('hidden');
 
       updateArenaHeaderInfo(mode);
 
@@ -6893,6 +6965,12 @@
         setTimeout(() => {
           if (typeof resizeClawCanvas === 'function') resizeClawCanvas();
         }, 40);
+      } else if (mode === 'ferryman') {
+        if (ferryContainer) ferryContainer.classList.remove('hidden');
+        if (typeof initFerrymanGame === 'function') initFerrymanGame(true);
+        setTimeout(() => {
+          if (typeof resizeFerryCanvas === 'function') resizeFerryCanvas();
+        }, 40);
       } else if (mode === 'naruto_summon') {
         if (narutoContainer) narutoContainer.classList.remove('hidden');
         if (typeof initNarutoSummonGame === 'function') initNarutoSummonGame(true);
@@ -6936,7 +7014,8 @@
         summon_card: { title: 'Triệu Hồi Thẻ Tướng (Gacha Hào Quang SSR)', icon: '🌟' },
         meteor_call: { title: 'Thiên Thạch Gọi Tên (Khủng Long Thời Tiền Sử)', icon: '☄️' },
         naruto_summon: { title: 'Triệu Hồi Chi Thuật (Naruto Kết Ấn Làng Lá)', icon: '🍥' },
-        claw_machine: { title: 'Máy Gắp Thú (Càng Gắp Thú Bông Arcade)', icon: '🧸' }
+        claw_machine: { title: 'Máy Gắp Thú (Càng Gắp Thú Bông Arcade)', icon: '🧸' },
+        ferryman: { title: 'Người lái đò', icon: '🚣' }
       };
 
       const info = titles[mode] || { title: 'Đấu Trường Gọi Tên', icon: '🏁' };
@@ -6983,6 +7062,8 @@
           spinBtn.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH';
         } else if (mode === 'claw_machine') {
           spinBtn.innerHTML = '<i class="fa-solid fa-hand-back-fist"></i> GẮP THÚ';
+        } else if (mode === 'ferryman') {
+          spinBtn.innerHTML = '<i class=\"fa-solid fa-sailboat\"></i> CHÈO ĐÒ GỌI TÊN';
         } else if (mode === 'naruto_summon') {
           spinBtn.innerHTML = '<i class="fa-solid fa-hand-sparkles"></i> KẾT ẤN TRIỆU HỒI';
         
@@ -7064,6 +7145,7 @@
         else if (mode === 'meteor_call') initMeteorCallGame(true);
         else if (mode === 'naruto_summon') initNarutoSummonGame(true);
       else if (mode === 'claw_machine') initClawMachineGame(true);
+      else if (mode === 'ferryman') initFerrymanGame(true);
       }
     }
 
@@ -12295,7 +12377,7 @@
       const modeSelect = document.getElementById('spin-mode');
       if (modeSelect) {
         const m = modeSelect.value;
-        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call' || m === 'naruto_summon' || m === 'claw_machine') {
+        if (m === 'wheel_pie' || m === 'duck' || m === 'f1' || m === 'horse' || m === 'bike' || m === 'motogp' || m === 'balloon' || m === 'gift' || m === 'ski' || m === 'lixi' || m === 'safe_zone' || m === 'ufo_abduct' || m === 'summon_card' || m === 'meteor_call' || m === 'naruto_summon' || m === 'claw_machine' || m === 'ferryman') {
           if (grid) grid.classList.add('hidden');
         }
         if (m === 'wheel_pie') {
@@ -12362,6 +12444,10 @@
           const c = document.getElementById('claw-machine-stage-container');
           if (c) c.classList.remove('hidden');
           if (typeof initClawMachineGame === 'function') initClawMachineGame(false);
+        } else if (m === 'ferryman') {
+          const c = document.getElementById('ferryman-stage-container');
+          if (c) c.classList.remove('hidden');
+          if (typeof initFerrymanGame === 'function') initFerrymanGame(false);
         }
       }
     }
@@ -15346,6 +15432,7 @@
       else if (mode === 'meteor_call' && typeof resizeMeteorCanvas === 'function') resizeMeteorCanvas();
       else if (mode === 'naruto_summon' && typeof resizeNarutoCanvas === 'function') resizeNarutoCanvas();
       else if (mode === 'claw_machine' && typeof resizeClawCanvas === 'function') resizeClawCanvas();
+      else if (mode === 'ferryman' && typeof resizeFerryCanvas === 'function') resizeFerryCanvas();
 
       updateAllFullscreenButtons();
     }
@@ -15376,7 +15463,8 @@
         { id: 'summon-card-fullscreen-btn', color: 'text-purple-400' },
         { id: 'meteor-call-fullscreen-btn', color: 'text-rose-400' },
         { id: 'naruto-summon-fullscreen-btn', color: 'text-orange-400' },
-        { id: 'claw-machine-fullscreen-btn', color: 'text-fuchsia-400' }
+        { id: 'claw-machine-fullscreen-btn', color: 'text-fuchsia-400' },
+        { id: 'ferryman-fullscreen-btn', color: 'text-sky-400' }
       ];
       btnConfigs.forEach(cfg => {
         const btn = document.getElementById(cfg.id);
@@ -15456,7 +15544,8 @@
         'summon-card-stage-container',
         'meteor-call-stage-container',
         'naruto-summon-stage-container',
-        'claw-machine-stage-container'
+        'claw-machine-stage-container',
+        'ferryman-stage-container'
       ];
       const ro = new ResizeObserver((entries) => {
         for (const entry of entries) {
@@ -15493,6 +15582,7 @@
       if (mode === 'meteor_call') return meteorState === 'running';
       if (mode === 'naruto_summon') return narutoState === 'running';
       if (mode === 'claw_machine') return clawState === 'running';
+      if (mode === 'ferryman') return ferryState === 'running';
       if (mode === 'wheel_slot' || mode === 'bingo') return bingoState !== 'idle';
       const spinBtn = document.getElementById('spin-btn');
       return spinBtn ? spinBtn.disabled : false;
@@ -32143,6 +32233,219 @@
       }
     }
 
+    // ==========================================
+    // 26. MODULE: NGƯỜI LÁI ĐÒ (FERRYMAN) - Cô lái đò chèo học sinh sang sông, sóng lớn -> bạn nào té sông bị gọi tên
+    // ==========================================
+    let ferryAnimId = null, ferryState = 'idle', ferryStart = 0, ferryDur = 8000, ferryStudents = [], ferryWinner = null, ferryCb = null;
+    let ferrySound = true, ferryParts = [], ferryWi = -1, ferryPhase = -1, ferryShore = null, ferryShoreKey = '', ferryLand = 0, ferryLast = 0;
+
+    function toggleFerrySound() {
+      ferrySound = !ferrySound;
+      const btn = document.getElementById('ferryman-sound-btn');
+      if (btn) btn.innerHTML = ferrySound ? '🔊 Bật' : '🔇 Tắt';
+    }
+    function toggleFerryFullscreen() { toggleContainerFullscreen('ferryman-stage-container', resizeFerryCanvas); }
+    function resizeFerryCanvas() {
+      const canvas = document.getElementById('ferryman-canvas'), container = document.getElementById('ferryman-stage-container');
+      if (!canvas || !container) return;
+      const rect = container.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.floor(rect.width), h = Math.floor(rect.height);
+      if (w > 0 && h > 0) {
+        canvas.width = w * dpr; canvas.height = h * dpr; canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+        const ctx = canvas.getContext('2d'); if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ferryShoreKey = '';
+      }
+    }
+    function initFerrymanGame(reset = true) {
+      const container = document.getElementById('ferryman-stage-container'), canvas = document.getElementById('ferryman-canvas');
+      if (!container || !canvas) return;
+      resizeFerryCanvas();
+      const visible = (typeof students !== 'undefined' ? students : []).filter(s => !(typeof hiddenWheelIds !== 'undefined' && hiddenWheelIds.includes(s.id)));
+      if (reset || ferryStudents.length !== visible.length) ferryStudents = visible.map(st => ({ id: st.id, name: shortStudentName(st.name) }));
+      ferryState = 'idle'; ferryWinner = null; ferryWi = -1; ferryParts = []; ferryPhase = -1;
+      const el = document.getElementById('ferryman-status');
+      if (el) el.innerText = '🚣 Cô lái đò đã sẵn sàng đưa các em sang sông! Bấm CHÈO ĐÒ để bắt đầu!';
+      if (!ferryAnimId) ferryAnimId = requestAnimationFrame(runFerryLoop);
+    }
+    function startFerrymanGame(winnerStudent, durationMs = 8000, callback) {
+      if (ferryState === 'running') return;
+      initFerrymanGame(true);
+      ferryWinner = winnerStudent; ferryCb = callback; ferryDur = Math.max(6000, durationMs);
+      ferryWi = Math.max(0, ferryStudents.findIndex(s => String(s.id) === String(winnerStudent.id)));
+      ferryStart = performance.now(); ferryState = 'running'; ferryPhase = -1; ferryLand = 0;
+      if (!ferryAnimId) ferryAnimId = requestAnimationFrame(runFerryLoop);
+    }
+    function runFerryLoop(now) {
+      const mode = document.getElementById('spin-mode')?.value, c = document.getElementById('ferryman-stage-container');
+      if (mode !== 'ferryman' || !c || c.classList.contains('hidden')) { ferryAnimId = null; return; }
+      renderFerryCanvas(now);
+      ferryAnimId = requestAnimationFrame(runFerryLoop);
+    }
+
+    function ferryBuildShore(w, h, hy, dpr) {
+      const Wt = Math.ceil(w * 1.6), c = document.createElement('canvas');
+      c.width = Math.ceil(Wt * dpr); c.height = Math.ceil((hy + 16) * dpr);
+      const C = c.getContext('2d'); C.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const S = Math.max(0.6, h / 640), base = hy + 6, R = n => { const x = Math.sin(n * 91.7 + 13.3) * 43758.5; return x - Math.floor(x); };
+      C.strokeStyle = '#2f7d32'; C.lineCap = 'round';
+      for (let i = 0; i < Wt / 7; i++) { const x = i * 7 + R(i) * 5, ht = (38 + R(i + 3) * 40) * S; C.lineWidth = 3; C.strokeStyle = i % 3 ? '#3f9a3c' : '#2f7d32'; C.beginPath(); C.moveTo(x, base); C.lineTo(x + (R(i + 9) - 0.5) * 6, base - ht); C.stroke(); }
+      const gr = C.createLinearGradient(0, base - 10, 0, hy + 16); gr.addColorStop(0, '#5aa844'); gr.addColorStop(1, '#2f6f2b');
+      C.fillStyle = gr; C.fillRect(0, base - 6, Wt, 22);
+      const N = 13;
+      for (let i = 0; i < N; i++) {
+        const x = 70 + i * (Wt - 140) / (N - 1), ty = i % 4;
+        if (ty === 0 || ty === 2) {
+          const hh = (95 + R(i) * 40) * S; C.strokeStyle = '#7a5a36'; C.lineWidth = 6 * S; C.beginPath(); C.moveTo(x, base); C.quadraticCurveTo(x + 12 * S, base - hh * 0.5, x + 4 * S, base - hh); C.stroke();
+          for (let f = 0; f < 7; f++) { const a = -Math.PI / 2 + (f - 3) * 0.55; C.strokeStyle = f % 2 ? '#2e8b3d' : '#3fae4f'; C.lineWidth = 4 * S; C.beginPath(); C.moveTo(x + 4 * S, base - hh); C.quadraticCurveTo(x + 4 * S + Math.cos(a) * 30 * S, base - hh + Math.sin(a) * 30 * S - 8 * S, x + 4 * S + Math.cos(a) * 52 * S, base - hh + Math.sin(a) * 40 * S + 16 * S); C.stroke(); }
+        } else if (ty === 1) {
+          for (let k = 0; k < 5; k++) { const bx = x - 22 * S + k * 11 * S, bh = (90 + R(i + k) * 40) * S; C.strokeStyle = '#6aa83a'; C.lineWidth = 4 * S; C.beginPath(); C.moveTo(bx, base); C.lineTo(bx + (k - 2) * 3 * S, base - bh); C.stroke();
+            C.fillStyle = '#4c9a2a'; for (let l = 0; l < 4; l++) { C.beginPath(); C.ellipse(bx + (k - 2) * 3 * S + (l % 2 ? 8 : -8) * S, base - bh + l * 10 * S, 11 * S, 3 * S, l % 2 ? 0.4 : -0.4, 0, 7); C.fill(); } }
+        } else {
+          const hw = 44 * S; C.fillStyle = '#7a5a36'; for (const lx of [-hw * 0.4, hw * 0.4]) C.fillRect(x + lx - 2, base - 12 * S, 4, 14 * S);
+          C.fillStyle = '#b98a52'; C.fillRect(x - hw * 0.5, base - 38 * S, hw, 26 * S);
+          C.fillStyle = '#c9a24e'; C.beginPath(); C.moveTo(x - hw * 0.8, base - 36 * S); C.lineTo(x, base - 64 * S); C.lineTo(x + hw * 0.8, base - 36 * S); C.closePath(); C.fill();
+          C.strokeStyle = 'rgba(90,60,20,0.5)'; C.lineWidth = 1.5; for (let l = 1; l < 5; l++) { C.beginPath(); C.moveTo(x - hw * 0.8 + l * hw * 0.32, base - 36 * S); C.lineTo(x, base - 64 * S); C.stroke(); }
+          C.fillStyle = '#3b2a1a'; C.fillRect(x - 5 * S, base - 30 * S, 10 * S, 18 * S);
+        }
+      }
+      ferryShore = { c, Wt }; ferryShoreKey = w + 'x' + h + 'x' + dpr;
+    }
+
+    function ferryKid(ctx, x, y, hr, i, o) {
+      o = o || {};
+      const skin = i % 2 ? '#f6d3b0' : '#f2c9a0', hair = ['#1f2937', '#111827', '#3b2f2f', '#2b2118'][i % 4];
+      ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot);
+      ctx.fillStyle = '#f97316'; ctx.beginPath(); ctx.roundRect(-hr * 0.95, hr * 0.7, hr * 1.9, hr * 1.7, hr * 0.5); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.fillRect(-hr * 0.12, hr * 0.8, hr * 0.24, hr * 1.5);
+      if (o.arms) { ctx.strokeStyle = skin; ctx.lineWidth = Math.max(2, hr * 0.38); ctx.lineCap = 'round'; for (const k of [-1, 1]) { const a = Math.sin(o.arms + k * 1.4) * 0.5; ctx.beginPath(); ctx.moveTo(k * hr * 0.9, hr * 1.0); ctx.lineTo(k * hr * (1.5 + a * 0.4), -hr * (1.0 + a)); ctx.stroke(); ctx.fillStyle = skin; ctx.beginPath(); ctx.arc(k * hr * (1.5 + a * 0.4), -hr * (1.0 + a), hr * 0.3, 0, 7); ctx.fill(); } }
+      ctx.fillStyle = skin; ctx.beginPath(); ctx.arc(0, 0, hr, 0, 7); ctx.fill();
+      ctx.fillStyle = hair; ctx.beginPath(); ctx.arc(0, -hr * 0.1, hr * 1.02, Math.PI * 1.02, Math.PI * 1.98); ctx.quadraticCurveTo(0, -hr * 0.35, -hr, -hr * 0.1); ctx.fill();
+      ctx.fillStyle = '#1e293b'; const ey = hr * 0.12, er = Math.max(1, hr * 0.13);
+      ctx.beginPath(); ctx.arc(-hr * 0.38, ey, er, 0, 7); ctx.arc(hr * 0.38, ey, er, 0, 7); ctx.fill();
+      ctx.strokeStyle = '#b4513a'; ctx.lineWidth = Math.max(1, hr * 0.12);
+      ctx.beginPath(); if (o.panic) ctx.arc(0, hr * 0.55, hr * 0.2, 0, 7); else ctx.arc(0, hr * 0.3, hr * 0.28, 0.2 * Math.PI, 0.8 * Math.PI); ctx.stroke();
+      ctx.restore();
+    }
+    function ferryTag(ctx, x, y, name, gold, fs) {
+      ctx.save(); ctx.font = '800 ' + fs + 'px system-ui, sans-serif';
+      const tw = ctx.measureText(name).width + fs * 0.8, th = fs * 1.45;
+      ctx.fillStyle = gold ? '#facc15' : 'rgba(255,255,255,0.92)'; ctx.strokeStyle = gold ? '#a16207' : 'rgba(15,23,42,0.35)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(x - tw / 2, y - th / 2, tw, th, th * 0.35); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#1e293b'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(name, x, y + 0.5); ctx.restore();
+    }
+
+    function renderFerryCanvas(now) {
+      const canvas = document.getElementById('ferryman-canvas'); if (!canvas) return;
+      const ctx = canvas.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr, h = canvas.height / dpr; if (w < 10 || h < 10) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const cl = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, k) => a + (b - a) * k, ease = k => -(Math.cos(Math.PI * k) - 1) / 2;
+      const running = ferryState === 'running', t = running ? Math.min(1, (now - ferryStart) / ferryDur) : (ferryState === 'finished' ? 1 : 0);
+      const mv = cl(t / 0.86, 0, 1), p = ease(mv), spd = running || ferryState === 'finished' ? Math.sin(Math.PI * mv) : 0;
+      const Lw = w * 1.3, scroll = p * Lw, hy = h * 0.4, by = h * 0.68, boatX = w * 0.46, Lb = Math.min(w * 0.74, 780), hl = Lb / 2;
+      const N = ferryStudents.length, S = Math.max(0.7, Math.min(w / 900, h / 600));
+      const key = w + 'x' + h + 'x' + dpr; if (key !== ferryShoreKey || !ferryShore) ferryBuildShore(w, h, hy, dpr);
+
+      // Trời, mây, chim
+      const sky = ctx.createLinearGradient(0, 0, 0, hy); sky.addColorStop(0, '#4aa8e8'); sky.addColorStop(1, '#cfeefc'); ctx.fillStyle = sky; ctx.fillRect(0, 0, w, hy + 20);
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      for (let k = 0; k < 3; k++) { const cx = ((now * 0.012 + k * w * 0.42) % (w + 300)) - 150, cy = h * (0.08 + k * 0.07); for (const [dx, dy, r] of [[0, 0, 26], [28, -8, 32], [58, 0, 24], [26, 6, 28]]) { ctx.beginPath(); ctx.arc(cx + dx * S, cy + dy * S, r * S, 0, 7); ctx.fill(); } }
+      for (let k = 0; k < 2; k++) { const bx = ((now * 0.05 * (1 + k * 0.4) + k * w * 0.5) % (w + 100)) - 50, byy = h * (0.12 + k * 0.1) + Math.sin(now * 0.003 + k) * 6, f = Math.sin(now * 0.012 + k * 2) * 7; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(bx - 14, byy + f); ctx.quadraticCurveTo(bx - 6, byy - 6, bx, byy); ctx.quadraticCurveTo(bx + 6, byy - 6, bx + 14, byy + f); ctx.stroke(); }
+      // Bờ xa trôi chậm (parallax)
+      const off = -((scroll * 0.3) % ferryShore.Wt);
+      for (let k = 0; k < 3; k++) ctx.drawImage(ferryShore.c, off + k * ferryShore.Wt, 0, ferryShore.Wt, hy + 16);
+      // Sông
+      const rv = ctx.createLinearGradient(0, hy + 8, 0, h); rv.addColorStop(0, '#6fd0dc'); rv.addColorStop(0.5, '#3fa9c0'); rv.addColorStop(1, '#1f7f9c');
+      ctx.fillStyle = rv; ctx.fillRect(0, hy + 10, w, h - hy);
+      ctx.lineWidth = 2; for (let k = 0; k < 10; k++) { const y0 = hy + 24 + k * (h - hy - 30) / 10, ph = scroll * (0.5 + k * 0.08) * 0.04 + now * 0.002 + k; ctx.strokeStyle = 'rgba(255,255,255,' + (0.18 + k * 0.025) + ')'; ctx.beginPath(); for (let x = 0; x <= w; x += 12) { const y = y0 + Math.sin(x * 0.03 - ph) * (2 + k * 0.4); x ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); }
+      // Hai bến đò
+      const pier = (sx, dir) => { ctx.fillStyle = '#6b4a2b'; for (let k = 0; k < 4; k++) ctx.fillRect(sx + dir * (10 + k * 44) - 4, by - 8, 8, 44 * S); ctx.fillStyle = '#a97a45'; ctx.fillRect(dir > 0 ? sx : sx - 190, by - 14, 190, 10); ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(dir > 0 ? sx : sx - 190, by - 4, 190, 3); };
+      pier(boatX - hl - 60 - p * Lw, -1); pier(boatX + hl + 40 + (1 - p) * Lw, 1);
+
+      // Nhịp sóng / nghiêng thuyền
+      const rampUp = cl((t - 0.5) / 0.15, 0, 1) * (1 - cl((t - 0.8) / 0.12, 0, 1)), A = 1 + rampUp * 4.5;
+      const roll = Math.sin(now * 0.0026) * 0.022 * A + Math.sin(now * 0.0061) * 0.01 * rampUp * A, bob = Math.sin(now * 0.003) * 2.5 * A;
+      const sheerY = x => { const u = (x / hl + 1) / 2; return (1 - u) * (1 - u) * -24 + 2 * (1 - u) * u * -12 + u * u * -44; };
+
+      // Trạng thái bạn bị té
+      const tf0 = 0.68, tf1 = 0.8, fall = cl((t - tf0) / (tf1 - tf0), 0, 1), fell = t >= tf1, falling = t >= tf0 && t < tf1, wob = cl((t - 0.55) / 0.13, 0, 1);
+      const slots = Math.ceil(N / 2), hr = cl(Lb * 0.8 / Math.max(1, slots) * 0.46, 4, 12 * S);
+      const seat = i => { const row = i % 2, sl = Math.floor(i / 2), x = -Lb * 0.34 + (sl + 0.5 + row * 0.35) / Math.max(1, slots) * Lb * 0.72; return { row, x, y: sheerY(x) - hr * (row ? 1.0 : 2.35) }; };
+
+      // Phase text + âm thanh
+      if (running) {
+        const ph = t < 0.55 ? 0 : (t < 0.68 ? 1 : 2);
+        if (ph !== ferryPhase) { ferryPhase = ph; const el = document.getElementById('ferryman-status'); if (el) el.innerText = ['🚣 Cô lái đò đang chèo đò đưa các em sang sông...', '🌊 Sóng lớn nổi lên! Thuyền chao đảo dữ dội...', '💦 Ối! Có bạn bị té xuống sông rồi!'][ph]; if (ferrySound && ph === 1) ArcadePackAudio.tone(140, 0.5, 'sine', 0.1, 220); }
+      }
+
+      // --- Thuyền ---
+      ctx.save(); ctx.translate(boatX, by + bob); ctx.rotate(roll);
+      const drawKids = row => { for (let i = 0; i < N; i++) { const s = seat(i); if (s.row !== row || (i === ferryWi && (falling || fell))) continue;
+        const happy = t > 0.7 ? -Math.abs(Math.sin(now * 0.012 + i)) * 3 : 0, shake = (i === ferryWi && wob > 0 && !falling) ? Math.sin(now * 0.05) * wob * 4 : 0;
+        ferryKid(ctx, s.x + shake, s.y + happy, hr, i, { panic: i === ferryWi && wob > 0.3, rot: (i === ferryWi ? Math.sin(now * 0.03) * wob * 0.35 : 0), arms: (i === ferryWi && wob > 0.2 && !falling) ? now * 0.02 : 0 });
+        const fs = Math.max(7, Math.min(11 * S, hr * 0.95)); ferryTag(ctx, s.x, s.y - hr - fs * (0.9 + (i % 4) * 1.2) - 4, ferryStudents[i].name, i === ferryWi && t >= tf0, fs); } };
+      drawKids(0);
+      // Cô lái đò
+      const gx = -hl * 0.8, gy = sheerY(gx) + 10, sw = Math.sin(now * 0.004) * (0.25 + 0.75 * spd) * 9;
+      ctx.strokeStyle = '#8b5a2b'; ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(gx + 8, gy - 34 * S); ctx.lineTo(gx - 34 + sw, gy + 60 * S); ctx.stroke();
+      ctx.fillStyle = '#6b3f1d'; ctx.beginPath(); ctx.ellipse(gx - 35 + sw, gy + 62 * S, 4, 11, 0.25, 0, 7); ctx.fill();
+      ctx.fillStyle = '#111827'; ctx.beginPath(); ctx.ellipse(gx - 7, gy - 38 * S, 6 * S, 16 * S, 0.2, 0, 7); ctx.fill();
+      const dg = ctx.createLinearGradient(0, gy - 44 * S, 0, gy); dg.addColorStop(0, '#f8fafc'); dg.addColorStop(1, '#7dd3fc');
+      ctx.fillStyle = dg; ctx.beginPath(); ctx.moveTo(gx - 7, gy - 46 * S); ctx.lineTo(gx + 7, gy - 46 * S); ctx.lineTo(gx + 11, gy); ctx.lineTo(gx - 11, gy); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#f2c9a0'; ctx.beginPath(); ctx.arc(gx + 1, gy - 53 * S, 6.5 * S, 0, 7); ctx.fill();
+      ctx.fillStyle = '#e8c872'; ctx.strokeStyle = '#a07a2a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(gx - 17 * S, gy - 55 * S); ctx.lineTo(gx + 1, gy - 72 * S); ctx.lineTo(gx + 19 * S, gy - 55 * S); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = '#f2c9a0'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(gx + 2, gy - 40 * S); ctx.lineTo(gx + 8, gy - 34 * S); ctx.stroke();
+      drawKids(1);
+      // Thân thuyền
+      const hull = () => { ctx.beginPath(); ctx.moveTo(-hl, -24); ctx.quadraticCurveTo(0, -12, hl, -44); ctx.quadraticCurveTo(hl * 0.88, -6, hl * 0.62, 14); ctx.quadraticCurveTo(0, 28, -hl * 0.7, 14); ctx.quadraticCurveTo(-hl * 0.97, 2, -hl, -24); ctx.closePath(); };
+      const wg = ctx.createLinearGradient(0, -40, 0, 28); wg.addColorStop(0, '#d29a5a'); wg.addColorStop(1, '#8a5527');
+      ctx.save(); hull(); ctx.fillStyle = wg; ctx.fill(); ctx.clip();
+      ctx.strokeStyle = 'rgba(60,30,10,0.45)'; ctx.lineWidth = 2; for (const d of [7, 15, 23]) { ctx.beginPath(); ctx.moveTo(-hl, -24 + d); ctx.quadraticCurveTo(0, -12 + d, hl, -44 + d); ctx.stroke(); }
+      ctx.restore();
+      ctx.strokeStyle = '#6b3f1d'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(-hl, -24); ctx.quadraticCurveTo(0, -12, hl, -44); ctx.stroke();
+      ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(hl, -44); ctx.quadraticCurveTo(hl + 14, -52 + Math.sin(now * 0.01) * 4, hl + 6, -66 + Math.sin(now * 0.012) * 5); ctx.stroke();
+      ctx.restore();
+
+      // Bọt sóng + vệt nước
+      for (let k = 0; k < 5; k++) { ctx.fillStyle = 'rgba(255,255,255,' + (0.5 * spd * (1 - k * 0.18) + 0.12) + ')'; ctx.beginPath(); ctx.ellipse(boatX - hl * 0.9 - k * 34 * S, by + 24 + k * 2, 26 * S, 4, 0, 0, 7); ctx.fill(); }
+      ctx.fillStyle = 'rgba(255,255,255,' + (0.35 + rampUp * 0.35) + ')'; ctx.beginPath(); ctx.ellipse(boatX, by + 26 + bob, hl * 0.86, 5 + rampUp * 4, roll, 0, 7); ctx.fill();
+      if (rampUp > 0.1) { ctx.strokeStyle = 'rgba(255,255,255,' + rampUp * 0.8 + ')'; ctx.lineWidth = 3; for (let k = 0; k < 3; k++) { const wx = boatX + hl * (0.1 + k * 0.28), ph = now * 0.008 + k; ctx.beginPath(); ctx.arc(wx, by + 24, (16 + k * 5) * S, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.beginPath(); ctx.arc(wx + Math.sin(ph) * 6, by + 8 - Math.abs(Math.sin(ph)) * 14 * rampUp, 3, 0, 7); ctx.fill(); } }
+
+      // --- Bạn bị té xuống sông ---
+      if (ferryWi >= 0 && (falling || fell)) {
+        const s = seat(ferryWi), sx0 = boatX + s.x, sy0 = by + bob + s.y, lx0 = sx0 + 26 * S, ly0 = by + 58 * S;
+        const drift = fell ? (cl((t - tf1) / 0.2, 0, 1) * 0 + (p - ease(cl(tf1 / 0.86, 0, 1))) * Lw * 0.9) : 0;
+        if (falling) {
+          const f = ease(fall), x = lerp(sx0, lx0, f), y = lerp(sy0, ly0, f * f) - Math.sin(Math.PI * f) * 46 * S;
+          ferryKid(ctx, x, y, hr * 1.25, ferryWi, { rot: f * Math.PI * 3, panic: true, arms: now * 0.03 });
+          if (fall > 0.97 && !ferryLand) { ferryLand = now; if (ferrySound) ArcadePackAudio.tone(120, 0.5, 'sawtooth', 0.2, 40);
+            for (let k = 0; k < 40; k++) { const a = -Math.PI * (0.1 + Math.random() * 0.8), v = 2 + Math.random() * 6; ferryParts.push({ x: lx0, y: ly0, vx: Math.cos(a) * v * 0.8, vy: Math.sin(a) * v, a: 1.2, r: 2 + Math.random() * 3 }); } }
+        } else {
+          const x = Math.max(w * 0.07, lx0 + drift), y = ly0 + Math.sin(now * 0.004) * 3;
+          ferryKid(ctx, x, y, hr * 1.25, ferryWi, { arms: now * 0.02, panic: true });
+          ctx.fillStyle = 'rgba(86,182,204,0.92)'; ctx.beginPath(); ctx.ellipse(x, y + hr * 1.95, hr * 2.6, hr * 0.95, 0, 0, 7); ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.lineWidth = 2; ctx.stroke();
+          ferryTag(ctx, x, y - hr * 3.4, ferryStudents[ferryWi].name, true, Math.max(10, 13 * S));
+          const bw = 70 * S, bx = x + hr * 2.2, byb = y - hr * 2.2; ctx.fillStyle = '#fff'; ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.roundRect(bx, byb - 20 * S, bw, 22 * S, 10); ctx.fill(); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(bx + 8, byb + 1); ctx.lineTo(bx - 4, byb + 10); ctx.lineTo(bx + 18, byb + 1); ctx.fill();
+          ctx.fillStyle = '#0369a1'; ctx.font = '800 ' + Math.max(9, 11 * S) + 'px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('Cứu với! 🆘', bx + bw / 2, byb - 9 * S);
+        }
+        if (ferryLand) for (let k = 0; k < 3; k++) { const e = ((now - ferryLand) / 1000 - k * 0.25); if (e > 0 && e < 1.6) { ctx.strokeStyle = 'rgba(255,255,255,' + (1 - e / 1.6) * 0.8 + ')'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(lx0 + drift, ly0 + hr, (16 + e * 90) * S, (5 + e * 22) * S, 0, 0, 7); ctx.stroke(); } }
+      }
+      for (let i = ferryParts.length - 1; i >= 0; i--) { const q = ferryParts[i]; q.x += q.vx; q.y += q.vy; q.vy += 0.3; q.a -= 0.025; if (q.a <= 0) { ferryParts.splice(i, 1); continue; } ctx.fillStyle = 'rgba(255,255,255,' + Math.min(1, q.a) + ')'; ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.fill(); }
+
+      if (ferryState === 'finished' && ferryWinner) {
+        ctx.save(); ctx.fillStyle = 'rgba(3,105,161,0.92)'; ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.roundRect(w / 2 - 190, 58, 380, 44, 16); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#fef9c3'; ctx.font = '900 15px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('💦 TÉ SÔNG: ' + ferryWinner.name, w / 2, 80); ctx.restore();
+      }
+      if (running && t >= 1) {
+        ferryState = 'finished'; if (ferrySound) ArcadePackAudio.fanfare();
+        const el = document.getElementById('ferryman-status'); if (el && ferryWinner) el.innerText = '💦 Bạn ' + ferryWinner.name + ' đã té xuống sông và bị gọi tên!';
+        const cb = ferryCb, wn = ferryWinner; setTimeout(() => { if (typeof cb === 'function') cb(wn); }, 900);
+      }
+    }
+
     let narutoAnimId = null;
     let narutoState = 'idle';
     let narutoStartTime = 0;
@@ -41516,6 +41819,21 @@
         return;
       }
 
+      // 26. Người lái đò
+      if (mode === 'ferryman') {
+        const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
+        const raceDuration = Math.max(7000, durationSec * 1000 + 3000);
+        btn.innerHTML = "🚣 ĐANG CHÈO ĐÒ...";
+        if (typeof startFerrymanGame === 'function') {
+          startFerrymanGame(selected, raceDuration, (actualWinner) => {
+            const finalWinner = actualWinner || selected;
+            currentWinner = finalWinner;
+            showWinnerResult(finalWinner, btn);
+          });
+        }
+        return;
+      }
+
       // 24. Triệu Hồi Chi Thuật (Naruto Làng Lá)
       if (mode === 'naruto_summon') {
         const durationSec = parseInt(document.getElementById('spin-duration')?.value || 5);
@@ -41629,6 +41947,8 @@
           btnElement.innerHTML = '<i class="fa-solid fa-meteor"></i> PHÓNG THIÊN THẠCH MỚI';
         } else if (mode === 'claw_machine') {
           btnElement.innerHTML = '<i class="fa-solid fa-hand-back-fist"></i> TIẾP TỤC GẮP THÚ';
+        } else if (mode === 'ferryman') {
+          btnElement.innerHTML = '<i class=\"fa-solid fa-sailboat\"></i> CHÈO ĐÒ TIẾP';
         } else if (mode === 'naruto_summon') {
           btnElement.innerHTML = '<i class="fa-solid fa-hand-sparkles"></i> KẾT ẤN TRIỆU HỒI TIẾP';
         } else {
@@ -41748,6 +42068,7 @@
         else if (mode === 'meteor_call') initMeteorCallGame(true);
         else if (mode === 'naruto_summon') initNarutoSummonGame(true);
       else if (mode === 'claw_machine') initClawMachineGame(true);
+      else if (mode === 'ferryman') initFerrymanGame(true);
       }
     }
 
@@ -41776,6 +42097,8 @@
           text = `Thiên thạch đã rơi trúng bạn ${currentWinner.name} và gọi tên!`;
         } else if (document.getElementById('spin-mode')?.value === 'claw_machine') {
           text = `Máy gắp thú đã gắp trúng bạn ${currentWinner.name}! Mời bạn lên bảng nào!`;
+        } else if (document.getElementById('spin-mode')?.value === 'ferryman') {
+          text = `Thuyền gặp sóng lớn, bạn ${currentWinner.name} đã bị té xuống sông! Mời bạn lên bảng nào!`;
         } else if (document.getElementById('spin-mode')?.value === 'naruto_summon') {
           if (typeof NarutoAnimeAudio !== 'undefined' && NarutoAnimeAudio.isEnabled()) {
             NarutoAnimeAudio.speakWinnerJapanese(currentWinner.name);
