@@ -3842,7 +3842,7 @@
           <span>✧</span> Mời bạn
         </div>
 
-        <h2 id="winner-name-display" class="relative mt-5 font-display font-black leading-[1.08] break-words" style="color:#fff4d6;font-size:clamp(2.2rem,7.5vw,4.6rem);text-shadow:0 0 28px rgba(253,230,138,.55),0 4px 0 rgba(0,0,0,.25)">
+        <h2 id="winner-name-display" class="relative mt-5 font-display font-black leading-[1.08] whitespace-nowrap" style="color:#fff4d6;font-size:clamp(2.2rem,7.5vw,4.6rem);text-shadow:0 0 28px rgba(253,230,138,.55),0 4px 0 rgba(0,0,0,.25)">
           Nguyễn Văn A
         </h2>
         <p class="relative mt-3 text-xl sm:text-2xl font-extrabold text-indigo-200">lên bảng nào! <span class="inline-block">🎉</span></p>
@@ -32237,7 +32237,7 @@
     // 26. MODULE: NGƯỜI LÁI ĐÒ (FERRYMAN) - Cô lái đò chèo học sinh sang sông, sóng lớn -> bạn nào té sông bị gọi tên
     // ==========================================
     let ferryAnimId = null, ferryState = 'idle', ferryStart = 0, ferryDur = 8000, ferryStudents = [], ferryWinner = null, ferryCb = null;
-    let ferrySound = true, ferryParts = [], ferryWi = -1, ferryPhase = -1, ferryShore = null, ferryShoreKey = '', ferryLand = 0, ferryLast = 0;
+    let ferryLandX = 0, ferrySound = true, ferryParts = [], ferryWi = -1, ferryPhase = -1, ferryShore = null, ferryShoreKey = '', ferryLand = 0, ferryLast = 0;
 
     function toggleFerrySound() {
       ferrySound = !ferrySound;
@@ -32311,6 +32311,15 @@
       ferryShore = { c, Wt }; ferryShoreKey = w + 'x' + h + 'x' + dpr;
     }
 
+    function ferryFish(ctx, x, y, s, dir, col, ph) {
+      ctx.save(); ctx.translate(x, y); ctx.scale(dir * s, s); ctx.globalAlpha = 0.8;
+      ctx.fillStyle = col; ctx.save(); ctx.translate(-11, 0); ctx.rotate(Math.sin(ph) * 0.45); ctx.beginPath(); ctx.moveTo(2, 0); ctx.lineTo(-12, -8); ctx.lineTo(-12, 8); ctx.closePath(); ctx.fill(); ctx.restore();
+      ctx.beginPath(); ctx.ellipse(0, 0, 15, 8, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.beginPath(); ctx.ellipse(1, 3, 11, 3.5, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(-2, -7); ctx.quadraticCurveTo(3, -15, 8, -6); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(8, -2, 2.4, 0, 7); ctx.fill(); ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(8.6, -2, 1.2, 0, 7); ctx.fill();
+      ctx.restore();
+    }
     function ferryKid(ctx, x, y, hr, i, o) {
       o = o || {};
       const skin = i % 2 ? '#f6d3b0' : '#f2c9a0', hair = ['#1f2937', '#111827', '#3b2f2f', '#2b2118'][i % 4];
@@ -32340,6 +32349,7 @@
       const w = canvas.width / dpr, h = canvas.height / dpr; if (w < 10 || h < 10) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const cl = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, k) => a + (b - a) * k, ease = k => -(Math.cos(Math.PI * k) - 1) / 2;
+      const dtf = ferryLast ? cl((now - ferryLast) / 16.667, 0.2, 3) : 1; ferryLast = now;
       const running = ferryState === 'running', t = running ? Math.min(1, (now - ferryStart) / ferryDur) : (ferryState === 'finished' ? 1 : 0);
       const mv = cl(t / 0.86, 0, 1), p = ease(mv), spd = running || ferryState === 'finished' ? Math.sin(Math.PI * mv) : 0;
       const Lw = w * 1.3, scroll = p * Lw, hy = h * 0.4, by = h * 0.68, boatX = w * 0.46, Lb = Math.min(w * 0.74, 780), hl = Lb / 2;
@@ -32357,6 +32367,16 @@
       // Sông
       const rv = ctx.createLinearGradient(0, hy + 8, 0, h); rv.addColorStop(0, '#6fd0dc'); rv.addColorStop(0.5, '#3fa9c0'); rv.addColorStop(1, '#1f7f9c');
       ctx.fillStyle = rv; ctx.fillRect(0, hy + 10, w, h - hy);
+      // Cá bơi dưới sông (sóng nước phủ lên trên cho cảm giác ở dưới nước)
+      const flee = ferryLand ? Math.exp(-(now - ferryLand) / 900) : 0, fcol = ['#fb923c', '#e2e8f0', '#fbbf24', '#60a5fa', '#f87171', '#a3e635', '#f472b6'];
+      for (let k = 0; k < 14; k++) {
+        const d = ((k * 37) % 100) / 100, dir = k % 3 === 0 ? -1 : 1, sz = (0.7 + ((k * 53) % 60) / 100) * S * (0.8 + d * 0.5), sp = 0.012 + ((k * 29) % 10) * 0.002, span = w + 240;
+        let fx = ((k * 211 + dir * now * sp - scroll * 0.55 * (0.6 + d * 0.5)) % span + span) % span - 120;
+        let fy = by + 52 * S + d * (h - by - 90 * S) + Math.sin(now * 0.002 + k) * 4;
+        if (flee > 0.02) { const dx = fx - ferryLandX; if (Math.abs(dx) < 170) { const nr = 1 - Math.abs(dx) / 170; fy += flee * nr * 34; fx += Math.sign(dx || 1) * flee * nr * 40; } }
+        ferryFish(ctx, fx, fy, sz, dir, fcol[k % 7], now * 0.012 * (0.8 + sp * 20) + k);
+        if (k % 2 === 0) { ctx.strokeStyle = 'rgba(255,255,255,0.45)'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(fx + dir * 14 * sz, fy - ((now * 0.03 + k * 17) % 36), 2.2 * S, 0, 7); ctx.stroke(); }
+      }
       ctx.lineWidth = 2; for (let k = 0; k < 10; k++) { const y0 = hy + 24 + k * (h - hy - 30) / 10, ph = scroll * (0.5 + k * 0.08) * 0.04 + now * 0.002 + k; ctx.strokeStyle = 'rgba(255,255,255,' + (0.18 + k * 0.025) + ')'; ctx.beginPath(); for (let x = 0; x <= w; x += 12) { const y = y0 + Math.sin(x * 0.03 - ph) * (2 + k * 0.4); x ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); }
       // Hai bến đò
       const pier = (sx, dir) => { ctx.fillStyle = '#6b4a2b'; for (let k = 0; k < 4; k++) ctx.fillRect(sx + dir * (10 + k * 44) - 4, by - 8, 8, 44 * S); ctx.fillStyle = '#a97a45'; ctx.fillRect(dir > 0 ? sx : sx - 190, by - 14, 190, 10); ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(dir > 0 ? sx : sx - 190, by - 4, 190, 3); };
@@ -32413,15 +32433,16 @@
 
       // --- Bạn bị té xuống sông ---
       if (ferryWi >= 0 && (falling || fell)) {
-        const s = seat(ferryWi), sx0 = boatX + s.x, sy0 = by + bob + s.y, lx0 = sx0 + 26 * S, ly0 = by + 58 * S;
+        const s = seat(ferryWi), cs = Math.cos(roll), sn = Math.sin(roll), sx0 = boatX + s.x * cs - s.y * sn, sy0 = by + bob + s.x * sn + s.y * cs, lx0 = sx0 + 26 * S, ly0 = by + 58 * S;
         const drift = fell ? (cl((t - tf1) / 0.2, 0, 1) * 0 + (p - ease(cl(tf1 / 0.86, 0, 1))) * Lw * 0.9) : 0;
         if (falling) {
           const f = ease(fall), x = lerp(sx0, lx0, f), y = lerp(sy0, ly0, f * f) - Math.sin(Math.PI * f) * 46 * S;
           ferryKid(ctx, x, y, hr * 1.25, ferryWi, { rot: f * Math.PI * 3, panic: true, arms: now * 0.03 });
-          if (fall > 0.97 && !ferryLand) { ferryLand = now; if (ferrySound) ArcadePackAudio.tone(120, 0.5, 'sawtooth', 0.2, 40);
+          if (fall > 0.9) { ctx.fillStyle = 'rgba(86,182,204,' + 0.92 * (fall - 0.9) / 0.1 + ')'; ctx.beginPath(); ctx.ellipse(x, y + hr * 1.95, hr * 2.6, hr * 0.95, 0, 0, 7); ctx.fill(); }
+          if (fall > 0.97 && !ferryLand) { ferryLand = now; ferryLandX = lx0; if (ferrySound) ArcadePackAudio.tone(120, 0.5, 'sawtooth', 0.2, 40);
             for (let k = 0; k < 40; k++) { const a = -Math.PI * (0.1 + Math.random() * 0.8), v = 2 + Math.random() * 6; ferryParts.push({ x: lx0, y: ly0, vx: Math.cos(a) * v * 0.8, vy: Math.sin(a) * v, a: 1.2, r: 2 + Math.random() * 3 }); } }
         } else {
-          const x = Math.max(w * 0.07, lx0 + drift), y = ly0 + Math.sin(now * 0.004) * 3;
+          const x = Math.max(w * 0.07, lx0 + drift), y = ly0 + Math.sin(now * 0.004) * 3 * cl((t - tf1) / 0.05, 0, 1);
           ferryKid(ctx, x, y, hr * 1.25, ferryWi, { arms: now * 0.02, panic: true });
           ctx.fillStyle = 'rgba(86,182,204,0.92)'; ctx.beginPath(); ctx.ellipse(x, y + hr * 1.95, hr * 2.6, hr * 0.95, 0, 0, 7); ctx.fill();
           ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.lineWidth = 2; ctx.stroke();
@@ -32433,7 +32454,7 @@
         }
         if (ferryLand) for (let k = 0; k < 3; k++) { const e = ((now - ferryLand) / 1000 - k * 0.25); if (e > 0 && e < 1.6) { ctx.strokeStyle = 'rgba(255,255,255,' + (1 - e / 1.6) * 0.8 + ')'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(lx0 + drift, ly0 + hr, (16 + e * 90) * S, (5 + e * 22) * S, 0, 0, 7); ctx.stroke(); } }
       }
-      for (let i = ferryParts.length - 1; i >= 0; i--) { const q = ferryParts[i]; q.x += q.vx; q.y += q.vy; q.vy += 0.3; q.a -= 0.025; if (q.a <= 0) { ferryParts.splice(i, 1); continue; } ctx.fillStyle = 'rgba(255,255,255,' + Math.min(1, q.a) + ')'; ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.fill(); }
+      for (let i = ferryParts.length - 1; i >= 0; i--) { const q = ferryParts[i]; q.x += q.vx * dtf; q.y += q.vy * dtf; q.vy += 0.3 * dtf; q.a -= 0.025 * dtf; if (q.a <= 0) { ferryParts.splice(i, 1); continue; } ctx.fillStyle = 'rgba(255,255,255,' + Math.min(1, q.a) + ')'; ctx.beginPath(); ctx.arc(q.x, q.y, q.r, 0, 7); ctx.fill(); }
 
       if (ferryState === 'finished' && ferryWinner) {
         ctx.save(); ctx.fillStyle = 'rgba(3,105,161,0.92)'; ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.roundRect(w / 2 - 190, 58, 380, 44, 16); ctx.fill(); ctx.stroke();
@@ -42035,7 +42056,24 @@
         fsEl.appendChild(modal);
       }
       openModalUi('result-modal', 'result-modal-content');
+      fitWinnerName();
+      requestAnimationFrame(fitWinnerName);
+      setTimeout(fitWinnerName, 250);
     }
+
+    // Tên 1 hàng duy nhất: tên càng dài thì cỡ chữ càng nhỏ để vừa khung
+    function fitWinnerName() {
+      const el = document.getElementById('winner-name-display');
+      if (!el || !el.offsetParent) return;
+      el.style.whiteSpace = 'nowrap';
+      el.style.fontSize = 'clamp(2.2rem,7.5vw,4.6rem)';
+      const avail = el.clientWidth;
+      if (avail > 0 && el.scrollWidth > avail) {
+        const cur = parseFloat(getComputedStyle(el).fontSize) || 48;
+        el.style.fontSize = Math.max(14, Math.floor(cur * avail / el.scrollWidth * 0.97)) + 'px';
+      }
+    }
+    window.addEventListener('resize', () => { if (typeof fitWinnerName === 'function') fitWinnerName(); });
 
     function closeResultModal(hideWinner = false) {
       resetResultTimer();
